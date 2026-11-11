@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>발행어음 &amp; IMA 비주얼 리서치 · 2027 점검 포털</title>
+  <meta name="description" content="초대형 IB 발행어음 및 IMA 그래픽 마인드맵, 2027 수신 전망, 무수익 P-CBO 기회비용 시뮬레이터 및 근거 법령 포털" />
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --surface: #f8fafc;
+      --fg: #0f172a;
+      --muted: #475569;
+      --subtle: #64748b;
+      --border: #cbd5e1;
+      --border-light: #e2e8f0;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --purple: #7c3aed;
+      --purple-bg: #f5f3ff;
+      --emerald: #059669;
+      --emerald-bg: #ecfdf5;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --navy: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.48;
+      font-size: 13.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 16px 48px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+    }
+    .tag-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { background: var(--border-light); }
+    .btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .btn-primary:hover { background: var(--blue-dark); }
+
+    .nav-bar {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tab-btn {
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { background: var(--surface); color: var(--fg); }
+    .tab-btn.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+    }
+
+    .search-input {
+      width: 230px;
+      max-width: 100%;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 12.5px;
+      color: var(--fg);
+    }
+
+    /* Mind Map Layout */
+    .mindmap-wrap {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 960px) {
+      .mindmap-wrap { grid-template-columns: 1fr; }
+    }
+
+    .map-canvas {
+      background: radial-gradient(circle at center, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .map-node { cursor: pointer; transition: transform 0.18s ease, opacity 0.18s ease; }
+    .map-node:hover { opacity: 0.92; }
+
+    .detail-panel {
+      background: var(--card);
+      border: 2px solid var(--blue);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .mini-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 12px 0;
+    }
+    @media (max-width: 560px) {
+      .mini-kpi-grid { grid-template-columns: 1fr; }
+    }
+    .mini-kpi {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .mini-kpi-lbl { font-size: 12px; color: var(--muted); font-weight: 700; }
+    .mini-kpi-val { font-size: 18px; font-weight: 800; margin-top: 2px; }
+
+    .bar-row { margin-bottom: 9px; }
+    .bar-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+    .bar-track { width: 100%; height: 9px; background: var(--border-light); border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+
+    .law-chip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      margin-bottom: 7px;
+      text-decoration: none;
+      color: var(--fg);
+      transition: background 0.15s;
+    }
+    .law-chip:hover { background: var(--purple-bg); border-color: #c4b5fd; }
+
+    /* Step Flow Cards for Opportunity Cost */
+    .flow-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 14px 0;
+    }
+    @media (max-width: 900px) {
+      .flow-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .flow-4 { grid-template-columns: 1fr; }
+    }
+    .flow-box {
+      position: relative;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .flow-box.active-blue { border-color: var(--blue); background: var(--blue-bg); }
+    .flow-box.active-red { border-color: var(--red); background: var(--red-bg); }
+    .flow-step { font-size: 12px; font-weight: 800; color: var(--muted); }
+    .flow-num { font-size: 23px; font-weight: 800; margin: 4px 0; }
+    .flow-sub { font-size: 12px; color: var(--subtle); }
+
+    .firm-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .firm-chip:hover { background: var(--surface); color: var(--fg); }
+    .firm-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .mode-switch {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .mode-btn {
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .mode-btn.active { background: var(--navy); color: #fff; }
+
+    .sec-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .sec-title { font-size: 16px; font-weight: 800; }
+    .sec-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+    .src-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--blue-dark);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .src-badge:hover { background: var(--blue-bg); border-color: #93c5fd; }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table.hub-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      min-width: 620px;
+    }
+    table.hub-table th, table.hub-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      vertical-align: middle;
+    }
+    table.hub-table th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+    }
+    table.hub-table tbody tr { transition: background 0.12s; }
+    table.hub-table tbody tr:nth-child(even) { background: var(--surface); }
+    table.hub-table tbody tr.clickable-row { cursor: pointer; }
+    table.hub-table tbody tr.clickable-row:hover { background: var(--blue-bg) !important; }
+    table.hub-table tr.hi-blue { background: var(--blue-bg) !important; font-weight: 700; }
+    table.hub-table tr.hi-amber { background: var(--amber-bg) !important; font-weight: 700; }
+    table.hub-table tr.hi-emerald { background: var(--emerald-bg) !important; font-weight: 700; }
+
+    .inline-bar {
+      display: inline-block;
+      height: 7px;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .font-bold { font-weight: 700; }
+    .c-blue { color: var(--blue-dark); }
+    .c-purple { color: var(--purple); }
+    .c-emerald { color: var(--emerald); }
+    .c-amber { color: var(--amber); }
+    .c-red { color: var(--red); }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+
+    .sub-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .timeline-box {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .timeline-box.urgent { border-color: var(--red); background: var(--red-bg); }
+    .timeline-box.prep { border-color: var(--blue); background: var(--blue-bg); }
+    .timeline-box.warn { border-color: var(--amber); background: var(--amber-bg); }
+
+    .badge-risk {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .bg-red { background: var(--red); }
+    .bg-amber { background: var(--amber); }
+    .bg-emerald { background: var(--emerald); }
+    .bg-blue { background: var(--blue); }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      align-items: end;
+    }
+
+    /* Asset Mix Stacked Bar & P&L Editor */
+    .stack-track {
+      display: flex;
+      width: 100%;
+      height: 28px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 8px 0;
+    }
+    .stack-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: width 0.25s ease;
+    }
+    .mini-stack {
+      display: inline-flex;
+      width: 84px;
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      vertical-align: middle;
+      margin-left: 6px;
+      border: 1px solid var(--border);
+    }
+    .pnl-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .pnl-input-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .pnl-input-box label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .pnl-input-box input {
+      width: 100%;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--fg);
+      background: var(--surface);
+    }
+
+    .source-note {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .source-note strong { color: var(--fg); }
+
+    .hidden { display: none !important; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--navy);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .toast.show { opacity: 1; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none !important; }
+      .tab-panel { display: block !important; page-break-inside: avoid; margin-bottom: 20px; }
+      .card { box-shadow: none; border-color: #94a3b8; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <header class="card">
+    <div class="header-top">
+      <div>
+        <div class="tag-row">
+          <span class="tag tag-primary">초대형 IB 비주얼 리서치 맵</span>
+          <span class="tag">FISIS · ECOS · 법령 원문 연동</span>
+          <span class="tag">업데이트: 2026-11-11</span>
+        </div>
+        <h1>발행어음 &amp; IMA 통합 마인드맵 · 2027 점검 포털</h1>
+      </div>
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="copyShareLink()">🔗 현재 화면 링크 복사</button>
+        <button class="btn" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+      </div>
+    </div>
+
+    <div class="nav-bar no-print">
+      <nav class="tabs" id="tabNav">
+        <button data-tab="map" onclick="switchTab('map')" class="tab-btn active">🗺️ 그래픽 요약 맵</button>
+        <button data-tab="funding" onclick="switchTab('funding')" class="tab-btn">📈 수신 · '27 전망</button>
+        <button data-tab="pnl" onclick="switchTab('pnl')" class="tab-btn">📊 조달공시 · 운용규제</button>
+        <button data-tab="invest" onclick="switchTab('invest')" class="tab-btn">💰 모험자본 · 기회비용</button>
+        <button data-tab="soundness" onclick="switchTab('soundness')" class="tab-btn">⏱️ 만기구조 · IMA 규율</button>
+        <button data-tab="midlong" onclick="switchTab('midlong')" class="tab-btn">🏦 퇴직연금 · 저축은행</button>
+        <button data-tab="check2027" onclick="switchTab('check2027')" class="tab-btn">✅ '27 점검 · 스터디</button>
+        <button data-tab="sources" onclick="switchTab('sources')" class="tab-btn">📚 법령 · 출처</button>
+      </nav>
+      <input type="text" class="search-input" placeholder="검색 (예: 한투, P-CBO, IMA)" oninput="highlightSearch(this.value)" />
+    </div>
+  </header>
+
+  <!-- ==================== TAB 1: GRAPHIC MIND MAP ==================== -->
+  <section id="tab-map" class="tab-panel">
+    <div class="mindmap-wrap">
+      <!-- Left: Interactive Mind Map SVG -->
+      <div class="map-canvas">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:13px; font-weight:800; color:var(--muted);">👆 궁금한 노드를 클릭하면 우측에 데이터·근거법령·산정방식이 펼쳐집니다</span>
+          <span class="tag">발행어음·IMA 전용</span>
+        </div>
+
+        <svg viewBox="0 0 640 445" style="width:100%; height:auto; max-height:445px;">
+          <!-- Decorative Orbit Rings -->
+          <ellipse cx="320" cy="196" rx="225" ry="145" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="5,5" />
+          <ellipse cx="320" cy="196" rx="125" ry="82" fill="none" stroke="#cbd5e1" stroke-width="1" />
+
+          <!-- Connector Lines -->
+          <path id="edge-funding" d="M 320 196 C 240 196, 205 74, 120 66" fill="none" stroke="#2563eb" stroke-width="4" />
+          <path id="edge-reg" d="M 320 196 C 400 196, 435 74, 520 66" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+          <path id="edge-vc" d="M 320 196 L 105 196" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+          <path id="edge-opt" d="M 320 196 L 535 196" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+          <path id="edge-risk" d="M 320 196 C 240 196, 195 310, 115 316" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+          <path id="edge-pension" d="M 320 196 C 400 196, 445 310, 525 316" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+          <path id="edge-pnl" d="M 320 196 L 320 352" fill="none" stroke="#cbd5e1" stroke-width="2.5" />
+
+          <!-- Node 1: Funding (Top-Left) -->
+          <g class="map-node" onclick="selectNode('funding')">
+            <rect id="box-funding" x="16" y="28" width="192" height="72" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="3" />
+            <text x="112" y="55" font-size="14" font-weight="800" fill="#1d4ed8" text-anchor="middle">📈 수신 · 조달금리</text>
+            <text x="112" y="75" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">'27말 83조(+45%) · 기준+30bp</text>
+            <text x="112" y="92" font-size="12" fill="#64748b" text-anchor="middle">신규 3사 진입 · 특판 스프레드</text>
+          </g>
+
+          <!-- Node 2: Regulation & Law (Top-Right) -->
+          <g class="map-node" onclick="selectNode('reg')">
+            <rect id="box-reg" x="432" y="28" width="192" height="72" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2" />
+            <text x="528" y="55" font-size="14" font-weight="800" fill="#6d28d9" text-anchor="middle">⚖️ 규제 · 근거법령</text>
+            <text x="528" y="75" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">어음 200% · 통합 300% 캡</text>
+            <text x="528" y="92" font-size="12" fill="#64748b" text-anchor="middle">자본시장법 · 시행령 조문</text>
+          </g>
+
+          <!-- Node 3: Venture Capital Quota (Mid-Left) -->
+          <g class="map-node" onclick="selectNode('vc')">
+            <rect id="box-vc" x="12" y="160" width="192" height="72" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2" />
+            <text x="108" y="187" font-size="14" font-weight="800" fill="#dc2626" text-anchor="middle">💰 모험자본 20% 의무</text>
+            <text x="108" y="207" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">중견·A급 30%캡 · P-CBO</text>
+            <text x="108" y="224" font-size="12" fill="#64748b" text-anchor="middle">별도 교차규제 · 기회비용 시산</text>
+          </g>
+
+          <!-- Node 4: Optimal Scale & IMA (Mid-Right) -->
+          <g class="map-node" onclick="selectNode('opt')">
+            <rect id="box-opt" x="436" y="160" width="192" height="72" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2" />
+            <text x="532" y="187" font-size="14" font-weight="800" fill="#d97706" text-anchor="middle">📐 최적규모 · IMA 배분</text>
+            <text x="532" y="207" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">MR=MC 최적점(Q*) 도출</text>
+            <text x="532" y="224" font-size="12" fill="#64748b" text-anchor="middle">IMA 위험가중치 50% 절감</text>
+          </g>
+
+          <!-- Node 5: Maturity Concentration & IMA Rules (Bottom-Left) -->
+          <g class="map-node" onclick="selectNode('risk')">
+            <rect id="box-risk" x="14" y="282" width="188" height="72" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2" />
+            <text x="108" y="309" font-size="14" font-weight="800" fill="#b45309" text-anchor="middle">⏱️ 만기구조 · IMA 규율</text>
+            <text x="108" y="329" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">'27말~'28초 2.6조 만기집중</text>
+            <text x="108" y="346" font-size="12" fill="#64748b" text-anchor="middle">차환분산 · 손실충당금 5%</text>
+          </g>
+
+          <!-- Node 6: Retirement Pension (Bottom-Right) -->
+          <g class="map-node" onclick="selectNode('pension')">
+            <rect id="box-pension" x="438" y="282" width="188" height="72" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2" />
+            <text x="532" y="309" font-size="14" font-weight="800" fill="#059669" text-anchor="middle">🏦 퇴직연금 501조</text>
+            <text x="532" y="329" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">원리금보장 378조 시장</text>
+            <text x="532" y="346" font-size="12" fill="#64748b" text-anchor="middle">저축은행 1년 예금 상위호환</text>
+          </g>
+
+          <!-- Node 7: Disclosed Funding Cost & Regulatory Allocation (Bottom-Center) -->
+          <g class="map-node" onclick="selectNode('pnl')">
+            <rect id="box-pnl" x="216" y="352" width="208" height="78" rx="16" fill="#ffffff" stroke="#0f766e" stroke-width="2.5" />
+            <text x="320" y="380" font-size="14" font-weight="800" fill="#0f766e" text-anchor="middle">📊 조달공시 · 운용규제</text>
+            <text x="320" y="400" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">FISIS 어음잔액 · 이자비용</text>
+            <text x="320" y="418" font-size="12" fill="#64748b" text-anchor="middle">기업금융/부동산/기타 법정한도</text>
+          </g>
+
+          <!-- Center Hub -->
+          <g>
+            <rect x="232" y="148" width="176" height="96" rx="22" fill="#0f172a" stroke="#3b82f6" stroke-width="3.5" />
+            <text x="320" y="179" font-size="15" font-weight="800" fill="#ffffff" text-anchor="middle">발행어음 &amp; IMA</text>
+            <text x="320" y="201" font-size="12.5" font-weight="700" fill="#93c5fd" text-anchor="middle">'26.2Q 57.3조 → '27E 83.0조</text>
+            <text x="320" y="223" font-size="12" fill="#cbd5e1" text-anchor="middle">2027 핵심 지형도</text>
+          </g>
+        </svg>
+
+        <!-- Quick Touch Pills -->
+        <div style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:6px;">
+          <button class="firm-chip map-pill active" data-node="funding" onclick="selectNode('funding')">📈 수신·금리</button>
+          <button class="firm-chip map-pill" data-node="pnl" onclick="selectNode('pnl')">📊 조달공시·운용규제</button>
+          <button class="firm-chip map-pill" data-node="reg" onclick="selectNode('reg')">⚖️ 규제·법령</button>
+          <button class="firm-chip map-pill" data-node="vc" onclick="selectNode('vc')">💰 모험자본·기회비용</button>
+          <button class="firm-chip map-pill" data-node="opt" onclick="selectNode('opt')">📐 최적규모·IMA</button>
+          <button class="firm-chip map-pill" data-node="risk" onclick="selectNode('risk')">⏱️ 만기구조·IMA규율</button>
+          <button class="firm-chip map-pill" data-node="pension" onclick="selectNode('pension')">🏦 퇴직연금</button>
+        </div>
+      </div>
+
+      <!-- Right: Dynamic Detail Panel -->
+      <div class="detail-panel" id="mapDetailPanel">
+        <!-- Populated dynamically by selectNode() -->
+      </div>
+    </div>
+    <div class="source-note">
+      <strong>📌 자료 수록 원칙 및 출처 안내:</strong> 본 포털은 증권사 <strong>전사 합산 수치와 발행어음·IMA 전용 수치가 구분되지 않는 항목(전사 판관비·전사 대손충당금·전사 고정이하자산·전사 NIM·미공시 회사별 실제 자산배분 비중)을 전량 제외</strong>하고, 금감원 FISIS에서 계정 분리된 <strong>발행어음 부채(SF304:B13)·발행어음 이자비용(SF307:B408)·별도자기자본(SF304:L)</strong> 및 <strong>자본시장법령상 발행어음·IMA 전용 규율·시나리오 산식</strong>만 수록했습니다.
+    </div>
+  </section>
+
+  <!-- ==================== TAB 2: FUNDING ==================== -->
+  <section id="tab-funding" class="tab-panel hidden">
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. 발행어음 실효 조달금리 공식 검증 (`기준금리 + 30bp`)</div>
+          <div class="sec-sub">평시('18~'26.2Q)는 <strong>기준금리 + 25~35bp</strong> 수렴 · 신규사 특판 경쟁기에는 <strong>+70~90bp (~3.7%)</strong> 오버슈팅</div>
+        </div>
+        <div class="btn-group">
+          <a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">한국은행 ECOS ↗</a>
+          <a href="https://fisis.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">금감원 FISIS ↗</a>
+        </div>
+      </div>
+
+      <div class="sub-box" style="margin-bottom:12px; overflow-x:auto;">
+        <svg viewBox="0 0 760 220" style="width:100%; min-width:560px; height:auto;">
+          <line x1="55" y1="25" x2="730" y2="25" stroke="#cbd5e1" />
+          <line x1="55" y1="65" x2="730" y2="65" stroke="#cbd5e1" />
+          <line x1="55" y1="105" x2="730" y2="105" stroke="#cbd5e1" />
+          <line x1="55" y1="145" x2="730" y2="145" stroke="#cbd5e1" />
+          <line x1="55" y1="180" x2="730" y2="180" stroke="#64748b" />
+          <text x="48" y="29" font-size="12" fill="#475569" text-anchor="end">4.5%</text>
+          <text x="48" y="69" font-size="12" fill="#475569" text-anchor="end">3.5%</text>
+          <text x="48" y="109" font-size="12" fill="#475569" text-anchor="end">2.5%</text>
+          <text x="48" y="149" font-size="12" fill="#475569" text-anchor="end">1.5%</text>
+          <text x="48" y="184" font-size="12" fill="#475569" text-anchor="end">0.5%</text>
+
+          <rect x="295" y="20" width="75" height="160" fill="#ef4444" fill-opacity="0.10" rx="4" />
+          <text x="332" y="36" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">레고랜드(+79bp)</text>
+          <rect x="635" y="20" width="85" height="160" fill="#f59e0b" fill-opacity="0.14" rx="4" />
+          <text x="677" y="36" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">특판경쟁(+70bp↑)</text>
+
+          <text x="90" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'19.2Q</text>
+          <text x="170" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'20.4Q</text>
+          <text x="250" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'21.4Q</text>
+          <text x="332" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'23.1Q</text>
+          <text x="420" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'24.1Q</text>
+          <text x="510" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'25.2Q</text>
+          <text x="595" y="198" font-size="12" fill="#0f172a" text-anchor="middle">'26.2Q</text>
+          <text x="680" y="198" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">'26.하</text>
+
+          <polyline fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5,4"
+            points="90,135 170,180 250,168 332,65 420,65 510,99 595,105 680,93" />
+          <polyline fill="none" stroke="#059669" stroke-width="2" stroke-dasharray="2,3"
+            points="90,123 170,168 250,156 332,53 420,53 510,87 595,93 680,81" />
+          <polyline fill="none" stroke="#2563eb" stroke-width="3"
+            points="90,118 170,170 250,156 332,33 420,57 510,88 595,99 680,57" />
+
+          <circle cx="332" cy="33" r="5" fill="#dc2626" />
+          <circle cx="680" cy="57" r="6" fill="#d97706" />
+          <text x="680" y="49" font-size="12" font-weight="800" fill="#b45309" text-anchor="middle">~3.7%</text>
+
+          <line x1="65" y1="214" x2="90" y2="214" stroke="#2563eb" stroke-width="3" />
+          <text x="96" y="218" font-size="12" fill="#0f172a" font-weight="700">발행어음 실효금리</text>
+          <line x1="250" y1="214" x2="275" y2="214" stroke="#059669" stroke-width="2" stroke-dasharray="2,3" />
+          <text x="281" y="218" font-size="12" fill="#0f172a">평시 공식 (기준 + 30bp)</text>
+          <line x1="465" y1="214" x2="490" y2="214" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5,4" />
+          <text x="496" y="218" font-size="12" fill="#0f172a">한국은행 기준금리</text>
+        </svg>
+      </div>
+
+      <div class="grid-3">
+        <div class="sub-box">
+          <div class="font-bold">수시입출금형</div>
+          <div class="c-blue" style="font-size:16px; font-weight:800; margin:3px 0;">기준금리 -10 ~ 0bp</div>
+          <div style="font-size:12px; color:var(--muted);">CMA 대체 단기 파킹 수요</div>
+        </div>
+        <div class="sub-box">
+          <div class="font-bold">3~6개월 · 잔액 가중평균</div>
+          <div class="c-emerald" style="font-size:16px; font-weight:800; margin:3px 0;">기준금리 + 30bp (±5bp)</div>
+          <div style="font-size:12px; color:var(--muted);">CD 91일(+15bp) + 크레딧(+15bp)</div>
+        </div>
+        <div class="sub-box">
+          <div class="font-bold">1년 약정 · 특판 경쟁기</div>
+          <div class="c-amber" style="font-size:16px; font-weight:800; margin:3px 0;">기준금리 + 70 ~ 90bp</div>
+          <div style="font-size:12px; color:var(--muted);">후발사 시장 진입 · 차환 방어 구간</div>
+        </div>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식:</strong>
+        [원천 출처] 한국은행 ECOS(기준금리 · CD 91일물 수익률), 금융감독원 FISIS 증권사 요약재무상태표(<code>SF304:B13</code> 발행어음 부채) 및 요약손익계산서(<code>SF307:B408</code> 이자비용_발행어음이자), '26년 하반기 종투사 약정수익률 고시 호가.<br />
+        [산정 방식] 분기 연율화 실효 조달금리(%) = <code>(당분기 발행어음 이자비용 × 4) ÷ [(전기말 발행어음 잔액 + 당기말 발행어음 잔액) ÷ 2]</code> · 평시 기준금리 대비 스프레드 = <code>실효 조달금리 - 한국은행 기준금리</code> ('18~'26.2Q 비위기 구간 평균 +25~35bp).
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">2. 증권사별 2027년 수신 전망 (`57.26조 → 83.00조`, `+25.74조` 순증) 및 산출 가정</div>
+          <div class="sec-sub">별도자본 성장률(연 +6.5%) × 인가 연차별 목표 자본소진율 적용</div>
+        </div>
+        <a href="https://fisis.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">FISIS 원문 ↗</a>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:14px;">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>증권사</th>
+              <th>인가 구분</th>
+              <th>'26.2Q 잔액<br>(어음+IMA)</th>
+              <th>'27말 추정자본<br>(+6.5%/년)</th>
+              <th>'27말 어음<br>목표 소진율</th>
+              <th>'27말 전망<br>(어음 + IMA)</th>
+              <th>'27년 신규 순증<br>(Δ수신)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hi-blue">
+              <td>한국투자증권</td>
+              <td class="text-center">선발 ('17)</td>
+              <td class="text-right">25.07조</td>
+              <td class="text-right">14.48조</td>
+              <td class="text-center c-blue">192.7%</td>
+              <td class="text-right">30.90조 (27.9+3.0)</td>
+              <td class="text-right c-blue">+5.83조 <span class="inline-bar" style="width:58px; background:#2563eb;"></span></td>
+            </tr>
+            <tr class="hi-amber">
+              <td>키움증권</td>
+              <td class="text-center">신규 ('25.4Q)</td>
+              <td class="text-right">1.82조</td>
+              <td class="text-right">7.56조</td>
+              <td class="text-center c-amber">79.4%</td>
+              <td class="text-right">6.00조 (어음)</td>
+              <td class="text-right c-amber">+4.18조 <span class="inline-bar" style="width:42px; background:#d97706;"></span></td>
+            </tr>
+            <tr class="hi-amber">
+              <td>하나증권</td>
+              <td class="text-center">신규 ('26.1Q)</td>
+              <td class="text-right">1.00조</td>
+              <td class="text-right">7.38조</td>
+              <td class="text-center c-amber">61.0%</td>
+              <td class="text-right">4.50조 (어음)</td>
+              <td class="text-right c-amber">+3.50조 <span class="inline-bar" style="width:35px; background:#d97706;"></span></td>
+            </tr>
+            <tr class="hi-amber">
+              <td>신한투자증권</td>
+              <td class="text-center">신규 ('26.1Q)</td>
+              <td class="text-right">0.29조</td>
+              <td class="text-right">6.45조</td>
+              <td class="text-center c-amber">51.2%</td>
+              <td class="text-right">3.30조 (어음)</td>
+              <td class="text-right c-amber">+3.01조 <span class="inline-bar" style="width:30px; background:#d97706;"></span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">NH투자증권</td>
+              <td class="text-center">선발 ('18)</td>
+              <td class="text-right">7.50조</td>
+              <td class="text-right">9.00조</td>
+              <td class="text-center">111.1%</td>
+              <td class="text-right">10.50조 (10.0+0.5)</td>
+              <td class="text-right font-bold">+3.00조 <span class="inline-bar" style="width:30px; background:#64748b;"></span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">미래에셋증권</td>
+              <td class="text-center">선발 ('21)</td>
+              <td class="text-right">10.58조</td>
+              <td class="text-right">11.61조</td>
+              <td class="text-center">103.4%</td>
+              <td class="text-right">13.00조 (12.0+1.0)</td>
+              <td class="text-right font-bold">+2.42조 <span class="inline-bar" style="width:24px; background:#64748b;"></span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">잠재 2사 (삼성·메리츠)</td>
+              <td class="text-center">심사/검토</td>
+              <td class="text-right">0.00조</td>
+              <td class="text-right">18.13조</td>
+              <td class="text-center">11.0%</td>
+              <td class="text-right">2.00조 (초기진입)</td>
+              <td class="text-right font-bold">+2.00조 <span class="inline-bar" style="width:20px; background:#64748b;"></span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">KB증권</td>
+              <td class="text-center">선발 ('19)</td>
+              <td class="text-right">11.00조</td>
+              <td class="text-right">8.76조</td>
+              <td class="text-center">140.4%</td>
+              <td class="text-right">12.80조 (12.3+0.5)</td>
+              <td class="text-right font-bold">+1.80조 <span class="inline-bar" style="width:18px; background:#64748b;"></span></td>
+            </tr>
+            <tr class="font-bold">
+              <td class="text-center">전 증권사 합계</td>
+              <td class="text-center">-</td>
+              <td class="text-right">57.26조</td>
+              <td class="text-right">83.37조</td>
+              <td class="text-center">평균 93.6%</td>
+              <td class="text-right c-blue">83.00조 (78+5)</td>
+              <td class="text-right c-blue">+25.74조 (+45%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-4">
+        <div class="sub-box">
+          <div class="tag" style="margin-bottom:6px;">가정 ① 자본 성장</div>
+          <div class="font-bold" style="font-size:15px;">연 +6.5% 내부유보</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">ROE 10% × 유보율 65% 반영 ('26.2Q→'27말 누적 +9.8%, 증자 미가정)</div>
+        </div>
+        <div class="sub-box">
+          <div class="tag" style="margin-bottom:6px;">가정 ② 선발사 소진율</div>
+          <div class="font-bold" style="font-size:15px;">한투 193% vs 타사 103~140%</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">미래·KB·NH는 신NCR 위험액(100% 차감) 버퍼 유지 기조 반영</div>
+        </div>
+        <div class="sub-box">
+          <div class="tag" style="margin-bottom:6px;">가정 ③ 신규 3사 궤적</div>
+          <div class="font-bold" style="font-size:15px;">개시 2년차 평균 64.5%</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">과거 선발사 인가 2년차 FISIS 실증(55~80%) · 리테일 채널력 차등</div>
+        </div>
+        <div class="sub-box">
+          <div class="tag" style="margin-bottom:6px;">가정 ④ 시나리오 밴드</div>
+          <div class="font-bold c-blue" style="font-size:15px;">보수 74.5 / 기본 83 / 공격 92.5조</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">모험자본 20% 병목 속도 및 잠재 2사 인가 시점에 따른 범위</div>
+        </div>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식:</strong>
+        [원천 출처] '26.2Q 실적은 금융감독원 FISIS 확정치(<code>SF304:L</code> 별도자본총계, <code>SF304:B13</code> 종합금융투자사업자 발행어음 부채) 및 한국투자증권 IMA 1~4호 설정액(<code>2.60조 원</code>) 합산 기준(단, NH투자증권은 별도자본 <code>8.20조</code> · 발행어음 <code>7.50조</code> 추정치 적용).<br />
+        [산정 방식] ① '27말 추정 별도자본 = <code>'26.2Q 별도자본 × (1 + 연 내부유보율 6.5%)^1.5</code>, ② '27말 발행어음 전망 = <code>'27말 추정자본 × 인가연차별 목표 자본소진율</code>(선발사 103~193%, 신규 3사 개시 2년차 51~79%), ③ '27년 신규 순증(Δ수신) = <code>'27말 전망(어음+IMA) - '26.2Q 잔액</code>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB PNL: DISCLOSED FUNDING & REGULATORY ASSET ALLOCATION ==================== -->
+  <section id="tab-pnl" class="tab-panel hidden">
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. 증권사별 발행어음 · IMA 분리 공시 현황 ('26.2Q FISIS 확정 기준)</div>
+          <div class="sec-sub">공시상 전사 계정과 명확히 분리되는 <strong>별도자본 · 법정한도 · 수신잔액 · 발행어음 이자비용</strong>만 수록 (미분리 전사 손익·판관비·충당금 제외)</div>
+        </div>
+        <a href="https://fisis.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">금감원 FISIS 원문 ↗</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>증권사</th>
+              <th>인가 구분</th>
+              <th>별도 자기자본<br>('26.2Q, SF304:L)</th>
+              <th>발행어음 한도<br>(자본의 200%)</th>
+              <th>발행어음 잔액<br>('26.2Q, SF304:B13)</th>
+              <th>IMA 설정잔액<br>('26.2Q)</th>
+              <th>어음 자본소진율<br>(한도 200% 대비)</th>
+              <th>'26.2Q 분기 어음이자<br>(3개월, SF307:B408)</th>
+              <th>기중평잔 연율화<br>조달비용률</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hi-blue">
+              <td>한국투자증권</td>
+              <td class="text-center">선발 ('17, 8조 종투사)</td>
+              <td class="text-right">13.19조</td>
+              <td class="text-right">26.38조 <span style="font-size:12px;color:var(--muted);">(통합 39.6조)</span></td>
+              <td class="text-right c-blue">22.47조</td>
+              <td class="text-right c-emerald">2.60조 (1~4호)</td>
+              <td class="text-center c-blue">170.3% <span class="inline-bar" style="width:68px;background:#2563eb;"></span></td>
+              <td class="text-right">1,468억</td>
+              <td class="text-center">2.66% <span style="font-size:12px;color:var(--amber);">('26.3Q ~3.7%)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">KB증권</td>
+              <td class="text-center">선발 ('19, 4조 종투사)</td>
+              <td class="text-right">7.98조</td>
+              <td class="text-right">15.96조</td>
+              <td class="text-right font-bold">11.00조</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center font-bold">137.9% <span class="inline-bar" style="width:55px;background:#2563eb;"></span></td>
+              <td class="text-right">1,417억*</td>
+              <td class="text-center" style="color:var(--muted);">계정포괄 주석참고*</td>
+            </tr>
+            <tr>
+              <td class="font-bold">미래에셋증권</td>
+              <td class="text-center">선발 ('21, 8조 종투사)</td>
+              <td class="text-right">10.57조</td>
+              <td class="text-right">21.13조 <span style="font-size:12px;color:var(--muted);">(통합 31.7조)</span></td>
+              <td class="text-right font-bold">10.58조</td>
+              <td class="text-center" style="color:var(--muted);">출시 준비</td>
+              <td class="text-center font-bold">100.1% <span class="inline-bar" style="width:40px;background:#2563eb;"></span></td>
+              <td class="text-right">708억</td>
+              <td class="text-center">2.74%</td>
+            </tr>
+            <tr>
+              <td class="font-bold">NH투자증권 (추정)</td>
+              <td class="text-center">선발 ('18, 8조 요건권)</td>
+              <td class="text-right">~8.20조</td>
+              <td class="text-right">~16.40조</td>
+              <td class="text-right font-bold">~7.50조</td>
+              <td class="text-center" style="color:var(--muted);">심사/준비</td>
+              <td class="text-center font-bold">~91.5% <span class="inline-bar" style="width:37px;background:#64748b;"></span></td>
+              <td class="text-center" style="color:var(--muted);">별도집계 외</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+            </tr>
+            <tr class="hi-amber">
+              <td>키움증권</td>
+              <td class="text-center">신규 ('25.4Q)</td>
+              <td class="text-right">6.89조</td>
+              <td class="text-right">13.78조</td>
+              <td class="text-right c-amber">1.82조</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center c-amber">26.4% <span class="inline-bar" style="width:14px;background:#d97706;"></span></td>
+              <td class="text-right">123억</td>
+              <td class="text-center c-amber">3.29% (특판반영)</td>
+            </tr>
+            <tr class="hi-amber">
+              <td>하나증권</td>
+              <td class="text-center">신규 ('26.1Q)</td>
+              <td class="text-right">6.72조</td>
+              <td class="text-right">13.43조</td>
+              <td class="text-right c-amber">1.00조</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center c-amber">14.9% <span class="inline-bar" style="width:9px;background:#d97706;"></span></td>
+              <td class="text-right">64억</td>
+              <td class="text-center c-amber">3.05%</td>
+            </tr>
+            <tr class="hi-amber">
+              <td>신한투자증권</td>
+              <td class="text-center">신규 ('26.1Q)</td>
+              <td class="text-right">5.88조</td>
+              <td class="text-right">11.77조</td>
+              <td class="text-right c-amber">0.29조</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center c-amber">4.9% <span class="inline-bar" style="width:6px;background:#d97706;"></span></td>
+              <td class="text-right">19억</td>
+              <td class="text-center c-amber">3.13%</td>
+            </tr>
+            <tr>
+              <td class="font-bold">메리츠 · 삼성증권 (참고)</td>
+              <td class="text-center">미인가 (심사/검토)</td>
+              <td class="text-right">16.51조 <span style="font-size:12px;color:var(--muted);">(8.35+8.16)</span></td>
+              <td class="text-center" style="color:var(--muted);">인가 시 33.0조</td>
+              <td class="text-right">0.00조</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center" style="color:var(--muted);">0.0%</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+              <td class="text-center" style="color:var(--muted);">-</td>
+            </tr>
+            <tr class="hi-emerald">
+              <td class="text-center">인가 7개사 합계</td>
+              <td class="text-center">선발 4 + 신규 3</td>
+              <td class="text-right">59.43조</td>
+              <td class="text-right">118.86조</td>
+              <td class="text-right c-blue">54.66조</td>
+              <td class="text-right c-emerald">2.60조</td>
+              <td class="text-center c-blue">평균 92.0%</td>
+              <td class="text-center" style="color:var(--muted);">6사 합산 3,799억</td>
+              <td class="text-center">어음+IMA 57.26조</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식 · 공시 분리 한계 안내:</strong>
+        [원천 출처] 금융감독원 FISIS 요약재무상태표(<code>SF304:L</code> 자본총계, <code>SF304:B13</code> 종합금융투자사업자 발행어음 부채) 및 요약손익계산서(<code>SF307:B408</code> 이자비용_발행어음이자, 당분기 3개월 단독 플로).<br />
+        [산정 방식] 어음 자본소진율(%) = <code>발행어음 잔액 ÷ 별도 자기자본</code>(법정 한도 200%) · 기중평잔 연율화 조달비용률(%) = <code>('26.2Q 분기 발행어음 이자비용 × 4) ÷ [('26.1Q말 잔액 + '26.2Q말 잔액) ÷ 2]</code>. (*KB증권 등 일부 회사는 <code>SF307:B408</code> 계정에 CMA·외화어음성 약정이자가 포괄 계상되어 단순 나눗셈 시 과대 산출되므로 비율 표기를 제외함).<br />
+        [제외 항목 안내] 증권사별 <strong>발행어음·IMA 전용 자산유형별 실제 편입비중, 운용수익률, 판매비와관리비(인건비·채널비·전산비), 대손충당금</strong>은 FISIS·사업보고서상 전사 합산 수치와 분리 공시되지 않으므로 본 자료에서 전량 제외했습니다.
+      </div>
+    </div>
+
+    <!-- Card 2: Strictly Regulatory Asset Allocation Rules (Corporate / Real Estate / Other = 100%, Venture Capital Excluded) -->
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">2. 법정 자산유형별 운용배분 규제 비교 — 발행어음 vs IMA (모험자본 별도 분리)</div>
+          <div class="sec-sub">포트폴리오 자산유형 배분은 <strong>기업금융 · 부동산 · 기타(유동성) = 100%</strong> 3분류 체계이며, 모험자본 의무는 별도 교차 규제입니다</div>
+        </div>
+        <a href="https://www.law.go.kr/행정규칙/금융투자업규정" target="_blank" rel="noopener noreferrer" class="src-badge">금융투자업규정 제4-102조의5 ↗</a>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div class="sub-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="font-bold" style="font-size:14.5px;">① 발행어음 운용배분 법정 한도 ('27년 기준)</span>
+            <span class="tag tag-primary">자본 4조+ 단기금융업</span>
+          </div>
+          <div class="stack-track">
+            <div class="stack-seg" style="width:50%; background:#2563eb;">기업금융 ≥ 50% (하한)</div>
+            <div class="stack-seg" style="width:15%; background:#d97706;">부동산 ≤ 10%</div>
+            <div class="stack-seg" style="width:35%; background:#64748b;">기타(유동성 등) 잔여</div>
+          </div>
+          <div style="font-size:12.5px; color:var(--muted); margin-top:6px;">
+            • <strong>기업금융 관련 자산:</strong> 최소 <strong>50% 이상</strong> 의무 편입<br />
+            • <strong>부동산 관련 자산:</strong> 종전 30% → '26년 <strong>15%</strong> → '27년 이후 <strong>10% 이하</strong>로 축소<br />
+            • <strong>기타 자산:</strong> 1·3개월 유동성비율(100%↑) 준수용 현금성·국공채 등 잔여 운용
+          </div>
+        </div>
+
+        <div class="sub-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="font-bold" style="font-size:14.5px;">② 종합투자계좌 (IMA) 운용배분 법정 한도</span>
+            <span class="tag" style="background:var(--emerald-bg); color:var(--emerald); border-color:#6ee7b7;">자본 8조+ 종투사</span>
+          </div>
+          <div class="stack-track">
+            <div class="stack-seg" style="width:70%; background:#059669;">기업금융 ≥ 70% (하한)</div>
+            <div class="stack-seg" style="width:12%; background:#d97706;">부동산 ≤ 10%</div>
+            <div class="stack-seg" style="width:18%; background:#64748b;">기타 잔여</div>
+          </div>
+          <div style="font-size:12.5px; color:var(--muted); margin-top:6px;">
+            • <strong>기업금융 관련 자산:</strong> 최소 <strong>70% 이상</strong> 의무 편입 (발행어음보다 강화)<br />
+            • <strong>부동산 관련 자산:</strong> 출시 즉시 <strong>10% 이하</strong> 상한 적용<br />
+            • <strong>기타 자산:</strong> 회차별 환매·만기 대응 유동성 자산 등 잔여 범위 운용
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:12px;">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>규제 분류 체계</th>
+              <th>세부 항목</th>
+              <th>발행어음 기준</th>
+              <th>종합투자계좌 (IMA) 기준</th>
+              <th>산정 분모 및 인정 범위</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hi-blue">
+              <td rowspan="3" class="text-center font-bold">포트폴리오<br>자산유형별 배분<br>(합계 = 100%)</td>
+              <td>기업금융 관련 자산</td>
+              <td class="text-center c-blue">50% 이상 (의무 하한)</td>
+              <td class="text-center c-emerald font-bold">70% 이상 (의무 하한)</td>
+              <td>기업대출 · 회사채 · 사모사채 · 인수금융 · 기업 프로젝트금융 등</td>
+            </tr>
+            <tr>
+              <td class="font-bold">부동산 관련 자산</td>
+              <td class="text-center c-amber font-bold">'26년 15% → '27년 10% 이하</td>
+              <td class="text-center c-amber font-bold">즉시 10% 이하 (상한)</td>
+              <td>부동산 PF 대출 · 채무보증 · 부동산 펀드·리츠 등 (종전 30%에서 축소)</td>
+            </tr>
+            <tr>
+              <td class="font-bold">기타 자산 (유동성 등)</td>
+              <td class="text-center">잔여 범위 (예: 0~40%)</td>
+              <td class="text-center">잔여 범위 (예: 0~20%)</td>
+              <td>국공채 · 특수채 · 현금성 유동성 버퍼 (유동성비율 100% 이상 준수)</td>
+            </tr>
+            <tr class="hi-amber">
+              <td class="text-center font-bold c-red">별도 교차 규제<br>(자산배분 외 별도)</td>
+              <td class="c-red">모험자본 공급의무</td>
+              <td colspan="2" class="text-center c-red">'26년 10% → '27년 20% → '28년 25% 이상 (발행어음 + IMA 합산 분모)</td>
+              <td>중소·중견·A급 이하(중견·A급은 의무액의 30% 캡), P-CBO, VC·신기사, 국민성장펀드, BDC 등 <strong>(전사 고유자산 보유 적격분 포함 인정)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 분류 기준:</strong>
+        [근거 법령] 자본시장법 시행령 제77조의6, 금융투자업규정 제4-102조의5, 금융위원회 「증권업 기업금융 경쟁력 제고방안」('25.04.09).<br />
+        [분류 유의사항] <strong>모험자본 공급의무(10%→20%→25%)</strong>는 위 자산유형별 운용배분(기업금융+부동산+기타=100%) 내부에 단순 합산하는 하위 항목이 아니라, <code>(발행어음 + IMA 수신액)</code> 대비 전사 적격 모험자본 보유액(고유계정 출자·채권 포함)으로 별도 산정·점검하는 독립 규제이므로 자산유형 배분 차트에서 분리했습니다. 개별 증권사의 실제 기업금융·부동산 편입 비율은 대외 미공시 항목입니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: VENTURE CAPITAL & OPPORTUNITY COST ==================== -->
+  <section id="tab-invest" class="tab-panel hidden">
+    <!-- Card 1: Intuitive Firm-by-Firm Opportunity Cost Flow -->
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. 증권사별 2027 수신 증가분 대비 모험자본(무수익 P-CBO) 기회비용</div>
+          <div class="sec-sub">모험자본 의무액을 <strong>무수익 P-CBO(운용금리 = 조달금리, 마진 0bp)</strong>로 편입 가정 시 포기하는 정상 기업금융 순운용스프레드</div>
+        </div>
+        <div class="mode-switch">
+          <button id="modeBtnNew" class="mode-btn active" onclick="setOppMode('new')">기준 ① '27년 신규 수신 증가분</button>
+          <button id="modeBtnTotal" class="mode-btn" onclick="setOppMode('total')">기준 ② 기존잔액 상향(10→20%) 포함</button>
+        </div>
+      </div>
+
+      <!-- Quick Firm Selector Chips -->
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;" id="firmChips">
+        <button class="firm-chip active" data-firm="kis" onclick="selectFirm('kis')">한국투자증권</button>
+        <button class="firm-chip" data-firm="kiwoom" onclick="selectFirm('kiwoom')">키움증권</button>
+        <button class="firm-chip" data-firm="hana" onclick="selectFirm('hana')">하나증권</button>
+        <button class="firm-chip" data-firm="shinhan" onclick="selectFirm('shinhan')">신한투자증권</button>
+        <button class="firm-chip" data-firm="nh" onclick="selectFirm('nh')">NH투자증권</button>
+        <button class="firm-chip" data-firm="mirae" onclick="selectFirm('mirae')">미래에셋증권</button>
+        <button class="firm-chip" data-firm="kb" onclick="selectFirm('kb')">KB증권</button>
+        <button class="firm-chip" data-firm="potential" onclick="selectFirm('potential')">잠재 2사(삼성·메리츠)</button>
+        <button class="firm-chip" data-firm="all" onclick="selectFirm('all')">전 증권사 합계</button>
+      </div>
+
+      <!-- 1-Line Plain Korean Headline -->
+      <div id="oppHeadline" style="background:var(--blue-bg); border:1px solid #93c5fd; border-radius:12px; padding:11px 14px; font-size:13.5px; font-weight:700; color:var(--fg);">
+        <!-- Dynamic headline -->
+      </div>
+
+      <!-- 4-Step Visual Causal Flow -->
+      <div class="flow-4">
+        <div class="flow-box active-blue">
+          <div class="flow-step" id="step1Lbl">① '27년 신규 수신 증가분 (어음+IMA)</div>
+          <div class="flow-num c-blue" id="step1Val">+5.83조 원</div>
+          <div class="flow-sub" id="step1Sub">'26.2Q 25.07조 → '27말 30.90조</div>
+        </div>
+        <div class="flow-box">
+          <div class="flow-step" id="step2Lbl">② 추가 모험자본 의무 (무수익 P-CBO)</div>
+          <div class="flow-num c-purple" id="step2Val">+1.17조 원</div>
+          <div class="flow-sub" id="step2Sub">신규 수신의 20% · 스프레드 0bp 가정</div>
+        </div>
+        <div class="flow-box">
+          <div class="flow-step">③ 정상 기업금융 순스프레드 (가정)</div>
+          <div class="flow-num c-emerald" id="step3Val">1.50%p</div>
+          <div class="flow-sub" id="step3Sub">기준 150bp (하단 슬라이더 조절 가능)</div>
+        </div>
+        <div class="flow-box active-red">
+          <div class="flow-step">④ 연간 기회비용 (= ② × ③)</div>
+          <div class="flow-num c-red" id="step4Val">연 175억 원</div>
+          <div class="flow-sub" id="step4Sub">30% 중견·A급 캡 활용 시 연 122억 원</div>
+        </div>
+      </div>
+
+      <!-- Clickable Firm Comparison Table -->
+      <div class="table-wrap">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>증권사 (클릭 시 상단 연동)</th>
+              <th>'26.2Q → '27말 수신</th>
+              <th>① '27 신규 수신 증가분</th>
+              <th id="thVcCol">② 신규 수신의 20% 의무액<br>(전액 무수익 P-CBO)</th>
+              <th>③ 기준 순스프레드<br>(시산 가정치)</th>
+              <th>④ 전액 P-CBO 편입 시<br>(= ② × ③)</th>
+              <th>⑤ 중견·A급 30% 캡 차감 후<br>(잔여 70%만 P-CBO 시)</th>
+            </tr>
+          </thead>
+          <tbody id="oppTableBody">
+            <!-- Populated dynamically by renderOppTable() -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식:</strong>
+        [원천 출처] '26.2Q 수신잔액은 금감원 FISIS(<code>SF304:B13</code> 발행어음 부채) 및 한국투자증권 IMA 설정액(<code>2.60조</code>) · 모험자본 의무비율('26년 10% → '27년 20% → '28년 25%) 및 중견·A급 채권 인정상한(의무액의 30% 캡)은 금융투자업규정 제4-102조의5 개정안 기준.<br />
+        [산정 방식] ① 기준 ①(신규수신 기준): <code>추가 의무액 = '27년 신규 수신 증가분(Δ수신) × 20%</code> · ② 기준 ②(기존잔액 상향 포함): <code>총 추가 의무액 = (Δ수신 × 20%) + ('26.2Q 기존잔액 × 10%p)</code> · ③ 연간 기회비용(④) = <code>추가 의무액 × 정상 기업금융 목표 순스프레드(기준 1.50%p = 150bp)</code> (P-CBO는 조달금리와 같아 마진 0bp인 무수익자산으로 가정). ※ 증권사별 전사 평균 NIM은 리테일 신용융자이자 등이 혼재되어 발행어음·IMA와 분리 불가능하므로 제거하고 동일 기준 스프레드를 적용했습니다.
+      </div>
+    </div>
+
+    <!-- Card 2: Custom Opportunity Cost Simulator -->
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">2. 가정 직접 조절 시뮬레이터 (민감도 점검 · 상단 표 연동)</div>
+          <div class="sec-sub">신규 수신 규모 · 의무비율(10~25%) · 가정 순운용스프레드(0.50~2.50%p) 변경 시 즉시 재계산</div>
+        </div>
+        <span class="tag">인터랙티브 계산기</span>
+      </div>
+      <div class="sim-grid">
+        <div class="sub-box">
+          <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:6px;">
+            <span>신규 수신액 (어음+IMA)</span>
+            <span class="c-blue" id="simDeltaOut">5.83조 원</span>
+          </div>
+          <input type="range" id="simDelta" min="0.5" max="30" step="0.1" value="5.8" oninput="runOppSim()" style="width:100%;" />
+        </div>
+        <div class="sub-box">
+          <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:6px;">
+            <span>모험자본 의무비율</span>
+            <span class="c-purple" id="simQuotaOut">20% ('27년)</span>
+          </div>
+          <input type="range" id="simQuota" min="10" max="25" step="5" value="20" oninput="runOppSim()" style="width:100%;" />
+        </div>
+        <div class="sub-box">
+          <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:6px;">
+            <span>정상 기업금융 순스프레드</span>
+            <span class="c-emerald" id="simNimOut">1.50%p</span>
+          </div>
+          <input type="range" id="simNim" min="0.50" max="2.50" step="0.05" value="1.50" oninput="runOppSim(true)" style="width:100%;" />
+        </div>
+        <div class="sub-box" style="background:var(--red-bg); border-color:var(--red);">
+          <div style="font-size:12px; font-weight:800; color:var(--red);">시산 결과: 무수익 P-CBO 편입량 · 기회비용</div>
+          <div style="font-size:19px; font-weight:800; color:var(--red); margin-top:3px;" id="simResOut">P-CBO 1.16조 → 연 174억 원</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;" id="simSubOut">신규 수신 1조 원당 연간 -30억 원 마진 감소</div>
+        </div>
+      </div>
+      <div class="source-note">
+        <strong>📌 산정 산식:</strong>
+        무수익 P-CBO 편입액(조 원) = <code>신규 수신액 × (모험자본 의무비율 ÷ 100)</code> · 연간 세전 기회비용(억 원) = <code>P-CBO 편입액 × 10,000 × (정상 기업금융 순스프레드 ÷ 100)</code> (슬라이더 3번째 '정상 기업금융 순스프레드' 조절 시 상단 1번 표의 기준 순스프레드도 함께 연동됩니다).
+      </div>
+    </div>
+
+    <!-- Card 3: Market Supply Bottleneck + 2 Economic Graphs -->
+    <div class="grid-2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">3. 모험자본 적격 시장 공급 vs '27 수요 (16.6조)</div>
+            <div class="sec-sub">중견·A급 회사채는 의무액의 최대 30%(4.98조)까지만 인정</div>
+          </div>
+          <a href="https://www.kodit.co.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">신보 P-CBO ↗</a>
+        </div>
+        <div class="table-wrap">
+          <table class="hub-table" style="min-width:440px;">
+            <thead>
+              <tr>
+                <th>모험자본 자산군</th>
+                <th>연간 시장 공급</th>
+                <th>규제 인정한도</th>
+                <th>병목 강도</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hi-amber">
+                <td>중견기업 · A급 회사채</td>
+                <td class="text-right">14 ~ 18조</td>
+                <td class="text-center c-amber">최대 30% 캡 (4.98조)</td>
+                <td class="text-center"><span class="badge-risk bg-amber">캡 도달</span></td>
+              </tr>
+              <tr>
+                <td class="font-bold">P-CBO · 정책기금 선순위채</td>
+                <td class="text-right">4.5 ~ 6.0조</td>
+                <td class="text-center c-emerald">100% 인정</td>
+                <td class="text-center"><span class="badge-risk bg-red">마진 0bp·역마진</span></td>
+              </tr>
+              <tr>
+                <td class="font-bold">VC · 신기사 · 국민성장펀드·BDC</td>
+                <td class="text-right">8.0 ~ 10.5조</td>
+                <td class="text-center c-emerald">100% 인정</td>
+                <td class="text-center"><span class="badge-risk bg-red">자본락업·NCR</span></td>
+              </tr>
+              <tr>
+                <td class="font-bold">BBB급 이하 · 상생결제 대출</td>
+                <td class="text-right">2.5 ~ 4.0조</td>
+                <td class="text-center c-emerald">100% 인정</td>
+                <td class="text-center"><span class="badge-risk bg-amber">심사 선별</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="source-note">
+          <strong>📌 출처 및 산정방식:</strong>
+          [원천 출처] 금융위 종투사 제도개선안('25.04), 신용보증기금·기술보증기금 P-CBO 발행실적, 금융투자협회 회사채·메자닌 발행통계.<br />
+          [산정 방식] '27년 전 증권사 의무 총량(<code>16.60조</code>) = <code>'27말 추정 수신(83.00조) × 20%</code> · 중견·A급 최대 인정 상한(<code>4.98조</code>) = <code>16.60조 × 30%</code> (잔여 70%인 <code>11.62조</code>는 한도 없는 적격 모험자본으로 충당 필수).
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">4. 경제학 최적 수신(Q*) &amp; 발행어음 vs IMA 배분</div>
+            <div class="sec-sub">한계수익(MR) = 한계기회비용(MC) 교차점 이후 IMA(위험값 50%) 전환 유리</div>
+          </div>
+          <span class="tag">MR = MC · RAROC</span>
+        </div>
+        <div class="grid-2" style="gap:10px;">
+          <div class="sub-box" style="padding:10px;">
+            <div style="font-size:12px; font-weight:800; margin-bottom:4px;">① 최적 수신 규모 (MR = MC)</div>
+            <svg viewBox="0 0 280 165" style="width:100%; height:auto;">
+              <line x1="32" y1="15" x2="32" y2="140" stroke="#64748b" />
+              <line x1="32" y1="140" x2="265" y2="140" stroke="#64748b" />
+              <!-- MR downward -->
+              <path d="M 42 35 Q 145 55, 255 118" fill="none" stroke="#2563eb" stroke-width="3" />
+              <!-- MC upward -->
+              <path d="M 42 122 Q 145 108, 250 28" fill="none" stroke="#dc2626" stroke-width="3" />
+              <!-- Q* intersection -->
+              <circle cx="156" cy="76" r="5.5" fill="#0f172a" />
+              <line x1="156" y1="76" x2="156" y2="140" stroke="#0f172a" stroke-dasharray="4,3" />
+              <text x="156" y="155" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">최적점 Q*</text>
+              <text x="235" y="128" font-size="12" font-weight="700" fill="#2563eb">MR</text>
+              <text x="235" y="26" font-size="12" font-weight="700" fill="#dc2626">MC(P-CBO+NCR)</text>
+            </svg>
+          </div>
+          <div class="sub-box" style="padding:10px;">
+            <div style="font-size:12px; font-weight:800; margin-bottom:4px;">② 자본소진율별 한계 RAROC</div>
+            <svg viewBox="0 0 280 165" style="width:100%; height:auto;">
+              <line x1="32" y1="15" x2="32" y2="140" stroke="#64748b" />
+              <line x1="32" y1="140" x2="265" y2="140" stroke="#64748b" />
+              <!-- Note RAROC steep drop near 200% -->
+              <path d="M 42 32 Q 135 52, 245 130" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5,3" />
+              <!-- IMA RAROC flatter -->
+              <path d="M 42 58 Q 150 64, 255 78" fill="none" stroke="#059669" stroke-width="3" />
+              <circle cx="142" cy="63" r="5.5" fill="#059669" />
+              <line x1="142" y1="63" x2="142" y2="140" stroke="#059669" stroke-dasharray="4,3" />
+              <text x="142" y="155" font-size="12" font-weight="800" fill="#059669" text-anchor="middle">소진 150% 전환점</text>
+              <text x="205" y="56" font-size="12" font-weight="800" fill="#059669">IMA(위험 50%)</text>
+              <text x="198" y="132" font-size="12" font-weight="700" fill="#475569">어음(위험 100%)</text>
+            </svg>
+          </div>
+        </div>
+        <div class="source-note">
+          <strong>📌 출처 및 모형 기준:</strong>
+          [법규 근거] 금융투자업규정 별표 10(신NCR 위험액 산정: 발행어음 고유계정 운용자산 위험액 100% 차감 vs IMA 손실충당금 5% 차감 후 초과 위험액 50% 반영).<br />
+          [모형 기준] 규제 비율(30% 캡 소진, 모험자본 20% 기회비용, 특판금리 전이)에 따른 한계비용(MC) 굴절과 한계 RAROC 비교를 도식화한 정성적 경제학 모형입니다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: MATURITY CONCENTRATION & IMA RULES ==================== -->
+  <section id="tab-soundness" class="tab-panel hidden">
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. IMA 초기 출시분(1~4호, 총 2.60조 원) 만기 집중 현황 및 5단계 차환 타임라인</div>
+          <div class="sec-sub">'27년 12월 ~ '28년 4월(5개월) 구간에 초기 설정물량 100%(2.60조 원) 만기가 집중 도래하므로 사전 차환·자산분류 필수</div>
+        </div>
+        <span class="tag">IMA 만기 · ALM 점검</span>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:14px;">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>회차 구분</th>
+              <th>설정 규모</th>
+              <th>전체 대비 비중</th>
+              <th>만기 도래 시점</th>
+              <th>주력 편입 기초자산 성격</th>
+              <th>만기 · 집중도 관리 포인트</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hi-amber">
+              <td class="text-center font-bold">IMA 1호</td>
+              <td class="text-right c-red font-bold">1.10조 원</td>
+              <td class="text-center font-bold">42.3%</td>
+              <td class="text-center c-red font-bold">2027년 12월</td>
+              <td>기업금융 대출 · 인수금융 · 우량 회사채</td>
+              <td>단일 최대 회차 · '27.10월부터 사전 롤오버 청약 집중 필요</td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold">IMA 3호</td>
+              <td class="text-right font-bold">0.40조 원</td>
+              <td class="text-center">15.4%</td>
+              <td class="text-center font-bold">2028년 2월</td>
+              <td>기업금융 · 메자닌 · 구조화 크레딧</td>
+              <td>중형 회차 내 개별 편입딜 만기 매칭 및 단일딜 비중 점검</td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold">IMA 4호</td>
+              <td class="text-right font-bold">0.30조 원</td>
+              <td class="text-center">11.5%</td>
+              <td class="text-center font-bold">2028년 3월</td>
+              <td>기업금융 · 특화 크레딧 딜</td>
+              <td>소규모 회차(0.3조) 특성상 단일 대형딜 편입 집중 제한 필수</td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold">IMA 2호</td>
+              <td class="text-right font-bold">0.80조 원</td>
+              <td class="text-center">30.8%</td>
+              <td class="text-center font-bold">2028년 4월</td>
+              <td>기업금융 · 프로젝트 딜 · 중장기 크레딧</td>
+              <td>5개월 연속 만기 도래 구간의 마지막 대형 차환 물량</td>
+            </tr>
+            <tr class="hi-blue">
+              <td class="text-center">합계 (1~4호)</td>
+              <td class="text-right c-blue">2.60조 원</td>
+              <td class="text-center">100.0%</td>
+              <td class="text-center c-red">'27.12 ~ '28.04 (5개월)</td>
+              <td>기업금융 70% 이상 의무 준수</td>
+              <td>신규·차환 출시분부터 분기·월별 만기 트렌치 분산(Staggering)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-5">
+        <div class="timeline-box prep">
+          <div class="font-bold c-blue">① '27년 상반기</div>
+          <div style="font-size:16px; font-weight:800; margin:4px 0;">미도래 자산 실사</div>
+          <div style="font-size:12px; color:var(--muted);">회차 만기 이후 도래 기초자산 셀다운·처분방안 확정</div>
+        </div>
+        <div class="timeline-box warn">
+          <div class="font-bold c-amber">② '27.10 ~ 11월</div>
+          <div style="font-size:16px; font-weight:800; margin:4px 0;">롤오버 수신 개시</div>
+          <div style="font-size:12px; color:var(--muted);">연말 자금경색 전 1호(1.1조) 차환 청약 조기 가동</div>
+        </div>
+        <div class="timeline-box urgent">
+          <div class="font-bold c-red">③ '27년 12월</div>
+          <div style="font-size:16px; font-weight:800; margin:4px 0;">1호 만기 (1.1조)</div>
+          <div style="font-size:12px; color:var(--muted);">초기 물량의 42.3% 일시 만기 도래 1차 피크</div>
+        </div>
+        <div class="timeline-box urgent">
+          <div class="font-bold c-red">④ '28.02 ~ 04월</div>
+          <div style="font-size:16px; font-weight:800; margin:4px 0;">3·4·2호 연속만기</div>
+          <div style="font-size:12px; color:var(--muted);">잔여 1.5조(0.4+0.3+0.8조) 3개월 연속 차환</div>
+        </div>
+        <div class="timeline-box">
+          <div class="font-bold c-emerald">⑤ 차기 구조화 원칙</div>
+          <div style="font-size:16px; font-weight:800; margin:4px 0;">만기 분산 · 매칭</div>
+          <div style="font-size:12px; color:var(--muted);">특정 분기 만기 20% 이하 캡 · 자연상환 자산 70%+</div>
+        </div>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식:</strong>
+        [원천 출처] 한국투자증권 IMA 1~4호 출시 설정 현황(합계 <code>2.60조 원</code>) 및 금융위원회 「증권업 기업금융 경쟁력 제고방안」('25.04) 내 IMA 운용·만기 규율.<br />
+        [산정 방식] 회차별 비중(%) = <code>각 회차 설정액 ÷ 초기 설정총액(2.60조 원)</code> · 5개월 집중도 = <code>'27.12~'28.04 도래 합계(2.60조) ÷ 2.60조 = 100%</code>. ※ 증권사 전사 합산 고정이하자산·연체율·대손충당금은 발행어음·IMA 계정과 분리 공시되지 않으므로 본 자료에서 전량 제외했습니다.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">2. 발행어음 vs 종합투자계좌(IMA) 상품별 만기 · 원금지급 · 자본규율 비교</div>
+          <div class="sec-sub">발행어음·IMA 두 상품에만 직접 적용되는 법정 구조 및 리스크 통제 장치 비교</div>
+        </div>
+        <a href="https://www.fsc.go.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">금융위 IMA 세부규율 ↗</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>구분 항목</th>
+              <th>단기금융업 발행어음</th>
+              <th>종합투자계좌 (IMA)</th>
+              <th>근거 법령 · 감독 규율</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-bold">인가 자기자본 · 조달한도</td>
+              <td>별도자본 <strong>4조 원 이상</strong> · 자본의 <strong>200% 이내</strong></td>
+              <td>별도자본 <strong>8조 원 이상</strong> · 어음 합산 <strong>통합 300% 이내</strong></td>
+              <td>자본시장법 제77조의3 · 시행령 제77조의6</td>
+            </tr>
+            <tr class="hi-blue">
+              <td>상품 만기 및 수익 구조</td>
+              <td><strong>1년 이내</strong> (수시 · 약정 확정금리형)</td>
+              <td><strong>중장기(1~3년 중심, 만기 제한 없음)</strong> · 실적배당형</td>
+              <td>시행령 제77조의6 · 금융위 제도개선안('25.04)</td>
+            </tr>
+            <tr>
+              <td class="font-bold">원금지급 의무 · 중도해지</td>
+              <td>종투사 자체 신용으로 원리금 확정 지급</td>
+              <td><strong>만기 보유 시 종투사 원금지급 의무</strong> (중도해지 시 시가평가·수수료 차감 가능)</td>
+              <td>자본시장법 제77조의3 · IMA 표준약관 기준</td>
+            </tr>
+            <tr>
+              <td class="font-bold">손실완충 · 이해상충 방지</td>
+              <td>고유계정 내 운용 (자기자본 직접 흡수)</td>
+              <td>수탁고의 <strong>5% 고유재산 손실충당금</strong> 우선 적립 · 자전거래 제한 · 시딩(Seeding) 의무</td>
+              <td>금융위 종투사 제도개선 방안('25.04)</td>
+            </tr>
+            <tr class="hi-emerald">
+              <td>신NCR 위험액 반영률</td>
+              <td>고유계정 운용자산 위험액 <strong>100% 반영</strong></td>
+              <td>손실충당금(5%) 차감 후 초과 위험액의 <strong>50%만 반영</strong></td>
+              <td>금융투자업규정 별표 10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 기준:</strong>
+        [근거 법령] 자본시장과 금융투자업에 관한 법률 제77조의3, 동법 시행령 제77조의6, 금융투자업규정 제4-102조의5 및 별표 10, 금융위원회 「증권업 기업금융 경쟁력 제고방안」('25.04.09).
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 5: RETIREMENT PENSION & SAVINGS BANK ==================== -->
+  <section id="tab-midlong" class="tab-panel hidden">
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. 퇴직연금 501.4조 시장 내 발행어음 · IMA 포지셔닝</div>
+          <div class="sec-sub">원리금보장형(378.1조) 내 저축은행 1년 예금 대비 <strong>금리 + 신용도(AA급) + 무제한 한도</strong> 우위</div>
+        </div>
+        <div class="btn-group">
+          <a href="https://100lifeplan.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">통합연금포털 ↗</a>
+          <a href="https://www.fsb.or.kr/" target="_blank" rel="noopener noreferrer" class="src-badge">저축은행중앙회 ↗</a>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:14px;">
+        <div class="sub-box">
+          <div style="font-size:12px; color:var(--muted); font-weight:700;">국내 퇴직연금 총 적립금</div>
+          <div class="c-blue" style="font-size:22px; font-weight:800; margin:4px 0;">501.4조 원</div>
+          <div style="font-size:12px; color:var(--muted);">DB · DC · IRP 합산 머니무브 핵심 재원</div>
+        </div>
+        <div class="sub-box">
+          <div style="font-size:12px; color:var(--muted); font-weight:700;">원리금보장형 비중 · 규모</div>
+          <div class="c-emerald" style="font-size:22px; font-weight:800; margin:4px 0;">378.1조 원 (75.4%)</div>
+          <div style="font-size:12px; color:var(--muted);">1년 만기 롤오버 수요 집중 구간</div>
+        </div>
+        <div class="sub-box">
+          <div style="font-size:12px; color:var(--muted); font-weight:700;">저축은행 1년 예금 평균 대비</div>
+          <div class="c-amber" style="font-size:22px; font-weight:800; margin:4px 0;">+25 ~ +75bp 금리 우위</div>
+          <div style="font-size:12px; color:var(--muted);">5,000만 원 예보 한도 캡 없이 편입 가능</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>상품 구분</th>
+              <th>1년물 금리 수준</th>
+              <th>신용보강 구조</th>
+              <th>퇴직연금 편입 한도</th>
+              <th>경쟁력 비교</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hi-blue">
+              <td>초대형 IB 발행어음</td>
+              <td class="text-right c-blue">3.20% ~ 3.70% <span class="inline-bar" style="width:65px; background:#2563eb;"></span></td>
+              <td class="text-center">종투사 자체신용 (AA-~AA)</td>
+              <td class="text-center c-blue">한도 캡 없음 (DC/IRP)</td>
+              <td class="text-center"><span class="badge-risk bg-blue">단기 주력</span></td>
+            </tr>
+            <tr class="hi-emerald">
+              <td>종합투자계좌 (IMA)</td>
+              <td class="text-right c-emerald">3.50% ~ 4.50%+α <span class="inline-bar" style="width:82px; background:#059669;"></span></td>
+              <td class="text-center">만기 원금지급 + 실적배당</td>
+              <td class="text-center c-emerald">중장기 포트폴리오 편입 검토</td>
+              <td class="text-center"><span class="badge-risk bg-emerald">수익+안정</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">저축은행 1년 정기예금</td>
+              <td class="text-right">평균 2.93% <span class="inline-bar" style="width:48px; background:#94a3b8;"></span></td>
+              <td class="text-center">예금자보호</td>
+              <td class="text-center c-red">기관당 5,000만 원 상한</td>
+              <td class="text-center"><span class="badge-risk bg-amber">한도 제약</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">시중은행 퇴직연금 예금</td>
+              <td class="text-right">2.60% ~ 2.85% <span class="inline-bar" style="width:42px; background:#94a3b8;"></span></td>
+              <td class="text-center">은행 신용 (AAA)</td>
+              <td class="text-center">자사 상품 편입 제한</td>
+              <td class="text-center"><span class="badge-risk bg-amber">저금리</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 산정방식:</strong>
+        [원천 출처] 금융감독원 통합연금포털 퇴직연금 적립금 통계(총 적립금 <code>501.4조 원</code>, 원리금보장형 <code>378.1조 원</code>), 저축은행중앙회 소비자포털 1년 정기예금 평균금리 공시, 금융투자협회 종투사 발행어음 약정수익률 공시 및 퇴직연금감독규정.<br />
+        [산정 방식] 원리금보장형 비중(<code>75.4%</code>) = <code>378.1조 ÷ 501.4조</code> · 금리 우위 폭(<code>+25 ~ +75bp</code>) = <code>종투사 1년 발행어음 약정금리(3.20~3.70%) - 저축은행 1년 정기예금 평균(2.93%)</code>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 6: 2027 CHECKLIST ==================== -->
+  <section id="tab-check2027" class="tab-panel hidden">
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">1. 2027년 발행어음 · IMA 전용 핵심 리스크 점검 매트릭스</div>
+          <div class="sec-sub">발행어음·IMA 계정 및 규제에서 직접 식별되는 5대 핵심 과제 (전사 미분리 지표 제외)</div>
+        </div>
+        <div class="btn-group">
+          <button class="firm-chip active" onclick="filterRisk('all', this)">전체 (5)</button>
+          <button class="firm-chip" onclick="filterRisk('high', this)">🔴 상 (3)</button>
+          <button class="firm-chip" onclick="filterRisk('mid', this)">🟠 중 (2)</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="hub-table">
+          <thead>
+            <tr>
+              <th>위험도</th>
+              <th>점검 영역</th>
+              <th>2027 핵심 리스크 요인</th>
+              <th>정량 모니터링 지표</th>
+              <th>대응 포인트</th>
+            </tr>
+          </thead>
+          <tbody id="riskTableBody">
+            <tr data-level="high">
+              <td class="text-center"><span class="badge-risk bg-red">상</span></td>
+              <td class="font-bold">모험자본 병목 · 기회비용</td>
+              <td>20% 상향 시 중견·A급 30%캡 도달 → 무수익 P-CBO 의존</td>
+              <td>신규수신 기회비용 (연 772억, 150bp 기준)</td>
+              <td>모험자본 가용량 연동 수신 캡(Hard Cap)</td>
+            </tr>
+            <tr data-level="high">
+              <td class="text-center"><span class="badge-risk bg-red">상</span></td>
+              <td class="font-bold">조달금리 출혈경쟁</td>
+              <td>신규 인가 3사 시장 안착용 고금리 특판 (+70~90bp)</td>
+              <td>발행어음 스프레드 (기준+50bp 초과 여부)</td>
+              <td>만기 다변화 · 법인 수시형 비중 확대</td>
+            </tr>
+            <tr data-level="high">
+              <td class="text-center"><span class="badge-risk bg-red">상</span></td>
+              <td class="font-bold">IMA 차환 · 만기집중</td>
+              <td>'27.12~'28.04(5개월) 중 IMA 1~4호(2.6조) 100% 만기도래</td>
+              <td>특정 분기 만기 도래 비중 (≤ 20% 권고)</td>
+              <td>'27.上 미도래자산 분류 · 트렌치 분산 출시</td>
+            </tr>
+            <tr data-level="mid">
+              <td class="text-center"><span class="badge-risk bg-amber">중</span></td>
+              <td class="font-bold">발행어음 vs IMA 자본효율</td>
+              <td>발행어음 소진율 150% 돌파 시 위험액 100% 반영 부담</td>
+              <td>어음 자본소진율 · IMA 위험액 50% 감경분</td>
+              <td>8조 이상 종투사 중장기 딜 IMA 우선 배정</td>
+            </tr>
+            <tr data-level="mid">
+              <td class="text-center"><span class="badge-risk bg-amber">중</span></td>
+              <td class="font-bold">부동산 축소 · 단일딜 집중</td>
+              <td>부동산 한도 축소(15%→10%) 및 소규모 IMA 회차 편중</td>
+              <td>부동산 편입비율(≤10%) · 회차 단일딜(≤10%)</td>
+              <td>발행어음·IMA 복수 회차 분할 편입 기준</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        <strong>📌 출처 및 선정 기준:</strong>
+        [선정 기준] 전사 합산 지표(전사 고정이하비율·전사 판관비 등)를 배제하고, 금감원 FISIS 발행어음 공시(<code>SF304:B13</code>, <code>SF304:L</code>), 한국은행 ECOS 금리 및 금융투자업규정 제4-102조의5 · 별표 10 개정안으로 직접 검증 가능한 발행어음·IMA 고유 리스크만 수록했습니다.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">2. 추가 스터디 체크리스트 (브라우저 자동 저장)</div>
+          <div class="sec-sub">클릭하면 완료 상태가 저장됩니다</div>
+        </div>
+        <span class="tag" id="taskCountBadge">0 / 4 완료</span>
+      </div>
+      <div class="grid-2" id="studyTaskList">
+        <label class="sub-box" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" onchange="toggleTask(0, this.checked)" style="width:17px; height:17px;" />
+          <span><strong>'26년 결산 FISIS 확정치 대조:</strong> 신규 3사(키움·하나·신한) 실제 발행어음 잔액(SF304:B13) 및 어음이자(SF307:B408) 업데이트</span>
+        </label>
+        <label class="sub-box" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" onchange="toggleTask(1, this.checked)" style="width:17px; height:17px;" />
+          <span><strong>IMA 회차별 약관 분석:</strong> 목표수익률, 성과보수율, 중도해지 수수료 및 만기 원금지급 조건 비교</span>
+        </label>
+        <label class="sub-box" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" onchange="toggleTask(2, this.checked)" style="width:17px; height:17px;" />
+          <span><strong>신보·기보 2027 P-CBO 발행 계획:</strong> 증권사 인수 배정 물량 및 발행금리 스프레드 점검</span>
+        </label>
+        <label class="sub-box" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" onchange="toggleTask(3, this.checked)" style="width:17px; height:17px;" />
+          <span><strong>퇴직연금 감독규정 개정 추이:</strong> IMA 상품의 퇴직연금 편입 세부 기준 확인</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 7: LAWS & SOURCES ==================== -->
+  <section id="tab-sources" class="tab-panel hidden">
+    <div class="grid-2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">1. 핵심 규제 근거 법령 및 조문 원문</div>
+            <div class="sec-sub">클릭 시 국가법령정보센터 · 금융위원회 원문으로 연결됩니다</div>
+          </div>
+          <span class="tag">법령 아카이브</span>
+        </div>
+
+        <a href="https://www.law.go.kr/법령/자본시장과금융투자업에관한법률" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-purple">자본시장법 제77조의3 (종투사 업무 특례)</div>
+            <div style="font-size:12px; color:var(--muted);">자기자본 4조 단기금융업(발행어음) · 8조 종합투자계좌(IMA) 허용 근거</div>
+          </div>
+          <span class="src-badge">법령 ↗</span>
+        </a>
+
+        <a href="https://www.law.go.kr/법령/자본시장과금융투자업에관한법률시행령" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-purple">자본시장법 시행령 제77조의6 (조달한도 · 만기 · 운용)</div>
+            <div style="font-size:12px; color:var(--muted);">발행어음 자기자본 200% · 어음+IMA 통합 300% 캡 · 어음 만기 1년 이내 · 기업금융 50% 이상</div>
+          </div>
+          <span class="src-badge">시행령 ↗</span>
+        </a>
+
+        <a href="https://www.law.go.kr/행정규칙/금융투자업규정" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-purple">금융투자업규정 제4-102조의5 (부동산 한도 · 모험자본 의무)</div>
+            <div style="font-size:12px; color:var(--muted);">부동산 한도('26년 15%→'27년 10%) 및 별도 교차규제인 모험자본 의무('26년 10%→'27년 20%→'28년 25%)</div>
+          </div>
+          <span class="src-badge">규정 ↗</span>
+        </a>
+
+        <a href="https://www.law.go.kr/행정규칙/금융투자업규정" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-purple">금융투자업규정 별표 10 (신NCR 위험액 산정)</div>
+            <div style="font-size:12px; color:var(--muted);">발행어음 고유계정 위험액 100% vs IMA 손실충당금(5%) 차감 후 위험액 50% 반영</div>
+          </div>
+          <span class="src-badge">별표 ↗</span>
+        </a>
+
+        <a href="https://www.fsc.go.kr/" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-purple">금융위원회 「증권업 기업금융 경쟁력 제고방안」 ('25.04.09)</div>
+            <div style="font-size:12px; color:var(--muted);">중견기업·A급 채권 인정 상한(모험자본 의무액의 30% 캡) · IMA 기업금융 70% · 손실충당금 5% 규율</div>
+          </div>
+          <span class="src-badge">금융위 ↗</span>
+        </a>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">2. 공공 통계 원천 및 전사 미분리 데이터 제외 원칙</div>
+            <div class="sec-sub">발행어음·IMA 계정과 구분 가능한 공시 지표만 엄선하여 수록했습니다</div>
+          </div>
+          <span class="tag">Public Data</span>
+        </div>
+
+        <a href="https://fisis.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-blue">금융감독원 금융통계정보시스템 (FISIS)</div>
+            <div style="font-size:12px; color:var(--muted);">별도자기자본(SF304:L), 발행어음 부채(SF304:B13), 발행어음 이자비용(SF307:B408) ※ 전사 판관비·고정이하·전사이자수익 제외</div>
+          </div>
+          <span class="src-badge">FISIS ↗</span>
+        </a>
+
+        <a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-blue">한국은행 경제통계시스템 (ECOS)</div>
+            <div style="font-size:12px; color:var(--muted);">한국은행 기준금리, CD(91일) 금리, 회사채 AA-/BBB- 스프레드 시계열</div>
+          </div>
+          <span class="src-badge">ECOS ↗</span>
+        </a>
+
+        <a href="https://100lifeplan.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-blue">금감원 통합연금포털 &amp; 저축은행중앙회</div>
+            <div style="font-size:12px; color:var(--muted);">퇴직연금 적립금(501.4조), 원리금보장형(378.1조), 저축은행 1년 예금금리</div>
+          </div>
+          <span class="src-badge">연금포털 ↗</span>
+        </a>
+
+        <a href="https://www.kodit.co.kr/" target="_blank" rel="noopener noreferrer" class="law-chip">
+          <div>
+            <div class="font-bold c-blue">신용보증기금 (KODIT) · 금융투자협회</div>
+            <div style="font-size:12px; color:var(--muted);">유동화회사보증(P-CBO) 발행 실적 및 종투사 발행어음 약정수익률 고시</div>
+          </div>
+          <span class="src-badge">KODIT ↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast">링크가 클립보드에 복사되었습니다.</div>
+
+<script>
+  const VALID_TABS = ['map', 'funding', 'pnl', 'invest', 'soundness', 'midlong', 'check2027', 'sources'];
+
+  // ==================== 1. GRAPHIC MIND MAP DATA ====================
+  const MINDMAP_DATA = {
+    funding: {
+      badge: '📈 수신 · 조달금리',
+      color: '#2563eb',
+      bg: '#eff6ff',
+      title: '2027년 어음+IMA 수신 83조 전망 (+25.74조 순증)',
+      summary: '선발 4사 확대 + 신규 3사(키움·하나·신한) 안착으로 45% 성장. 평시 조달금리는 기준금리+30bp이나 특판 경쟁 시 +70~90bp 상승.',
+      kpis: [
+        { lbl: "'26.2Q 잔액", val: '57.26조', cls: '' },
+        { lbl: "'27말 전망", val: '83.00조', cls: 'c-blue' },
+        { lbl: "'27년 순증(Δ)", val: '+25.74조', cls: 'c-emerald' }
+      ],
+      bars: [
+        { name: '한국투자증권 (25.07→30.90조)', right: '+5.83조 순증', pct: 95, color: '#2563eb' },
+        { name: '키움증권 (1.82→6.00조)', right: '+4.18조 순증', pct: 70, color: '#d97706' },
+        { name: '하나증권 (1.00→4.50조)', right: '+3.50조 순증', pct: 58, color: '#d97706' },
+        { name: '신한·NH (각 +3.0조 순증)', right: '+6.01조 합산', pct: 50, color: '#64748b' }
+      ],
+      links: [
+        { title: '금융감독원 FISIS (SF304:L 별도자본 · SF304:B13 발행어음)', sub: '발행어음 잔액 및 자본소진율 원천 데이터', url: 'https://fisis.fss.or.kr/' },
+        { title: '한국은행 ECOS (기준금리 · CD 91일물)', sub: '발행어음 평시 공식(기준금리+30bp) 비교 지표', url: 'https://ecos.bok.or.kr/' }
+      ],
+      sourceNote: "금감원 FISIS('26.2Q 확정), 한국은행 ECOS 및 별도자본 내부유보(+6.5%/년)×목표소진율 전망 산식",
+      targetTab: 'funding',
+      btnLabel: '📈 수신 추이 · 2027 전망 상세 탭 열기 →'
+    },
+    reg: {
+      badge: '⚖️ 규제 · 근거법령',
+      color: '#7c3aed',
+      bg: '#f5f3ff',
+      title: '종투사 핵심 한도 규제 및 근거 법령 조문',
+      summary: '자본 4조(발행어음 200%) · 8조(어음+IMA 통합 300%) 한도와 자산유형 배분(기금·부동산·기타), 별도 모험자본 의무 조문입니다.',
+      kpis: [
+        { lbl: '발행어음 한도', val: '자본 200%', cls: 'c-blue' },
+        { lbl: '어음+IMA 통합캡', val: '자본 300%', cls: 'c-purple' },
+        { lbl: "'27 부동산 상한", val: '10% 이하', cls: 'c-red' }
+      ],
+      bars: [],
+      links: [
+        { title: '자본시장법 제77조의3 (종투사 업무 특례)', sub: '4조 단기금융업(발행어음) · 8조 종합투자계좌(IMA) 법적 근거', url: 'https://www.law.go.kr/법령/자본시장과금융투자업에관한법률' },
+        { title: '자본시장법 시행령 제77조의6 (자금조달 한도)', sub: '발행어음 별도자본 200% · IMA 합산 통합 300% 캡 · 만기 1년 이내', url: 'https://www.law.go.kr/법령/자본시장과금융투자업에관한법률시행령' },
+        { title: '금융투자업규정 제4-102조의5 (운용배분 · 모험자본)', sub: "기업금융(≥50%/70%)·부동산(15%→10%) 및 별도 모험자본 의무('27 20%)", url: 'https://www.law.go.kr/행정규칙/금융투자업규정' },
+        { title: '금융투자업규정 별표 10 & 금융위 제도개선안', sub: 'IMA 위험액 50% 특례 · 중견기업/A급 채권 인정 30% 상한 신설', url: 'https://www.fsc.go.kr/' }
+      ],
+      sourceNote: "국가법령정보센터 자본시장법·시행령·금융투자업규정 및 금융위원회 종투사 제도개선 방안('25.04.09)",
+      targetTab: 'sources',
+      btnLabel: '📚 전체 법령 · 출처 아카이브 보기 →'
+    },
+    vc: {
+      badge: '💰 모험자본 20% 의무',
+      color: '#dc2626',
+      bg: '#fef2f2',
+      title: '모험자본 20% 별도 의무 & 무수익 P-CBO 기회비용',
+      summary: '모험자본 의무는 자산유형 배분과 별도인 교차 규제입니다. 추가 의무를 무수익 P-CBO(마진 0bp)로 채울 때 정상 기업금융 스프레드 대비 기회비용을 시산합니다.',
+      kpis: [
+        { lbl: "'27 의무비율", val: '20% (→25%)', cls: 'c-red' },
+        { lbl: "'27 신규수신 의무", val: '+5.15조 원', cls: 'c-purple' },
+        { lbl: '신규수신 기회비용', val: '연 772억', cls: 'c-red' }
+      ],
+      bars: [
+        { name: '한국투자증권 (신규 +5.83조 → 의무 1.17조)', right: '연 175억 원', pct: 100, color: '#dc2626' },
+        { name: '키움증권 (신규 +4.18조 → 의무 0.84조)', right: '연 125억 원', pct: 71, color: '#dc2626' },
+        { name: '하나증권 (신규 +3.50조 → 의무 0.70조)', right: '연 105억 원', pct: 60, color: '#d97706' },
+        { name: '신한·NH (각 신규 +3.0조 → 각 의무 0.60조)', right: '각 연 90억 원', pct: 51, color: '#d97706' }
+      ],
+      links: [
+        { title: '신용보증기금 P-CBO 발행제도 안내', sub: '조달금리 수준 저금리로 무수익자산(마진 0bp) 가정 기준', url: 'https://www.kodit.co.kr/' }
+      ],
+      sourceNote: '산식: 신규 수신 증가분 × 20% × 정상 기업금융 순운용스프레드 가정(1.50%p 기준, 슬라이더 조절 가능). ※ 전사 합산 NIM 제외',
+      targetTab: 'invest',
+      btnLabel: '💰 증권사별 기회비용 4단계 표 & 시뮬레이터 열기 →'
+    },
+    opt: {
+      badge: '📐 최적규모 · IMA 배분',
+      color: '#d97706',
+      bg: '#fffbeb',
+      title: '경제학 최적 수신 규모(Q*) 및 IMA 자본효율 우위',
+      summary: '발행어음 자본소진율 150% 돌파 시 신NCR 위험액(100%) 부담이 급증하여 위험가중치가 50%인 IMA로 전환할 때 RAROC가 극대화됩니다.',
+      kpis: [
+        { lbl: '최적 균형점 Q*', val: 'MR = MC', cls: 'c-blue' },
+        { lbl: '어음 NCR 위험값', val: '100% 반영', cls: 'c-amber' },
+        { lbl: 'IMA NCR 위험값', val: '50% 감경', cls: 'c-emerald' }
+      ],
+      bars: [
+        { name: '발행어음 고유계정 신NCR 위험액 부담', right: '100% 반영', pct: 100, color: '#64748b' },
+        { name: 'IMA 수탁계정 신NCR 위험액 부담 (5% 충당 차감 후)', right: '50% 절감', pct: 50, color: '#059669' },
+        { name: '어음→IMA 전환 권고 자본소진율 임계점', right: '소진율 150%↑', pct: 75, color: '#2563eb' }
+      ],
+      links: [
+        { title: '금융투자업규정 별표 10 (영업용순자본비율)', sub: '종투사 단기금융업 vs IMA 위험액 산정 기준 비교', url: 'https://www.law.go.kr/행정규칙/금융투자업규정' }
+      ],
+      sourceNote: '금융투자업규정 별표 10 및 미시경제학 한계수익(MR)=한계비용(MC) 정성 모형',
+      targetTab: 'invest',
+      btnLabel: '📐 MR=MC 및 RAROC 최적화 그래프 보기 →'
+    },
+    risk: {
+      badge: '⏱️ 만기구조 · IMA 규율',
+      color: '#b45309',
+      bg: '#fffbeb',
+      title: 'IMA 초기 출시분(2.60조) 만기 집중 & 상품별 만기 규율',
+      summary: "초기 출시된 IMA 1~4호(총 2.60조 원) 만기가 '27년 12월~'28년 4월(5개월)에 100% 집중 도래하여 사전 기초자산 분류 및 트렌치 분산 차환이 핵심입니다.",
+      kpis: [
+        { lbl: 'IMA 1~4호 설정액', val: '2.60조 원', cls: 'c-blue' },
+        { lbl: '만기 집중 구간', val: "'27.12~'28.4", cls: 'c-red' },
+        { lbl: '고유 손실충당금', val: '수탁고 5%', cls: 'c-emerald' }
+      ],
+      bars: [
+        { name: "IMA 1호 ('27년 12월 만기 도래 · 최대 회차)", right: '1.10조 (42.3%)', pct: 85, color: '#dc2626' },
+        { name: "IMA 2호 ('28년 4월 만기 도래)", right: '0.80조 (30.8%)', pct: 62, color: '#d97706' },
+        { name: "IMA 3호·4호 ('28년 2월·3월 만기 도래)", right: '0.70조 (26.9%)', pct: 54, color: '#2563eb' }
+      ],
+      links: [
+        { title: "금융위원회 종투사 제도개선 방안 ('25.04)", sub: 'IMA 만기 원금지급 구조 · 손실충당금 5% · 기업금융 70% 의무', url: 'https://www.fsc.go.kr/' }
+      ],
+      sourceNote: '한국투자증권 IMA 1~4호 출시 설정 현황(2.60조 원) 및 금융위 IMA 세부규율. ※ 전사 합산 고정이하자산·충당금은 미분리로 제외',
+      targetTab: 'soundness',
+      btnLabel: '⏱️ IMA 회차별 만기 타임라인 · 상품규율 탭 열기 →'
+    },
+    pension: {
+      badge: '🏦 퇴직연금 501조',
+      color: '#059669',
+      bg: '#ecfdf5',
+      title: '퇴직연금 원리금보장(378조) 시장 흡수 잠재력',
+      summary: '저축은행 1년 정기예금(평균 2.93%, 5천만원 한도 캡) 대비 발행어음·IMA가 금리(+25~75bp)와 편입한도 측면에서 구조적 상위호환입니다.',
+      kpis: [
+        { lbl: '퇴직연금 총액', val: '501.4조', cls: 'c-blue' },
+        { lbl: '원리금보장형', val: '378.1조', cls: 'c-emerald' },
+        { lbl: '예금 대비 금리우위', val: '+25~75bp', cls: 'c-amber' }
+      ],
+      bars: [
+        { name: '종합투자계좌 (IMA 목표수익률)', right: '3.50~4.50%+α', pct: 92, color: '#059669' },
+        { name: '초대형 IB 발행어음 (1년 약정 · 무제한)', right: '3.20~3.70%', pct: 78, color: '#2563eb' },
+        { name: '저축은행 1년 정기예금 (5천만원 캡)', right: '평균 2.93%', pct: 60, color: '#94a3b8' }
+      ],
+      links: [
+        { title: '금감원 통합연금포털 (퇴직연금 통계)', sub: '업권별 적립금 · 원리금보장형 운용 현황', url: 'https://100lifeplan.fss.or.kr/' }
+      ],
+      sourceNote: '금감원 통합연금포털(501.4조·378.1조), 저축은행중앙회 1년 정기예금 평균금리 및 종투사 약정수익률 공시',
+      targetTab: 'midlong',
+      btnLabel: '🏦 퇴직연금 · 저축은행 비교 탭 열기 →'
+    },
+    pnl: {
+      badge: '📊 조달공시 · 운용규제',
+      color: '#0f766e',
+      bg: '#f0fdfa',
+      title: 'FISIS 발행어음 분리 공시 & 법정 자산유형별 운용한도',
+      summary: '전사와 분리 공시되는 별도자본·발행어음 잔액·발행어음 이자비용 실적과 법정 자산유형별 운용배분 한도(기업금융/부동산/기타=100%, 모험자본 별도 분리)를 정리했습니다.',
+      kpis: [
+        { lbl: "'26.2Q 어음잔액", val: '54.66조', cls: 'c-blue' },
+        { lbl: "'26.2Q IMA잔액", val: '2.60조', cls: 'c-emerald' },
+        { lbl: '기금 의무하한', val: '50% / 70%', cls: 'c-amber' }
+      ],
+      bars: [
+        { name: '한국투자증권 (어음 22.47조 · 소진율 170.3%)', right: '2Q이자 1,468억', pct: 85, color: '#0f766e' },
+        { name: 'KB증권 (어음 11.00조 · 소진율 137.9%)', right: '한도대비 69%', pct: 69, color: '#2563eb' },
+        { name: '미래에셋증권 (어음 10.58조 · 소진율 100.1%)', right: '2Q이자 708억', pct: 50, color: '#2563eb' },
+        { name: '신규 3사 키움·하나·신한 (합산 3.11조)', right: '2Q이자 206억', pct: 22, color: '#d97706' }
+      ],
+      links: [
+        { title: '금감원 FISIS (SF304:L 자본 · SF304:B13 어음부채 · SF307:B408 어음이자)', sub: '전사 합산 판관비·충당금·운용수익은 미분리로 제외', url: 'https://fisis.fss.or.kr/' }
+      ],
+      sourceNote: "금감원 FISIS('26.2Q 확정) 및 금융투자업규정 제4-102조의5(자산배분 3분류 체계, 모험자본 별도 분리)",
+      targetTab: 'pnl',
+      btnLabel: '📊 회사별 발행어음 공시 · 법정 운용배분 탭 열기 →'
+    }
+  };
+
+  function selectNode(nodeId) {
+    const data = MINDMAP_DATA[nodeId] || MINDMAP_DATA.funding;
+    const allNodes = ['funding', 'reg', 'vc', 'opt', 'risk', 'pension', 'pnl'];
+
+    allNodes.forEach((id) => {
+      const box = document.getElementById('box-' + id);
+      const edge = document.getElementById('edge-' + id);
+      if (box && edge) {
+        if (id === nodeId) {
+          box.setAttribute('fill', MINDMAP_DATA[id].bg);
+          box.setAttribute('stroke', MINDMAP_DATA[id].color);
+          box.setAttribute('stroke-width', '3.5');
+          edge.setAttribute('stroke', MINDMAP_DATA[id].color);
+          edge.setAttribute('stroke-width', '4');
+        } else {
+          box.setAttribute('fill', '#ffffff');
+          box.setAttribute('stroke', '#94a3b8');
+          box.setAttribute('stroke-width', '2');
+          edge.setAttribute('stroke', '#cbd5e1');
+          edge.setAttribute('stroke-width', '2.5');
+        }
+      }
+    });
+
+    document.querySelectorAll('.map-pill').forEach((btn) => {
+      btn.classList.toggle('active', btn.getAttribute('data-node') === nodeId);
+    });
+
+    const panel = document.getElementById('mapDetailPanel');
+    panel.style.borderColor = data.color;
+
+    const kpiHtml = data.kpis.map((k) => `
+      <div class="mini-kpi">
+        <div class="mini-kpi-lbl">${k.lbl}</div>
+        <div class="mini-kpi-val ${k.cls}">${k.val}</div>
+      </div>
+    `).join('');
+
+    const barsHtml = data.bars.length ? `
+      <div style="margin:8px 0 12px;">
+        ${data.bars.map((b) => `
+          <div class="bar-row">
+            <div class="bar-head"><span>${b.name}</span><span style="color:${b.color};">${b.right}</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${b.pct}%; background:${b.color};"></div></div>
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    const linksHtml = data.links.map((l) => `
+      <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="law-chip">
+        <div>
+          <div class="font-bold" style="font-size:13px;">${l.title}</div>
+          <div style="font-size:12px; color:var(--muted);">${l.sub}</div>
+        </div>
+        <span class="src-badge">원문 ↗</span>
+      </a>
+    `).join('');
+
+    panel.innerHTML = `
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="tag" style="background:${data.bg}; color:${data.color}; border-color:${data.color};">${data.badge}</span>
+          <span style="font-size:12px; color:var(--subtle); font-weight:700;">노드 상세 요약</span>
+        </div>
+        <div style="font-size:18px; font-weight:800; margin-bottom:5px;">${data.title}</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">${data.summary}</div>
+        <div class="mini-kpi-grid">${kpiHtml}</div>
+        ${barsHtml}
+        <div style="margin-top:6px;">${linksHtml}</div>
+        <div class="source-note" style="margin-top:8px; padding:8px 11px;">
+          <strong>📌 출처·산식:</strong> ${data.sourceNote}
+        </div>
+      </div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-light); display:flex; justify-content:flex-end;">
+        <button class="btn btn-primary" style="background:${data.color}; border-color:${data.color};" onclick="switchTab('${data.targetTab}')">${data.btnLabel}</button>
+      </div>
+    `;
+  }
+
+  // ==================== 2. OPPORTUNITY COST DATA & LOGIC ====================
+  let currentOppMode = 'new'; // 'new' (2027 신규 수신 증가분 기준) | 'total' (기존잔액 비율상향 포함 총추가분)
+  let currentFirmKey = 'kis';
+  let oppSpreadPct = 1.50; // 정상 기업금융 목표 순운용스프레드 가정치 (기본 150bp = 1.50%p, 전사 미분리 NIM 대체)
+
+  const FIRM_OPP_DATA = [
+    { key: 'kis', name: '한국투자증권', q26: 25.07, q27: 30.90, delta: 5.83 },
+    { key: 'kiwoom', name: '키움증권', q26: 1.82, q27: 6.00, delta: 4.18 },
+    { key: 'hana', name: '하나증권', q26: 1.00, q27: 4.50, delta: 3.50 },
+    { key: 'shinhan', name: '신한투자증권', q26: 0.29, q27: 3.30, delta: 3.01 },
+    { key: 'nh', name: 'NH투자증권', q26: 7.50, q27: 10.50, delta: 3.00 },
+    { key: 'mirae', name: '미래에셋증권', q26: 10.58, q27: 13.00, delta: 2.42 },
+    { key: 'potential', name: '잠재 2사 (삼성·메리츠)', q26: 0.00, q27: 2.00, delta: 2.00 },
+    { key: 'kb', name: 'KB증권', q26: 11.00, q27: 12.80, delta: 1.80 },
+    { key: 'all', name: '전 증권사 합계', q26: 57.26, q27: 83.00, delta: 25.74 }
+  ];
+
+  function calcOppRow(f) {
+    const vcNewExact = f.delta * 0.20;
+    const vcTotExact = (f.delta * 0.20) + (f.q26 * 0.10);
+    const vcExact = currentOppMode === 'new' ? vcNewExact : vcTotExact;
+    const fullCost = Math.round(vcExact * 10000 * (oppSpreadPct / 100));
+    const afterCapCost = Math.round(vcExact * 0.70 * 10000 * (oppSpreadPct / 100));
+    const perTril = Math.round(0.20 * 10000 * (oppSpreadPct / 100));
+    return { vcExact, fullCost, afterCapCost, perTril };
+  }
+
+  function setOppMode(mode) {
+    currentOppMode = mode;
+    document.getElementById('modeBtnNew').classList.toggle('active', mode === 'new');
+    document.getElementById('modeBtnTotal').classList.toggle('active', mode === 'total');
+    document.getElementById('thVcCol').innerHTML = mode === 'new'
+      ? '② 신규 수신의 20% 의무액<br>(전액 무수익 P-CBO)'
+      : '② 총 추가 모험자본 의무액<br>(신규20% + 기존잔액10%p)';
+    renderOppFlow();
+    renderOppTable();
+  }
+
+  function selectFirm(firmKey) {
+    currentFirmKey = firmKey;
+    document.querySelectorAll('#firmChips .firm-chip').forEach((btn) => {
+      btn.classList.toggle('active', btn.getAttribute('data-firm') === firmKey);
+    });
+    renderOppFlow();
+    renderOppTable();
+
+    const f = FIRM_OPP_DATA.find((x) => x.key === firmKey);
+    if (f) {
+      const simDelta = document.getElementById('simDelta');
+      if (simDelta) {
+        simDelta.value = Math.min(30, f.delta);
+        runOppSim(false);
+      }
+    }
+  }
+
+  function renderOppFlow() {
+    const f = FIRM_OPP_DATA.find((x) => x.key === currentFirmKey) || FIRM_OPP_DATA[0];
+    const isNew = currentOppMode === 'new';
+    const c = calcOppRow(f);
+
+    document.getElementById('step1Val').textContent = `+${f.delta.toFixed(2)}조 원`;
+    document.getElementById('step1Sub').textContent = `'26.2Q ${f.q26.toFixed(2)}조 → '27말 ${f.q27.toFixed(2)}조`;
+
+    document.getElementById('step2Lbl').textContent = isNew
+      ? '② 신규 수신의 20% 모험자본 (무수익 P-CBO)'
+      : '② 총 추가 모험자본 (신규20% + 기존10%p)';
+    document.getElementById('step2Val').textContent = `+${c.vcExact.toFixed(2)}조 원`;
+    document.getElementById('step2Sub').textContent = isNew
+      ? `신규 수신(+${f.delta.toFixed(2)}조) × 20% 의무`
+      : `기존잔액 +10%p 상향분 포함 총 추가 의무액`;
+
+    document.getElementById('step3Val').textContent = `${oppSpreadPct.toFixed(2)}%p`;
+    document.getElementById('step3Sub').textContent = `기준 ${Math.round(oppSpreadPct * 100)}bp (하단 슬라이더 조절 연동)`;
+
+    document.getElementById('step4Val').textContent = `연 ${c.fullCost.toLocaleString()}억 원`;
+    document.getElementById('step4Sub').textContent = `중견·A급 30% 캡 활용(70%만 P-CBO) 시 연 ${c.afterCapCost.toLocaleString()}억`;
+
+    const headline = document.getElementById('oppHeadline');
+    if (isNew) {
+      headline.innerHTML = `💡 <strong>${f.name}</strong>: 2027년 발행어음+IMA 수신이 <strong class="c-blue">+${f.delta.toFixed(2)}조 원</strong>(${f.q26.toFixed(2)}조→${f.q27.toFixed(2)}조) 증가할 때, 의무 20%인 <strong class="c-purple">+${c.vcExact.toFixed(2)}조 원</strong>을 전액 무수익 P-CBO(마진 0bp)로 채우면 정상 기업금융 스프레드(<strong>${oppSpreadPct.toFixed(2)}%p</strong>) 대비 <strong class="c-red">연간 ${c.fullCost.toLocaleString()}억 원</strong>(30% 중견·A급 캡 활용 시 <strong>${c.afterCapCost.toLocaleString()}억 원</strong>)의 기회비용이 발생합니다.`;
+    } else {
+      headline.innerHTML = `💡 <strong>${f.name}</strong> [기존잔액 상향 포함]: 기존 수신잔액(${f.q26.toFixed(2)}조)의 의무비율 상향(10%→20%)까지 합산한 총 추가 모험자본 <strong class="c-purple">+${c.vcExact.toFixed(2)}조 원</strong>을 전액 무수익 P-CBO로 조달 시 <strong class="c-red">연간 ${c.fullCost.toLocaleString()}억 원</strong>(30% 캡 활용 시 <strong>${c.afterCapCost.toLocaleString()}억 원</strong>)의 기회비용이 발생합니다.`;
+    }
+  }
+
+  function renderOppTable() {
+    const tbody = document.getElementById('oppTableBody');
+    const kisCalc = calcOppRow(FIRM_OPP_DATA[0]);
+    const maxCost = Math.max(1, kisCalc.fullCost);
+
+    tbody.innerHTML = FIRM_OPP_DATA.map((f) => {
+      const c = calcOppRow(f);
+      const isSelected = f.key === currentFirmKey;
+      const isAll = f.key === 'all';
+      const deltaBarW = isAll ? 0 : Math.max(8, Math.round((f.delta / 5.83) * 56));
+      const costBarW = isAll ? 0 : Math.max(8, Math.round((c.fullCost / maxCost) * 60));
+      const rowCls = isSelected ? 'clickable-row hi-blue' : (isAll ? 'clickable-row font-bold' : 'clickable-row');
+
+      return `
+        <tr class="${rowCls}" onclick="selectFirm('${f.key}')">
+          <td class="${isAll ? 'text-center' : 'font-bold'}">${isSelected ? '👉 ' : ''}${f.name}</td>
+          <td class="text-right">${f.q26.toFixed(2)}조 → ${f.q27.toFixed(2)}조</td>
+          <td class="text-right c-blue font-bold">+${f.delta.toFixed(2)}조 ${!isAll ? `<span class="inline-bar" style="width:${deltaBarW}px; background:#2563eb;"></span>` : ''}</td>
+          <td class="text-right c-purple font-bold">+${c.vcExact.toFixed(2)}조</td>
+          <td class="text-center">${oppSpreadPct.toFixed(2)}%p</td>
+          <td class="text-right c-red font-bold">연 ${c.fullCost.toLocaleString()}억 ${!isAll ? `<span class="inline-bar" style="width:${costBarW}px; background:#dc2626;"></span>` : ''}</td>
+          <td class="text-right font-bold" style="color:var(--muted);">연 ${c.afterCapCost.toLocaleString()}억</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function runOppSim(syncSpreadToTable = false) {
+    const delta = parseFloat(document.getElementById('simDelta').value) || 0;
+    const quota = parseFloat(document.getElementById('simQuota').value) || 20;
+    const spread = parseFloat(document.getElementById('simNim').value) || 1.5;
+
+    if (syncSpreadToTable) {
+      oppSpreadPct = spread;
+      renderOppFlow();
+      renderOppTable();
+    }
+
+    const pcbo = delta * (quota / 100);
+    const oppEok = Math.round(pcbo * 10000 * (spread / 100));
+    const perTril = delta > 0 ? Math.round(oppEok / delta) : 0;
+
+    const yrLabel = quota === 10 ? "('26년)" : (quota === 20 ? "('27년)" : (quota === 25 ? "('28년)" : ''));
+    document.getElementById('simDeltaOut').textContent = `${delta.toFixed(1)}조 원`;
+    document.getElementById('simQuotaOut').textContent = `${quota}% ${yrLabel}`;
+    document.getElementById('simNimOut').textContent = `${spread.toFixed(2)}%p`;
+    document.getElementById('simResOut').textContent = `P-CBO ${pcbo.toFixed(2)}조 → 연 ${oppEok.toLocaleString()}억 원`;
+    document.getElementById('simSubOut').textContent = `신규 수신 1조 원당 연간 -${perTril}억 원 마진 감소`;
+  }
+
+  // ==================== 3. NAVIGATION, FILTER & CHECKLIST ====================
+  function switchTab(tabId, updateHash = true) {
+    const target = VALID_TABS.includes(tabId) ? tabId : 'map';
+    document.querySelectorAll('.tab-panel').forEach((el) => el.classList.add('hidden'));
+    const panel = document.getElementById('tab-' + target);
+    if (panel) panel.classList.remove('hidden');
+
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === target);
+    });
+
+    if (updateHash) {
+      try { history.replaceState(null, '', '#' + target); } catch (e) {}
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function filterRisk(level, btnEl) {
+    if (btnEl && btnEl.parentElement) {
+      btnEl.parentElement.querySelectorAll('.firm-chip').forEach((b) => b.classList.remove('active'));
+      btnEl.classList.add('active');
+    }
+    document.querySelectorAll('#riskTableBody tr').forEach((row) => {
+      const rl = row.getAttribute('data-level');
+      row.style.display = (level === 'all' || rl === level) ? '' : 'none';
+    });
+  }
+
+  function highlightSearch(q) {
+    const keyword = (q || '').trim().toLowerCase();
+    document.querySelectorAll('table.hub-table tbody tr').forEach((tr) => {
+      if (!keyword) {
+        tr.style.outline = '';
+        return;
+      }
+      if (tr.textContent.toLowerCase().includes(keyword)) {
+        tr.style.outline = '2px solid #2563eb';
+      } else {
+        tr.style.outline = '';
+      }
+    });
+  }
+
+  function copyShareLink() {
+    const url = window.location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(showToast).catch(showToast);
+    } else {
+      showToast();
+    }
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  const STORAGE_KEY = 'ima_note_v4_tasks';
+  function loadTasks() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[false,false,false,false]');
+      const boxes = document.querySelectorAll('#studyTaskList input[type="checkbox"]');
+      let done = 0;
+      boxes.forEach((cb, idx) => {
+        cb.checked = !!saved[idx];
+        if (cb.checked) done++;
+      });
+      document.getElementById('taskCountBadge').textContent = `${done} / ${boxes.length} 완료`;
+    } catch (e) {}
+  }
+
+  function toggleTask(idx, checked) {
+    try {
+      const boxes = document.querySelectorAll('#studyTaskList input[type="checkbox"]');
+      const state = Array.from(boxes).map((cb) => cb.checked);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const done = state.filter(Boolean).length;
+      document.getElementById('taskCountBadge').textContent = `${done} / ${boxes.length} 완료`;
+    } catch (e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    selectNode('funding');
+    renderOppFlow();
+    renderOppTable();
+    runOppSim(false);
+    loadTasks();
+    const initHash = (window.location.hash || '').replace('#', '');
+    if (VALID_TABS.includes(initHash)) {
+      switchTab(initHash, false);
+    }
+  });
+</script>
+</body>
+</html>
