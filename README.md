@@ -6,9 +6,9 @@
 
 완성된 사이트 소스는 **[`site/`](./site/)** 에 있습니다. 기존 기획·원본 데이터·프로토타입도 아래 경로에 보존했습니다.
 
-- **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md)부터 읽으세요.
+- **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md) 및 [QA_VERIFIED_ANSWERS.md](./QA_VERIFIED_ANSWERS.md)부터 읽으세요.
 - **실행·빌드·배포:** [site/README.md](./site/README.md)
-- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산, 모험자본 기회비용, 만기·리스크 점검, 익명 질문·답변과 수정 이력
+- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산, 모험자본 기회비용, 만기·리스크 점검, 익명 질문·답변(검증 가이드 Q&A 13건 — **한국투자증권 발행어음 수시성 수신 10% 현금성자산 보유 의무 vs 은행 지준율·LCR·RP·MMF 비교 및 완화 논리** 포함)과 수정 이력
 - **공개 주소:** https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 
 ```bash

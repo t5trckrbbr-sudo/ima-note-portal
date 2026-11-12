@@ -5,14 +5,27 @@
 - 운영 사이트: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 - 질문·답변: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions
 - 작업할 코드: `site/` (루트의 `reference/prototype_v1.html`은 초기 참고본)
-- 이 인계본의 운영 소스 기준: Sites commit `0a42718d84fe40287724342c960f098761f88829`, 배포 버전 3
+- Q&A 전체 13건 검증 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
+- 이 인계본의 이전 운영 소스 기준: Sites commit `0a42718d84fe40287724342c960f098761f88829`, 배포 버전 3 (이후 GitHub에서 Q&A 13건 검증 답변 및 신규 질문 추가 완료 — **Sites 재배포 대기**)
 - 원문 데이터팩 기준: 이 저장소의 commit `32a997602ee354aaea36e64d0346449435340d21`
 
-GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선을 추가했습니다. 운영 화면·API·데이터 모델은 배포된 버전 3과 같습니다. GitHub와 Sites는 자동 동기화되지 않습니다.
+GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선 및 **Q&A 전체 13건 법령·원장 검증 답변(`site/worker/seeds.js`, `QA_VERIFIED_ANSWERS.md`)**을 반영했습니다. GitHub와 Sites는 자동 동기화되지 않으므로, 최신 GitHub 소스를 Sites에 동기화해 배포 버전을 올려야 운영 URL에 반영됩니다.
 
-## 다른 AI에게 전달할 요청 예시
+## [최신 업데이트 내역 — 2026-11-12 Q&A 13건 확정 및 유동성 규제 비교 추가]
 
-> 이 저장소의 AI_HANDOFF.md와 site/README.md를 읽고 site/에 있는 현재 구현을 이어서 수정해줘. 기존 기획서, 제공 실적, 전망, 사용자 가정은 구분하고 발행어음·IMA 계정과 전사 지표를 섞지 마. 질문·답변은 서버 DB에 저장하며, 기존 사용자 기록과 수정 이력은 보존해줘. 수정 후 npm run check, npm test, npm run build를 실행해줘. GitHub 업로드와 운영 사이트 배포는 별도 작업임을 구분해줘.
+1. **신규 핵심 질문 추가 (`guide-demand-note-cash-buffer`, `#questions` 최상단 노출)**
+   - **주제**: *한국투자증권의 발행어음 수시성 수신 `10%` 현금성자산 보유 의무, 타사·은행권과 비교해 낮출 논리가 있을까요?* (사용자 요청으로 **한국투자증권 사명 명시**)
+   - **핵심 내용**: 법정 규제(`금융투자업규정` 제3-24조의4·제4-102조의7상 1·3개월 유동성비율 `100%` 이상)와 사내 내부버퍼(`10%`) 구분, 타 인가사 ALM 실무, **은행업권 제도(한국은행 요구불 지준율 `7.0%`, 바젤Ⅲ 은행 LCR 이탈률 `5% / 10% / 25~40%`) 및 금융투자업 RP(`5~20%`, 제5-23조의2)·MMF(`1영업일 10%`, 제7-16조)·저축은행(`5%`) 1:1 대조표**, 그리고 **3대 완화·개선 논리**(① 개인 소매 CMA형 `5~7%` 차등화, ② 국고채·통안채 `HQLA` 및 당일 인출 `Committed Line` 인정 범위 확대, ③ `1개월 유동성비율 ≥100%` 중복 버퍼 조정 및 연 `24~48억 원` 손익 개선 추산) 수록.
+   - 상세 비교표 마크다운 원본은 루트 [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md) **Part 1 — Q13**에 수록되어 있으므로, 필요 시 `#pnl`(발행어음 · 운용규제) 탭 등에 별도 시각 비교 카드로도 바로 확장할 수 있습니다.
+2. **기존 미답변 2건(`guide-latest-rate`, `guide-pension-eligibility`) 신규 답변 작성 및 기존 10건 고도화**
+   - `guide-latest-rate`: 발행어음 약정·특판·중도해지이율(`20~50%`)과 한국투자증권 IMA 1·2호 약관(`기준수익률 연 4.0%`, `기본보수 0.60%`, `초과수익 40% 성과보수`, `2년~2년 3개월 폐쇄형·중도해지 불가`, `배당소득세·금융소득종합과세`) 대조.
+   - `guide-pension-eligibility`: 현행 「퇴직연금감독규정」상 DC·IRP 직접 편입 미허용(개정 추진 중) 명시 및 **`2025.09.01` 예금자보호 한도·저축은행 퇴직연금 예금 편입 상한 상향(`5,000만 원 → 1억 원`)** 반영. *(필요 시 `site/public/details.js`의 퇴직연금 표 각주도 동일 기준으로 정리 가능)*
+   - 기존 10건(`Q1~Q9, Q12`): FISIS 원장 반올림 단수차 원인(`472.65조 vs 472.75조`의 63개 항목 반올림 누적 `-0.10조`, 미래에셋 `2026.1H` 항목별 억 단위 반올림 `±1억`) 규명 및 법령 조문 보강 완료.
+3. **테스트 동기화 완료**: `site/tests/api.test.mjs`를 시드 13건 전수 답변 기준(`total: 13`, `unanswered: 0`)으로 업데이트 완료.
+
+## 다른 AI(ChatGPT Sites 등)에게 전달할 요청 예시
+
+> 이 저장소(`t5trckrbbr-sudo/ima-note-portal`)의 최신 `AI_HANDOFF.md`, `QA_VERIFIED_ANSWERS.md`, `site/worker/seeds.js`를 읽고 현재 운영 사이트(`https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site`)에 최신 변경사항을 반영해 배포해줘. (원하면 `QA_VERIFIED_ANSWERS.md`의 Q13 ‘한국투자증권 수시성 발행어음 10% 현금성자산 의무 vs 은행 지준율·LCR 비교표’도 `#pnl` 화면에 시각 패널로 함께 추가해줘.) 기존 운영 D1의 사용자 질문·답변·수정 이력은 절대 초기화하지 말고 보존한 채 `npm run check`, `npm test`, `npm run build` 검증 후 새 버전을 배포해줘.
 
 ## 현재 사용자 요구와 화면
 
@@ -33,7 +46,8 @@ GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선
 | `site/public/details.js` | 6개 리서치 상세 화면 |
 | `site/public/qa.js`, `qa.css` | 익명 질문·답변 UI |
 | `site/worker/api.js` | 게시판 API, 소유권·입력 검증, 수정 이력 |
-| `site/worker/seeds.js` | 기본 질문 12개: 자료 기반 초안 답변 10개, 미답변 2개 |
+| `site/worker/seeds.js` | 기본 질문 13개: 신규(한투 수시어음 현금성 10% 비교)·미답변 포함 13건 전수 답변 수록 |
+| `QA_VERIFIED_ANSWERS.md` | Q&A 13개 전체 검증 답변 및 은행 지준율·LCR·RP·MMF 비교표 마스터 문서 |
 | `site/db/schema.ts`, `drizzle/` | D1 스키마와 마이그레이션 |
 | `site/public/data.json` | 제공된 원문 정량 데이터 |
 | `site/public/source-guide.md` | 배포 시점 원문 기획서 사본 |
