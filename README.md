@@ -2,6 +2,12 @@
 
 **[공개 사이트 열기 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site)** · **[질문·답변 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions)** · **[수신·NIM 계산기 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#funding)**
 
+## 질문을 올린 뒤 업데이트하는 방법
+
+사이트에서 질문을 등록하고 ChatGPT 대화에서 **“사이트 Q&A 업데이트해줘”**라고 요청하면 새 질문에 답하고 기존 답변 전체도 다시 검토합니다. 검토일·근거·변경 내용·이력을 남기며 근거가 부족하면 ‘추가 확인 필요’로 표시합니다. 자동 일정으로 실행하지 않습니다.
+
+운영 절차는 [REVIEW_WORKFLOW.md](./REVIEW_WORKFLOW.md)를 따릅니다. `site/`에서 `npm run review:prepare`로 전체 질문을 수집하고, 검토 후 `review:apply`·검사·테스트·빌드·`review:verify`를 거쳐 배포합니다. 초기 검토 기록은 비어 있으며 기존 답변을 새로 검증한 것으로 표시하지 않습니다. 사용자 D1 데이터는 보존합니다.
+
 ## 최신 사이트 코드와 AI 인계
 
 완성된 사이트 소스는 **[`site/`](./site/)** 에 있습니다. 기존 기획·원본 데이터·프로토타입도 아래 경로에 보존했습니다.

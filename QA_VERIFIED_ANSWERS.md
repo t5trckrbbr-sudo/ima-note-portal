@@ -1,5 +1,7 @@
 # Q&A 게시판 15개 질문·답변 마스터 명세 (`QA_VERIFIED_ANSWERS.md`)
 
+> 이 문서는 기본 가이드 답변의 원문입니다. 채팅 요청에 따른 이후 재검토 답변·검토일·근거·변경 이력은 `site/worker/reviews.js`에 기록하며, 절차는 [REVIEW_WORKFLOW.md](./REVIEW_WORKFLOW.md)를 따릅니다. 새 검토 회차가 없으면 기존 답변을 다시 검증했다는 뜻이 아닙니다.
+
 > [!IMPORTANT]
 > **문서 목적 및 활용 안내**
 > 운영 사이트(`#questions`, `site/worker/seeds.js`)에 수록된 자료 기반 Q&A 15건입니다. 원문의 법령·통계 해석과 시나리오를 정리한 자료이며, 사이트가 모든 근거를 독립적으로 재검증했다는 의미는 아닙니다.

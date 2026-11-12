@@ -10,3 +10,7 @@ worker/assets.generated.js
 *.db
 *.tar.gz
 .DS_Store
+
+# Public Q&A snapshots and unfinished review drafts stay local.
+.local/
+worker/reviews.js.tmp
