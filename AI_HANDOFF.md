@@ -5,34 +5,32 @@
 - 운영 사이트: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 - 질문·답변: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions
 - 작업할 코드: `site/` (루트의 `reference/prototype_v1.html`은 초기 참고본)
-- Q&A 전체 16건 검증 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
-- 이 인계본의 이전 운영 소스 기준: Sites commit `0a42718d84fe40287724342c960f098761f88829`, 배포 버전 3 (이후 GitHub에서 **Q&A 16건 검증 답변 확충 및 `#pension-risk` ↔ `#questions` 1:1 딥링크 정렬** 완료 — **Sites 재배포 대기**)
-- 원문 데이터팩 기준: 이 저장소의 commit `32a997602ee354aaea36e64d0346449435340d21`
+- Q&A 15건 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
+- 이번 정리 전 운영 소스: Sites commit `f97132a76c89b939ddc0b2b307ccbfb9d725e9ce`, 배포 버전 5 (GitHub `cdefc9cef372b02b69f67ed2da421f1204bf125c` 반영).
+- 원문 데이터팩 기준: commit `32a997602ee354aaea36e64d0346449435340d21`.
 
-GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선, **Q&A 전체 16건 법령·원장 검증 답변(`site/worker/seeds.js`, `QA_VERIFIED_ANSWERS.md`)**, 그리고 **`#pension-risk`(퇴직연금 · 리스크 점검)와 `#questions`(질문 · 답변) 간 역할 분리 및 1:1 딥링크 연동(`site/public/details.js`, `site/public/app.js`)**을 반영했습니다. GitHub와 Sites는 자동 동기화되지 않으므로, 최신 GitHub 소스를 Sites에 동기화해 배포 버전을 올려야 운영 URL에 반영됩니다.
+GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테스트·빌드를 거쳐 같은 운영 사이트에 배포해야 합니다.
 
-## [최신 업데이트 내역 — 2026-11-12 Q&A 16건 확정 및 `#pension-risk` ↔ `#questions` 완전 정렬]
+## 최신 편집 원칙 — 2026-11-12 리스크점검 중심 정리
 
-1. **`#pension-risk`(퇴직연금 · 리스크 점검) ↔ `#questions`(질문 · 답변) 누락 3건 보강 및 양방향 정리**
-   - **배경**: 기존 `#pension-risk`의 5대 리스크 점검 항목 및 퇴직연금 상품 비교표 중 `#questions` 게시판에 독립 Q&A가 없던 3개 주제를 신규 시드 Q&A(`Q14~Q16`)로 추가하여 총 **16건 전수 매핑**을 완성했습니다.
-   - **추가된 3건(`Q14~Q16`)**:
-     - `guide-real-estate-concentration` (**Q14**): `금융투자업규정 제4-102조의5` 부동산 한도 축소(`30% → 15% → 10%`) 리밸런싱 부담과 소규모 폐쇄형 IMA 회차(3호 `0.40조`·4호 `0.30조`) 내 단일 대형 딜 집중 시 `5%` 고유재산 손실충당금 소진 구조 및 분할 편입(`Co-investment`) 대응.
-     - `guide-funding-rate-spread-risk` (**Q15**): 조달금리 경쟁에서 왜 `기준금리 +50bp`가 마진·RAROC 손익분기 사내 경보선인지(모험자본 `20%` 의무와의 이중 마진 압축), 그리고 고금리 1년 특판 비용 고착화(`Cost Lock-in`) 방어를 위한 리테일·법인 수시형과 기간형 만기 분산 전략.
-     - `guide-pension-self-product-ban` (**Q16**): `퇴직연금감독규정 제9조제3항` 특정금전신탁 ‘자사 원리금보장상품 편입 전면 금지’ 및 `제15조의4`의 법적 의미, 타행 교차편입에 따른 시중은행 저금리(`2.60~2.85%`) 고착화 구조, 향후 DC·IRP 편입 허용 시 `501.4조 원`(원리금보장 `378.1조 원`) 시장의 전 업권 교차판매 효과.
-   - **`site/public/details.js` & `app.js` UI 개선**:
-     - `#pension-risk` 패널 제목을 `'5가지 점검 질문'`에서 **`'2027년 5대 리스크 점검 체크리스트'`**로 명확히 변경(실행 체크리스트 vs Q&A 게시판 역할 구분).
-     - 체크리스트 5개 전 항목과 퇴직연금 패널 하단에 **`관련 Q&A 해설 →`** 무새로고침 SPA 딥링크(`?q=<seedId>#questions`, `data-qa-jump`) 추가 및 타 탭 이동 시 잔여 `?q=` 쿼리 자동 정리(`app.js`).
-     - 퇴직연금 표 및 `#sources` 쟁점 표의 저축은행 구 원문 `5,000만 원` 문구를 **`2025.09.01` 예금자보호 상향 연동 기관당 `1억 원` 편입 상한** 및 시중은행 **자사 원리금보장상품 편입 금지** 기준으로 현행화.
-2. **신규 유동성 규제 비교 질문 (`guide-demand-note-cash-buffer`, `#questions` 최상단 노출 유지)**
-   - **주제**: *한국투자증권의 발행어음 수시성 수신 `10%` 현금성자산 보유 의무, 타사·은행권과 비교해 낮출 논리가 있을까요?* (사용자 요청으로 **한국투자증권 사명 명시**)
-   - **핵심 내용**: 법정 규제(`금융투자업규정` 제3-24조의4·제4-102조의7상 1·3개월 유동성비율 `100%` 이상)와 사내 내부버퍼(`10%`) 구분, 타 인가사 ALM 실무, **은행업권 제도(한국은행 요구불 지준율 `7.0%`, 바젤Ⅲ 은행 LCR 이탈률 `5% / 10% / 25~40%`) 및 금융투자업 RP(`5~20%`, 제5-23조의2)·MMF(`1영업일 10%`, 제7-16조)·저축은행(`5%`) 1:1 대조표**, 그리고 **3대 완화·개선 논리**(① 개인 소매 CMA형 `5~7%` 차등화, ② 국고채·통안채 `HQLA` 및 당일 인출 `Committed Line` 인정 범위 확대, ③ `1개월 유동성비율 ≥100%` 중복 버퍼 조정 및 연 `24~48억 원` 손익 개선 추산) 수록.
-3. **기존 미답변 2건(`guide-latest-rate`, `guide-pension-eligibility`) 신규 답변 및 기존 10건 고도화 완료**
-   - FISIS 원장 반올림 단수차 원인(`472.65조 vs 472.75조`의 63개 항목 반올림 누적 `-0.10조`, 미래에셋 `2026.1H` 항목별 억 단위 반올림 `±1억`) 규명 및 법령 조문 보강 완료.
-4. **테스트 동기화 완료**: `site/tests/api.test.mjs`를 시드 16건 전수 답변 및 2페이지 페이지네이션 기준(`total: 16`, `pages: 2`, `unanswered: 0`, 신규 3개 시드 상세 조회 검증)으로 업데이트 완료.
+1. **탭 이름은 `리스크점검`입니다.** 기존 공유 링크 호환을 위해 주소 `#pension-risk`는 유지합니다. 이 화면에는 수신·운용·상환에 영향을 주는 강조할 만한 주요 위험만 선별해서 올립니다. 현재 5개이며 향후 항목 수를 고정하지 않습니다.
+2. **퇴직연금은 질문·답변에서 다룹니다.** 리스크 화면의 퇴직연금 규모·상품 비교 패널은 제거했습니다. 연금 편입 조건과 자사 예금 편입 제한 Q&A는 유지하고, 상단 검색의 연금 항목도 해당 Q&A로 바로 이동합니다.
+3. **`guide-venture-cross-rule` 질문을 삭제했습니다.** “모험자본 20% 의무는 자산배분 100%에 더하는 항목인가요?”를 다시 추가하지 마세요. 핵심 소싱 설명은 기존 `guide-sizing-growth`에 통합했습니다. 나머지 15개 질문·가이드 답변 ID는 유지합니다.
+4. **리스크와 해설을 다음과 같이 연결합니다.** 항목명으로 게시판 검색이 가능해야 합니다. 같은 판단을 다루는 두 리스크는 하나의 충분한 Q&A를 공유하며 중복 질문을 만들지 않습니다.
 
-## 다른 AI(ChatGPT Sites 등)에게 전달할 요청 예시
+| 리스크 항목 | Q&A ID |
+| --- | --- |
+| 모험자본 조달 병목 | `guide-sizing-growth` |
+| 조달금리 경쟁 | `guide-funding-rate-spread-risk` |
+| IMA 만기 집중 | `guide-ima-maturity` |
+| 자본효율과 수신 한도 | `guide-sizing-growth` |
+| 부동산·단일 자산 집중 | `guide-real-estate-concentration` |
 
-> 이 저장소(`t5trckrbbr-sudo/ima-note-portal`)의 최신 `AI_HANDOFF.md`, `QA_VERIFIED_ANSWERS.md`, `site/worker/seeds.js`, `site/public/details.js`, `site/public/app.js`, `site/tests/api.test.mjs`를 읽고 현재 운영 사이트(`https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site`)에 최신 변경사항(검증 Q&A 16건 확충 + `#pension-risk` 체크리스트·퇴직연금 패널 현행화 및 `#questions` 딥링크 연동)을 반영해 배포해줘. 기존 운영 D1의 사용자 질문·답변·수정 이력은 절대 초기화하지 말고 보존한 채 `npm run check`, `npm test`, `npm run build` 검증 후 새 버전을 배포해줘.
+딥링크 형식은 `?q=<id>#questions`이며 타 탭 이동 시 질문 쿼리를 정리합니다. API 기본 목록은 `total: 15`, `pages: 2`, `unanswered: 0`입니다. 사용자 글이 추가되면 운영 합계는 달라질 수 있습니다. 기존 운영 D1의 사용자 질문·답변·수정 이력은 삭제·초기화하지 않습니다.
+
+## 다른 AI에게 전달할 요청 예시
+
+> 최신 인계 문서와 코드의 편집 원칙(질문 15건, 리스크점검 탭, 퇴직연금은 Q&A에 유지)을 확인하고 같은 운영 사이트를 업데이트해줘. `.openai/hosting.json`과 운영 D1 데이터를 보존한 채 `npm run check`, `npm test`, `npm run build` 통과 후 배포해줘. 삭제된 `guide-venture-cross-rule`을 복원하지 말고 리스크 항목별 검색과 Q&A 딥링크도 확인해줘.
 
 ## 현재 사용자 요구와 화면
 
@@ -40,7 +38,7 @@ GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선
 2. 첫 화면: 8가지 질문을 클릭하는 주제 지도, 핵심 지표, 질문 흐름.
 3. **두 번째 메뉴는 질문·답변**. 기간 공통/2027 전망, 5개 주제, 답변 대기/출처 첨부 필터와 검색.
 4. 수신 화면: 2026.2Q와 2027E 잔액, 회사별 발행어음 NIM 입력, IMA 수익 기여율, 연환산 수익 합계.
-5. 기존 상세 화면: 운용규제, 모험자본 비용 계산기, IMA 만기, 9사 조달, 한투·미래 비교, 퇴직연금·리스크(`#questions` 1:1 딥링크 연동), 출처.
+5. 기존 상세 화면: 운용규제, 모험자본 비용 계산기, IMA 만기, 9사 조달, 한투·미래 비교, 리스크점검(`#questions` 관련 해설 딥링크 연동), 출처.
 6. 사이트는 **공개 열람·로그인 없는 작성**이 명시적인 사용자 선택입니다.
 
 ## 구조와 수정 위치
@@ -50,11 +48,11 @@ GitHub 인계본에는 로컬 개발 서버와 빌드 경로의 이식성 개선
 | `site/public/index.html`, `style.css` | 공통 셸·브랜드·반응형 스타일 |
 | `site/public/app.js` | 해시 라우팅(`?q=` 정리 포함), 주제 지도, 수신, 기회비용, 공통 검색 |
 | `site/public/nim.js` | NIM·IMA 기여율 시뮬레이터 |
-| `site/public/details.js` | 6개 리서치 상세 화면 (`#pension-risk` 체크리스트·연금표 및 Q&A 딥링크 포함) |
+| `site/public/details.js` | 6개 리서치 상세 화면 (`#pension-risk` 주요 리스크 체크리스트 및 Q&A 딥링크 포함) |
 | `site/public/qa.js`, `qa.css` | 익명 질문·답변 UI |
 | `site/worker/api.js` | 게시판 API, 소유권·입력 검증, 수정 이력 |
-| `site/worker/seeds.js` | 기본 질문 16개: 유동성 규제 비교·`#pension-risk` 누락 보완 3건 포함 16건 전수 답변 수록 |
-| `QA_VERIFIED_ANSWERS.md` | Q&A 16개 전체 검증 답변 · `#pension-risk` 1:1 매핑표 · 유동성 규제 비교표 마스터 문서 |
+| `site/worker/seeds.js` | 기본 질문 15개: 모험자본 병목·자본효율 통합 해설, 연금 Q&A 유지 |
+| `QA_VERIFIED_ANSWERS.md` | Q&A 15개 답변 · `#pension-risk` 관련 해설 매핑표 · 유동성 규제 비교표 마스터 문서 |
 | `site/db/schema.ts`, `drizzle/` | D1 스키마와 마이그레이션 |
 | `site/public/data.json` | 제공된 원문 정량 데이터 |
 | `site/public/source-guide.md` | 배포 시점 원문 기획서 사본 |

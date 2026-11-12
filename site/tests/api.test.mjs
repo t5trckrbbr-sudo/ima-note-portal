@@ -9,7 +9,35 @@ const key='a'.repeat(64),other='b'.repeat(64);
 const request=async(db,path,method='GET',body,authorKey=key,origin='https://example.org')=>{const headers={'X-Author-Key':authorKey,'Origin':origin};if(body!==undefined)headers['Content-Type']='application/json';const r=await handleApi(new Request('https://example.org'+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body)}),{DB:db});return {status:r.status,body:r.status===204?null:await r.json()}};
 const question={title:'모험자본 의무와 수신 확대를 어떻게 비교할까요?',body:'자산 배분과 교차 규제를 구분해 보고 싶습니다.',category:'regulation',timeframe:'2027',author:'검증자'};
 const answer={body:'모험자본 의무는 자산 유형 안에서 별도 요건으로 집계합니다.',author:'참여자',kind:'opinion',sourceUrl:'',sourceTitle:'',observedAt:''};
-test('seed questions have meaningful filters and verified guide answers',async()=>{const {db}=setup();let r=await request(db,'/api/questions');assert.equal(r.status,200);assert.equal(r.body.total,16);assert.equal(r.body.pages,2);assert.equal(r.body.questions.length,12);assert.equal(r.body.counts.unanswered,0);assert(r.body.questions.every(q=>!q.own));assert.equal(r.body.questions[0].id,'guide-demand-note-cash-buffer');for(const qid of ['guide-real-estate-concentration','guide-funding-rate-spread-risk','guide-pension-self-product-ban']){const d=await request(db,'/api/questions/'+qid);assert.equal(d.status,200);assert.equal(d.body.answers[0].kind,'guide');}r=await request(db,'/api/questions?status=unanswered');assert.equal(r.body.questions.length,0);r=await request(db,'/api/questions?timeframe=timeless');assert(r.body.questions.every(q=>q.timeframe==='timeless'));r=await request(db,'/api/questions?q=NIM');assert(r.body.total>0);r=await request(db,'/api/questions?q='+encodeURIComponent('현금성자산'));assert.equal(r.body.total,1);r=await request(db,'/api/questions/'+seedQuestions[0].id);assert.equal(r.body.answers[0].kind,'guide');});
+test('seed questions have meaningful filters and verified guide answers',async()=>{const {db}=setup();let r=await request(db,'/api/questions');assert.equal(r.status,200);assert.equal(r.body.total,15);assert.equal(r.body.pages,2);assert.equal(r.body.questions.length,12);assert.equal(r.body.counts.unanswered,0);assert(r.body.questions.every(q=>!q.own));assert.equal(r.body.questions[0].id,'guide-demand-note-cash-buffer');for(const qid of ['guide-real-estate-concentration','guide-funding-rate-spread-risk','guide-pension-self-product-ban']){const d=await request(db,'/api/questions/'+qid);assert.equal(d.status,200);assert.equal(d.body.answers[0].kind,'guide');}r=await request(db,'/api/questions?status=unanswered');assert.equal(r.body.questions.length,0);r=await request(db,'/api/questions?timeframe=timeless');assert(r.body.questions.every(q=>q.timeframe==='timeless'));r=await request(db,'/api/questions?q=NIM');assert(r.body.total>0);r=await request(db,'/api/questions?q='+encodeURIComponent('현금성자산'));assert.equal(r.body.total,1);r=await request(db,'/api/questions/'+seedQuestions[0].id);assert.equal(r.body.answers[0].kind,'guide');});
+test('risk labels find their substantive answers and the removed allocation question stays absent',async()=>{
+ const {db}=setup();
+ const first=await request(db,'/api/questions');
+ const second=await request(db,'/api/questions?page=2');
+ const all=[...first.body.questions,...second.body.questions];
+ assert.equal(all.length,15);
+ assert(!all.some(q=>q.id==='guide-venture-cross-rule'));
+ assert.equal((await request(db,'/api/questions/guide-venture-cross-rule')).status,404);
+ assert(second.body.questions.some(q=>q.id==='guide-sizing-growth'),'sourcing answer remains searchable beyond the first page');
+ for(const [label,id] of [
+  ['모험자본 조달 병목','guide-sizing-growth'],
+  ['조달금리 경쟁','guide-funding-rate-spread-risk'],
+  ['IMA 만기 집중','guide-ima-maturity'],
+  ['자본효율과 수신 한도','guide-sizing-growth'],
+  ['부동산·단일 자산 집중','guide-real-estate-concentration']
+ ]){
+  const found=await request(db,'/api/questions?q='+encodeURIComponent(label));
+  assert.equal(found.status,200);
+  assert(found.body.questions.some(q=>q.id===id),label);
+  const detail=await request(db,'/api/questions/'+id);
+  assert.equal(detail.status,200);
+  assert(detail.body.answers.some(a=>a.kind==='guide'&&a.body.length>100),label);
+ }
+ for(const id of ['guide-pension-eligibility','guide-pension-self-product-ban']){
+  const found=await request(db,'/api/questions?q='+encodeURIComponent('퇴직연금'));
+  assert(found.body.questions.some(q=>q.id===id),'pension Q&A retained');
+ }
+});
 test('anonymous records visible to a separate client and edits retain previous sources',async()=>{const {db}=setup();let r=await request(db,'/api/questions','POST',question);assert.equal(r.status,201);const id=r.body.question.id;assert(r.body.question.own);r=await request(db,'/api/questions/'+id,'GET',undefined,other);assert(!r.body.question.own);assert.equal(r.body.question.title,question.title);
 r=await request(db,'/api/questions/'+id+'/answers','POST',answer,other);assert.equal(r.status,201);const aid=r.body.answer.id;
 r=await request(db,'/api/answers/'+aid,'PATCH',{...answer,expectedRevision:1},key);assert.equal(r.status,403);
