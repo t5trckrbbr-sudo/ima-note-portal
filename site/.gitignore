@@ -1,0 +1,12 @@
+node_modules/
+dist/
+worker/assets.generated.js
+.wrangler/
+.local-data/
+.env
+.env.*
+.dev.vars*
+*.sqlite*
+*.db
+*.tar.gz
+.DS_Store

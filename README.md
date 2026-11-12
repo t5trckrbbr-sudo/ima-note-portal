@@ -1,3 +1,34 @@
+# 발행어음 & IMA · 2027 전망 대시보드
+
+**[공개 사이트 열기 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site)** · **[질문·답변 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions)** · **[수신·NIM 계산기 →](https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#funding)**
+
+## 최신 사이트 코드와 AI 인계
+
+완성된 사이트 소스는 **[`site/`](./site/)** 에 있습니다. 기존 기획·원본 데이터·프로토타입도 아래 경로에 보존했습니다.
+
+- **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md)부터 읽으세요.
+- **실행·빌드·배포:** [site/README.md](./site/README.md)
+- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산, 모험자본 기회비용, 만기·리스크 점검, 익명 질문·답변과 수정 이력
+- **공개 주소:** https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
+
+```bash
+cd site
+npm ci
+npm run check
+npm test
+npm run dev
+```
+
+Node.js **24 이상**을 사용합니다. 로컬 서버 주소는 실행 시 표시됩니다. 로컬 게시판은 로컬 SQLite에 저장되며 운영 게시판과 분리됩니다.
+
+GitHub는 소스 인계본이며, 커밋만으로 현재 Sites 사이트가 자동 배포되지는 않습니다. 운영 질문·답변 데이터는 Sites의 D1에 보관되고 이 저장소에는 포함되지 않습니다.
+
+---
+
+## 기존 기획 자료와 제작 가이드
+
+아래는 사이트 구축 전에 작성된 원문 안내입니다. 실제 최신 화면·검증 상태·개선 내용은 `site/`와 `AI_HANDOFF.md`를 기준으로 확인하세요.
+
 # 📘 초대형 IB 발행어음 · IMA 및 증권사 조달전략 웹사이트 제작 가이드 (`ima-note-portal`)
 
 이 저장소는 다른 AI 웹사이트 빌더(**Lovable, v0, Bolt.new, Replit Agent, Cursor, Claude Artifacts, ChatGPT Canvas** 등)를 활용해 **「초대형 IB 발행어음 · IMA 및 9대 증권사 조달전략 인터랙티브 리서치 포털」**을 즉시 구축할 수 있도록 모든 기획·설계 원칙·검증 데이터·산식·법령 근거를 정리한 **마스터 가이드 & 데이터팩**입니다.
@@ -68,3 +99,4 @@
 - **금융감독원 금융통계정보시스템 (FISIS)**: `2026년 2분기 말 (202606)` 확정 공시 (`SF304`, `SF307`, `SF321`, `SF324`, `SF325`, `SF308`, `SF408`, `SF331`, `SF209`)
 - **한국은행 경제통계시스템 (ECOS)** 및 **금융투자협회 채권정보센터 (KOFIA)**: 기준금리, CD·CP 금리, 국고채·회사채(`AA-`/`BBB-`) 시가평가·최종호가 수익률
 - **금감원 통합연금포털 · 저축은행중앙회 · 신용보증기금(KODIT) · 국가법령정보센터 · 금융위원회(`'25.04.09` 종투사 제도개선 방안)**
+
