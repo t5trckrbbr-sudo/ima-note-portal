@@ -45,7 +45,7 @@ test('empty ledger exposes a manual workflow without claiming existing guides we
   const {db} = setup();
   const list = (await request(db, '/api/questions')).body;
   assert.deepEqual(list.reviewWorkflow, {mode: 'manual', lastRunAt: null, lastRunId: null});
-  assert.equal(list.counts.reviewPending, 15);
+  assert.equal(list.counts.reviewPending, 16);
   assert.equal(list.counts.reviewNeedsEvidence, 0);
   assert(list.questions.every(value => value.review === null));
   const detail = (await request(db, '/api/questions/' + seedQuestions[0].id)).body;
@@ -83,8 +83,8 @@ test('guide reviews keep one stable answer, frozen original sources, and confirm
   assert.equal(detail.answers[0].revision, 3);
   assert.equal(snapshot(sql), before, 'review publication is a read-only overlay on D1');
   const list = (await request(db, '/api/questions?status=review-pending', ledger)).body;
-  assert.equal(list.total, 14);
-  assert.equal(list.counts.reviewPending, 14);
+  assert.equal(list.total, 15);
+  assert.equal(list.counts.reviewPending, 15);
   assert.equal(list.reviewWorkflow.lastRunAt, times[1]);
   assert.equal(list.reviewWorkflow.lastRunId, 'second-review');
   const alternate = structuredClone(ledger);
@@ -115,7 +115,7 @@ test('user questions get separate unforgeable research answers while community r
   const list = (await request(db, '/api/questions?status=review-needs-evidence', ledger)).body;
   assert.equal(list.total, 1);
   assert.equal(list.counts.reviewNeedsEvidence, 1);
-  assert.equal(list.counts.reviewPending, 14);
+  assert.equal(list.counts.reviewPending, 15);
   assert.equal((await request(db, '/api/answers/' + detail.answers[0].id, ledger, 'PATCH', {...answer, expectedRevision: 1})).status, 404);
   assert.equal((await request(db, '/api/answers/' + detail.answers[0].id, ledger, 'DELETE')).status, 404);
   assert.equal((await request(db, '/api/questions/' + id + '/answers', ledger, 'POST', {...answer, kind: 'research'})).status, 400);
@@ -129,8 +129,8 @@ test('deleted questions cannot be resurrected by review records', async () => {
   const ledger = {version: 1, runs: [run('deleted-thread-review', [entry(original)])]};
   assert.equal((await request(db, '/api/questions/' + id, empty, 'DELETE')).status, 204);
   assert.equal((await request(db, '/api/questions/' + id, ledger)).status, 404);
-  assert.equal((await request(db, '/api/questions', ledger)).body.total, 15);
-  assert.equal((await request(db, '/api/questions', ledger)).body.counts.reviewPending, 15);
+  assert.equal((await request(db, '/api/questions', ledger)).body.total, 16);
+  assert.equal((await request(db, '/api/questions', ledger)).body.counts.reviewPending, 16);
 });
 
 test('review input fingerprints detect community edits, deletions and base-answer changes', async () => {
