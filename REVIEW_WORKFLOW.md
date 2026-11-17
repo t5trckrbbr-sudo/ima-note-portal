@@ -43,7 +43,7 @@ npm run review:prepare
 | `inputFingerprint` | 수집값 유지. 입력이 달라지면 재수집·재검토 |
 | `previousAnswer` | 처음 교체하는 가이드의 원본. 수집값 그대로 보존. 후속 회차에는 없음 |
 
-전체 검토를 마친 실제 시각을 최상위 `reviewedAt`에 `new Date().toISOString()` 형식으로 기록합니다. 기존 15건을 포함해 모든 질문에 결과가 있어야 합니다. 자료가 부족한 항목도 삭제하거나 누락하지 말고 `needs-evidence`로 기록합니다.
+전체 검토를 마친 실제 시각을 최상위 `reviewedAt`에 `new Date().toISOString()` 형식으로 기록합니다. 기본 가이드 질문을 포함해 모든 현재 질문에 결과가 있어야 합니다. 자료가 부족한 항목도 삭제하거나 누락하지 말고 `needs-evidence`로 기록합니다.
 
 ## 3. 변경 감지와 검토 기록 추가
 
