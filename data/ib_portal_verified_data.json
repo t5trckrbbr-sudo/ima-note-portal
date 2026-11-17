@@ -163,5 +163,30 @@
       { "name": "저축은행 퇴직연금 예금 (1년)", "rateRange": "평균 2.93%", "protection": "예금자보호", "cap": "기관당 5,000만 원 상한", "tag": "한도 제약" },
       { "name": "시중은행 퇴직연금 예금 (1년)", "rateRange": "2.60% ~ 2.85%", "protection": "은행 신용 (AAA)", "cap": "자사 상품 편입 제한", "tag": "저금리" }
     ]
+  },
+  "shortYieldCurveAndMaturity": {
+    "observedDate": "2026-11-13",
+    "bokBasePct": 3.00,
+    "call1dPct": 3.055,
+    "curves": [
+      { "label": "발행어음 7사 상시 평균", "d1": 2.87, "m1": 2.90, "m3": 3.17, "m6": 3.55, "m9": 3.80, "y1": 3.96, "slope1y1dBp": 109.0, "slope1y3mBp": 79.0 },
+      { "label": "발행어음 선발 4사 평균", "d1": 2.80, "m1": 2.85, "m3": 3.15, "m6": 3.55, "m9": 3.82, "y1": 4.00, "slope1y1dBp": 120.0, "slope1y3mBp": 85.0 },
+      { "label": "국고채권 (KOFIA 민평)", "d1": 3.055, "m1": null, "m3": 3.210, "m6": 3.348, "m9": 3.542, "y1": 3.639, "slope1y1dBp": 58.4, "slope1y3mBp": 42.9 },
+      { "label": "금융채II 무보증 AA0", "d1": 3.055, "m1": null, "m3": 3.656, "m6": 3.983, "m9": 4.115, "y1": 4.141, "slope1y1dBp": 108.6, "slope1y3mBp": 48.5 },
+      { "label": "회사채 무보증 AA-", "d1": 3.055, "m1": null, "m3": 3.809, "m6": 4.168, "m9": 4.226, "y1": 4.245, "slope1y1dBp": 119.0, "slope1y3mBp": 43.6 }
+    ],
+    "maturityBuckets26Q1": {
+      "basePeriod": "2026.1Q 말 (금감원 정무위 제출)",
+      "totalEok": 544273,
+      "under3mSharePct": 63.4,
+      "estimatedDemandShareRangePct": [45.0, 50.0],
+      "cmaNoteBalanceRangeTril": [21.0, 24.5],
+      "buckets": [
+        { "bucket": "1개월 이하 (수시·CMA 포함)", "amountEok": 292495, "sharePct": 53.7 },
+        { "bucket": "1개월 초과 ~ 3개월 이하", "amountEok": 52490, "sharePct": 9.6 },
+        { "bucket": "3개월 초과 ~ 6개월 이하", "amountEok": 90660, "sharePct": 16.7 },
+        { "bucket": "6개월 초과 ~ 1년 이하", "amountEok": 108628, "sharePct": 20.0 }
+      ]
+    }
   }
 }
