@@ -39,6 +39,7 @@ test('risk labels find their substantive answers and the removed allocation ques
   assert(found.body.questions.some(q=>q.id===id),'pension Q&A retained');
  }
 });
+test('short-funding question is discoverable by the panel percentage',async()=>{const {db}=setup();const r=await request(db,'/api/questions?q=63.4');assert.equal(r.status,200);assert(r.body.questions.some(q=>q.id==='guide-yield-curve-short-funding'));});
 test('anonymous records visible to a separate client and edits retain previous sources',async()=>{const {db}=setup();let r=await request(db,'/api/questions','POST',question);assert.equal(r.status,201);const id=r.body.question.id;assert(r.body.question.own);r=await request(db,'/api/questions/'+id,'GET',undefined,other);assert(!r.body.question.own);assert.equal(r.body.question.title,question.title);
 r=await request(db,'/api/questions/'+id+'/answers','POST',answer,other);assert.equal(r.status,201);const aid=r.body.answer.id;
 r=await request(db,'/api/answers/'+aid,'PATCH',{...answer,expectedRevision:1},key);assert.equal(r.status,403);
