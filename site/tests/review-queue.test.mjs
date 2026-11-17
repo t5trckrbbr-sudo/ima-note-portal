@@ -132,7 +132,7 @@ test('draft requires deliberate review for all questions and freezes the first g
 
 test('apply rejects incomplete whole-board coverage, missing outcomes and changed guide snapshots', async () => {
   const snapshot = snapshotFor(await fixtures({includeUser:false}));
-  assert.equal(snapshot.questions.length, 16);
+  assert.equal(snapshot.questions.length, 17);
   const incomplete = completeDraft(snapshot);
   incomplete.questionIds.pop(); incomplete.entries.pop();
   await assert.rejects(appendReviewedRun(snapshot, incomplete, clone(snapshot)), /Every current question must be reviewed/);
@@ -179,7 +179,7 @@ test('two successful whole-board runs append history without rewriting original 
   assert.deepEqual(ledger, emptyLedger());
   assert.deepEqual(details, originals);
   assert.equal(published.runs.length, 1);
-  assert.equal(published.runs[0].entries.length, 17);
+  assert.equal(published.runs[0].entries.length, 18);
   const indexed = indexReviewLedger(published, seedQuestions);
   const after = details.map(d => ({...clone(d), answers:[projectResearchAnswer(d.question.id, indexed.byQuestion.get(d.question.id)), ...clone(d.reviewInput.communityAnswers)]}));
   const secondSnapshot = snapshotFor(after, published);

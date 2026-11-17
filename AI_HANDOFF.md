@@ -5,10 +5,11 @@
 - 운영 사이트: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 - 질문·답변: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions
 - 작업할 코드: `site/` (루트의 `reference/prototype_v1.html`은 초기 참고본)
-- Q&A 16건 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
+- Q&A 17건 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
 - 단기 수익률곡선 스티프닝 & 초단기 수신(`63.4%`) 심층 분석 보고서: [`PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md`](./PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md)
+- 2027년 수신환경(3대 악화 vs 3대 강화) & 베어 플랫 전략 보고서: [`OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md`](./OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md)
 - 이번 기능 추가 전 운영 소스: Sites commit `76497e1113f42e77042c826fd1f749c5731a46ac`, 배포 버전 6 (GitHub `d96753ce2307dcc578f91306e1ad21b35cbbb8af` 반영).
-- 원문 데이터팩 기준: commit `32a997602ee354aaea36e64d0346449435340d21` (+ `2026-11-17` `shortYieldCurveAndMaturity` 확장).
+- 원문 데이터팩 기준: commit `32a997602ee354aaea36e64d0346449435340d21` (+ `2026-11-17` `shortYieldCurveAndMaturity` · `fundingOutlook2027BearFlattening` 확장).
 
 GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테스트·빌드를 거쳐 같은 운영 사이트에 배포해야 합니다.
 
@@ -16,42 +17,44 @@ GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테�
 
 사용자가 사이트에 질문을 올린 뒤 이 대화에서 **“사이트 Q&A 업데이트해줘”**라고 요청하면, [REVIEW_WORKFLOW.md](./REVIEW_WORKFLOW.md)를 따라 새 질문에 답하고 기존 질문 답변도 모두 다시 검토합니다. 검토 결과·원문 근거·실제 검토일·변경 요약을 남기며, 변경 없음도 근거를 확인한 후 기록합니다. 확인되지 않은 항목은 ‘추가 확인 필요’로 남깁니다.
 
-검토 답변은 `worker/reviews.js`의 회차별 기록으로 관리합니다. 처음에는 빈 기록이며 기존 16건을 새로 검증했다고 표시하지 않습니다. 사용자 D1 글은 그대로 보존하고, 원래 가이드 및 이후 검토 답변은 이력으로 남깁니다. 전체 질문 수집과 입력 변경 검사는 `npm run review:prepare`, `review:apply`, `review:verify`를 사용합니다. 수집 원문과 미완성 초안은 무시되는 `.local/`에만 둡니다.
+검토 답변은 `worker/reviews.js`의 회차별 기록으로 관리합니다. 처음에는 빈 기록이며 기존 17건을 새로 검증했다고 표시하지 않습니다. 사용자 D1 글은 그대로 보존하고, 원래 가이드 및 이후 검토 답변은 이력으로 남깁니다. 전체 질문 수집과 입력 변경 검사는 `npm run review:prepare`, `review:apply`, `review:verify`를 사용합니다. 수집 원문과 미완성 초안은 무시되는 `.local/`에만 둡니다.
 
 업데이트는 채팅 요청 시 진행합니다. 사이트의 ‘업데이트 요청문 복사’는 요청문을 복사하는 기능이며 자체적으로 AI 검토를 실행하지 않습니다. 단순 소스 배포 요청을 금융 자료 전체 재검토 요청으로 확대하지 않습니다.
 
-## 최신 업데이트 — 2026-11-17 단기 수익률곡선 스티프닝 & 초단기 수신(`63.4%`) 추가 (`Q17`, 총 16건)
+## 최신 업데이트 — 2026-11-17 2027 수신환경(악화·강화) & 베어 플랫 전망 (`Q18`) · 단기 수익률곡선 스티프닝 (`Q17`, 총 17건)
 
-- `#funding`(수신 · NIM · 2027 전망) 화면에 발행어음(`수시~1년`) vs 국고채·금융채(`AA0`)·회사채(`AA-`) 단기 수익률곡선 스티프닝 비교표 및 업권 만기 3개월 이하(`63.4%`, `1개월 이하 53.7%`)·수시물(`45~50%` 추산, `발행어음형 CMA` `38~44%`) 수신 비중 패널(`shortCurvePanel()`, `shortYieldCurveAndMaturity`)을 추가했습니다.
-- `site/worker/seeds.js` 최상단에 `guide-yield-curve-short-funding` (**Q17**)을 추가하여 기본 가이드 Q&A는 **총 16건**(`guide-venture-cross-rule` 삭제 원칙 유지)이며, `api.test.mjs`·`review-queue.test.mjs`·`reviews.test.mjs`를 `16건` 기준으로 동기화했습니다.
+- `#funding`(수신 · NIM · 2027 전망) 화면에 ① 발행어음(`수시~1년`) vs 국고채·금융채(`AA0`)·회사채(`AA-`) 단기 수익률곡선 스티프닝 및 만기 3개월 이하(`63.4%`) 수신 비중 패널(`shortCurvePanel()`)과 ② **2027년 수신환경 종합 전망(3대 악화 vs 3대 강화 요인 · 공급 측 자체 속도조절) 및 국내 채권 ‘베어 플랫(Bear Flattening)’ 실증·최적 ALM 전략 패널(`outlook2027BearFlatPanel()`, `fundingOutlook2027BearFlattening`)**을 추가했습니다.
+- `#pension-risk`(리스크점검) 체크리스트에 **`베어 플랫 · 기간스프레드 압축`**(높음)을 추가해 주요 위험 6개 항목으로 확장하고 `guide-2027-funding-outlook-bear-flattening`과 연결했습니다.
+- `site/worker/seeds.js` 최상단에 `guide-2027-funding-outlook-bear-flattening` (**Q18**) 및 `guide-yield-curve-short-funding` (**Q17**)을 반영하여 기본 가이드 Q&A는 **총 17건**(`guide-venture-cross-rule` 삭제 원칙 유지)이며, `api.test.mjs`·`review-queue.test.mjs`·`reviews.test.mjs`를 `17건` 기준으로 동기화했습니다.
 
 ## 편집 원칙 — 2026-11-12 리스크점검 중심 정리
 
-1. **탭 이름은 `리스크점검`입니다.** 기존 공유 링크 호환을 위해 주소 `#pension-risk`는 유지합니다. 이 화면에는 수신·운용·상환에 영향을 주는 강조할 만한 주요 위험만 선별해서 올립니다. 현재 5개이며 향후 항목 수를 고정하지 않습니다.
+1. **탭 이름은 `리스크점검`입니다.** 기존 공유 링크 호환을 위해 주소 `#pension-risk`는 유지합니다. 이 화면에는 수신·운용·상환에 영향을 주는 강조할 만한 주요 위험만 선별해서 올립니다. 현재 6개이며 향후 항목 수를 고정하지 않습니다.
 2. **퇴직연금은 질문·답변에서 다룹니다.** 리스크 화면의 퇴직연금 규모·상품 비교 패널은 제거했습니다. 연금 편입 조건과 자사 예금 편입 제한 Q&A는 유지하고, 상단 검색의 연금 항목도 해당 Q&A로 바로 이동합니다.
-3. **`guide-venture-cross-rule` 질문을 삭제했습니다.** “모험자본 20% 의무는 자산배분 100%에 더하는 항목인가요?”를 다시 추가하지 마세요. 핵심 소싱 설명은 기존 `guide-sizing-growth`에 통합했습니다. 신규 추가된 `guide-yield-curve-short-funding`(Q17)을 포함한 16개 질문·가이드 답변 ID를 유지합니다.
+3. **`guide-venture-cross-rule` 질문을 삭제했습니다.** “모험자본 20% 의무는 자산배분 100%에 더하는 항목인가요?”를 다시 추가하지 마세요. 핵심 소싱 설명은 기존 `guide-sizing-growth`에 통합했습니다. 신규 추가된 `guide-2027-funding-outlook-bear-flattening`(Q18), `guide-yield-curve-short-funding`(Q17)을 포함한 17개 질문·가이드 답변 ID를 유지합니다.
 4. **리스크와 해설을 다음과 같이 연결합니다.** 항목명으로 게시판 검색이 가능해야 합니다. 같은 판단을 다루는 두 리스크는 하나의 충분한 Q&A를 공유하며 중복 질문을 만들지 않습니다.
 
 | 리스크 항목 | Q&A ID |
 | --- | --- |
 | 모험자본 조달 병목 | `guide-sizing-growth` |
 | 조달금리 경쟁 | `guide-funding-rate-spread-risk` |
+| 베어 플랫 · 기간스프레드 압축 | `guide-2027-funding-outlook-bear-flattening` |
 | IMA 만기 집중 | `guide-ima-maturity` |
 | 자본효율과 수신 한도 | `guide-sizing-growth` |
 | 부동산·단일 자산 집중 | `guide-real-estate-concentration` |
 
-딥링크 형식은 `?q=<id>#questions`이며 타 탭 이동 시 질문 쿼리를 정리합니다. API 기본 목록은 `total: 16`, `pages: 2`, `unanswered: 0`입니다. 사용자 글이 추가되면 운영 합계는 달라질 수 있습니다. 기존 운영 D1의 사용자 질문·답변·수정 이력은 삭제·초기화하지 않습니다.
+딥링크 형식은 `?q=<id>#questions`이며 타 탭 이동 시 질문 쿼리를 정리합니다. API 기본 목록은 `total: 17`, `pages: 2`, `unanswered: 0`입니다. 사용자 글이 추가되면 운영 합계는 달라질 수 있습니다. 기존 운영 D1의 사용자 질문·답변·수정 이력은 삭제·초기화하지 않습니다.
 
 ## 다른 AI에게 전달할 요청 예시
 
-> 최신 인계 문서(`AI_HANDOFF.md`, `PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md`)와 코드 변경분(기본 질문 16건 — 신규 `guide-yield-curve-short-funding` 포함, `#funding` 단기 수익률곡선 스티프닝·초단기 수신 `63.4%` 패널 추가, 리스크점검 탭·검토 워크플로 유지)을 확인하고 같은 운영 사이트를 업데이트해줘. `.openai/hosting.json`과 운영 D1 데이터를 보존한 채 `npm run check`, `npm test`, `npm run build` 통과 후 배포해줘. 삭제된 `guide-venture-cross-rule`을 복원하지 말고 `#funding` 신규 패널·리스크 검색·Q&A 딥링크도 확인해줘.
+> 최신 인계 문서(`AI_HANDOFF.md`, `OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md`, `PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md`)와 코드 변경분(기본 질문 17건 — 신규 `guide-2027-funding-outlook-bear-flattening` 및 `guide-yield-curve-short-funding` 포함, `#funding` 2027 수신환경·베어 플랫 전망 패널 및 단기 수익률곡선 패널 추가, `#pension-risk` 6대 리스크점검·검토 워크플로 유지)을 확인하고 같은 운영 사이트를 업데이트해줘. `.openai/hosting.json`과 운영 D1 데이터를 보존한 채 `npm run check`, `npm test`, `npm run build` 통과 후 배포해줘. 삭제된 `guide-venture-cross-rule`을 복원하지 말고 `#funding` 신규 패널·리스크 검색·Q&A 딥링크도 확인해줘.
 
 ## 현재 사용자 요구와 화면
 
 1. 왼쪽 브랜드: **발행어음 & IMA**. 차분한 청록색·화이트 대시보드.
 2. 첫 화면: 8가지 질문을 클릭하는 주제 지도, 핵심 지표, 질문 흐름.
 3. **두 번째 메뉴는 질문·답변**. 기간 공통/2027 전망, 5개 주제, 답변 대기/출처 첨부 필터와 검색.
-4. 수신 화면: 2026.2Q와 2027E 잔액, 회사별 발행어음 NIM 입력, IMA 수익 기여율, 연환산 수익 합계.
+4. 수신 화면: 2026.2Q와 2027E 잔액, 회사별 발행어음 NIM 입력, IMA 수익 기여율, 연환산 수익 합계, 단기 수익률곡선·초단기 수신 구조, 2027 수신환경(악화·강화)·베어 플랫 전망.
 5. 기존 상세 화면: 운용규제, 모험자본 비용 계산기, IMA 만기, 9사 조달, 한투·미래 비교, 리스크점검(`#questions` 관련 해설 딥링크 연동), 출처.
 6. 사이트는 **공개 열람·로그인 없는 작성**이 명시적인 사용자 선택입니다.
 
@@ -68,9 +71,10 @@ GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테�
 | `site/worker/reviews.js`, `review-model.js` | 회차별 검토 답변·근거·원본/수정 이력과 입력 지문 |
 | `site/scripts/review-queue.mjs` | 전체 질문 수집·검토 범위/입력 변경 검사·로컬 회차 추가 |
 | `REVIEW_WORKFLOW.md` | 채팅 업데이트 요청을 실제 검토·배포로 이어가는 운영 절차 |
-| `site/worker/seeds.js` | 기본 질문 16개: 단기 수익률곡선·초단기 수신(Q17), 유동성 규제(Q13), 모험자본·자본효율 통합 해설(Q12), 연금 Q&A 유지 |
-| `QA_VERIFIED_ANSWERS.md` | Q&A 16개 답변 · 리스크점검 관련 해설 매핑표 · 유동성 규제 비교표 마스터 문서 |
+| `site/worker/seeds.js` | 기본 질문 17개: 2027 수신환경·베어 플랫(Q18), 단기 수익률곡선·초단기 수신(Q17), 유동성 규제(Q13) 등 유지 |
+| `QA_VERIFIED_ANSWERS.md` | Q&A 17개 답변 · 리스크점검 관련 해설 매핑표 · 유동성 규제 비교표 마스터 문서 |
 | `PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md` | 발행어음 vs 국채·회사채 단기 수익률곡선 스티프닝 및 만기 3개월 이하(`63.4%`)·수시물 비중 심층 분석 보고서 |
+| `OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md` | 2027년 발행어음 수신환경(3대 악화 vs 3대 강화) 및 국내 채권 베어 플랫 국면 전략 분석 보고서 |
 | `site/db/schema.ts`, `drizzle/` | D1 스키마와 마이그레이션 |
 | `site/public/data.json` | 제공된 원문 정량 데이터 |
 | `site/public/source-guide.md` | 배포 시점 원문 기획서 사본 |

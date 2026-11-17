@@ -12,9 +12,9 @@
 
 완성된 사이트 소스는 **[`site/`](./site/)** 에 있습니다. 기존 기획·원본 데이터·프로토타입도 아래 경로에 보존했습니다.
 
-- **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md), [QA_VERIFIED_ANSWERS.md](./QA_VERIFIED_ANSWERS.md), [PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md](./PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md)부터 읽으세요.
+- **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md), [QA_VERIFIED_ANSWERS.md](./QA_VERIFIED_ANSWERS.md), [PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md](./PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md), [OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md](./OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md)부터 읽으세요.
 - **실행·빌드·배포:** [site/README.md](./site/README.md)
-- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산 및 **발행어음 vs 국채·회사채 단기 수익률곡선 스티프닝 · 만기 3개월 이하(`63.4%`) 초단기 수신 구조(`#funding`)**, 모험자본 기회비용, 만기·리스크 점검(`#pension-risk` → `#questions` 관련 해설 딥링크 연동), 익명 질문·답변(가이드 Q&A 16건 — **단기 수익률곡선 스티프닝 & 3개월 이하·수시물 비중 실증**, **한국투자증권 발행어음 수시성 수신 10% 현금성자산 보유 의무 비교**, **부동산 10% 한도·단일 딜 집중위험**, **조달금리 +50bp 경보선**, **퇴직연금 자사 예금 편입 금지** 포함)과 수정 이력
+- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산 및 **발행어음 vs 국채·회사채 단기 수익률곡선 스티프닝 · 만기 3개월 이하(`63.4%`) 초단기 수신 구조 · 2027 수신환경(악화·강화) & 베어 플랫 전망(`#funding`)**, 모험자본 기회비용, 만기·리스크 점검(`#pension-risk` → `#questions` 관련 해설 딥링크 연동, 6대 리스크), 익명 질문·답변(가이드 Q&A 17건 — **2027 수신환경 & 베어 플랫 전략**, **단기 수익률곡선 스티프닝 & 3개월 이하·수시물 비중 실증**, **한국투자증권 발행어음 수시성 수신 10% 현금성자산 보유 의무 비교**, **부동산 10% 한도·단일 딜 집중위험**, **조달금리 +50bp 경보선**, **퇴직연금 자사 예금 편입 금지** 포함)과 수정 이력
 - **공개 주소:** https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 
 ```bash
