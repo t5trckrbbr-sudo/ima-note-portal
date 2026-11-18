@@ -9,148 +9,935 @@
   "globalKpis": {
     "promNoteIma26Q2ExactTril": 58.54,
     "promNote26Q2ExactTril": 55.94,
-    "ima26Q2ExactTril": 2.60,
+    "ima26Q2ExactTril": 2.6,
     "promNoteIma26Q2SimBaseTril": 57.26,
-    "promNoteIma27EstTril": 83.00,
-    "promNote27EstTril": 78.00,
-    "ima27EstTril": 5.00,
+    "promNoteIma27EstTril": 85,
+    "promNote27EstTril": 80,
+    "ima27EstTril": 5.0,
     "ib9BorrowingsTotal26Q2Tril": 472.75,
-    "ib9InvestorDeposits26Q2Tril": 158.50,
-    "vcMandatePctSchedule": { "2026": 10, "2027": 20, "2028": 25 },
+    "ib9InvestorDeposits26Q2Tril": 158.5,
+    "vcMandatePctSchedule": {
+      "2026": 10,
+      "2027": 20,
+      "2028": 25
+    },
     "midCorpARatedCapOfMandatePct": 30,
-    "realEstateCapPctSchedule": { "2025": 30, "2026": 15, "2027": 10 }
+    "realEstateCapPctSchedule": {
+      "2025": 30,
+      "2026": 15,
+      "2027": 10
+    }
   },
   "promNoteImaTrend": [
-    { "period": "2021", "firms": 4, "promNote": 23.20, "ima": 0.00, "total": 23.20, "note": "미래에셋 '21.05 합류" },
-    { "period": "2022", "firms": 4, "promNote": 30.70, "ima": 0.00, "total": 30.70, "note": "금리 인상기 단기수신 유입" },
-    { "period": "2023", "firms": 4, "promNote": 36.10, "ima": 0.00, "total": 36.10, "note": "선발 4사 체제 확장" },
-    { "period": "2024", "firms": 4, "promNote": 41.50, "ima": 0.00, "total": 41.50, "note": "한투 단독 17.32조 돌파" },
-    { "period": "2025", "firms": 4, "promNote": 49.80, "ima": 1.10, "total": 50.90, "note": "한투 IMA 1호(1.1조) 출시" },
-    { "period": "2026.2Q(FISIS확정)", "firms": 7, "promNote": 55.94, "ima": 2.60, "total": 58.54, "note": "키움·하나·신한 신규 진입 반영" },
-    { "period": "2027E(전망)", "firms": 9, "promNote": 78.00, "ima": 5.00, "total": 83.00, "note": "선발 확대 + 신규 3사 안착 + 잠재 2사" }
+    {
+      "period": "2021",
+      "firms": 4,
+      "promNote": 23.2,
+      "ima": 0.0,
+      "total": 23.2,
+      "note": "미래에셋 '21.05 합류"
+    },
+    {
+      "period": "2022",
+      "firms": 4,
+      "promNote": 30.7,
+      "ima": 0.0,
+      "total": 30.7,
+      "note": "금리 인상기 단기수신 유입"
+    },
+    {
+      "period": "2023",
+      "firms": 4,
+      "promNote": 36.1,
+      "ima": 0.0,
+      "total": 36.1,
+      "note": "선발 4사 체제 확장"
+    },
+    {
+      "period": "2024",
+      "firms": 4,
+      "promNote": 41.5,
+      "ima": 0.0,
+      "total": 41.5,
+      "note": "한투 단독 17.32조 돌파"
+    },
+    {
+      "period": "2025",
+      "firms": 4,
+      "promNote": 49.8,
+      "ima": 1.1,
+      "total": 50.9,
+      "note": "한투 IMA 1호(1.1조) 출시"
+    },
+    {
+      "period": "2026.2Q(FISIS확정)",
+      "firms": 7,
+      "promNote": 55.94,
+      "ima": 2.6,
+      "total": 58.54,
+      "note": "키움·하나·신한 신규 진입 반영"
+    },
+    {
+      "period": "2027E(전망)",
+      "firms": 9,
+      "promNote": 80,
+      "ima": 5,
+      "total": 85,
+      "note": "메리츠 연말 4조 IR 목표(사용자 전달) 반영 · 삼성 별도 물량 미반영 · 원문 83조 대비 +2조"
+    }
   ],
   "promNoteFisis202606": [
-    { "financeCd": "0010129", "firm": "한국투자증권", "licensedAt": "2017-11", "equityTril": 13.19, "legalCap200Tril": 26.38, "promNoteTril": 22.47, "promNote26Q3PrelimTril": 24.00, "imaTril": 2.60, "capRatioPct": 170.3, "limitUsagePct": 85.2, "intExp26Q2Eok": 1468, "intExp26H1Eok": 2904, "effRate26H1Pct": 2.66 },
-    { "financeCd": "0010119", "firm": "KB증권", "licensedAt": "2019-05", "equityTril": 7.98, "legalCap200Tril": 15.96, "promNoteTril": 11.00, "imaTril": 0.00, "capRatioPct": 137.9, "limitUsagePct": 69.0, "intExp26Q2Eok": 1252, "intExp26H1Eok": 2461, "effRate26H1Pct": 4.53 },
-    { "financeCd": "0010094", "firm": "미래에셋증권", "licensedAt": "2021-05", "equityTril": 10.57, "legalCap200Tril": 21.13, "promNoteTril": 10.58, "imaTril": 0.00, "capRatioPct": 100.1, "limitUsagePct": 50.1, "intExp26Q2Eok": 708, "intExp26H1Eok": 1366, "effRate26H1Pct": 2.75 },
-    { "financeCd": "0010101", "firm": "NH투자증권", "licensedAt": "2018-05", "equityTril": 9.82, "legalCap200Tril": 19.64, "promNoteTril": 8.78, "imaTril": 0.00, "capRatioPct": 89.4, "limitUsagePct": 44.7, "intExp26Q2Eok": 565, "intExp26H1Eok": 1105, "effRate26H1Pct": 2.61 },
-    { "financeCd": "0010128", "firm": "키움증권", "licensedAt": "2025-4Q", "equityTril": 6.89, "legalCap200Tril": 13.78, "promNoteTril": 1.82, "imaTril": 0.00, "capRatioPct": 26.4, "limitUsagePct": 13.2, "intExp26Q2Eok": 133, "intExp26H1Eok": 150, "effRate26H1Pct": 3.29 },
-    { "financeCd": "0010122", "firm": "하나증권", "licensedAt": "2026-1Q", "equityTril": 6.72, "legalCap200Tril": 13.44, "promNoteTril": 1.00, "imaTril": 0.00, "capRatioPct": 14.9, "limitUsagePct": 7.4, "intExp26Q2Eok": 62, "intExp26H1Eok": 94, "effRate26H1Pct": 3.42 },
-    { "financeCd": "0010108", "firm": "신한투자증권", "licensedAt": "2026-1Q", "equityTril": 5.88, "legalCap200Tril": 11.76, "promNoteTril": 0.29, "imaTril": 0.00, "capRatioPct": 5.0, "limitUsagePct": 2.5, "intExp26Q2Eok": 11, "intExp26H1Eok": 11, "effRate26H1Pct": 3.14 }
+    {
+      "financeCd": "0010129",
+      "firm": "한국투자증권",
+      "licensedAt": "2017-11",
+      "equityTril": 13.19,
+      "legalCap200Tril": 26.38,
+      "promNoteTril": 22.47,
+      "promNote26Q3PrelimTril": 24.0,
+      "imaTril": 2.6,
+      "capRatioPct": 170.3,
+      "limitUsagePct": 85.2,
+      "intExp26Q2Eok": 1468,
+      "intExp26H1Eok": 2904,
+      "effRate26H1Pct": 2.66
+    },
+    {
+      "financeCd": "0010119",
+      "firm": "KB증권",
+      "licensedAt": "2019-05",
+      "equityTril": 7.98,
+      "legalCap200Tril": 15.96,
+      "promNoteTril": 11.0,
+      "imaTril": 0.0,
+      "capRatioPct": 137.9,
+      "limitUsagePct": 69.0,
+      "intExp26Q2Eok": 1252,
+      "intExp26H1Eok": 2461,
+      "effRate26H1Pct": 4.53
+    },
+    {
+      "financeCd": "0010094",
+      "firm": "미래에셋증권",
+      "licensedAt": "2021-05",
+      "equityTril": 10.57,
+      "legalCap200Tril": 21.13,
+      "promNoteTril": 10.58,
+      "imaTril": 0.0,
+      "capRatioPct": 100.1,
+      "limitUsagePct": 50.1,
+      "intExp26Q2Eok": 708,
+      "intExp26H1Eok": 1366,
+      "effRate26H1Pct": 2.75
+    },
+    {
+      "financeCd": "0010101",
+      "firm": "NH투자증권",
+      "licensedAt": "2018-05",
+      "equityTril": 9.82,
+      "legalCap200Tril": 19.64,
+      "promNoteTril": 8.78,
+      "imaTril": 0.0,
+      "capRatioPct": 89.4,
+      "limitUsagePct": 44.7,
+      "intExp26Q2Eok": 565,
+      "intExp26H1Eok": 1105,
+      "effRate26H1Pct": 2.61
+    },
+    {
+      "financeCd": "0010128",
+      "firm": "키움증권",
+      "licensedAt": "2025-4Q",
+      "equityTril": 6.89,
+      "legalCap200Tril": 13.78,
+      "promNoteTril": 1.82,
+      "imaTril": 0.0,
+      "capRatioPct": 26.4,
+      "limitUsagePct": 13.2,
+      "intExp26Q2Eok": 133,
+      "intExp26H1Eok": 150,
+      "effRate26H1Pct": 3.29
+    },
+    {
+      "financeCd": "0010122",
+      "firm": "하나증권",
+      "licensedAt": "2026-1Q",
+      "equityTril": 6.72,
+      "legalCap200Tril": 13.44,
+      "promNoteTril": 1.0,
+      "imaTril": 0.0,
+      "capRatioPct": 14.9,
+      "limitUsagePct": 7.4,
+      "intExp26Q2Eok": 62,
+      "intExp26H1Eok": 94,
+      "effRate26H1Pct": 3.42
+    },
+    {
+      "financeCd": "0010108",
+      "firm": "신한투자증권",
+      "licensedAt": "2026-1Q",
+      "equityTril": 5.88,
+      "legalCap200Tril": 11.76,
+      "promNoteTril": 0.29,
+      "imaTril": 0.0,
+      "capRatioPct": 5.0,
+      "limitUsagePct": 2.5,
+      "intExp26Q2Eok": 11,
+      "intExp26H1Eok": 11,
+      "effRate26H1Pct": 3.14
+    }
   ],
   "opportunityCost2027": [
-    { "key": "kis", "name": "한국투자증권", "q26Base": 25.07, "q27Est": 30.90, "delta": 5.83, "vcNew20Tril": 1.17, "vcTotalAddTril": 3.67, "oppCostNew150bpEok": 175, "oppCostNewAfter30CapEok": 122, "fisis2606Exact": 25.07 },
-    { "key": "kiwoom", "name": "키움증권", "q26Base": 1.82, "q27Est": 6.00, "delta": 4.18, "vcNew20Tril": 0.84, "vcTotalAddTril": 1.02, "oppCostNew150bpEok": 125, "oppCostNewAfter30CapEok": 88, "fisis2606Exact": 1.82 },
-    { "key": "hana", "name": "하나증권", "q26Base": 1.00, "q27Est": 4.50, "delta": 3.50, "vcNew20Tril": 0.70, "vcTotalAddTril": 0.80, "oppCostNew150bpEok": 105, "oppCostNewAfter30CapEok": 74, "fisis2606Exact": 1.00 },
-    { "key": "shinhan", "name": "신한투자증권", "q26Base": 0.29, "q27Est": 3.30, "delta": 3.01, "vcNew20Tril": 0.60, "vcTotalAddTril": 0.63, "oppCostNew150bpEok": 90, "oppCostNewAfter30CapEok": 63, "fisis2606Exact": 0.29 },
-    { "key": "nh", "name": "NH투자증권", "q26Base": 7.50, "q27Est": 10.50, "delta": 3.00, "vcNew20Tril": 0.60, "vcTotalAddTril": 1.35, "oppCostNew150bpEok": 90, "oppCostNewAfter30CapEok": 63, "fisis2606Exact": 8.78 },
-    { "key": "mirae", "name": "미래에셋증권", "q26Base": 10.58, "q27Est": 13.00, "delta": 2.42, "vcNew20Tril": 0.48, "vcTotalAddTril": 1.54, "oppCostNew150bpEok": 73, "oppCostNewAfter30CapEok": 51, "fisis2606Exact": 10.58 },
-    { "key": "potential", "name": "잠재 2사(삼성·메리츠)", "q26Base": 0.00, "q27Est": 2.00, "delta": 2.00, "vcNew20Tril": 0.40, "vcTotalAddTril": 0.40, "oppCostNew150bpEok": 60, "oppCostNewAfter30CapEok": 42, "fisis2606Exact": 0.00 },
-    { "key": "kb", "name": "KB증권", "q26Base": 11.00, "q27Est": 12.80, "delta": 1.80, "vcNew20Tril": 0.36, "vcTotalAddTril": 1.46, "oppCostNew150bpEok": 54, "oppCostNewAfter30CapEok": 38, "fisis2606Exact": 11.00 },
-    { "key": "all", "name": "전 증권사 합계", "q26Base": 57.26, "q27Est": 83.00, "delta": 25.74, "vcNew20Tril": 5.15, "vcTotalAddTril": 10.87, "oppCostNew150bpEok": 772, "oppCostNewAfter30CapEok": 541, "fisis2606Exact": 58.54 }
+    {
+      "key": "kis",
+      "name": "한국투자증권",
+      "q26Base": 25.07,
+      "q27Est": 30.9,
+      "delta": 5.83,
+      "vcNew20Tril": 1.17,
+      "vcTotalAddTril": 3.67,
+      "oppCostNew150bpEok": 175,
+      "oppCostNewAfter30CapEok": 122,
+      "fisis2606Exact": 25.07
+    },
+    {
+      "key": "kiwoom",
+      "name": "키움증권",
+      "q26Base": 1.82,
+      "q27Est": 6.0,
+      "delta": 4.18,
+      "vcNew20Tril": 0.84,
+      "vcTotalAddTril": 1.02,
+      "oppCostNew150bpEok": 125,
+      "oppCostNewAfter30CapEok": 88,
+      "fisis2606Exact": 1.82
+    },
+    {
+      "key": "hana",
+      "name": "하나증권",
+      "q26Base": 1.0,
+      "q27Est": 4.5,
+      "delta": 3.5,
+      "vcNew20Tril": 0.7,
+      "vcTotalAddTril": 0.8,
+      "oppCostNew150bpEok": 105,
+      "oppCostNewAfter30CapEok": 74,
+      "fisis2606Exact": 1.0
+    },
+    {
+      "key": "shinhan",
+      "name": "신한투자증권",
+      "q26Base": 0.29,
+      "q27Est": 3.3,
+      "delta": 3.01,
+      "vcNew20Tril": 0.6,
+      "vcTotalAddTril": 0.63,
+      "oppCostNew150bpEok": 90,
+      "oppCostNewAfter30CapEok": 63,
+      "fisis2606Exact": 0.29
+    },
+    {
+      "key": "nh",
+      "name": "NH투자증권",
+      "q26Base": 7.5,
+      "q27Est": 10.5,
+      "delta": 3.0,
+      "vcNew20Tril": 0.6,
+      "vcTotalAddTril": 1.35,
+      "oppCostNew150bpEok": 90,
+      "oppCostNewAfter30CapEok": 63,
+      "fisis2606Exact": 8.78
+    },
+    {
+      "key": "mirae",
+      "name": "미래에셋증권",
+      "q26Base": 10.58,
+      "q27Est": 13.0,
+      "delta": 2.42,
+      "vcNew20Tril": 0.48,
+      "vcTotalAddTril": 1.54,
+      "oppCostNew150bpEok": 73,
+      "oppCostNewAfter30CapEok": 51,
+      "fisis2606Exact": 10.58
+    },
+    {
+      "key": "meritz",
+      "name": "메리츠증권",
+      "q26Base": 0.0,
+      "q27Est": 4.0,
+      "delta": 4.0,
+      "vcNew20Tril": 0.8,
+      "vcTotalAddTril": 0.8,
+      "oppCostNew150bpEok": 120.0,
+      "oppCostNewAfter30CapEok": 84.0,
+      "fisis2606Exact": 0.0,
+      "q27AveragePromNoteTril": 2.0,
+      "assumptionNote": "사용자 전달 IR 목표: 평잔 2조·연말 4조. 이 계산기의 잔액·추가 의무액은 연말 4조 기준."
+    },
+    {
+      "key": "samsung",
+      "name": "삼성증권(별도 목표 미반영)",
+      "q26Base": 0.0,
+      "q27Est": 0.0,
+      "delta": 0.0,
+      "vcNew20Tril": 0.0,
+      "vcTotalAddTril": 0.0,
+      "oppCostNew150bpEok": 0.0,
+      "oppCostNewAfter30CapEok": 0.0,
+      "fisis2606Exact": 0.0,
+      "assumptionNote": "별도 목표 자료가 없어 추가 물량 미반영. 0은 회사 발표 목표가 아님."
+    },
+    {
+      "key": "kb",
+      "name": "KB증권",
+      "q26Base": 11.0,
+      "q27Est": 12.8,
+      "delta": 1.8,
+      "vcNew20Tril": 0.36,
+      "vcTotalAddTril": 1.46,
+      "oppCostNew150bpEok": 54,
+      "oppCostNewAfter30CapEok": 38,
+      "fisis2606Exact": 11.0
+    },
+    {
+      "key": "all",
+      "name": "전 증권사 합계",
+      "q26Base": 57.26,
+      "q27Est": 85.0,
+      "delta": 27.74,
+      "vcNew20Tril": 5.548,
+      "vcTotalAddTril": 11.274,
+      "oppCostNew150bpEok": 832.2,
+      "oppCostNewAfter30CapEok": 582.54,
+      "fisis2606Exact": 58.54
+    }
   ],
   "imaTranchesKis": [
-    { "tranche": "IMA 1호", "amountTril": 1.10, "sharePct": 42.3, "maturity": "2027-12", "note": "최대 단일 회차 · 연말 기관 북클로징 구간 중첩" },
-    { "tranche": "IMA 3호", "amountTril": 0.40, "sharePct": 15.4, "maturity": "2028-02", "note": "1호 만기 직후 연속 도래" },
-    { "tranche": "IMA 4호", "amountTril": 0.30, "sharePct": 11.5, "maturity": "2028-03", "note": "1분기 말 결산 구간" },
-    { "tranche": "IMA 2호", "amountTril": 0.80, "sharePct": 30.8, "maturity": "2028-04", "note": "두 번째 대형 회차 도래" }
+    {
+      "tranche": "IMA 1호",
+      "amountTril": 1.1,
+      "sharePct": 42.3,
+      "maturity": "2027-12",
+      "note": "최대 단일 회차 · 연말 기관 북클로징 구간 중첩"
+    },
+    {
+      "tranche": "IMA 3호",
+      "amountTril": 0.4,
+      "sharePct": 15.4,
+      "maturity": "2028-02",
+      "note": "1호 만기 직후 연속 도래"
+    },
+    {
+      "tranche": "IMA 4호",
+      "amountTril": 0.3,
+      "sharePct": 11.5,
+      "maturity": "2028-03",
+      "note": "1분기 말 결산 구간"
+    },
+    {
+      "tranche": "IMA 2호",
+      "amountTril": 0.8,
+      "sharePct": 30.8,
+      "maturity": "2028-04",
+      "note": "두 번째 대형 회차 도래"
+    }
   ],
   "ib9FirmsFunding202606": [
     {
-      "firm": "한국투자증권", "strategyGroup": "Ⅰ. 종투사 특례 극대화형", "assets": 138.88, "equity": 13.19, "deposits": 26.05, "fundingTotal": 80.85,
-      "mixTril": { "rp": 21.03, "promNote": 22.47, "elsDls": 14.15, "shortBorr": 16.35, "seniorBond": 3.59, "subDebt": 0.97, "secSoldOther": 2.29 },
-      "mixPct": { "rp": 26.0, "promNote": 27.8, "elsDls": 17.5, "shortBorr": 20.2, "seniorBond": 4.4, "subDebt": 1.2, "secSoldOther": 2.8 },
-      "ratios": { "consolNcr": 4151.9, "indivNcr": 2701.9, "consolCapOverRisk": 170.5, "indivCapOverRisk": 151.4, "leverageReg": 638.6, "leverageDeductedTril": 57.80, "leverageRawX": 10.5, "liq3m": 114.5, "noteLimitUse": 85.2 },
-      "effRates26H1": { "rp": 2.76, "promNote": 2.66, "bonds": 2.65, "borr": 4.40, "call": 2.34, "deposits": 0.82 }
+      "firm": "한국투자증권",
+      "strategyGroup": "Ⅰ. 종투사 특례 극대화형",
+      "assets": 138.88,
+      "equity": 13.19,
+      "deposits": 26.05,
+      "fundingTotal": 80.85,
+      "mixTril": {
+        "rp": 21.03,
+        "promNote": 22.47,
+        "elsDls": 14.15,
+        "shortBorr": 16.35,
+        "seniorBond": 3.59,
+        "subDebt": 0.97,
+        "secSoldOther": 2.29
+      },
+      "mixPct": {
+        "rp": 26.0,
+        "promNote": 27.8,
+        "elsDls": 17.5,
+        "shortBorr": 20.2,
+        "seniorBond": 4.4,
+        "subDebt": 1.2,
+        "secSoldOther": 2.8
+      },
+      "ratios": {
+        "consolNcr": 4151.9,
+        "indivNcr": 2701.9,
+        "consolCapOverRisk": 170.5,
+        "indivCapOverRisk": 151.4,
+        "leverageReg": 638.6,
+        "leverageDeductedTril": 57.8,
+        "leverageRawX": 10.5,
+        "liq3m": 114.5,
+        "noteLimitUse": 85.2
+      },
+      "effRates26H1": {
+        "rp": 2.76,
+        "promNote": 2.66,
+        "bonds": 2.65,
+        "borr": 4.4,
+        "call": 2.34,
+        "deposits": 0.82
+      }
     },
     {
-      "firm": "미래에셋증권", "strategyGroup": "Ⅱ. 글로벌·시장자산 배분형", "assets": 144.21, "equity": 10.57, "deposits": 24.57, "fundingTotal": 71.97,
-      "mixTril": { "rp": 24.70, "promNote": 10.58, "elsDls": 7.22, "shortBorr": 19.09, "seniorBond": 7.88, "subDebt": 1.08, "secSoldOther": 1.39 },
-      "mixPct": { "rp": 34.3, "promNote": 14.7, "elsDls": 10.0, "shortBorr": 26.5, "seniorBond": 11.0, "subDebt": 1.5, "secSoldOther": 1.9 },
-      "ratios": { "consolNcr": 4280.6, "indivNcr": 926.0, "consolCapOverRisk": 167.0, "indivCapOverRisk": 127.5, "leverageReg": 841.0, "leverageDeductedTril": 56.45, "leverageRawX": 13.6, "liq3m": 107.1, "noteLimitUse": 50.1 },
-      "effRates26H1": { "rp": 2.42, "promNote": 2.75, "bonds": 4.06, "borr": 2.91, "call": 1.88, "deposits": 0.77 }
+      "firm": "미래에셋증권",
+      "strategyGroup": "Ⅱ. 글로벌·시장자산 배분형",
+      "assets": 144.21,
+      "equity": 10.57,
+      "deposits": 24.57,
+      "fundingTotal": 71.97,
+      "mixTril": {
+        "rp": 24.7,
+        "promNote": 10.58,
+        "elsDls": 7.22,
+        "shortBorr": 19.09,
+        "seniorBond": 7.88,
+        "subDebt": 1.08,
+        "secSoldOther": 1.39
+      },
+      "mixPct": {
+        "rp": 34.3,
+        "promNote": 14.7,
+        "elsDls": 10.0,
+        "shortBorr": 26.5,
+        "seniorBond": 11.0,
+        "subDebt": 1.5,
+        "secSoldOther": 1.9
+      },
+      "ratios": {
+        "consolNcr": 4280.6,
+        "indivNcr": 926.0,
+        "consolCapOverRisk": 167.0,
+        "indivCapOverRisk": 127.5,
+        "leverageReg": 841.0,
+        "leverageDeductedTril": 56.45,
+        "leverageRawX": 13.6,
+        "liq3m": 107.1,
+        "noteLimitUse": 50.1
+      },
+      "effRates26H1": {
+        "rp": 2.42,
+        "promNote": 2.75,
+        "bonds": 4.06,
+        "borr": 2.91,
+        "call": 1.88,
+        "deposits": 0.77
+      }
     },
     {
-      "firm": "메리츠증권", "strategyGroup": "Ⅲ-B. 비인가 대체조달(매도증권)형", "assets": 85.18, "equity": 8.35, "deposits": 9.86, "fundingTotal": 54.03,
-      "mixTril": { "rp": 18.45, "promNote": 0.00, "elsDls": 10.12, "shortBorr": 6.27, "seniorBond": 4.71, "subDebt": 0.69, "secSoldOther": 13.77 },
-      "mixPct": { "rp": 34.1, "promNote": 0.0, "elsDls": 18.7, "shortBorr": 11.6, "seniorBond": 8.7, "subDebt": 1.3, "secSoldOther": 25.5 },
-      "ratios": { "consolNcr": 1885.9, "indivNcr": 1873.2, "consolCapOverRisk": 162.7, "indivCapOverRisk": 162.6, "leverageReg": 908.0, "leverageDeductedTril": 12.10, "leverageRawX": 10.2, "liq3m": 118.9, "noteLimitUse": 0.0 },
-      "effRates26H1": { "rp": 2.52, "promNote": null, "bonds": 3.47, "borr": 3.15, "call": 2.47, "deposits": 0.38 }
+      "firm": "메리츠증권",
+      "strategyGroup": "Ⅲ-B. 비인가 대체조달(매도증권)형",
+      "assets": 85.18,
+      "equity": 8.35,
+      "deposits": 9.86,
+      "fundingTotal": 54.03,
+      "mixTril": {
+        "rp": 18.45,
+        "promNote": 0.0,
+        "elsDls": 10.12,
+        "shortBorr": 6.27,
+        "seniorBond": 4.71,
+        "subDebt": 0.69,
+        "secSoldOther": 13.77
+      },
+      "mixPct": {
+        "rp": 34.1,
+        "promNote": 0.0,
+        "elsDls": 18.7,
+        "shortBorr": 11.6,
+        "seniorBond": 8.7,
+        "subDebt": 1.3,
+        "secSoldOther": 25.5
+      },
+      "ratios": {
+        "consolNcr": 1885.9,
+        "indivNcr": 1873.2,
+        "consolCapOverRisk": 162.7,
+        "indivCapOverRisk": 162.6,
+        "leverageReg": 908.0,
+        "leverageDeductedTril": 12.1,
+        "leverageRawX": 10.2,
+        "liq3m": 118.9,
+        "noteLimitUse": 0.0
+      },
+      "effRates26H1": {
+        "rp": 2.52,
+        "promNote": null,
+        "bonds": 3.47,
+        "borr": 3.15,
+        "call": 2.47,
+        "deposits": 0.38
+      }
     },
     {
-      "firm": "KB증권", "strategyGroup": "Ⅱ. 균형 포트폴리오형", "assets": 100.02, "equity": 7.98, "deposits": 16.80, "fundingTotal": 53.29,
-      "mixTril": { "rp": 8.91, "promNote": 11.00, "elsDls": 7.88, "shortBorr": 17.24, "seniorBond": 5.00, "subDebt": 0.00, "secSoldOther": 3.25 },
-      "mixPct": { "rp": 16.7, "promNote": 20.6, "elsDls": 14.8, "shortBorr": 32.3, "seniorBond": 9.4, "subDebt": 0.0, "secSoldOther": 6.1 },
-      "ratios": { "consolNcr": 2214.2, "indivNcr": 1829.1, "consolCapOverRisk": 191.6, "indivCapOverRisk": 180.4, "leverageReg": 808.9, "leverageDeductedTril": 36.21, "leverageRawX": 12.5, "liq3m": 115.2, "noteLimitUse": 69.0 },
-      "effRates26H1": { "rp": 2.45, "promNote": 4.53, "bonds": 2.76, "borr": 0.45, "call": 2.15, "deposits": 0.84 }
+      "firm": "KB증권",
+      "strategyGroup": "Ⅱ. 균형 포트폴리오형",
+      "assets": 100.02,
+      "equity": 7.98,
+      "deposits": 16.8,
+      "fundingTotal": 53.29,
+      "mixTril": {
+        "rp": 8.91,
+        "promNote": 11.0,
+        "elsDls": 7.88,
+        "shortBorr": 17.24,
+        "seniorBond": 5.0,
+        "subDebt": 0.0,
+        "secSoldOther": 3.25
+      },
+      "mixPct": {
+        "rp": 16.7,
+        "promNote": 20.6,
+        "elsDls": 14.8,
+        "shortBorr": 32.3,
+        "seniorBond": 9.4,
+        "subDebt": 0.0,
+        "secSoldOther": 6.1
+      },
+      "ratios": {
+        "consolNcr": 2214.2,
+        "indivNcr": 1829.1,
+        "consolCapOverRisk": 191.6,
+        "indivCapOverRisk": 180.4,
+        "leverageReg": 808.9,
+        "leverageDeductedTril": 36.21,
+        "leverageRawX": 12.5,
+        "liq3m": 115.2,
+        "noteLimitUse": 69.0
+      },
+      "effRates26H1": {
+        "rp": 2.45,
+        "promNote": 4.53,
+        "bonds": 2.76,
+        "borr": 0.45,
+        "call": 2.15,
+        "deposits": 0.84
+      }
     },
     {
-      "firm": "NH투자증권", "strategyGroup": "Ⅱ. 균형 포트폴리오형", "assets": 110.55, "equity": 9.82, "deposits": 16.76, "fundingTotal": 53.13,
-      "mixTril": { "rp": 12.81, "promNote": 8.78, "elsDls": 9.27, "shortBorr": 14.13, "seniorBond": 6.02, "subDebt": 0.00, "secSoldOther": 2.12 },
-      "mixPct": { "rp": 24.1, "promNote": 16.5, "elsDls": 17.4, "shortBorr": 26.6, "seniorBond": 11.3, "subDebt": 0.0, "secSoldOther": 4.0 },
-      "ratios": { "consolNcr": 2952.0, "indivNcr": 2042.0, "consolCapOverRisk": 168.3, "indivCapOverRisk": 150.6, "leverageReg": 676.4, "leverageDeductedTril": 45.64, "leverageRawX": 11.3, "liq3m": 112.5, "noteLimitUse": 44.7 },
-      "effRates26H1": { "rp": 2.42, "promNote": 2.61, "bonds": 3.18, "borr": 2.90, "call": 2.55, "deposits": 0.51 }
+      "firm": "NH투자증권",
+      "strategyGroup": "Ⅱ. 균형 포트폴리오형",
+      "assets": 110.55,
+      "equity": 9.82,
+      "deposits": 16.76,
+      "fundingTotal": 53.13,
+      "mixTril": {
+        "rp": 12.81,
+        "promNote": 8.78,
+        "elsDls": 9.27,
+        "shortBorr": 14.13,
+        "seniorBond": 6.02,
+        "subDebt": 0.0,
+        "secSoldOther": 2.12
+      },
+      "mixPct": {
+        "rp": 24.1,
+        "promNote": 16.5,
+        "elsDls": 17.4,
+        "shortBorr": 26.6,
+        "seniorBond": 11.3,
+        "subDebt": 0.0,
+        "secSoldOther": 4.0
+      },
+      "ratios": {
+        "consolNcr": 2952.0,
+        "indivNcr": 2042.0,
+        "consolCapOverRisk": 168.3,
+        "indivCapOverRisk": 150.6,
+        "leverageReg": 676.4,
+        "leverageDeductedTril": 45.64,
+        "leverageRawX": 11.3,
+        "liq3m": 112.5,
+        "noteLimitUse": 44.7
+      },
+      "effRates26H1": {
+        "rp": 2.42,
+        "promNote": 2.61,
+        "bonds": 3.18,
+        "borr": 2.9,
+        "call": 2.55,
+        "deposits": 0.51
+      }
     },
     {
-      "firm": "키움증권", "strategyGroup": "Ⅳ. 레버리지 병목 탈출 전환형", "assets": 94.93, "equity": 6.89, "deposits": 25.49, "fundingTotal": 47.62,
-      "mixTril": { "rp": 16.23, "promNote": 1.82, "elsDls": 8.10, "shortBorr": 14.33, "seniorBond": 3.13, "subDebt": 0.10, "secSoldOther": 3.91 },
-      "mixPct": { "rp": 34.1, "promNote": 3.8, "elsDls": 17.0, "shortBorr": 30.1, "seniorBond": 6.6, "subDebt": 0.2, "secSoldOther": 8.2 },
-      "ratios": { "consolNcr": 1912.6, "indivNcr": 1593.8, "consolCapOverRisk": 184.7, "indivCapOverRisk": 173.3, "leverageReg": 964.4, "leverageDeductedTril": 30.06, "leverageRawX": 13.8, "liq3m": 117.2, "noteLimitUse": 13.2 },
-      "effRates26H1": { "rp": 2.83, "promNote": 3.29, "bonds": 3.26, "borr": 1.55, "call": 2.57, "deposits": 0.69 }
+      "firm": "키움증권",
+      "strategyGroup": "Ⅳ. 레버리지 병목 탈출 전환형",
+      "assets": 94.93,
+      "equity": 6.89,
+      "deposits": 25.49,
+      "fundingTotal": 47.62,
+      "mixTril": {
+        "rp": 16.23,
+        "promNote": 1.82,
+        "elsDls": 8.1,
+        "shortBorr": 14.33,
+        "seniorBond": 3.13,
+        "subDebt": 0.1,
+        "secSoldOther": 3.91
+      },
+      "mixPct": {
+        "rp": 34.1,
+        "promNote": 3.8,
+        "elsDls": 17.0,
+        "shortBorr": 30.1,
+        "seniorBond": 6.6,
+        "subDebt": 0.2,
+        "secSoldOther": 8.2
+      },
+      "ratios": {
+        "consolNcr": 1912.6,
+        "indivNcr": 1593.8,
+        "consolCapOverRisk": 184.7,
+        "indivCapOverRisk": 173.3,
+        "leverageReg": 964.4,
+        "leverageDeductedTril": 30.06,
+        "leverageRawX": 13.8,
+        "liq3m": 117.2,
+        "noteLimitUse": 13.2
+      },
+      "effRates26H1": {
+        "rp": 2.83,
+        "promNote": 3.29,
+        "bonds": 3.26,
+        "borr": 1.55,
+        "call": 2.57,
+        "deposits": 0.69
+      }
     },
     {
-      "firm": "하나증권", "strategyGroup": "Ⅳ. 파생결합→어음 차환 전환형", "assets": 72.30, "equity": 6.72, "deposits": 6.82, "fundingTotal": 43.23,
-      "mixTril": { "rp": 13.01, "promNote": 1.00, "elsDls": 14.37, "shortBorr": 8.25, "seniorBond": 3.27, "subDebt": 0.75, "secSoldOther": 2.56 },
-      "mixPct": { "rp": 30.1, "promNote": 2.3, "elsDls": 33.2, "shortBorr": 19.1, "seniorBond": 7.6, "subDebt": 1.7, "secSoldOther": 5.9 },
-      "ratios": { "consolNcr": 1550.5, "indivNcr": 1525.0, "consolCapOverRisk": 162.0, "indivCapOverRisk": 163.6, "leverageReg": 907.0, "leverageDeductedTril": 11.59, "leverageRawX": 10.8, "liq3m": 113.5, "noteLimitUse": 7.4 },
-      "effRates26H1": { "rp": 2.78, "promNote": 3.42, "bonds": 3.49, "borr": 2.83, "call": 2.28, "deposits": 0.66 }
+      "firm": "하나증권",
+      "strategyGroup": "Ⅳ. 파생결합→어음 차환 전환형",
+      "assets": 72.3,
+      "equity": 6.72,
+      "deposits": 6.82,
+      "fundingTotal": 43.23,
+      "mixTril": {
+        "rp": 13.01,
+        "promNote": 1.0,
+        "elsDls": 14.37,
+        "shortBorr": 8.25,
+        "seniorBond": 3.27,
+        "subDebt": 0.75,
+        "secSoldOther": 2.56
+      },
+      "mixPct": {
+        "rp": 30.1,
+        "promNote": 2.3,
+        "elsDls": 33.2,
+        "shortBorr": 19.1,
+        "seniorBond": 7.6,
+        "subDebt": 1.7,
+        "secSoldOther": 5.9
+      },
+      "ratios": {
+        "consolNcr": 1550.5,
+        "indivNcr": 1525.0,
+        "consolCapOverRisk": 162.0,
+        "indivCapOverRisk": 163.6,
+        "leverageReg": 907.0,
+        "leverageDeductedTril": 11.59,
+        "leverageRawX": 10.8,
+        "liq3m": 113.5,
+        "noteLimitUse": 7.4
+      },
+      "effRates26H1": {
+        "rp": 2.78,
+        "promNote": 3.42,
+        "bonds": 3.49,
+        "borr": 2.83,
+        "call": 2.28,
+        "deposits": 0.66
+      }
     },
     {
-      "firm": "삼성증권", "strategyGroup": "Ⅲ-A. 보수적 담보조달형", "assets": 90.57, "equity": 8.16, "deposits": 23.09, "fundingTotal": 35.24,
-      "mixTril": { "rp": 17.35, "promNote": 0.00, "elsDls": 5.81, "shortBorr": 7.86, "seniorBond": 2.87, "subDebt": 0.00, "secSoldOther": 1.35 },
-      "mixPct": { "rp": 49.2, "promNote": 0.0, "elsDls": 16.5, "shortBorr": 22.3, "seniorBond": 8.1, "subDebt": 0.0, "secSoldOther": 3.8 },
-      "ratios": { "consolNcr": 2113.4, "indivNcr": 1806.4, "consolCapOverRisk": 168.5, "indivCapOverRisk": 162.7, "leverageReg": 701.9, "leverageDeductedTril": 35.06, "leverageRawX": 11.1, "liq3m": 109.9, "noteLimitUse": 0.0 },
-      "effRates26H1": { "rp": 2.26, "promNote": null, "bonds": 3.09, "borr": 0.77, "call": 2.77, "deposits": 0.99 }
+      "firm": "삼성증권",
+      "strategyGroup": "Ⅲ-A. 보수적 담보조달형",
+      "assets": 90.57,
+      "equity": 8.16,
+      "deposits": 23.09,
+      "fundingTotal": 35.24,
+      "mixTril": {
+        "rp": 17.35,
+        "promNote": 0.0,
+        "elsDls": 5.81,
+        "shortBorr": 7.86,
+        "seniorBond": 2.87,
+        "subDebt": 0.0,
+        "secSoldOther": 1.35
+      },
+      "mixPct": {
+        "rp": 49.2,
+        "promNote": 0.0,
+        "elsDls": 16.5,
+        "shortBorr": 22.3,
+        "seniorBond": 8.1,
+        "subDebt": 0.0,
+        "secSoldOther": 3.8
+      },
+      "ratios": {
+        "consolNcr": 2113.4,
+        "indivNcr": 1806.4,
+        "consolCapOverRisk": 168.5,
+        "indivCapOverRisk": 162.7,
+        "leverageReg": 701.9,
+        "leverageDeductedTril": 35.06,
+        "leverageRawX": 11.1,
+        "liq3m": 109.9,
+        "noteLimitUse": 0.0
+      },
+      "effRates26H1": {
+        "rp": 2.26,
+        "promNote": null,
+        "bonds": 3.09,
+        "borr": 0.77,
+        "call": 2.77,
+        "deposits": 0.99
+      }
     },
     {
-      "firm": "신한투자증권", "strategyGroup": "Ⅳ. 자본여력 기반 초기 진입형", "assets": 70.73, "equity": 5.88, "deposits": 9.06, "fundingTotal": 33.39,
-      "mixTril": { "rp": 13.83, "promNote": 0.29, "elsDls": 6.69, "shortBorr": 9.35, "seniorBond": 1.98, "subDebt": 0.46, "secSoldOther": 0.77 },
-      "mixPct": { "rp": 41.4, "promNote": 0.9, "elsDls": 20.1, "shortBorr": 28.0, "seniorBond": 5.9, "subDebt": 1.4, "secSoldOther": 2.3 },
-      "ratios": { "consolNcr": 2347.5, "indivNcr": 2166.9, "consolCapOverRisk": 221.8, "indivCapOverRisk": 222.3, "leverageReg": 790.6, "leverageDeductedTril": 24.45, "leverageRawX": 12.0, "liq3m": 121.2, "noteLimitUse": 2.5 },
-      "effRates26H1": { "rp": 2.46, "promNote": 3.14, "bonds": 3.78, "borr": 3.30, "call": 2.62, "deposits": 1.00 }
+      "firm": "신한투자증권",
+      "strategyGroup": "Ⅳ. 자본여력 기반 초기 진입형",
+      "assets": 70.73,
+      "equity": 5.88,
+      "deposits": 9.06,
+      "fundingTotal": 33.39,
+      "mixTril": {
+        "rp": 13.83,
+        "promNote": 0.29,
+        "elsDls": 6.69,
+        "shortBorr": 9.35,
+        "seniorBond": 1.98,
+        "subDebt": 0.46,
+        "secSoldOther": 0.77
+      },
+      "mixPct": {
+        "rp": 41.4,
+        "promNote": 0.9,
+        "elsDls": 20.1,
+        "shortBorr": 28.0,
+        "seniorBond": 5.9,
+        "subDebt": 1.4,
+        "secSoldOther": 2.3
+      },
+      "ratios": {
+        "consolNcr": 2347.5,
+        "indivNcr": 2166.9,
+        "consolCapOverRisk": 221.8,
+        "indivCapOverRisk": 222.3,
+        "leverageReg": 790.6,
+        "leverageDeductedTril": 24.45,
+        "leverageRawX": 12.0,
+        "liq3m": 121.2,
+        "noteLimitUse": 2.5
+      },
+      "effRates26H1": {
+        "rp": 2.46,
+        "promNote": 3.14,
+        "bonds": 3.78,
+        "borr": 3.3,
+        "call": 2.62,
+        "deposits": 1.0
+      }
     }
   ],
   "kisVsMiraeComparison": {
     "ncrAndLeverage202606": {
       "kis": {
-        "assetsTril": 138.88, "equityTril": 13.19, "rawLeverageX": 10.53, "regLeveragePct": 638.6, "regDeductedAssetsTril": 57.80,
-        "consolNetCapTril": 13.62, "consolTotRiskTril": 7.99, "consolMktRiskTril": 5.23, "consolCrdRiskTril": 2.24, "consolOprRiskTril": 0.52, "consolCapOverRiskPct": 170.5,
-        "indivNetCapTril": 10.80, "indivDeductedCapTril": 3.42, "indivSubAddTril": 1.02, "indivTotRiskTril": 7.14, "indivMktRiskTril": 4.50, "indivCrdRiskTril": 2.17, "indivCapOverRiskPct": 151.4
+        "assetsTril": 138.88,
+        "equityTril": 13.19,
+        "rawLeverageX": 10.53,
+        "regLeveragePct": 638.6,
+        "regDeductedAssetsTril": 57.8,
+        "consolNetCapTril": 13.62,
+        "consolTotRiskTril": 7.99,
+        "consolMktRiskTril": 5.23,
+        "consolCrdRiskTril": 2.24,
+        "consolOprRiskTril": 0.52,
+        "consolCapOverRiskPct": 170.5,
+        "indivNetCapTril": 10.8,
+        "indivDeductedCapTril": 3.42,
+        "indivSubAddTril": 1.02,
+        "indivTotRiskTril": 7.14,
+        "indivMktRiskTril": 4.5,
+        "indivCrdRiskTril": 2.17,
+        "indivCapOverRiskPct": 151.4
       },
       "mirae": {
-        "assetsTril": 144.21, "equityTril": 10.57, "rawLeverageX": 13.65, "regLeveragePct": 841.0, "regDeductedAssetsTril": 56.45,
-        "consolNetCapTril": 14.40, "consolTotRiskTril": 8.62, "consolMktRiskTril": 6.29, "consolCrdRiskTril": 1.41, "consolOprRiskTril": 0.92, "consolCapOverRiskPct": 167.0,
-        "indivNetCapTril": 5.79, "indivDeductedCapTril": 5.92, "indivSubAddTril": 1.15, "indivTotRiskTril": 4.55, "indivMktRiskTril": 3.21, "indivCrdRiskTril": 0.90, "indivCapOverRiskPct": 127.5
+        "assetsTril": 144.21,
+        "equityTril": 10.57,
+        "rawLeverageX": 13.65,
+        "regLeveragePct": 841.0,
+        "regDeductedAssetsTril": 56.45,
+        "consolNetCapTril": 14.4,
+        "consolTotRiskTril": 8.62,
+        "consolMktRiskTril": 6.29,
+        "consolCrdRiskTril": 1.41,
+        "consolOprRiskTril": 0.92,
+        "consolCapOverRiskPct": 167.0,
+        "indivNetCapTril": 5.79,
+        "indivDeductedCapTril": 5.92,
+        "indivSubAddTril": 1.15,
+        "indivTotRiskTril": 4.55,
+        "indivMktRiskTril": 3.21,
+        "indivCrdRiskTril": 0.9,
+        "indivCapOverRiskPct": 127.5
       }
     },
     "nimLedgerSf321Eok": {
       "2025_FY": {
-        "kis": { "intInc": 24440, "bondInt": 12588, "corpLoanCpInt": 6070, "retailCreditInt": 2690, "otherIntInc": 3092, "intExp": 16451, "rpExp": 5997, "promNoteExp": 5364, "bondExp": 1526, "borrExp": 2083, "otherIntExp": 1481, "netInt": 7989, "netIntExRetail": 5299 },
-        "mirae": { "intInc": 21619, "bondInt": 12482, "corpLoanCpInt": 1181, "retailCreditInt": 5006, "otherIntInc": 2950, "intExp": 18018, "rpExp": 6417, "promNoteExp": 2358, "bondExp": 3444, "borrExp": 2659, "otherIntExp": 3140, "netInt": 3601, "netIntExRetail": -1405 }
+        "kis": {
+          "intInc": 24440,
+          "bondInt": 12588,
+          "corpLoanCpInt": 6070,
+          "retailCreditInt": 2690,
+          "otherIntInc": 3092,
+          "intExp": 16451,
+          "rpExp": 5997,
+          "promNoteExp": 5364,
+          "bondExp": 1526,
+          "borrExp": 2083,
+          "otherIntExp": 1481,
+          "netInt": 7989,
+          "netIntExRetail": 5299
+        },
+        "mirae": {
+          "intInc": 21619,
+          "bondInt": 12482,
+          "corpLoanCpInt": 1181,
+          "retailCreditInt": 5006,
+          "otherIntInc": 2950,
+          "intExp": 18018,
+          "rpExp": 6417,
+          "promNoteExp": 2358,
+          "bondExp": 3444,
+          "borrExp": 2659,
+          "otherIntExp": 3140,
+          "netInt": 3601,
+          "netIntExRetail": -1405
+        }
       },
       "2026_1H": {
-        "kis": { "intInc": 14910, "bondInt": 6904, "corpLoanCpInt": 3591, "retailCreditInt": 2120, "otherIntInc": 2295, "intExp": 9813, "rpExp": 2982, "promNoteExp": 2904, "bondExp": 847, "borrExp": 1838, "otherIntExp": 1242, "netInt": 5097, "netIntExRetail": 2977 },
-        "mirae": { "intInc": 12026, "bondInt": 6620, "corpLoanCpInt": 786, "retailCreditInt": 3085, "otherIntInc": 1535, "intExp": 9816, "rpExp": 3096, "promNoteExp": 1366, "bondExp": 2234, "borrExp": 1422, "otherIntExp": 1698, "netInt": 2209, "netIntExRetail": -875 }
+        "kis": {
+          "intInc": 14910,
+          "bondInt": 6904,
+          "corpLoanCpInt": 3591,
+          "retailCreditInt": 2120,
+          "otherIntInc": 2295,
+          "intExp": 9813,
+          "rpExp": 2982,
+          "promNoteExp": 2904,
+          "bondExp": 847,
+          "borrExp": 1838,
+          "otherIntExp": 1242,
+          "netInt": 5097,
+          "netIntExRetail": 2977
+        },
+        "mirae": {
+          "intInc": 12026,
+          "bondInt": 6620,
+          "corpLoanCpInt": 786,
+          "retailCreditInt": 3085,
+          "otherIntInc": 1535,
+          "intExp": 9816,
+          "rpExp": 3096,
+          "promNoteExp": 1366,
+          "bondExp": 2234,
+          "borrExp": 1422,
+          "otherIntExp": 1698,
+          "netInt": 2209,
+          "netIntExRetail": -875
+        }
       }
     },
     "annualTrajectory": [
-      { "period": "2020", "kisEquity": 5.59, "kisNote": 7.56, "kisNetIncEok": 5870, "kisStandaloneRoe": 11.4, "miraeEquity": 8.97, "miraeNote": 0.00, "miraeNetIncEok": 5907, "miraeStandaloneRoe": 6.8 },
-      { "period": "2021", "kisEquity": 6.32, "kisNote": 8.37, "kisNetIncEok": 9622, "kisStandaloneRoe": 16.2, "miraeEquity": 9.58, "miraeNote": 0.44, "miraeNetIncEok": 8252, "miraeStandaloneRoe": 8.9 },
-      { "period": "2022", "kisEquity": 6.55, "kisNote": 11.02, "kisNetIncEok": 4137, "kisStandaloneRoe": 6.4, "miraeEquity": 9.10, "miraeNote": 6.15, "miraeNetIncEok": 3976, "miraeStandaloneRoe": 4.3 },
-      { "period": "2023", "kisEquity": 8.14, "kisNote": 14.73, "kisNetIncEok": 19603, "kisStandaloneRoe": 26.7, "miraeEquity": 9.47, "miraeNote": 6.45, "miraeNetIncEok": 2379, "miraeStandaloneRoe": 2.6 },
-      { "period": "2024", "kisEquity": 9.32, "kisNote": 17.32, "kisNetIncEok": 11949, "kisStandaloneRoe": 13.7, "miraeEquity": 9.91, "miraeNote": 7.47, "miraeNetIncEok": 6991, "miraeStandaloneRoe": 7.2 },
-      { "period": "2025", "kisEquity": 11.16, "kisNote": 21.48, "kisNetIncEok": 17352, "kisStandaloneRoe": 16.9, "kisConsolRoe": 19.7, "miraeEquity": 10.41, "miraeNote": 9.09, "miraeNetIncEok": 5951, "miraeStandaloneRoe": 5.9, "miraeConsolRoe": 12.4 },
-      { "period": "2026.1H", "kisEquity": 13.19, "kisNote": 22.47, "kisNetIncEok": 11735, "kisStandaloneRoe": 19.3, "miraeEquity": 10.57, "miraeNote": 10.58, "miraeNetIncEok": 8543, "miraeStandaloneRoe": 16.3 }
+      {
+        "period": "2020",
+        "kisEquity": 5.59,
+        "kisNote": 7.56,
+        "kisNetIncEok": 5870,
+        "kisStandaloneRoe": 11.4,
+        "miraeEquity": 8.97,
+        "miraeNote": 0.0,
+        "miraeNetIncEok": 5907,
+        "miraeStandaloneRoe": 6.8
+      },
+      {
+        "period": "2021",
+        "kisEquity": 6.32,
+        "kisNote": 8.37,
+        "kisNetIncEok": 9622,
+        "kisStandaloneRoe": 16.2,
+        "miraeEquity": 9.58,
+        "miraeNote": 0.44,
+        "miraeNetIncEok": 8252,
+        "miraeStandaloneRoe": 8.9
+      },
+      {
+        "period": "2022",
+        "kisEquity": 6.55,
+        "kisNote": 11.02,
+        "kisNetIncEok": 4137,
+        "kisStandaloneRoe": 6.4,
+        "miraeEquity": 9.1,
+        "miraeNote": 6.15,
+        "miraeNetIncEok": 3976,
+        "miraeStandaloneRoe": 4.3
+      },
+      {
+        "period": "2023",
+        "kisEquity": 8.14,
+        "kisNote": 14.73,
+        "kisNetIncEok": 19603,
+        "kisStandaloneRoe": 26.7,
+        "miraeEquity": 9.47,
+        "miraeNote": 6.45,
+        "miraeNetIncEok": 2379,
+        "miraeStandaloneRoe": 2.6
+      },
+      {
+        "period": "2024",
+        "kisEquity": 9.32,
+        "kisNote": 17.32,
+        "kisNetIncEok": 11949,
+        "kisStandaloneRoe": 13.7,
+        "miraeEquity": 9.91,
+        "miraeNote": 7.47,
+        "miraeNetIncEok": 6991,
+        "miraeStandaloneRoe": 7.2
+      },
+      {
+        "period": "2025",
+        "kisEquity": 11.16,
+        "kisNote": 21.48,
+        "kisNetIncEok": 17352,
+        "kisStandaloneRoe": 16.9,
+        "kisConsolRoe": 19.7,
+        "miraeEquity": 10.41,
+        "miraeNote": 9.09,
+        "miraeNetIncEok": 5951,
+        "miraeStandaloneRoe": 5.9,
+        "miraeConsolRoe": 12.4
+      },
+      {
+        "period": "2026.1H",
+        "kisEquity": 13.19,
+        "kisNote": 22.47,
+        "kisNetIncEok": 11735,
+        "kisStandaloneRoe": 19.3,
+        "miraeEquity": 10.57,
+        "miraeNote": 10.58,
+        "miraeNetIncEok": 8543,
+        "miraeStandaloneRoe": 16.3
+      }
     ]
   },
   "retirementPension": {
@@ -158,42 +945,141 @@
     "principalGuaranteedTril": 378.1,
     "principalGuaranteedSharePct": 75.4,
     "products": [
-      { "name": "종합투자계좌 (IMA)", "rateRange": "3.50% ~ 4.50% + α", "protection": "만기 원금지급 약정 (8조 종투사 신용 + 5% 충당금)", "cap": "한도 없음", "tag": "최선호" },
-      { "name": "초대형 IB 발행어음 (1년)", "rateRange": "3.20% ~ 3.70%", "protection": "발행 증권사 자체 신용 (AA급)", "cap": "한도 없음", "tag": "금리 우위 (+25~75bp)" },
-      { "name": "저축은행 퇴직연금 예금 (1년)", "rateRange": "평균 2.93%", "protection": "예금자보호", "cap": "기관당 5,000만 원 상한", "tag": "한도 제약" },
-      { "name": "시중은행 퇴직연금 예금 (1년)", "rateRange": "2.60% ~ 2.85%", "protection": "은행 신용 (AAA)", "cap": "자사 상품 편입 제한", "tag": "저금리" }
+      {
+        "name": "종합투자계좌 (IMA)",
+        "rateRange": "3.50% ~ 4.50% + α",
+        "protection": "만기 원금지급 약정 (8조 종투사 신용 + 5% 충당금)",
+        "cap": "한도 없음",
+        "tag": "최선호"
+      },
+      {
+        "name": "초대형 IB 발행어음 (1년)",
+        "rateRange": "3.20% ~ 3.70%",
+        "protection": "발행 증권사 자체 신용 (AA급)",
+        "cap": "한도 없음",
+        "tag": "금리 우위 (+25~75bp)"
+      },
+      {
+        "name": "저축은행 퇴직연금 예금 (1년)",
+        "rateRange": "평균 2.93%",
+        "protection": "예금자보호",
+        "cap": "기관당 5,000만 원 상한",
+        "tag": "한도 제약"
+      },
+      {
+        "name": "시중은행 퇴직연금 예금 (1년)",
+        "rateRange": "2.60% ~ 2.85%",
+        "protection": "은행 신용 (AAA)",
+        "cap": "자사 상품 편입 제한",
+        "tag": "저금리"
+      }
     ]
   },
   "shortYieldCurveAndMaturity": {
     "observedDate": "2026-11-13",
-    "bokBasePct": 3.00,
+    "bokBasePct": 3.0,
     "call1dPct": 3.055,
     "curves": [
-      { "label": "발행어음 7사 상시 평균", "d1": 2.87, "m1": 2.90, "m3": 3.17, "m6": 3.55, "m9": 3.80, "y1": 3.96, "slope1y1dBp": 109.0, "slope1y3mBp": 79.0 },
-      { "label": "발행어음 선발 4사 평균", "d1": 2.80, "m1": 2.85, "m3": 3.15, "m6": 3.55, "m9": 3.82, "y1": 4.00, "slope1y1dBp": 120.0, "slope1y3mBp": 85.0 },
-      { "label": "국고채권 (KOFIA 민평)", "d1": 3.055, "m1": null, "m3": 3.210, "m6": 3.348, "m9": 3.542, "y1": 3.639, "slope1y1dBp": 58.4, "slope1y3mBp": 42.9 },
-      { "label": "금융채II 무보증 AA0", "d1": 3.055, "m1": null, "m3": 3.656, "m6": 3.983, "m9": 4.115, "y1": 4.141, "slope1y1dBp": 108.6, "slope1y3mBp": 48.5 },
-      { "label": "회사채 무보증 AA-", "d1": 3.055, "m1": null, "m3": 3.809, "m6": 4.168, "m9": 4.226, "y1": 4.245, "slope1y1dBp": 119.0, "slope1y3mBp": 43.6 }
+      {
+        "label": "발행어음 7사 상시 평균",
+        "d1": 2.87,
+        "m1": 2.9,
+        "m3": 3.17,
+        "m6": 3.55,
+        "m9": 3.8,
+        "y1": 3.96,
+        "slope1y1dBp": 109.0,
+        "slope1y3mBp": 79.0
+      },
+      {
+        "label": "발행어음 선발 4사 평균",
+        "d1": 2.8,
+        "m1": 2.85,
+        "m3": 3.15,
+        "m6": 3.55,
+        "m9": 3.82,
+        "y1": 4.0,
+        "slope1y1dBp": 120.0,
+        "slope1y3mBp": 85.0
+      },
+      {
+        "label": "국고채권 (KOFIA 민평)",
+        "d1": 3.055,
+        "m1": null,
+        "m3": 3.21,
+        "m6": 3.348,
+        "m9": 3.542,
+        "y1": 3.639,
+        "slope1y1dBp": 58.4,
+        "slope1y3mBp": 42.9
+      },
+      {
+        "label": "금융채II 무보증 AA0",
+        "d1": 3.055,
+        "m1": null,
+        "m3": 3.656,
+        "m6": 3.983,
+        "m9": 4.115,
+        "y1": 4.141,
+        "slope1y1dBp": 108.6,
+        "slope1y3mBp": 48.5
+      },
+      {
+        "label": "회사채 무보증 AA-",
+        "d1": 3.055,
+        "m1": null,
+        "m3": 3.809,
+        "m6": 4.168,
+        "m9": 4.226,
+        "y1": 4.245,
+        "slope1y1dBp": 119.0,
+        "slope1y3mBp": 43.6
+      }
     ],
     "maturityBuckets26Q1": {
       "basePeriod": "2026.1Q 말 (금감원 정무위 제출)",
       "totalEok": 544273,
       "under3mSharePct": 63.4,
-      "estimatedDemandShareRangePct": [45.0, 50.0],
-      "cmaNoteBalanceRangeTril": [21.0, 24.5],
+      "estimatedDemandShareRangePct": [
+        45.0,
+        50.0
+      ],
+      "cmaNoteBalanceRangeTril": [
+        21.0,
+        24.5
+      ],
       "buckets": [
-        { "bucket": "1개월 이하 (수시·CMA 포함)", "amountEok": 292495, "sharePct": 53.7 },
-        { "bucket": "1개월 초과 ~ 3개월 이하", "amountEok": 52490, "sharePct": 9.6 },
-        { "bucket": "3개월 초과 ~ 6개월 이하", "amountEok": 90660, "sharePct": 16.7 },
-        { "bucket": "6개월 초과 ~ 1년 이하", "amountEok": 108628, "sharePct": 20.0 }
+        {
+          "bucket": "1개월 이하 (수시·CMA 포함)",
+          "amountEok": 292495,
+          "sharePct": 53.7
+        },
+        {
+          "bucket": "1개월 초과 ~ 3개월 이하",
+          "amountEok": 52490,
+          "sharePct": 9.6
+        },
+        {
+          "bucket": "3개월 초과 ~ 6개월 이하",
+          "amountEok": 90660,
+          "sharePct": 16.7
+        },
+        {
+          "bucket": "6개월 초과 ~ 1년 이하",
+          "amountEok": 108628,
+          "sharePct": 20.0
+        }
       ]
     }
   },
   "fundingOutlook2027BearFlattening": {
     "observedDate": "2026-11-13",
-    "bokBase2611Pct": 3.00,
-    "assumedPeakBase27H1Pct": [3.25, 3.50],
-    "volumeVerdict": "확장 우위 (75~80조 · IMA 포함 83조)",
+    "bokBase2611Pct": 3.0,
+    "assumedPeakBase27H1Pct": [
+      3.25,
+      3.5
+    ],
+    "volumeVerdict": "확장 우위 (발행어음 80조 · IMA 포함 85조, 메리츠 목표 반영; 원문 합산 83조)",
     "marginVerdict": "상박하후 (1H 원가·마진 압박 → 2H 완화)",
     "headwinds": [
       {
@@ -231,17 +1117,152 @@
     ],
     "selfBrakeNote": "2027년 모험자본 의무 상향(10%→20%) 및 부동산 한도 축소(15%→10%)로 인해 기업금융 딜 소싱 역량이 부족한 증권사는 역마진을 피하기 위해 무분별한 고금리 수신 확대를 자체 제어(Self-Brake)하게 됩니다.",
     "bearFlatteningRegimes": [
-      { "regime": "2026.1Q 평균 (기준 2.50% 안정기)", "bokPct": "2.50%", "ktb3m1y3y": "2.49 / 2.72 / 3.20%", "ktb3y1yBp": "+47.7bp", "finAa01y3y": "3.14 / 3.73% (+59.2bp)", "corpAam1y3y": "3.24 / 3.75% (+50.3bp)" },
-      { "regime": "2026.2Q 평균 (기준 2.50% 인상 선반영)", "bokPct": "2.50%", "ktb3m1y3y": "2.66 / 3.12 / 3.62%", "ktb3y1yBp": "+50.2bp", "finAa01y3y": "3.56 / 4.23% (+67.1bp)", "corpAam1y3y": "3.59 / 4.26% (+67.2bp)" },
-      { "regime": "2026-11-13 최신 (기준 3.00%)", "bokPct": "3.00%", "ktb3m1y3y": "3.21 / 3.64 / 3.75%", "ktb3y1yBp": "+11.1bp (3Y−2Y +1.0bp)", "finAa01y3y": "4.14 / 4.36% (+22.1bp)", "corpAam1y3y": "4.25 / 4.42% (+17.2bp)" },
-      { "regime": "과거 고점기 23.02~24.10 (기준 3.50%)", "bokPct": "3.50%", "ktb3m1y3y": "3.41 / 3.41 / 3.41%", "ktb3y1yBp": "-0.2bp (평탄·역전)", "finAa01y3y": "3.86 / 4.08% (+22.0bp)", "corpAam1y3y": "3.91 / 4.09% (+18.5bp)" },
-      { "regime": "2027.1H 베어 플랫 전망 (가정)", "bokPct": "3.25~3.50%", "ktb3m1y3y": "3.45~3.65 / 3.70~3.85 / 3.80~3.95%", "ktb3y1yBp": "-15bp ~ +10bp", "finAa01y3y": "4.25~4.45 / 4.40~4.60%", "corpAam1y3y": "4.35~4.55 / 4.50~4.70%" }
+      {
+        "regime": "2026.1Q 평균 (기준 2.50% 안정기)",
+        "bokPct": "2.50%",
+        "ktb3m1y3y": "2.49 / 2.72 / 3.20%",
+        "ktb3y1yBp": "+47.7bp",
+        "finAa01y3y": "3.14 / 3.73% (+59.2bp)",
+        "corpAam1y3y": "3.24 / 3.75% (+50.3bp)"
+      },
+      {
+        "regime": "2026.2Q 평균 (기준 2.50% 인상 선반영)",
+        "bokPct": "2.50%",
+        "ktb3m1y3y": "2.66 / 3.12 / 3.62%",
+        "ktb3y1yBp": "+50.2bp",
+        "finAa01y3y": "3.56 / 4.23% (+67.1bp)",
+        "corpAam1y3y": "3.59 / 4.26% (+67.2bp)"
+      },
+      {
+        "regime": "2026-11-13 최신 (기준 3.00%)",
+        "bokPct": "3.00%",
+        "ktb3m1y3y": "3.21 / 3.64 / 3.75%",
+        "ktb3y1yBp": "+11.1bp (3Y−2Y +1.0bp)",
+        "finAa01y3y": "4.14 / 4.36% (+22.1bp)",
+        "corpAam1y3y": "4.25 / 4.42% (+17.2bp)"
+      },
+      {
+        "regime": "과거 고점기 23.02~24.10 (기준 3.50%)",
+        "bokPct": "3.50%",
+        "ktb3m1y3y": "3.41 / 3.41 / 3.41%",
+        "ktb3y1yBp": "-0.2bp (평탄·역전)",
+        "finAa01y3y": "3.86 / 4.08% (+22.0bp)",
+        "corpAam1y3y": "3.91 / 4.09% (+18.5bp)"
+      },
+      {
+        "regime": "2027.1H 베어 플랫 전망 (가정)",
+        "bokPct": "3.25~3.50%",
+        "ktb3m1y3y": "3.45~3.65 / 3.70~3.85 / 3.80~3.95%",
+        "ktb3y1yBp": "-15bp ~ +10bp",
+        "finAa01y3y": "4.25~4.45 / 4.40~4.60%",
+        "corpAam1y3y": "4.35~4.55 / 4.50~4.70%"
+      }
     ],
     "almStrategySummary": {
       "h1Liability": "금리 피크(2Q) 구간 1년물 고금리 특판 Lock-in 엄격 자제 · 수시형 CMA 및 3개월 이하(60%+) 유지로 하반기 원가 하락 탄력성 보존(장기 조달은 공모 금융채 AA0 2~3Y 또는 IMA 활용)",
       "h1Asset": "글로벌 불확실성·금리 고점으로 크레딧 스프레드가 확대된 우량 기업여신·회사채(AA-~A+, 2~3년 고정금리) 선제 편입(Peak Yield Fix)",
       "h2Focus": "초단기 부채 리프라이싱을 통한 NIM 회복 · 퇴직연금(규정 개정 시)·ISA 코어 수신 확대 및 2027.12 한국투자 IMA 1호(1.10조) 만기 차환 관리"
     }
+  },
+  "fundingForecast2027": {
+    "updatedAt": "2026-11-17",
+    "originalModel": {
+      "promNoteTril": 78,
+      "imaTril": 5,
+      "totalTril": 83,
+      "potentialCombinedTril": 2
+    },
+    "assumptionNote": "기존 삼성·메리츠 합산 2조 원 가정을 메리츠 연말 4조 원 목표로 대체합니다. 삼성은 별도 목표 자료가 없어 추가 물량을 반영하지 않습니다. 기존 다른 회사 가정은 유지해 연말 합계는 발행어음 80조 원 + IMA 5조 원 = 85조 원입니다.",
+    "source": {
+      "kind": "user-provided-ir-target",
+      "receivedAt": "2026-11-17",
+      "title": "사용자 전달 메리츠 IR: 2027년 발행어음 평잔 2조 원·연말 4조 원 목표",
+      "url": null,
+      "verificationNote": "IR 발표 내용을 사용자에게 전달받아 가정에 반영했으며, 원문 링크는 별도 확인 전입니다."
+    },
+    "companies": [
+      {
+        "key": "kis",
+        "name": "한국투자증권",
+        "promNoteYearEndTril": 26.9,
+        "imaYearEndTril": 4,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "kb",
+        "name": "KB증권",
+        "promNoteYearEndTril": 12.8,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "mirae",
+        "name": "미래에셋증권",
+        "promNoteYearEndTril": 12.5,
+        "imaYearEndTril": 0.5,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "nh",
+        "name": "NH투자증권",
+        "promNoteYearEndTril": 10,
+        "imaYearEndTril": 0.5,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "kiwoom",
+        "name": "키움증권",
+        "promNoteYearEndTril": 6,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "hana",
+        "name": "하나증권",
+        "promNoteYearEndTril": 4.5,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "shinhan",
+        "name": "신한투자증권",
+        "promNoteYearEndTril": 3.3,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "연말 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다."
+      },
+      {
+        "key": "meritz",
+        "name": "메리츠증권",
+        "promNoteYearEndTril": 4,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": 2,
+        "noteIncomeBasis": "average-target",
+        "assumptionNote": "연말 잔액 4조 원과 수익 계산용 평잔 2조 원을 구분합니다."
+      },
+      {
+        "key": "samsung",
+        "name": "삼성증권(별도 목표 미반영)",
+        "promNoteYearEndTril": 0,
+        "imaYearEndTril": 0,
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "별도 목표 미확인으로 추가 물량 미반영(0은 회사 목표가 아님)."
+      }
+    ]
   },
   "ib9FirmsCuriosityChain": [
     {
@@ -256,10 +1277,10 @@
       "statusBadge": "한도 85% · IMA 전환 주도",
       "statusTone": "green",
       "base26Q2NoteTril": 22.47,
-      "base26Q2ImaTril": 2.60,
-      "est27ModelNoteTril": 26.90,
-      "est27ModelImaTril": 4.00,
-      "est27UpdatedRangeTril": "32.0~33.5 (IMA 8.0~9.5 포함 확장 시)",
+      "base26Q2ImaTril": 2.6,
+      "est27ModelNoteTril": 26.9,
+      "est27ModelImaTril": 4.0,
+      "est27UpdatedRangeTril": "30.5~32.0조 (IMA 중심 확대)",
       "growthPremise": "발행어음 법정한도(85.2% 소진) 근접으로 어음 순증은 완만해지나, 초기 IMA 1~4호(2.60조) 안착 및 위험액 50% 감경 특례를 활용해 중장기 기업금융을 IMA로 본격 이관",
       "capRatioWhy": "2017년 단독 1호 인가 이후 국내 기업여신·인수금융 북 확장을 핵심 성장축으로 삼아 자본 대비 어음 비율(170.3%)이 업권 최고 수준",
       "altFundingNote": "차입부채 80.85조 중 발행어음(27.8%)과 RP(26.0%) 양대 축 운용 · 어음 실효금리(2.66%)가 RP(2.76%)·차입금(4.40%)보다 낮아 조달원가 우위 확보",
@@ -281,7 +1302,8 @@
         "h126CostIncomePct": 33.9,
         "h126AnnRoePct": 19.3,
         "takeaway": "연간 어음 이자 5,364억 원을 지불하고도 기업여신·IB 딜 스프레드로 업계 최대 별도 순영업수익(3.31조)과 고ROE(19.3%) 시현"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "kb",
@@ -294,11 +1316,11 @@
       "imaLicense": "미인가 (별도자본 8조 미달)",
       "statusBadge": "한도 69% · 특판차환 집중",
       "statusTone": "blue",
-      "base26Q2NoteTril": 11.00,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 12.80,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "11.8~12.8 (마진 방어형 완만 증액)",
+      "base26Q2NoteTril": 11.0,
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 12.8,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "12.5~13.5조 (은행 복합점포 캡티브 유지)",
       "growthPremise": "별도자본 7.98조로 IMA 요건(8조) 직전 단계이며 어음 한도 소진율(69.0%)이 높아, 무리한 외형 순증(+1.80조)보다 기존 고금리 약정물 차환을 통한 마진 개선에 주력",
       "capRatioWhy": "은행지주 CIB 협업 딜 소싱을 바탕으로 자본 대비 137.9%까지 적극 활용했으나 자본 8조 캡 직전이라 한도 여유분 관리 병행",
       "altFundingNote": "차입부채 53.29조 중 단기차입(32.3%)과 발행어음(20.6%) 중심 · 상반기 어음 실효금리(4.53%)는 과거 고금리 기간물 만기정산 이월 영향(신규 고시는 3%대 초반)",
@@ -320,7 +1342,8 @@
         "h126CostIncomePct": 41.4,
         "h126AnnRoePct": 22.9,
         "takeaway": "과거 약정물 이자정산 부담에도 2026년 상반기 IB·트레이딩 반등으로 반기 영업이익 1.02조 원·연환산 ROE 22.9%로 수익성 급개선"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "mirae",
@@ -334,10 +1357,10 @@
       "statusBadge": "보수적 한도 50% · IMA 병행",
       "statusTone": "green",
       "base26Q2NoteTril": 10.58,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 12.50,
-      "est27ModelImaTril": 0.50,
-      "est27UpdatedRangeTril": "13.0~15.0 (수익률 중심 IMA 점진 확대)",
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 12.5,
+      "est27ModelImaTril": 0.5,
+      "est27UpdatedRangeTril": "13.0~14.5조 (IMA 상품 본격화 시)",
       "growthPremise": "어음 미소진 한도(10.55조)가 충분하나 개별 신NCR 버퍼(영업용순자본/총위험액 127.5%) 관리를 위해 보수적 증액을 유지하고, IMA는 외형보다 모험자본·실적배당 수익률 위주 선별 출시",
       "capRatioWhy": "글로벌 해외법인 출자금(개별 차감자본 5.92조) 비중이 높은 사업 구조상 기업금융 50% 강제 계정이 아닌 RP(34.3%)·단기차입(26.5%)·회사채(11.0%) 조달을 선호해 어음/자본을 100.1%로 통제",
       "altFundingNote": "차입부채 71.97조 중 RP(24.70조, 실효 2.42%) 최대 활용 · 회사채 실효금리(4.06%) 대비 발행어음(2.75%)의 비용 절감 여력이 존재",
@@ -359,7 +1382,8 @@
         "h126CostIncomePct": 48.1,
         "h126AnnRoePct": 16.3,
         "takeaway": "해외법인·PI 이익 비중으로 별도보다 연결 순이익(1.57조)이 훨씬 크며, 2026년 상반기 트레이딩·WM 호조로 별도 순영업수익(2.43조) 1위 기록"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "nh",
@@ -373,10 +1397,10 @@
       "statusBadge": "26.03 IMA 3호 · 균형 확장",
       "statusTone": "green",
       "base26Q2NoteTril": 8.78,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 10.00,
-      "est27ModelImaTril": 0.50,
-      "est27UpdatedRangeTril": "10.5~13.5 (IMA 1~4호 완판 반영 시 상단 확대)",
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 10.0,
+      "est27ModelImaTril": 0.5,
+      "est27UpdatedRangeTril": "10.5~12.0조 (26.03 IMA 3호 인가 반영)",
       "growthPremise": "6,500억 유상증자로 자본 8조 요건 충족 후 2026.03 제3호 IMA 인가 획득(초기 회차 연속 완판, 성과보수 허들 4.0→4.5% 상향) · 어음 완만 증액과 IMA 기업금융 북 동시 가동",
       "capRatioWhy": "전통 ECM·DCM 주선(수수료 기반 Underwriting) 비중이 높고 특판 금리 경쟁을 자제해 어음/자본 비율(89.4%, 실효금리 2.61%)을 안정권으로 유지",
       "altFundingNote": "차입부채 53.13조가 단기차입(26.6%)·RP(24.1%)·ELS(17.4%)·어음(16.5%)·선순위채(11.3%)로 가장 고르게 분산된 균형 포트폴리오",
@@ -399,7 +1423,8 @@
         "h126CostIncomePct": null,
         "h126AnnRoePct": null,
         "takeaway": "저원가 발행어음 관리(26.1H 실효 2.61%)와 IB 주선·인수금융 경쟁력을 결합해 2025년 연결 영업이익 1.42조 원·순이익 1.03조 원 달성"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "kiwoom",
@@ -413,10 +1438,10 @@
       "statusBadge": "인가 2년차 · 리테일 고속확장",
       "statusTone": "amber",
       "base26Q2NoteTril": 1.82,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 6.00,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "5.0~6.0 (2년차 순증 +3.2~4.2조)",
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 6.0,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "5.5~7.0조 (리테일 비대면 수신 탄력)",
       "growthPremise": "단일 MTS 앱 트래픽과 무지점 비용구조를 활용해 인가 2년차(2027년) 후발 3사 중 가장 큰 폭의 순증(+4.18조) 및 규제 레버리지(964.4%) 병목 해소 추진",
       "capRatioWhy": "2025년 말 신규 인가로 2026.2Q 소진율은 26.4%(1.82조) 초기 단계이며, 별도 고객예수금이 25.49조(실효 이용료 0.69%)에 달해 기존 리테일 신용공여 재원은 이미 풍부",
       "altFundingNote": "차입부채 47.62조 중 RP(34.1%)·단기차입(30.1%) 비중이 높아 규제 레버리지비율이 964.4%에 육박 → 레버리지 산정에서 차감되는 발행어음으로의 전환 유인이 가장 강력",
@@ -438,7 +1463,8 @@
         "h126CostIncomePct": 28.5,
         "h126AnnRoePct": 35.5,
         "takeaway": "판관비율 28.5%(업권 최저)와 저원가 예수금 기반 위에 발행어음 기업금융 엔진이 더해지며 반기 순이익 1.12조 원·자본효율 최상위 기록"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "hana",
@@ -451,11 +1477,11 @@
       "imaLicense": "미인가",
       "statusBadge": "인가 2년차 · ELS→어음 차환",
       "statusTone": "amber",
-      "base26Q2NoteTril": 1.00,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 4.50,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "3.5~4.5 (모험자본 소싱 속도 연동)",
+      "base26Q2NoteTril": 1.0,
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 4.5,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "3.5~4.5조 (모험자본 소싱 속도 연동)",
       "growthPremise": "인가 2년차를 맞아 그룹 CIB 연계 기업여신 확대 및 ELS·DLS 편중 조달(33.2%)의 발행어음 차환(+3.50조)을 추진하나, 본체 수익성 및 모험자본 20% 의무가 속도조절 변수",
       "capRatioWhy": "2026년 1분기 본격 발행 개시로 초기 자본 대비 비율은 14.9%(1.00조)이며, 과거 파생결합증권(ELS·DLS 14.37조) 중심 조달 구조에서 전환하는 과도기",
       "altFundingNote": "ELS·DLS 비중(33.2%)이 9사 중 가장 높아 규제 레버리지(907.0%) 부담 존재 · 초기 기간약정 위주 조달로 상반기 어음 실효금리는 3.42% 기록",
@@ -477,7 +1503,8 @@
         "h126CostIncomePct": 54.8,
         "h126AnnRoePct": 7.3,
         "takeaway": "대체투자·PF 정리에 따른 낮은 ROE(25년 3.6% → 26.1H 7.3%) 회복 구간으로, 어음 외형 확대 시 우량 기업금융 선별력이 마진 방어의 핵심"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "shinhan",
@@ -491,10 +1518,10 @@
       "statusBadge": "인가 2년차 · 자본버퍼 최상",
       "statusTone": "amber",
       "base26Q2NoteTril": 0.29,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 3.30,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "3.3~4.2 (PWM 채널 기반 점진 확대)",
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 3.3,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "3.3~4.2조 (PWM 채널 기반 점진 확대)",
       "growthPremise": "2026.2Q 잔액 0.29조에서 은행 복합점포(PWM) 수신과 높은 자본완충력(영업용순자본/총위험액 221.8%, 9사 1위)을 바탕으로 2027년 3.30조(+3.01조) 안착 전망",
       "capRatioWhy": "출시 초기 단계로 자본 대비 5.0%에 불과하며, 그동안 RP(41.4%)·단기차입(28.0%)·ELS(20.1%) 위주로 보수적 조달 운용",
       "altFundingNote": "선순위·후순위 사채 실효금리(3.78%) 및 차입금(3.30%) 대비 발행어음(3.14%, 수시물 혼합 시 2%대 후반 가능) 확대 시 조달비용 절감 여력 보유",
@@ -516,25 +1543,26 @@
         "h126CostIncomePct": 41.0,
         "h126AnnRoePct": 19.7,
         "takeaway": "2026년 상반기 판관비율 하락(60.7%→41.0%)과 운용수익 정상화로 반기 순이익 5,571억 원(연환산 ROE 19.7%)을 기록하며 어음 확장 기반 확보"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "samsung",
       "firm": "삼성증권",
       "fundingIdx": 7,
-      "costKey": "potential",
+      "costKey": "samsung",
       "creditRating": "AA+",
       "creditTier": "최상위 민간 그룹 핵심 금융사 (별도자본 8.16조)",
       "noteLicense": "2026.09.09 (8호 인가 · 09.21 출시)",
       "imaLicense": "미인가 (자본 8조 요건은 기충족)",
       "statusBadge": "26.09 8호 인가 · HNWI 수신강자",
       "statusTone": "blue",
-      "base26Q2NoteTril": 0.00,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 1.00,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "2.5~3.5 (원문 잠재2사 합산 2.0조 대비 상방 요인)",
-      "growthPremise": "2026.2Q 공시 시점에는 미인가(0.00조)였으나 2026.09.09 제8호 인가 후 즉시 출시(특판 4.3%, 수시 2.55%) · 초고액자산가(HNWI) 리테일 기반으로 초기 시장 흡수력 최상위",
+      "base26Q2NoteTril": 0.0,
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 0.0,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "별도 목표 미반영 (26.09 8호 인가 · 잠재 여력 2.5~3.5조, 0은 발표 목표 아님)",
+      "growthPremise": "2026.09.09 제8호 발행어음 인가 후 출시(법정한도 약 16.32조). 별도 목표 자료가 없어 수정 전망(85조)에는 추가 물량(0.00조)을 미반영했으며(0은 회사 발표 목표가 아님), 초고액자산가(HNWI) 리테일 기반으로 향후 실제 확대 시 2.5~3.5조 원 안착 여력이 있습니다.",
       "capRatioWhy": "2026년 9월 이전까지 단기금융업 미인가 상태였기 때문에 자본 8.16조에도 어음 잔액이 0원이었으며, 대고객·기관 RP매도(49.2%, 실효 2.26%) 중심의 저위험 담보조달 유지",
       "altFundingNote": "차입부채(35.24조)가 자본 규모 대비 가장 적고 RP 비중(49.2%)이 절대적 · 발행어음 가세로 기존 저마진 RP 외 기업금융 스프레드 자산 편입 여력 신설",
       "profitability": {
@@ -555,25 +1583,26 @@
         "h126CostIncomePct": 36.3,
         "h126AnnRoePct": 22.4,
         "takeaway": "발행어음 없이도 초고액 WM·운용 경쟁력으로 '25년 순익 9,713억·'26.1H 연환산 ROE 22.4%를 달성했으며, 어음 장착으로 IB 이자수익원 추가"
-      }
+      },
+      "est27AverageNoteTril": null
     },
     {
       "key": "meritz",
       "firm": "메리츠증권",
       "fundingIdx": 2,
-      "costKey": "potential",
+      "costKey": "meritz",
       "creditRating": "AA- ~ AA0",
       "creditTier": "구조화 기업금융 특화 (별도자본 8.35조)",
       "noteLicense": "2026.09.23 (9호 인가 · 10월 출시)",
       "imaLicense": "미인가",
       "statusBadge": "26.09 9호 인가 · 고원가채 차환",
       "statusTone": "blue",
-      "base26Q2NoteTril": 0.00,
-      "base26Q2ImaTril": 0.00,
-      "est27ModelNoteTril": 1.00,
-      "est27ModelImaTril": 0.00,
-      "est27UpdatedRangeTril": "2.0~3.0 (고금리 사채·차입 리테일 차환 수요)",
-      "growthPremise": "2026.09.23 제9호 발행어음 인가(9대 종투사 전원 인가 완성) · 기존 고금리 회사채(실효 3.47%)·차입금(3.15%) 의존도를 낮추고 규제 레버리지(908.0%) 여유를 확보하기 위한 차환 유인 뚜렷",
+      "base26Q2NoteTril": 0.0,
+      "base26Q2ImaTril": 0.0,
+      "est27ModelNoteTril": 4.0,
+      "est27ModelImaTril": 0.0,
+      "est27UpdatedRangeTril": "연말 4.00조 · 수익평잔 2.00조 (사용자 전달 IR 목표 · 원문 잠재2사 2.0조 대체)",
+      "growthPremise": "2026.09.23 제9호 발행어음 인가(법정한도 약 16.70조, 9대 종투사 전원 인가 완성). 사용자가 전달한 2027년 IR 목표(연말 잔액 4.00조·수익 계산용 평잔 2.00조, IR 원문 링크 별도 확인 전)를 반영해 기존 잠재 2사 합산 2.00조 가정을 대체했습니다. 고원가 회사채(실효 3.47%)·매도증권(25.5%) 차환 및 규제 레버리지(908.0%) 완화 유인이 뚜렷합니다.",
       "capRatioWhy": "2026.2Q 기준 미인가로 어음 0원이었으며, 리테일 예수금(9.86조) 기반이 얇아 RP(34.1%)·매도증권 등 대체조달(25.5%)·ELS(18.7%)·사채(10.0%)로 기업금융 재원을 조달해 옴",
       "altFundingNote": "규제 레버리지비율(908.0%)이 경보선 부근이었던 만큼, 레버리지 산정에서 전액 차감되는 발행어음은 자본비율 완화와 조달단가 절감을 동시에 해결하는 핵심 수단",
       "profitability": {
@@ -594,7 +1623,8 @@
         "h126CostIncomePct": 44.6,
         "h126AnnRoePct": 13.5,
         "takeaway": "높은 시장성 차입 원가에도 고수익 구조화 기업금융 역량으로 두 자릿수 ROE(10.1%→13.5%)를 유지해 왔으며, 어음 조달로 순이자마진 개선 기대"
-      }
+      },
+      "est27AverageNoteTril": 2.0
     }
   ],
   "ventureCapitalChain2027": {
@@ -659,7 +1689,7 @@
         "id": "a_cap_debt",
         "asset": "모험 ① A0~A- 회사채 · 중견기업 여신",
         "capTag": "30% 캡 (총수신 6%)",
-        "yieldPct": 5.20,
+        "yieldPct": 5.2,
         "grossSpreadBp": 205,
         "elCostBp": 35,
         "ncrRwPct": 4.0,
@@ -687,7 +1717,7 @@
         "id": "bbb_private",
         "asset": "모험 ③ BBB+~BBB- 회사채 · 중소 사모신용",
         "capTag": "무제한 인정",
-        "yieldPct": 8.00,
+        "yieldPct": 8.0,
         "grossSpreadBp": 485,
         "elCostBp": 360,
         "ncrRwPct": 10.0,
@@ -701,7 +1731,7 @@
         "id": "vc_mezz",
         "asset": "모험 ④ 우량 VC · 신기사 조합 출자 및 메자닌",
         "capTag": "무제한 인정",
-        "yieldPct": 9.50,
+        "yieldPct": 9.5,
         "grossSpreadBp": 635,
         "elCostBp": 410,
         "ncrRwPct": 16.0,
@@ -738,9 +1768,33 @@
     ],
     "addressableMarket": {
       "demandSchedule": [
-        { "period": "2024.09 실적 (금융위)", "totalFundingTril": null, "mandatePct": null, "totalMandateTril": 12.8, "aCapTril": null, "nonACapNetTril": null, "note": "종투사 총자산 대비 2.23%" },
-        { "period": "2027E 의무 (수신 83조 기준)", "totalFundingTril": 83.0, "mandatePct": 20, "totalMandateTril": 16.60, "aCapTril": 4.98, "nonACapNetTril": 11.62, "note": "비A급 70% 순의무 11.62조" },
-        { "period": "2028E 의무 (수신 98조 가정)", "totalFundingTril": 98.0, "mandatePct": 25, "totalMandateTril": 24.50, "aCapTril": 7.35, "nonACapNetTril": 17.15, "note": "비A급 70% 순의무 17.15조" }
+        {
+          "period": "2024.09 실적 (금융위)",
+          "totalFundingTril": null,
+          "mandatePct": null,
+          "totalMandateTril": 12.8,
+          "aCapTril": null,
+          "nonACapNetTril": null,
+          "note": "종투사 총자산 대비 2.23%"
+        },
+        {
+          "period": "2027E 의무 (수정전망 85조 기준)",
+          "totalFundingTril": 85.0,
+          "mandatePct": 20,
+          "totalMandateTril": 17.0,
+          "aCapTril": 5.1,
+          "nonACapNetTril": 11.9,
+          "note": "비A급 70% 순의무 11.90조 (원문 83조 기준 시 16.60/11.62조)"
+        },
+        {
+          "period": "2028E 의무 (수신 98조 가정)",
+          "totalFundingTril": 98.0,
+          "mandatePct": 25,
+          "totalMandateTril": 24.5,
+          "aCapTril": 7.35,
+          "nonACapNetTril": 17.15,
+          "note": "비A급 70% 순의무 17.15조"
+        }
       ],
       "pools": [
         {
@@ -753,7 +1807,7 @@
           "potential2728": "연 발행 14.0~16.0조 안정 유지",
           "status": "캡 제한",
           "statusTone": "blue",
-          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 4.98조 · 28E 7.35조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
+          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.10조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
         },
         {
           "id": "bbb_public",
@@ -833,16 +1887,63 @@
   },
   "moneyMoveAndSafety2026Q4": {
     "macroLiquidity": [
-      { "label": "광의통화 M2 (평잔, '26.09 ECOS)", "amount": "4,278.8조 원", "sub": "협의통화 M1 1,358.4조 원" },
-      { "label": "퇴직연금 원리금보장 ('25말 통합연금)", "amount": "378.1조 원", "sub": "총 적립금 501.4조 원의 75.4%" },
-      { "label": "9사 고객예수금 ('26.2Q FISIS SF324)", "amount": "158.50조 원", "sub": "실효 이용료율 0.38~1.00% 대기자금" }
+      {
+        "label": "광의통화 M2 (평잔, '26.09 ECOS)",
+        "amount": "4,278.8조 원",
+        "sub": "협의통화 M1 1,358.4조 원"
+      },
+      {
+        "label": "퇴직연금 원리금보장 ('25말 통합연금)",
+        "amount": "378.1조 원",
+        "sub": "총 적립금 501.4조 원의 75.4%"
+      },
+      {
+        "label": "9사 고객예수금 ('26.2Q FISIS SF324)",
+        "amount": "158.50조 원",
+        "sub": "실효 이용료율 0.38~1.00% 대기자금"
+      }
     ],
     "rateSpectrum": [
-      { "product": "증권사 고객예탁금 이용료", "rate": "0.38% ~ 1.00%", "barPct": 20, "protection": "증권금융 별도예치 · 예금자보호(1억)", "maturity": "수시", "note": "가장 저원가이나 미운용 대기자금" },
-      { "product": "발행어음 수시물 · 발행어음형 CMA", "rate": "2.45% ~ 2.87%", "barPct": 55, "protection": "발행 증권사 자체 신용 (AA+~AA-)", "maturity": "1일 수시", "note": "은행 요구불(0.1~0.5%) 대체 파킹 수요 핵심 흡수처" },
-      { "product": "예금은행 수신평균 · 1년 정기예금", "rate": "2.85% ~ 3.45%", "barPct": 68, "protection": "은행 신용(AAA) · 예금자보호(1억)", "maturity": "6M~1Y", "note": "ECOS '26.09 예금은행 수신금리 3.45% (대출 4.57%)" },
-      { "product": "발행어음 1년 약정 (상시 / 신규특판)", "rate": "3.30~4.00% (특판 4.3~5.0%)", "barPct": 88, "protection": "발행 증권사 자체 신용 · 중도해지 시 원금보전(이율차감)", "maturity": "1년 이내", "note": "은행 예금 대비 +30~80bp 금리 우위 · 연금(감독규정 확인)·ISA 핵심 비히클" },
-      { "product": "종합투자계좌 IMA (한투·미래·NH 3사)", "rate": "목표 3.5~4.5%+α (허들 4.0~4.5%)", "barPct": 96, "protection": "만기 보유 시 종투사 원금지급 약정 + 5% 고유충당금 (중도해지 시 원금손실 가능)", "maturity": "1~3년+ 폐쇄형 중심", "note": "예금자보호 미적용이나 자본 8조+ 종투사 신용 및 신탁형 분리보관 결합" }
+      {
+        "product": "증권사 고객예탁금 이용료",
+        "rate": "0.38% ~ 1.00%",
+        "barPct": 20,
+        "protection": "증권금융 별도예치 · 예금자보호(1억)",
+        "maturity": "수시",
+        "note": "가장 저원가이나 미운용 대기자금"
+      },
+      {
+        "product": "발행어음 수시물 · 발행어음형 CMA",
+        "rate": "2.45% ~ 2.87%",
+        "barPct": 55,
+        "protection": "발행 증권사 자체 신용 (AA+~AA-)",
+        "maturity": "1일 수시",
+        "note": "은행 요구불(0.1~0.5%) 대체 파킹 수요 핵심 흡수처"
+      },
+      {
+        "product": "예금은행 수신평균 · 1년 정기예금",
+        "rate": "2.85% ~ 3.45%",
+        "barPct": 68,
+        "protection": "은행 신용(AAA) · 예금자보호(1억)",
+        "maturity": "6M~1Y",
+        "note": "ECOS '26.09 예금은행 수신금리 3.45% (대출 4.57%)"
+      },
+      {
+        "product": "발행어음 1년 약정 (상시 / 신규특판)",
+        "rate": "3.30~4.00% (특판 4.3~5.0%)",
+        "barPct": 88,
+        "protection": "발행 증권사 자체 신용 · 중도해지 시 원금보전(이율차감)",
+        "maturity": "1년 이내",
+        "note": "은행 예금 대비 +30~80bp 금리 우위 · 연금(감독규정 확인)·ISA 핵심 비히클"
+      },
+      {
+        "product": "종합투자계좌 IMA (한투·미래·NH 3사)",
+        "rate": "목표 3.5~4.5%+α (허들 4.0~4.5%)",
+        "barPct": 96,
+        "protection": "만기 보유 시 종투사 원금지급 약정 + 5% 고유충당금 (중도해지 시 원금손실 가능)",
+        "maturity": "1~3년+ 폐쇄형 중심",
+        "note": "예금자보호 미적용이나 자본 8조+ 종투사 신용 및 신탁형 분리보관 결합"
+      }
     ]
   }
 }

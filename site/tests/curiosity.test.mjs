@@ -14,21 +14,30 @@ const publicDataUrl = new URL('../public/data.json', import.meta.url);
 const verifiedDataUrl = new URL('../../data/ib_portal_verified_data.json', import.meta.url);
 const D = JSON.parse(fs.readFileSync(publicDataUrl, 'utf8'));
 
-test('public/data.json reconciles 83T outlook and matches root verified dataset when present', () => {
+test('public/data.json reconciles 85T revised outlook (Meritz IR 4T year-end / 2T avg) and matches root verified dataset when present', () => {
   if (fs.existsSync(verifiedDataUrl)) {
     assert.deepEqual(D, JSON.parse(fs.readFileSync(verifiedDataUrl, 'utf8')));
   }
   assert.equal(D.ib9FirmsCuriosityChain.length, 9);
 
   const baseSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.base26Q2NoteTril + x.base26Q2ImaTril, 0);
-  const estSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.est27ModelNoteTril + x.est27ModelImaTril, 0);
+  const estNoteSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.est27ModelNoteTril, 0);
+  const estImaSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.est27ModelImaTril, 0);
+  const estSum = estNoteSum + estImaSum;
   assert.equal(baseSum.toFixed(2), '58.54');
-  assert.equal(estSum.toFixed(2), '83.00');
+  assert.equal(estNoteSum.toFixed(2), '80.00');
+  assert.equal(estImaSum.toFixed(2), '5.00');
+  assert.equal(estSum.toFixed(2), '85.00');
 
   const samsung = D.ib9FirmsCuriosityChain.find(x => x.key === 'samsung');
   const meritz = D.ib9FirmsCuriosityChain.find(x => x.key === 'meritz');
   assert(samsung.noteLicense.includes('2026.09'));
   assert(meritz.noteLicense.includes('2026.09'));
+  assert.equal(samsung.costKey, 'samsung');
+  assert.equal(meritz.costKey, 'meritz');
+  assert.equal(samsung.est27ModelNoteTril, 0);
+  assert.equal(meritz.est27ModelNoteTril, 4);
+  assert.equal(meritz.est27AverageNoteTril, 2);
   assert.equal(samsung.profitability.h126NoteIntEok, 0);
   assert.equal(meritz.profitability.h126NoteIntEok, 0);
 });
@@ -40,6 +49,7 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
 
     const fundingHtml = renderFundingBreakdownPanel(D);
     assert(fundingHtml.includes(item.firm));
+    assert(fundingHtml.includes('85조'));
     assert(!fundingHtml.includes('NaN'));
     assert(!fundingHtml.includes('undefined'));
 

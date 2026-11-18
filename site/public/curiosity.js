@@ -69,7 +69,7 @@ function miniMixBar(fundingRow) {
 }
 
 /* ==========================================================================
-   1. #funding — 9대 종투사 2027E 83조 성장 분해 & 인라인 연쇄 드릴다운 (방안 A + C)
+   1. #funding — 9대 종투사 2027E 85조 수정 전망 분해 & 인라인 연쇄 드릴다운 (방안 A + C)
    ========================================================================== */
 export function renderFundingBreakdownPanel(D) {
   const list = D.ib9FirmsCuriosityChain || [];
@@ -78,14 +78,14 @@ export function renderFundingBreakdownPanel(D) {
   return `<section class="panel" id="firm-growth-chain" style="scroll-margin-top:95px">
     <div class="panel-head">
       <div>
-        <div class="eyebrow">COMPANY BREAKDOWN · 83조 전망에서 회사별 전략·수익성까지</div>
-        <h2>2027E 83조 원, 누가 왜 얼마나 늘리고 다른 수단·수익성은 어떻게 다를까?</h2>
+        <div class="eyebrow">COMPANY BREAKDOWN · 85조 수정 전망에서 회사별 전략·수익성까지</div>
+        <h2>2027E 85조 원 수정 전망, 누가 왜 얼마나 늘리고 다른 수단·수익성은 어떻게 다를까?</h2>
         <p>각 증권사 행을 클릭하면 <b>① 인가 현황·성장 전제 → ② 자본 대비 비율 격차 이유와 대체 조달·실효금리 → ③ 전사 영업 수익성(ROE)</b>이 그 자리에서 펼쳐집니다.</p>
       </div>
-      <span class="badge green">9사 전원 인가 반영</span>
+      <span class="badge green">9사 전원 인가 · 메리츠 IR 반영</span>
     </div>
     <div class="callout" style="margin-top:0">
-      <b>2026.2Q 공시 이후 인가 변동 핵심 요약</b> · 2026.2Q FISIS 기준 잔액은 7개 인가사 합계(어음 55.94조 + 한투 IMA 2.60조 = 58.54조)였으나, <b>2026.09.09 삼성증권(8호)·2026.09.23 메리츠증권(9호) 발행어음 인가</b> 및 <b>2026.03 NH투자증권 IMA 3호 인가</b>로 9대 종투사 전원 발행어음 + 3사 IMA 체제가 완성되었습니다. 표의 원문 전망 합계(83.00조)는 잠재 2사 합산 2.00조 기준선을 유지하며, 펼침 카드에 9월 실제 인가를 반영한 개별 레인지를 병기합니다.
+      <b>메리츠 2027 IR 목표(연말 4조 · 평잔 2조) 반영 &amp; 9사 전원 인가 요약</b> · 사용자가 전달한 <b>메리츠증권 2027년 발행어음 IR 목표(연말 잔액 4.00조 · 연간 NIM 수익 계산용 평잔 2.00조, 원문 링크 별도 확인 전)</b>로 기존 잠재 2사 합산 2.00조 가정을 대체해 연말 수정 전망은 <b>85.00조 원(발행어음 80.00조 + IMA 5.00조 · 원문 모형 83.00조)</b>입니다. 2026.09.09 8호 인가를 받은 삼성증권은 별도 목표 자료가 없어 추가 물량(0.00조)을 미반영했으며(0은 회사 발표 목표가 아님), 2026.09 삼성·메리츠 어음 인가 및 2026.03 NH IMA 3호 인가를 반영한 잠재 레인지는 행을 클릭하면 펼쳐집니다.
     </div>
     <div class="table-wrap">
       <table class="data-table drill-table" id="funding-chain-table">
@@ -94,7 +94,7 @@ export function renderFundingBreakdownPanel(D) {
             <th scope="col">증권사 · 인가 상태</th>
             <th scope="col">'26.2Q 어음+IMA</th>
             <th scope="col">'26.2Q 어음/자본 비율</th>
-            <th scope="col">'27E 원문 전망</th>
+            <th scope="col">'27E 수정 전망</th>
             <th scope="col">공시 기준 순증</th>
             <th scope="col">'26.1H 어음 실효금리</th>
             <th scope="col">'26.1H 별도 ROE(연환산)</th>
@@ -105,7 +105,7 @@ export function renderFundingBreakdownPanel(D) {
         </tbody>
       </table>
     </div>
-    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 삼성·메리츠 원문 전망 각 1.00조는 원문 잠재 2사 합산 2.00조의 단순 배분 표기이며 실제 2026.09 인가 반영 시 개별 2.0~3.5조 상방 여력이 있습니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.')}
+    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 0.00조는 별도 목표 미확인에 따른 미반영(발표 목표 아님)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.')}
   </section>`;
 }
 
@@ -115,9 +115,11 @@ function renderFundingChainRows(D) {
     const isOpen = explorerState.expandedFirmKey === item.key;
     const fRow = D.ib9FirmsFunding202606[item.fundingIdx];
     const fisisNote = D.promNoteFisis202606.find(x => x.firm === item.firm);
+    const oppRow = (D.opportunityCost2027 || []).find(r => r.key === item.costKey);
     const baseTotal = item.base26Q2NoteTril + item.base26Q2ImaTril;
     const estTotal = item.est27ModelNoteTril + item.est27ModelImaTril;
     const deltaActual = estTotal - baseTotal;
+    const deltaModel = oppRow ? oppRow.delta : deltaActual;
     const capPct = fisisNote ? fisisNote.capRatioPct : 0;
     const effNote = fRow?.effRates26H1?.promNote;
     const p = item.profitability || {};
@@ -131,8 +133,8 @@ function renderFundingChainRows(D) {
           <div class="drill-col">
             <div class="drill-step-tag">01 · 인가 현황 &amp; '27E 전망 전제</div>
             <div class="drill-kv"><span>발행어음 / IMA</span><b>${item.noteLicense} / ${item.imaLicense}</b></div>
-            <div class="drill-kv"><span>원문 '27E 구성</span><b>어음 ${fmt(item.est27ModelNoteTril)}조 + IMA ${fmt(item.est27ModelImaTril)}조</b></div>
-            <div class="drill-kv"><span>최신 인가 반영 범위</span><b style="color:var(--teal)">${item.est27UpdatedRangeTril}조</b></div>
+            <div class="drill-kv"><span>수정 전망 '27E 구성</span><b>어음 ${fmt(item.est27ModelNoteTril)}조${item.est27AverageNoteTril ? ` (평잔 ${fmt(item.est27AverageNoteTril)}조)` : ''} + IMA ${fmt(item.est27ModelImaTril)}조</b></div>
+            <div class="drill-kv"><span>잠재 범위 · 비고</span><b style="color:var(--teal)">${item.est27UpdatedRangeTril}</b></div>
             <p class="drill-prose">${item.growthPremise}</p>
           </div>
           <div class="drill-col">
@@ -177,8 +179,8 @@ function renderFundingChainRows(D) {
           <div class="bar-track" style="margin-top:4px"><div class="bar-fill" style="width:${Math.min(100, capPct / 2)}%"></div></div>
         </div>
       </td>
-      <td><b>${fmt(estTotal)}조</b></td>
-      <td style="color:var(--teal);font-weight:600">+${fmt(deltaActual)}조</td>
+      <td><b>${fmt(estTotal)}조</b>${item.est27AverageNoteTril ? `<br><small class="muted">수익평잔 ${fmt(item.est27AverageNoteTril)}조</small>` : item.key === 'samsung' ? '<br><small class="muted">별도목표 미반영</small>' : ''}</td>
+      <td style="color:var(--teal);font-weight:600">+${fmt(deltaActual)}조${Math.abs(deltaModel - deltaActual) > 0.005 ? `<br><small class="muted">모형 +${fmt(deltaModel)}조</small>` : ''}</td>
       <td>${effNote === null || effNote === undefined ? '<span class="muted">26.09 인가</span>' : fmt(effNote) + '%'}${item.key === 'kb' ? ' <span class="badge amber" title="과거 고금리 약정물 만기정산 반영">이월정산</span>' : ''}</td>
       <td><b>${roeLabel}</b></td>
     </tr>${detailRow}`;
@@ -345,17 +347,6 @@ export function bindMoneyMoveSafetyPanel(D, onNavigate) {
       btn.addEventListener('click', () => {
         explorerState.firmKey = btn.dataset.creditFirm;
         onNavigate('ib-funding');
-      });
-    });
-    root.querySelectorAll('[data-qa-jump]').forEach(el => {
-      el.addEventListener('click', e => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-        e.preventDefault();
-        const u = new URL(location.href);
-        u.searchParams.set('q', el.dataset.qaJump);
-        u.hash = 'questions';
-        history.pushState(null, '', u);
-        window.dispatchEvent(new HashChangeEvent('hashchange'));
       });
     });
   };
