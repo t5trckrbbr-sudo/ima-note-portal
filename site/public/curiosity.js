@@ -346,6 +346,7 @@ export function bindMoneyMoveSafetyPanel(D, onNavigate) {
     root.querySelectorAll('[data-credit-firm]').forEach(btn => {
       btn.addEventListener('click', () => {
         explorerState.firmKey = btn.dataset.creditFirm;
+        explorerState.expandedFirmKey = btn.dataset.creditFirm;
         onNavigate('ib-funding');
       });
     });
