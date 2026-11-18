@@ -18,6 +18,7 @@ export function computeNim(D,opts={}){
  const totals=rows.reduce((t,r)=>({note:t.note+r.note,ima:t.ima+r.ima,noteIncomeBase:t.noteIncomeBase+r.noteIncomeBase,noteIncome:t.noteIncome+r.noteIncome,imaIncome:t.imaIncome+r.imaIncome,total:t.total+r.total}),{note:0,ima:0,noteIncomeBase:0,noteIncome:0,imaIncome:0,total:0});
  return {period,rows,totals,max:Math.max(0,...rows.map(r=>r.total))};
 }
+export function getNimScenario(D){return computeNim(D,state); }
 const basisLabel=basis=>basis==='average-target'?'IR 평잔 목표':basis==='year-end-proxy'?'연말 잔액 대용':'분기말 잔액 대용';
 const incomeBasisNote=c=>c.period==='2027'?'메리츠: 연말 잔액 4조 원, 수익 계산은 IR 평잔 목표 2조 원 × NIM입니다. 다른 회사는 연말 잔액을 평균 운용잔액의 대용값으로 사용하므로 합계는 서로 다른 잔액 기준을 구분한 수익 시나리오입니다.':'2026.2Q는 각 회사의 분기말 제공 잔액을 연간 평균 운용잔액의 대용값으로 사용합니다. 실제 연간 손익이 아닌 연환산 규모입니다.';
 
