@@ -1945,5 +1945,966 @@
         "note": "예금자보호 미적용이나 자본 8조+ 종투사 신용 및 신탁형 분리보관 결합"
       }
     ]
+  },
+  "householdWealthAndIntl2026": {
+    "updatedAsOf": "2026.2Q 자금순환 · 2025말 국민대차대조표 · 2025 가계금융복지조사",
+    "headlineKpis": {
+      "krTotalHouseholdAssets25Tril": 16641.34,
+      "krNonFinAssets25Tril": 10433.72,
+      "krFinAssets25Tril": 6207.62,
+      "krNetWorth25Tril": 14200.48,
+      "krNominalGdp25Tril": 2676.67,
+      "krAssetsToGdp25X": 6.22,
+      "krFinAssets26Q2Tril": 6930.21,
+      "krFinLiab26Q2Tril": 2495.05,
+      "krNetFin26Q2Tril": 4435.16,
+      "krDeposits26Q2Tril": 2688.07,
+      "corpDeposits26Q2Tril": 1135.92,
+      "combinedDepositsPool26Q2Tril": 3823.99,
+      "promNoteIma27ShareOfFinPct": 1.23,
+      "promNoteIma27ShareOfHhDepPct": 3.16
+    },
+    "surveyComparison": [
+      {
+        "name": "한국은행 『자금순환 (금융자산·부채 잔액표)』",
+        "ecosCode": "281Y002 (S14 · S11)",
+        "cycle": "분기별 ('08.4Q ~ '26.2Q)",
+        "scope": "거시 총량 (조 원 · 2008 SNA)",
+        "realAssets": "미포함 (금융자산·부채 전용)",
+        "role": "분기별 시계열 & 예금·주식·채권·보험연금 15개 세부상품 분해 주축"
+      },
+      {
+        "name": "한은 · 국가데이터처 『국민대차대조표』",
+        "ecosCode": "291Y505 (SEC04)",
+        "cycle": "연 1회 ('08 ~ '25년 말)",
+        "scope": "거시 총량 (조 원 · 2008 SNA)",
+        "realAssets": "포함 (토지 7,418.6조 + 주택·건물 2,833.0조 등)",
+        "role": "가계 총자산(16,641.3조) · 실물 vs 금융 비중 · 명목 GDP 대비 배율(6.22배) 산출"
+      },
+      {
+        "name": "국가데이터처 · 금감원 · 한은 『가계금융복지조사』",
+        "ecosCode": "903Y212",
+        "cycle": "연 1회 (매년 3월 말 기준 표본 미시조사)",
+        "scope": "가구당 평균 (만 원 · 약 2만 가구)",
+        "realAssets": "포함 (거주주택·부동산 등 평균 4.30억 원, 75.8%)",
+        "role": "순자산 5분위별(상위 20% 평균 총자산 17.46억·금융 3.46억) 리테일 WM 타깃 풀 확인"
+      }
+    ],
+    "krAnnualBalanceSheet": [
+      {
+        "year": "2020",
+        "nominalGdpTril": 2058.47,
+        "totalAssetsTril": 13052.73,
+        "nonFinAssetsTril": 8519.9,
+        "landTril": 6246.26,
+        "buildingsTril": 2120.18,
+        "otherNonFinTril": 153.46,
+        "finAssetsTril": 4532.83,
+        "finLiabTril": 2050.66,
+        "netWorthTril": 11002.07,
+        "nonFinShareOfGrossPct": 65.3,
+        "finShareOfGrossPct": 34.7,
+        "nonFinShareOfNetWorthPct": 77.4,
+        "totalAssetsToGdpX": 6.34,
+        "netWorthToGdpX": 5.34
+      },
+      {
+        "year": "2021",
+        "nominalGdpTril": 2223.72,
+        "totalAssetsTril": 14844.4,
+        "nonFinAssetsTril": 9917.08,
+        "landTril": 7380.36,
+        "buildingsTril": 2370.37,
+        "otherNonFinTril": 166.35,
+        "finAssetsTril": 4927.32,
+        "finLiabTril": 2251.95,
+        "netWorthTril": 12592.44,
+        "nonFinShareOfGrossPct": 66.8,
+        "finShareOfGrossPct": 33.2,
+        "nonFinShareOfNetWorthPct": 78.8,
+        "totalAssetsToGdpX": 6.68,
+        "netWorthToGdpX": 5.66
+      },
+      {
+        "year": "2022",
+        "nominalGdpTril": 2328.17,
+        "totalAssetsTril": 14756.36,
+        "nonFinAssetsTril": 9785.18,
+        "landTril": 7052.05,
+        "buildingsTril": 2563.68,
+        "otherNonFinTril": 169.45,
+        "finAssetsTril": 4971.18,
+        "finLiabTril": 2332.21,
+        "netWorthTril": 12424.16,
+        "nonFinShareOfGrossPct": 66.3,
+        "finShareOfGrossPct": 33.7,
+        "nonFinShareOfNetWorthPct": 78.8,
+        "totalAssetsToGdpX": 6.34,
+        "netWorthToGdpX": 5.34
+      },
+      {
+        "year": "2023",
+        "nominalGdpTril": 2407.58,
+        "totalAssetsTril": 14955.31,
+        "nonFinAssetsTril": 9745.87,
+        "landTril": 6893.94,
+        "buildingsTril": 2680.57,
+        "otherNonFinTril": 171.36,
+        "finAssetsTril": 5209.44,
+        "finLiabTril": 2313.3,
+        "netWorthTril": 12642.0,
+        "nonFinShareOfGrossPct": 65.2,
+        "finShareOfGrossPct": 34.8,
+        "nonFinShareOfNetWorthPct": 77.1,
+        "totalAssetsToGdpX": 6.21,
+        "netWorthToGdpX": 5.25
+      },
+      {
+        "year": "2024",
+        "nominalGdpTril": 2564.2,
+        "totalAssetsTril": 15401.53,
+        "nonFinAssetsTril": 9940.18,
+        "landTril": 7002.59,
+        "buildingsTril": 2763.43,
+        "otherNonFinTril": 174.16,
+        "finAssetsTril": 5461.35,
+        "finLiabTril": 2368.37,
+        "netWorthTril": 13033.16,
+        "nonFinShareOfGrossPct": 64.5,
+        "finShareOfGrossPct": 35.5,
+        "nonFinShareOfNetWorthPct": 76.3,
+        "totalAssetsToGdpX": 6.01,
+        "netWorthToGdpX": 5.08
+      },
+      {
+        "year": "2025",
+        "nominalGdpTril": 2676.67,
+        "totalAssetsTril": 16641.34,
+        "nonFinAssetsTril": 10433.72,
+        "landTril": 7418.55,
+        "buildingsTril": 2832.98,
+        "otherNonFinTril": 182.19,
+        "finAssetsTril": 6207.62,
+        "finLiabTril": 2440.87,
+        "netWorthTril": 14200.48,
+        "nonFinShareOfGrossPct": 62.7,
+        "finShareOfGrossPct": 37.3,
+        "nonFinShareOfNetWorthPct": 73.5,
+        "totalAssetsToGdpX": 6.22,
+        "netWorthToGdpX": 5.31
+      }
+    ],
+    "krQuarterlyFinSeries": [
+      {
+        "period": "2019.Q4",
+        "rawQuarter": "2019Q4",
+        "totalFinTril": 3981.52,
+        "depositsTril": 1782.87,
+        "equitiesFundsTril": 722.23,
+        "insPensionTril": 1307.84,
+        "bondsTril": 141.51,
+        "otherFinTril": 27.07,
+        "finLiabTril": 1879.13,
+        "netFinTril": 2102.39,
+        "assetLiabRatioX": 2.12,
+        "sharesPct": {
+          "deposits": 44.8,
+          "equitiesFunds": 18.1,
+          "insPension": 32.8,
+          "bonds": 3.6,
+          "other": 0.7
+        }
+      },
+      {
+        "period": "2020.Q4",
+        "rawQuarter": "2020Q4",
+        "totalFinTril": 4532.83,
+        "depositsTril": 1966.72,
+        "equitiesFundsTril": 985.28,
+        "insPensionTril": 1399.23,
+        "bondsTril": 148.0,
+        "otherFinTril": 33.6,
+        "finLiabTril": 2050.66,
+        "netFinTril": 2482.17,
+        "assetLiabRatioX": 2.21,
+        "sharesPct": {
+          "deposits": 43.4,
+          "equitiesFunds": 21.7,
+          "insPension": 30.9,
+          "bonds": 3.3,
+          "other": 0.7
+        }
+      },
+      {
+        "period": "2021.Q4",
+        "rawQuarter": "2021Q4",
+        "totalFinTril": 4927.32,
+        "depositsTril": 2139.04,
+        "equitiesFundsTril": 1134.1,
+        "insPensionTril": 1498.35,
+        "bondsTril": 117.28,
+        "otherFinTril": 38.55,
+        "finLiabTril": 2251.95,
+        "netFinTril": 2675.37,
+        "assetLiabRatioX": 2.19,
+        "sharesPct": {
+          "deposits": 43.4,
+          "equitiesFunds": 23.0,
+          "insPension": 30.4,
+          "bonds": 2.4,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2022.Q4",
+        "rawQuarter": "2022Q4",
+        "totalFinTril": 4971.18,
+        "depositsTril": 2285.56,
+        "equitiesFundsTril": 966.14,
+        "insPensionTril": 1545.36,
+        "bondsTril": 133.22,
+        "otherFinTril": 40.9,
+        "finLiabTril": 2332.21,
+        "netFinTril": 2638.97,
+        "assetLiabRatioX": 2.13,
+        "sharesPct": {
+          "deposits": 46.0,
+          "equitiesFunds": 19.4,
+          "insPension": 31.1,
+          "bonds": 2.7,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2023.Q4",
+        "rawQuarter": "2023Q4",
+        "totalFinTril": 5209.44,
+        "depositsTril": 2414.24,
+        "equitiesFundsTril": 1127.92,
+        "insPensionTril": 1457.58,
+        "bondsTril": 168.56,
+        "otherFinTril": 41.14,
+        "finLiabTril": 2313.3,
+        "netFinTril": 2896.14,
+        "assetLiabRatioX": 2.25,
+        "sharesPct": {
+          "deposits": 46.3,
+          "equitiesFunds": 21.7,
+          "insPension": 28.0,
+          "bonds": 3.2,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2024.Q4",
+        "rawQuarter": "2024Q4",
+        "totalFinTril": 5461.35,
+        "depositsTril": 2532.68,
+        "equitiesFundsTril": 1114.12,
+        "insPensionTril": 1579.03,
+        "bondsTril": 188.14,
+        "otherFinTril": 47.38,
+        "finLiabTril": 2368.37,
+        "netFinTril": 3092.98,
+        "assetLiabRatioX": 2.31,
+        "sharesPct": {
+          "deposits": 46.4,
+          "equitiesFunds": 20.4,
+          "insPension": 28.9,
+          "bonds": 3.4,
+          "other": 0.9
+        }
+      },
+      {
+        "period": "2025.Q1",
+        "rawQuarter": "2025Q1",
+        "totalFinTril": 5570.77,
+        "depositsTril": 2584.72,
+        "equitiesFundsTril": 1125.84,
+        "insPensionTril": 1625.24,
+        "bondsTril": 188.08,
+        "otherFinTril": 46.89,
+        "finLiabTril": 2379.88,
+        "netFinTril": 3190.89,
+        "assetLiabRatioX": 2.34,
+        "sharesPct": {
+          "deposits": 46.4,
+          "equitiesFunds": 20.2,
+          "insPension": 29.2,
+          "bonds": 3.4,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2025.Q2",
+        "rawQuarter": "2025Q2",
+        "totalFinTril": 5783.54,
+        "depositsTril": 2616.43,
+        "equitiesFundsTril": 1301.87,
+        "insPensionTril": 1632.18,
+        "bondsTril": 185.7,
+        "otherFinTril": 47.36,
+        "finLiabTril": 2406.04,
+        "netFinTril": 3377.5,
+        "assetLiabRatioX": 2.4,
+        "sharesPct": {
+          "deposits": 45.2,
+          "equitiesFunds": 22.5,
+          "insPension": 28.2,
+          "bonds": 3.2,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2025.Q3",
+        "rawQuarter": "2025Q3",
+        "totalFinTril": 5997.66,
+        "depositsTril": 2664.37,
+        "equitiesFundsTril": 1448.27,
+        "insPensionTril": 1642.27,
+        "bondsTril": 194.18,
+        "otherFinTril": 48.57,
+        "finLiabTril": 2421.21,
+        "netFinTril": 3576.45,
+        "assetLiabRatioX": 2.48,
+        "sharesPct": {
+          "deposits": 44.4,
+          "equitiesFunds": 24.1,
+          "insPension": 27.4,
+          "bonds": 3.2,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2025.Q4",
+        "rawQuarter": "2025Q4",
+        "totalFinTril": 6207.62,
+        "depositsTril": 2684.48,
+        "equitiesFundsTril": 1638.72,
+        "insPensionTril": 1650.31,
+        "bondsTril": 185.94,
+        "otherFinTril": 48.17,
+        "finLiabTril": 2440.87,
+        "netFinTril": 3766.75,
+        "assetLiabRatioX": 2.54,
+        "sharesPct": {
+          "deposits": 43.2,
+          "equitiesFunds": 26.4,
+          "insPension": 26.6,
+          "bonds": 3.0,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2026.Q1",
+        "rawQuarter": "2026Q1",
+        "totalFinTril": 6417.05,
+        "depositsTril": 2713.77,
+        "equitiesFundsTril": 1849.09,
+        "insPensionTril": 1625.63,
+        "bondsTril": 179.57,
+        "otherFinTril": 48.99,
+        "finLiabTril": 2466.82,
+        "netFinTril": 3950.23,
+        "assetLiabRatioX": 2.6,
+        "sharesPct": {
+          "deposits": 42.3,
+          "equitiesFunds": 28.8,
+          "insPension": 25.3,
+          "bonds": 2.8,
+          "other": 0.8
+        }
+      },
+      {
+        "period": "2026.Q2",
+        "rawQuarter": "2026Q2",
+        "totalFinTril": 6930.21,
+        "depositsTril": 2688.07,
+        "equitiesFundsTril": 2381.12,
+        "insPensionTril": 1633.0,
+        "bondsTril": 178.94,
+        "otherFinTril": 49.08,
+        "finLiabTril": 2495.05,
+        "netFinTril": 4435.16,
+        "assetLiabRatioX": 2.78,
+        "sharesPct": {
+          "deposits": 38.8,
+          "equitiesFunds": 34.4,
+          "insPension": 23.6,
+          "bonds": 2.6,
+          "other": 0.7
+        }
+      }
+    ],
+    "krFinCategories26Q2": [
+      {
+        "id": "deposits",
+        "label": "① 현금 및 예금",
+        "amount26Q2Tril": 2688.07,
+        "share26Q2Pct": 38.8,
+        "amount25Q4Tril": 2684.48,
+        "share25Q4Pct": 43.2,
+        "color": "#295dd8",
+        "headline": "사상 첫 40% 하회(38.8%) · 은행 정기예금 이탈(-44.4조) vs 증권사 예탁금·어음·CMA 등 기타예금 급증(+94.7조)",
+        "implication": "가계 현금·예금(2,688.1조) 내부에서도 은행 단기저축성예금('25.3Q 정점 1,518.8조 → '26.2Q 1,474.4조)이 줄어드는 반면, 고객예탁금·발행어음·CMA 등이 포착되는 기타예금(211.3조 → 306.0조)과 대고객 RP(42.6조 → 58.6조), 금전신탁(95.4조 → 120.7조)으로 구조적 이동이 진행되고 있습니다.",
+        "subItems": [
+          {
+            "ecosCode": "F0231STB",
+            "name": "단기저축성예금 (은행 정기예금 주축)",
+            "q19_4": 959.94,
+            "q22_4": 1309.02,
+            "q24_4": 1486.3,
+            "q25_4": 1518.24,
+            "q26_2": 1474.42,
+            "deltaFrom24Q4Tril": -11.88,
+            "shareOfFin26Q2Pct": 21.28,
+            "note": "'25.3Q 정점(1,518.8조) 대비 -44.4조 감소"
+          },
+          {
+            "ecosCode": "F0231LTB",
+            "name": "장기저축성예금",
+            "q19_4": 340.19,
+            "q22_4": 334.8,
+            "q24_4": 330.56,
+            "q25_4": 344.39,
+            "q26_2": 326.19,
+            "deltaFrom24Q4Tril": -4.37,
+            "shareOfFin26Q2Pct": 4.71,
+            "note": "만기 2년 이상 정기예적금·청약저축 등"
+          },
+          {
+            "ecosCode": "F0237ZZB",
+            "name": "기타예금 (고객예탁금·발행어음·CMA 등)",
+            "q19_4": 124.97,
+            "q22_4": 183.25,
+            "q24_4": 211.29,
+            "q25_4": 257.47,
+            "q26_2": 305.95,
+            "deltaFrom24Q4Tril": 94.66,
+            "shareOfFin26Q2Pct": 4.41,
+            "note": "'24말 대비 +94.7조(+44.8%) 급증 · 자본시장 대기자금 핵심"
+          },
+          {
+            "ecosCode": "F022ZTB",
+            "name": "결제성예금 (요구불·수시입출식)",
+            "q19_4": 135.89,
+            "q22_4": 203.32,
+            "q24_4": 222.0,
+            "q25_4": 241.92,
+            "q26_2": 241.16,
+            "deltaFrom24Q4Tril": 19.16,
+            "shareOfFin26Q2Pct": 3.48,
+            "note": "저원가 수시 대기성 예금 (0.1~0.5%대)"
+          },
+          {
+            "ecosCode": "F021ZWB",
+            "name": "현금통화",
+            "q19_4": 87.12,
+            "q22_4": 122.77,
+            "q24_4": 137.39,
+            "q25_4": 150.45,
+            "q26_2": 154.77,
+            "deltaFrom24Q4Tril": 17.38,
+            "shareOfFin26Q2Pct": 2.23,
+            "note": "민간 화폐 보유분"
+          },
+          {
+            "ecosCode": "F0236ZZB",
+            "name": "금전신탁 (퇴직연금·특정금전신탁 등)",
+            "q19_4": 102.43,
+            "q22_4": 101.36,
+            "q24_4": 95.36,
+            "q25_4": 108.72,
+            "q26_2": 120.67,
+            "deltaFrom24Q4Tril": 25.31,
+            "shareOfFin26Q2Pct": 1.74,
+            "note": "신탁형 자산관리·연금 수탁 확대"
+          },
+          {
+            "ecosCode": "F0235ZTB",
+            "name": "환매조건부채권 (대고객 RP)",
+            "q19_4": 29.74,
+            "q22_4": 27.14,
+            "q24_4": 42.61,
+            "q25_4": 55.71,
+            "q26_2": 58.63,
+            "deltaFrom24Q4Tril": 16.02,
+            "shareOfFin26Q2Pct": 0.85,
+            "note": "증권사 단기 확정금리 RP 파킹 수요 유입 (+37.6%)"
+          },
+          {
+            "ecosCode": "F0234ZTB+F0233ZZB",
+            "name": "양도성예금증서(CD) · 표지어음",
+            "q19_4": 2.58,
+            "q22_4": 3.9,
+            "q24_4": 7.17,
+            "q25_4": 7.59,
+            "q26_2": 6.28,
+            "deltaFrom24Q4Tril": -0.89,
+            "shareOfFin26Q2Pct": 0.09,
+            "note": "은행·종금 단기 시장성 수신"
+          }
+        ]
+      },
+      {
+        "id": "equities",
+        "label": "② 지분증권 및 투자펀드",
+        "amount26Q2Tril": 2381.12,
+        "share26Q2Pct": 34.4,
+        "amount25Q4Tril": 1638.72,
+        "share25Q4Pct": 26.4,
+        "color": "#087f80",
+        "headline": "'24말 20.4% → '26.2Q 34.4% 급등 · 보험·연금을 제치고 현금·예금 턱밑까지 추격",
+        "implication": "국내 증시 평가익 회복뿐 아니라 ETF·MMF 등 투자펀드(318.3조)와 서학개미 해외주식(272.1조, '19말 대비 21배) 순유입이 가계 포트폴리오의 자본시장화를 견인하고 있습니다. 증시 변동성이 커질 때 차익실현 자금이 곧바로 증권사 내 발행어음·CMA·IMA 파킹 풀로 전환됩니다.",
+        "subItems": [
+          {
+            "ecosCode": "F071ZZB",
+            "name": "거주자발행주식 및 출자지분 (국내주식)",
+            "q19_4": 596.44,
+            "q22_4": 803.84,
+            "q24_4": 835.74,
+            "q25_4": 1224.13,
+            "q26_2": 1790.73,
+            "deltaFrom24Q4Tril": 954.99,
+            "shareOfFin26Q2Pct": 25.84,
+            "note": "'24말 835.7조 → '26.2Q 1,790.7조 (+114.3%)"
+          },
+          {
+            "ecosCode": "F073ZZB",
+            "name": "투자펀드 지분 (ETF · 공모사모펀드 · MMF)",
+            "q19_4": 112.91,
+            "q22_4": 95.99,
+            "q24_4": 129.74,
+            "q25_4": 201.92,
+            "q26_2": 318.26,
+            "deltaFrom24Q4Tril": 188.52,
+            "shareOfFin26Q2Pct": 4.59,
+            "note": "'24말 129.7조 → '26.2Q 318.3조 (+145.3%)"
+          },
+          {
+            "ecosCode": "F072ZZB",
+            "name": "비거주자발행주식 (해외주식 직접보유)",
+            "q19_4": 12.88,
+            "q22_4": 66.3,
+            "q24_4": 148.65,
+            "q25_4": 212.67,
+            "q26_2": 272.14,
+            "deltaFrom24Q4Tril": 123.49,
+            "shareOfFin26Q2Pct": 3.93,
+            "note": "'19말 12.9조 → '26.2Q 272.1조 (21.1배 성장)"
+          }
+        ]
+      },
+      {
+        "id": "pensions",
+        "label": "③ 보험 및 연금준비금",
+        "amount26Q2Tril": 1633.0,
+        "share26Q2Pct": 23.6,
+        "amount25Q4Tril": 1650.31,
+        "share25Q4Pct": 26.6,
+        "color": "#537cca",
+        "headline": "장기 계약형 노후자산 1,633.0조 원 · 퇴직연금 원리금보장(378.1조) 수익률 제고 수요의 본류",
+        "implication": "생명·손해보험 책임준비금과 퇴직·개인연금 준비금 합산 축입니다. 2023년 IFRS17 보험부채 시가평가 전환(-127.1조 평가조정) 이후 완만한 적립 증가를 이어가고 있으며, 고령화에 따라 은행 저금리 예금 대신 중수익 원금지급형 상품(타사 발행어음·ELB 등 감독규정 허용 수단)을 찾는 장기 머니무브 원천입니다.",
+        "subItems": [
+          {
+            "ecosCode": "F03ZTB",
+            "name": "보험 및 연금준비금 총액 (생보·손보·연금기금)",
+            "q19_4": 1307.84,
+            "q22_4": 1545.36,
+            "q24_4": 1579.03,
+            "q25_4": 1650.31,
+            "q26_2": 1633.0,
+            "deltaFrom24Q4Tril": 53.97,
+            "shareOfFin26Q2Pct": 23.56,
+            "note": "퇴직연금 적립금('25말 501.4조, 원리금보장 378.1조) 포함 장기 노후자금"
+          }
+        ]
+      },
+      {
+        "id": "bonds",
+        "label": "④ 채권 (파생결합증권 포함)",
+        "amount26Q2Tril": 178.94,
+        "share26Q2Pct": 2.6,
+        "amount25Q4Tril": 185.94,
+        "share25Q4Pct": 3.0,
+        "color": "#d09b43",
+        "headline": "가계 직접 채권보유 비중은 단 2.6%(178.9조) · 예금(38.8%)과 채권 사이의 거대한 중수익 공백",
+        "implication": "2022~2024년 리테일 채권 열풍에도 개인이 만기·호가·세제를 직접 관리하는 개별 채권 보유는 2.6%에 그칩니다. 바로 이 '은행 예금 이상의 금리를 원하지만 개별 채권·주식 변동성은 부담스러운 공백'을 AA급 종투사의 발행어음(확정금리)과 IMA(만기 원금지급+초과수익)가 구조적으로 대체합니다.",
+        "subItems": [
+          {
+            "ecosCode": "F04LTB",
+            "name": "장기채권 (국채 · 금융채 · 회사채 · 해외채)",
+            "q19_4": 88.98,
+            "q22_4": 81.1,
+            "q24_4": 127.18,
+            "q25_4": 124.4,
+            "q26_2": 116.18,
+            "deltaFrom24Q4Tril": -11.0,
+            "shareOfFin26Q2Pct": 1.68,
+            "note": "만기 1년 초과 채무증권 직접보유"
+          },
+          {
+            "ecosCode": "F04STB",
+            "name": "단기채권 (만기 1년 이하 금융채 · 회사채 · CP)",
+            "q19_4": 50.41,
+            "q22_4": 46.53,
+            "q24_4": 59.01,
+            "q25_4": 55.42,
+            "q26_2": 50.02,
+            "deltaFrom24Q4Tril": -8.99,
+            "shareOfFin26Q2Pct": 0.72,
+            "note": "이 중 가계 직접 보유 단기 기업어음(CP 등)은 0.35조에 불과"
+          },
+          {
+            "ecosCode": "F048ZZB",
+            "name": "파생결합증권 (ELS · ELB · DLS · DLB)",
+            "q19_4": 2.11,
+            "q22_4": 5.59,
+            "q24_4": 1.95,
+            "q25_4": 6.13,
+            "q26_2": 12.74,
+            "deltaFrom24Q4Tril": 10.79,
+            "shareOfFin26Q2Pct": 0.18,
+            "note": "홍콩 H지수 ELS 위축('24말 1.95조) 후 원금지급형 ELB 중심 12.74조 회복"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": "⑤ 기타 금융자산 (및 가계 금융부채 대조)",
+        "amount26Q2Tril": 49.08,
+        "share26Q2Pct": 0.7,
+        "amount25Q4Tril": 48.17,
+        "share25Q4Pct": 0.8,
+        "color": "#95a4b1",
+        "headline": "기타 미수금·파생상품 49.1조(0.7%) · 가계 금융부채 2,495.1조 대비 순금융자산 4,435.2조(2.78배)",
+        "implication": "가계 금융부채('26.2Q 2,495.1조) 증가세가 완만해진 가운데 금융자산이 6,930.2조로 불어나며 금융자산/부채 배율(2.78배)이 역대 최고 수준으로 개선되어 리테일 투자 여력을 뒷받침하고 있습니다.",
+        "subItems": [
+          {
+            "ecosCode": "F08ZZB",
+            "name": "파생금융상품",
+            "q19_4": 5.49,
+            "q22_4": 6.34,
+            "q24_4": 6.72,
+            "q25_4": 5.79,
+            "q26_2": 4.51,
+            "deltaFrom24Q4Tril": -2.21,
+            "shareOfFin26Q2Pct": 0.07,
+            "note": "가계 보유 파생평가자산"
+          },
+          {
+            "ecosCode": "F13ZZB",
+            "name": "기타금융자산 (미수금 등)",
+            "q19_4": 10.68,
+            "q22_4": 18.07,
+            "q24_4": 19.8,
+            "q25_4": 20.84,
+            "q26_2": 20.78,
+            "deltaFrom24Q4Tril": 0.98,
+            "shareOfFin26Q2Pct": 0.3,
+            "note": "기타 수취채권 등"
+          },
+          {
+            "ecosCode": "F00B_L",
+            "name": "[참고] 가계 및 비영리단체 총금융부채",
+            "q19_4": 1879.13,
+            "q22_4": 2332.21,
+            "q24_4": 2368.37,
+            "q25_4": 2440.87,
+            "q26_2": 2495.05,
+            "deltaFrom24Q4Tril": 126.68,
+            "shareOfFin26Q2Pct": 36.0,
+            "note": "순금융자산 = 6,930.2 − 2,495.1 = 4,435.2조 원 (배율 2.78배)"
+          }
+        ]
+      }
+    ],
+    "corpLiquiditySeries": [
+      {
+        "period": "2020.Q4",
+        "totalFinTril": 3166.98,
+        "depositsTril": 794.27,
+        "fundsTril": 62.47,
+        "bondsTril": 90.62,
+        "shortCpNoteTril": 13.09
+      },
+      {
+        "period": "2023.Q4",
+        "totalFinTril": 4107.3,
+        "depositsTril": 914.82,
+        "fundsTril": 128.96,
+        "bondsTril": 111.22,
+        "shortCpNoteTril": 7.28
+      },
+      {
+        "period": "2024.Q4",
+        "totalFinTril": 4345.13,
+        "depositsTril": 960.61,
+        "fundsTril": 149.59,
+        "bondsTril": 112.3,
+        "shortCpNoteTril": 3.87
+      },
+      {
+        "period": "2025.Q4",
+        "totalFinTril": 4835.46,
+        "depositsTril": 1016.96,
+        "fundsTril": 222.71,
+        "bondsTril": 112.57,
+        "shortCpNoteTril": 8.14
+      },
+      {
+        "period": "2026.Q2",
+        "totalFinTril": 6037.91,
+        "depositsTril": 1135.92,
+        "fundsTril": 274.68,
+        "bondsTril": 121.86,
+        "shortCpNoteTril": 8.21
+      }
+    ],
+    "shfQuintiles2025": [
+      {
+        "key": "전체가구평균",
+        "group": "전체 가구 평균",
+        "totalAssetManwon": 56677.5,
+        "realAssetManwon": 42987.7,
+        "realSharePct": 75.8,
+        "finAssetManwon": 13689.8,
+        "finSharePct": 24.2,
+        "depositSavingsManwon": 5227.4,
+        "stocksBondsFundsManwon": 2053.1,
+        "insuranceManwon": 2289.4,
+        "jeonseDepositManwon": 3729.6,
+        "debtManwon": 9533.8,
+        "netWorthManwon": 47143.7
+      },
+      {
+        "key": "1분위",
+        "group": "순자산 1분위 (하위 20%)",
+        "totalAssetManwon": 3889.7,
+        "realAssetManwon": 1467.3,
+        "realSharePct": 37.7,
+        "finAssetManwon": 2422.4,
+        "finSharePct": 62.3,
+        "depositSavingsManwon": 562.1,
+        "stocksBondsFundsManwon": 74.0,
+        "insuranceManwon": 316.3,
+        "jeonseDepositManwon": 1421.7,
+        "debtManwon": 2757.8,
+        "netWorthManwon": 1131.9
+      },
+      {
+        "key": "2분위",
+        "group": "순자산 2분위 (20~40%)",
+        "totalAssetManwon": 15158.6,
+        "realAssetManwon": 8097.7,
+        "realSharePct": 53.4,
+        "finAssetManwon": 7060.9,
+        "finSharePct": 46.6,
+        "depositSavingsManwon": 1953.1,
+        "stocksBondsFundsManwon": 332.0,
+        "insuranceManwon": 1077.2,
+        "jeonseDepositManwon": 3545.5,
+        "debtManwon": 4697.0,
+        "netWorthManwon": 10461.5
+      },
+      {
+        "key": "3분위",
+        "group": "순자산 3분위 (40~60%)",
+        "totalAssetManwon": 31641.6,
+        "realAssetManwon": 21765.1,
+        "realSharePct": 68.8,
+        "finAssetManwon": 9876.6,
+        "finSharePct": 31.2,
+        "depositSavingsManwon": 3383.6,
+        "stocksBondsFundsManwon": 671.0,
+        "insuranceManwon": 2012.4,
+        "jeonseDepositManwon": 3509.2,
+        "debtManwon": 7536.3,
+        "netWorthManwon": 24105.4
+      },
+      {
+        "key": "4분위",
+        "group": "순자산 4분위 (60~80%)",
+        "totalAssetManwon": 58017.1,
+        "realAssetManwon": 43508.6,
+        "realSharePct": 75.0,
+        "finAssetManwon": 14508.5,
+        "finSharePct": 25.0,
+        "depositSavingsManwon": 5583.6,
+        "stocksBondsFundsManwon": 1675.7,
+        "insuranceManwon": 3106.1,
+        "jeonseDepositManwon": 3635.4,
+        "debtManwon": 10163.7,
+        "netWorthManwon": 47853.4
+      },
+      {
+        "key": "5분위_상위20%",
+        "group": "순자산 5분위 (상위 20%)",
+        "totalAssetManwon": 174590.0,
+        "realAssetManwon": 140024.8,
+        "realSharePct": 80.2,
+        "finAssetManwon": 34565.2,
+        "finSharePct": 19.8,
+        "depositSavingsManwon": 14647.4,
+        "stocksBondsFundsManwon": 7508.7,
+        "insuranceManwon": 4933.2,
+        "jeonseDepositManwon": 6534.2,
+        "debtManwon": 22504.6,
+        "netWorthManwon": 152085.4
+      }
+    ],
+    "intl5Countries": [
+      {
+        "code": "KR",
+        "country": "한국",
+        "flag": "KR",
+        "sourceOrg": "한국은행 · 국가데이터처 (ECOS 291Y505 · 281Y002 · 200Y113)",
+        "basePeriod": "'25말 총자산 · '26.2Q 금융자산",
+        "nominalGdpLocal": "2,676.7조 원",
+        "nominalGdpUsdTril": 1.88,
+        "totalAssetsLocal": "16,641.3조 원",
+        "assetsToGdpX": 6.22,
+        "netWorthLocal": "14,200.5조 원 (GDP 5.31배)",
+        "realAssetSharePct": 62.7,
+        "finAssetSharePct": 37.3,
+        "latestFinAssetsNote": "'25말 6,207.6조 → '26.2Q 6,930.2조 원",
+        "finMixPct": {
+          "deposits": 38.8,
+          "equitiesFunds": 34.4,
+          "insPension": 23.6,
+          "bonds": 2.6,
+          "other": 0.7
+        },
+        "finMix25Q4Pct": {
+          "deposits": 43.2,
+          "equitiesFunds": 26.4,
+          "insPension": 26.6,
+          "bonds": 3.0,
+          "other": 0.8
+        },
+        "archetype": "실물·예금 편중 → 자본시장 머니무브 전환기",
+        "accountingNote": "국민대차대조표 총자산 기준 비금융(실물) 비중은 62.7%이며, 부채 차감 순자산 기준(73.5%)·가계금융복지조사 미시 가구평균(75.8%)과 분모 기준을 구분해야 합니다. '26.2Q 현금·예금이 사상 처음 40% 아래(38.8%)로 내려오고 증권사 예탁금·발행어음·ETF가 급팽창 중입니다."
+      },
+      {
+        "code": "US",
+        "country": "미국",
+        "flag": "US",
+        "sourceOrg": "연준 Fed Z.1 (Table B.101) · 상무부 BEA · BOJ SNA 비교",
+        "basePeriod": "'25말 총자산 · '26.1Q~2Q 금융자산",
+        "nominalGdpLocal": "$30.86조",
+        "nominalGdpUsdTril": 30.86,
+        "totalAssetsLocal": "$205.61조 ('26.2Q $217.75조)",
+        "assetsToGdpX": 6.66,
+        "netWorthLocal": "$184.11조 ('26.2Q $195.87조, GDP 5.97배)",
+        "realAssetSharePct": 30.0,
+        "finAssetSharePct": 70.0,
+        "latestFinAssetsNote": "'25말 $143.87조 → '26.2Q $153.49조",
+        "finMixPct": {
+          "deposits": 10.7,
+          "equitiesFunds": 56.7,
+          "insPension": 25.7,
+          "bonds": 4.3,
+          "other": 2.5
+        },
+        "archetype": "주식·뮤추얼펀드·MMF 중심 자본시장형",
+        "accountingNote": "SNA 표준화(BOJ 日米欧比較 '26.1Q 및 Fed Z.1 B.101) 기준입니다. 현금·예금(요구불+저축성 10.7%)이 극도로 낮은 대신 MMF($5.32조, 3.7%)가 투자펀드(13.3%) 안에서 단기 고금리 파킹 기능을 수행하며, 주식등(43.4%)에는 상장·비상장 법인주식과 비법인기업 지분($16.04조)이 포함됩니다."
+      },
+      {
+        "code": "UK",
+        "country": "영국",
+        "flag": "UK",
+        "sourceOrg": "영국 통계청 ONS (National Balance Sheet · UKEA) · 영란은행 · OECD",
+        "basePeriod": "'24~'25 국민대차대조표 추정",
+        "nominalGdpLocal": "£3.04조",
+        "nominalGdpUsdTril": 4.01,
+        "totalAssetsLocal": "약 £13.0조 (순자산 £10.8조)",
+        "assetsToGdpX": 4.28,
+        "netWorthLocal": "£10.8조 (부채 £2.16조 차감, GDP 3.55배)",
+        "realAssetSharePct": 50.8,
+        "finAssetSharePct": 49.2,
+        "latestFinAssetsNote": "총금융자산 약 £6.4조 · 순금융자산 £4.3조",
+        "finMixPct": {
+          "deposits": 25.0,
+          "equitiesFunds": 17.0,
+          "insPension": 50.0,
+          "bonds": 0.8,
+          "other": 7.2
+        },
+        "archetype": "사적연금(DB·DC)·보험 기관운용 중심형",
+        "accountingNote": "ONS 국민대차대조표상 토지(£4.5조)+주택·건물(£2.1조) 비금융자산(£6.6조)과 금융자산(약 £6.4조)이 균형을 이루며, 금융자산 내부에서는 확정급여·확정기여 사적연금 및 보험준비금(AF.6, 약 46~53%)이 압도적 비중을 차지합니다. 개별 가계의 직접 채권 보유는 1% 미만입니다."
+      },
+      {
+        "code": "JP",
+        "country": "일본",
+        "flag": "JP",
+        "sourceOrg": "일본은행(BOJ) 자금순환('26.2Q) · 내각부 국민경제계산(SNA)",
+        "basePeriod": "'24말 실물SNA · '26.2Q 금융자산",
+        "nominalGdpLocal": "662.8~666.4조 엔",
+        "nominalGdpUsdTril": 4.43,
+        "totalAssetsLocal": "약 3,697조 엔 ('24말 SNA 3,554조)",
+        "assetsToGdpX": 5.56,
+        "netWorthLocal": "약 3,160조 엔+ (GDP 약 4.8~5.0배)",
+        "realAssetSharePct": 36.3,
+        "finAssetSharePct": 63.7,
+        "latestFinAssetsNote": "'26.1Q 2,406.3조 → '26.2Q 2,519.1조 엔 (사상 최고)",
+        "finMixPct": {
+          "deposits": 44.9,
+          "equitiesFunds": 27.0,
+          "insPension": 23.3,
+          "bonds": 1.5,
+          "other": 3.4
+        },
+        "archetype": "초장기 현금·예금 편중(50%+)에서 신NISA 투자 전환",
+        "accountingNote": "30년간 가계 금융자산의 50~54%가 현금·예금에 묶여 있었으나, 인플레이션 전환과 신NISA(비과세 계좌) 확산으로 '26.2Q 현금·예금 비중이 44.9%(1,131.6조 엔)까지 낮아지고 주식(19.3%, 485.6조 엔)+투자신탁(7.7%, 193.3조 엔) 합산 비중이 27.0%로 역대 최고치를 경신했습니다."
+      },
+      {
+        "code": "CN",
+        "country": "중국",
+        "flag": "CN",
+        "sourceOrg": "국가통계국(NBS) · 인민은행(PBOC) · 사회과학원 NIFD · Allianz('25/'26)",
+        "basePeriod": "'25말 GDP·예금 확정 및 거시 대차대조표 추계",
+        "nominalGdpLocal": "140.19조 위안",
+        "nominalGdpUsdTril": 19.4,
+        "totalAssetsLocal": "약 700~730조 위안 (추계)",
+        "assetsToGdpX": 5.1,
+        "netWorthLocal": "약 620~645조 위안 (부채 ~83조 위안)",
+        "realAssetSharePct": 54.0,
+        "finAssetSharePct": 46.0,
+        "latestFinAssetsNote": "인민은행 '25말 가계예금 잔액 단독 166.76조 위안",
+        "finMixPct": {
+          "deposits": 56.0,
+          "equitiesFunds": 24.0,
+          "insPension": 16.0,
+          "bonds": 1.2,
+          "other": 2.8
+        },
+        "archetype": "부동산 조정 이후 은행예금·원금보전 저축 초집중형",
+        "accountingNote": "중국은 공식 연간 국민대차대조표를 상시 공표하지 않아 GDP(140.19조 위안, NBS)와 가계 은행예금(166.76조 위안, PBOC)은 정부 확정치이며, 총자산(700~730조 위안) 및 구성비는 사회과학원 NIFD·Allianz Global Wealth Report(예금 비중 54.6%~60% 내외) 추계 중앙값입니다. 2021년 이후 주택가격 조정으로 실물 비중(고점 ~66%→54%)이 낮아지고 은행 예금으로 유동성이 집중되었습니다."
+      },
+      {
+        "code": "EA",
+        "country": "유로존 (참고)",
+        "flag": "EU",
+        "sourceOrg": "ECB · 일본은행 日米欧比較 ('26.1Q SNA 표준화)",
+        "basePeriod": "'26.1Q 금융자산 비교 기준",
+        "nominalGdpLocal": "약 €15.3조",
+        "nominalGdpUsdTril": 16.6,
+        "totalAssetsLocal": "금융자산 €56.4조 (실물 별도)",
+        "assetsToGdpX": null,
+        "netWorthLocal": "유로존 20개국 통합 금융계정 참고치",
+        "realAssetSharePct": null,
+        "finAssetSharePct": null,
+        "latestFinAssetsNote": "'26.1Q 가계 금융자산 €56.4조",
+        "finMixPct": {
+          "deposits": 31.1,
+          "equitiesFunds": 37.6,
+          "insPension": 26.5,
+          "bonds": 2.8,
+          "other": 2.0
+        },
+        "archetype": "예금·연금·지분증권 3축 균형형 (미·일 중간)",
+        "accountingNote": "일본은행 조사통계국 『자금순환의 일미구 비교('26.8월 공표)』 수록 비교치로, 미국(자본시장형)과 한·일·중(예금 선호형)의 중간 균형점을 보여주는 글로벌 레퍼런스입니다."
+      }
+    ]
   }
 }

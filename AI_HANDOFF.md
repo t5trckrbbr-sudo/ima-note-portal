@@ -8,12 +8,22 @@
 - Q&A 17건 답변 마스터 문서: [`QA_VERIFIED_ANSWERS.md`](./QA_VERIFIED_ANSWERS.md)
 - 단기 수익률곡선 스티프닝 & 초단기 수신(`63.4%`) 심층 분석 보고서: [`PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md`](./PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md)
 - 2027년 수신환경(3대 악화 vs 3대 강화) & 베어 플랫 전략 보고서: [`OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md`](./OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md)
-- 이전 운영 소스: Sites commit `c7ab38a6f5b52f7959f29b461574ff194e4aec1d` (메리츠 IR 목표 `85조` 전망 · `#funding` 화면 순서 · `63.4%` 검색 반영).
-- 원문 데이터팩 기준: commit `32a997602ee354aaea36e64d0346449435340d21` (+ `2026-11-17` `shortYieldCurveAndMaturity` · `fundingOutlook2027BearFlattening` · `fundingForecast2027` + `2026-11-18` `ib9FirmsCuriosityChain` · `ventureCapitalChain2027` · `moneyMoveAndSafety2026Q4` 확장).
+- 이전 운영 소스: Sites commit `2b32ada00efd9f0f26b89a1f73245d9860e9e8d0` (메리츠 IR 목표 `85조` 전망 · `#funding` 화면 순서 · `63.4%` 검색 · 4대 관점 하이브리드 UX 및 탭 간 회사 선택 유지 반영).
+- 원문 데이터팩 기준: commit `32a997602ee354aaea36e64d0346449435340d21` (+ `2026-11-17` `shortYieldCurveAndMaturity` · `fundingOutlook2027BearFlattening` · `fundingForecast2027` + `2026-11-18` `ib9FirmsCuriosityChain` · `ventureCapitalChain2027` · `moneyMoveAndSafety2026Q4` · `householdWealthAndIntl2026` 확장).
 
 GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테스트·빌드를 거쳐 같은 운영 사이트에 배포해야 합니다.
 
-## 최신 업데이트 — 2026-11-18 수용자 호기심 연쇄 하이브리드 UX & 4대 관점 심층 데이터 통합
+## 최신 업데이트 — 2026-11-18 가계자산 브레이크다운 · 시계열 · 주요 5개국 비교 탭(`#household-wealth`) 및 머니무브 연동 카드 신설
+
+- **별도 탭 신설 (`#household-wealth`, 좌측 내비게이션 `가계자산 · 5개국 비교`) 및 `#funding` 연동 점프 카드 배치**:
+  - `#funding` 화면의 머니무브 패널(`#money-move-safety`) 제목 바로 아래 지표 행에서 **`광의통화 M2`(`4,278.8조 원`) 왼쪽 첫 번째 자리**에 클릭 가능한 **`전체 가계자산` 카드(`16,641.3조 원`, `id="jump-household-wealth"`, `href="#household-wealth"`)**를 배치했습니다. 카드를 클릭하면 `#household-wealth` 탭으로 즉시 이동합니다(**NIM 계산기는 여전히 `#funding` 맨 아래 위치 유지**).
+- **`householdWealthAndIntl2026` 데이터셋 및 `#household-wealth` 4대 분석 섹션**:
+  1. **한국 가계자산 3단계 브레이크다운 (`#hw-korea-tree`)**: `2025년 말 국민대차대조표(ECOS 291Y505)` 기준 총자산 `16,641.3조 원`[비금융(실물) `10,433.7조`(62.7%) vs 금융 `6,207.6조`(37.3%)] → `2026.2Q 자금순환(ECOS 281Y002)` 금융자산 `6,930.2조 원` 5대 부문 카드(현금·예금 `2,688.1조` 38.8%, 지분증권·펀드 `2,381.1조` 34.4%, 보험·연금 `1,633.0조` 23.6%, 채권 `182.9조` 2.6%, 기타 `45.1조` 0.7%) → 클릭 시 **15개 세부 금융상품 잔액·증감 표** 드릴다운.
+  2. **시계열 전환 (`#hw-timeseries`)**: ① 분기 금융자산 잔액 추이(`2019.4Q~2026.2Q`, 12개 시점), ② 분기 금융자산 구성비(%) 추이(예금 46.4%→38.8% vs 증권·펀드 18.1%→34.4%), ③ 연간 실물+금융 총자산·명목 GDP 배율 추이(`2020~2025`, GDP 대비 6.36배) 3종 차트·데이터표 스위치.
+  3. **보조 수신원 & 분위별 분포 함께 노출 (`#hw-aux-pools`)**: **비금융법인(`S11`, `ECOS 281Y002`) 유동성 시계열**(현금·예금 `1,135.9조` · 펀드/MMF `274.7조` · 채권 `121.9조`)과 **2025년 가계금융복지조사(`ECOS 903Y212`) 순자산 5분위 분포**(상위 20% 가구 평균 총자산 `17.46억` · 금융자산 `3.46억` · 예치식 저축 `1.46억`, 전체 순자산의 62% 집중) 및 **3대 가계자산 통계 비교표**(자금순환 vs 국민대차대조표 vs 가계금융복지조사; 분기 조사는 자산 항목이 없는 『가계동향조사』임을 명확히 구분)를 함께 제공합니다.
+  4. **주요 5개국(`한국 · 미국 · 영국 · 일본 · 중국` + 유로존 참고) 비교 (`#hw-intl-5country`)**: 명목 GDP 대비 가계총자산 배율, 실물 vs 금융 비중, 금융자산 5대 세부 구성비(%) 스택 바 및 국가 클릭 시 중앙은행·통계청 편제 기준(Fed Z.1 MMF·비법인기업지분 `$19.1T`, ONS 사적연금 41.3%, BOJ 현금·예금 50.0% & 신NISA, NBS·PBOC·NIFD·Allianz 예금 ~60%) 해설을 연동했습니다.
+
+## 이전 업데이트 — 2026-11-18 수용자 호기심 연쇄 하이브리드 UX & 4대 관점 심층 데이터 통합
 
 - **하이브리드 인터랙션 모듈 신설 (`site/public/curiosity.js`, `site/tests/curiosity.test.mjs`)**: 명시적 질문 나열 대신 요약표 행 펼침(Progressive Table Drilldown)·상호 연동 엔티티 렌즈(Synchronized Entity Lens)·방법론 스위치(Interactive Methodology Switch)를 결합해 클릭 한 번으로 후속 근거 데이터와 타 탭 시뮬레이터가 즉시 이어지도록 고도화했습니다.
 - **관점 1 · 2 (`#funding`, `#ib-funding`, `#pnl`) — 2027E 85조 수정 전망 분해 · 9사 전원 인가 · 조달원가 · 전사 수익성(ROE) 연동**:
@@ -69,15 +79,15 @@ GitHub와 Sites는 자동 동기화되지 않습니다. 변경 후 검사·테�
 
 ## 다른 AI에게 전달할 요청 예시
 
-> 최신 GitHub `main` 커밋과 `AI_HANDOFF.md`를 확인하고 같은 운영 사이트(`https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site`)를 업데이트해줘. 기존 `c7ab38a6`의 메리츠 IR 가정(85조 전망·평잔 2조)과 `#funding` 화면 순서(NIM 계산기 맨 아래), `63.4%` 검색, 6대 리스크점검, 기본 Q&A 17건을 모두 유지한 채 신규 `site/public/curiosity.js` · `site/tests/curiosity.test.mjs` 및 `data.json` 확장분이 반영되어 있으니 `.openai/hosting.json`과 운영 D1 데이터를 보존하고 `npm run check`, `npm test`, `npm run build` 통과 후 배포해줘.
+> 최신 GitHub `main` 커밋과 `AI_HANDOFF.md`를 확인하고 같은 운영 사이트(`https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site`)를 업데이트해줘. 기존 메리츠 IR 가정(85조 전망·평잔 2조)과 `#funding` 화면 순서(NIM 계산기 맨 아래), 머니무브 패널 내 `광의통화 M2` 왼쪽 `전체 가계자산(16,641.3조)` 점프 카드, 신규 `#household-wealth`(`가계자산 · 5개국 비교` — 한국 가계자산 3단계 브레이크다운·시계열, 비금융법인 S11 유동성 & 가계금융복지조사 순자산 5분위, 한·미·영·일·중 5개국 비교) 탭, 탭 간 회사 선택 상태 유지(`2b32ada0`), 6대 리스크점검, 기본 Q&A 17건을 모두 유지하고 `.openai/hosting.json`과 운영 D1 데이터를 보존한 뒤 `npm run check`, `npm test`, `npm run build` 통과 후 배포해줘.
 
 ## 구조와 수정 위치
 
 | 경로 | 역할 |
 | --- | --- |
-| `site/public/index.html`, `style.css` | 공통 셸·브랜드·반응형 스타일 및 드릴다운/렌즈 UI 스타일 |
-| `site/public/app.js` | 해시 라우팅(`?q=` 정리 포함), 주제 지도, 수신(`NIM` 맨 아래 순서 유지), 기회비용, 공통 검색 |
-| `site/public/curiosity.js` | 9사 성장·조달·ROE 인라인 드릴다운, 머니무브·신용버퍼 렌즈, 9사 동기화 탐색기, 모험자본 4대 기회비용·선점전략·잠재시장 |
+| `site/public/index.html`, `style.css` | 공통 셸·브랜드·반응형 스타일 및 드릴다운/렌즈/가계자산·5개국 스택바 UI 스타일 |
+| `site/public/app.js` | 해시 라우팅(`#household-wealth` 포함, `?q=` 정리 및 중복 히스토리 이벤트 방지), 주제 지도, 수신(`NIM` 맨 아래 순서 유지), 기회비용, 공통 검색 |
+| `site/public/curiosity.js` | 9사 성장·조달·ROE 인라인 드릴다운, 머니무브(`전체 가계자산` 좌측 카드 포함)·신용버퍼 렌즈, `#household-wealth`(가계자산 3단계 분해·시계열·법인 S11·순자산 5분위·5개국 비교), 9사 동기화 탐색기, 모험자본 4대 기회비용·선점전략·잠재시장 |
 | `site/public/nim.js` | NIM·IMA 기여율 시뮬레이터 (메리츠 연말 4조 / 수익평잔 2조 구분) |
 | `site/public/details.js` | 6개 리서치 상세 화면 (`#ib-funding` 동기화 탐색기 연결 · `#pension-risk` 6대 리스크 체크리스트 및 Q&A 딥링크 포함) |
 | `site/public/qa.js`, `qa.css` | 익명 질문·답변 UI |

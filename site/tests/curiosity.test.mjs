@@ -7,7 +7,8 @@ import {
   renderFundingBreakdownPanel,
   renderMoneyMoveSafetyPanel,
   renderIbSynchronizedExplorer,
-  renderVentureDeepDive
+  renderVentureDeepDive,
+  renderHouseholdWealthPage
 } from '../public/curiosity.js';
 
 const publicDataUrl = new URL('../public/data.json', import.meta.url);
@@ -63,6 +64,10 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
     explorerState.safetyLens = lens;
     const mmHtml = renderMoneyMoveSafetyPanel(D);
     assert(mmHtml.length > 500);
+    assert(mmHtml.includes('id="jump-household-wealth"'));
+    assert(mmHtml.includes('href="#household-wealth"'));
+    assert(mmHtml.includes('16,641.3조 원'));
+    assert(mmHtml.indexOf('전체 가계자산') < mmHtml.indexOf('광의통화 M2'));
     assert(!mmHtml.includes('NaN'));
     assert(!mmHtml.includes('undefined'));
   }
@@ -78,6 +83,48 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       assert(vcHtml.includes('인정 자산군별 현재 규모 vs 잠재 시장규모'));
       assert(!vcHtml.includes('NaN'));
       assert(!vcHtml.includes('undefined'));
+    }
+  }
+});
+
+test('household wealth & 5-country comparison module renders all categories, series modes, corporate S11, SHF quintiles, and 5 countries cleanly', () => {
+  const hw = D.householdWealthAndIntl2026;
+  assert.ok(hw);
+  assert.equal(hw.headlineKpis.krTotalHouseholdAssets25Tril, 16641.3);
+  assert.equal(hw.headlineKpis.krFinAssets26Q2Tril, 6930.2);
+  assert.equal(hw.krFinCategories26Q2.length, 5);
+  assert.equal(hw.intl5Countries.length, 6);
+
+  for (const cat of ['deposits', 'equities', 'pensions', 'bonds', 'other']) {
+    explorerState.hwCategory = cat;
+    const html = renderHouseholdWealthPage(D);
+    assert(html.includes('16,641.3'));
+    assert(html.includes('6,930.2'));
+    assert(html.includes('비금융법인(S11)'));
+    assert(html.includes('순자산 5분위'));
+    assert(!html.includes('NaN'));
+    assert(!html.includes('undefined'));
+  }
+
+  for (const mode of ['quarterly_fin', 'quarterly_share', 'annual_total']) {
+    explorerState.hwSeriesMode = mode;
+    const html = renderHouseholdWealthPage(D);
+    assert(html.includes('2025'));
+    assert(!html.includes('NaN'));
+    assert(!html.includes('undefined'));
+  }
+
+  for (const lens of ['composition', 'macro_gdp']) {
+    for (const code of ['KR', 'US', 'UK', 'JP', 'CN', 'EA']) {
+      explorerState.hwCountryLens = lens;
+      explorerState.hwSelectedCountry = code;
+      const html = renderHouseholdWealthPage(D);
+      assert(html.includes('미국'));
+      assert(html.includes('영국'));
+      assert(html.includes('일본'));
+      assert(html.includes('중국'));
+      assert(!html.includes('NaN'));
+      assert(!html.includes('undefined'));
     }
   }
 });
