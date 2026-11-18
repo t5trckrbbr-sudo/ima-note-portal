@@ -3,8 +3,35 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {computeNim} from '../public/nim.js';
 import {resolveXraySpec} from '../public/xray.js';
+import {computeImaOldNcr} from '../public/ima-ncr.js';
 const D = JSON.parse(fs.readFileSync(new URL('../public/data.json', import.meta.url), 'utf8'));
 const rowsText = spec => spec.rows.map(row => row.join(' ')).join('\n');
+
+test('AAA bank benchmark X-Ray uses the same dated comparison and recomputes changed inputs', () => {
+  const spec=resolveXraySpec('kpi:pcbo-clean-bench',D);
+  assert(spec.formula.includes('4.113%'));
+  assert(spec.formula.includes('73.7bp'));
+  assert(rowsText(spec).includes('10.318억'));
+  assert(spec.caveat.includes('P-CBO 기회비용의 실측치가 아닙니다'));
+  assert(!spec.formula.includes('3.35%'));
+  const changed=structuredClone(D);
+  changed.ventureCapitalChain2027.pcboCleanBenchmark.modes[0].pcboYieldPct=4.30;
+  const live=resolveXraySpec('kpi:pcbo-clean-bench',changed);
+  assert(live.formula.includes('55.0bp'));
+  assert(rowsText(live).includes('7.700억'));
+});
+
+test('IMA X-Ray follows the active asset risk and assumption inputs without treating them as eligibility approval', () => {
+  const active=computeImaOldNcr({capital:8,existingRisk:4,amount:1,riskPct:20});
+  const spec=resolveXraySpec('ima-old-ncr',D,{ncrScenario:active});
+  assert(rowsText(spec).includes('20.0%'));
+  assert(rowsText(spec).includes('193.90%'));
+  assert(rowsText(spec).includes('5.063%'));
+  assert(rowsText(spec).includes('1,000억'));
+  assert(spec.caveat.includes('5% 전액 감소는 보수적 가정'));
+  assert(spec.caveat.includes('150%'));
+  assert(spec.qas.some(q=>q.id==='guide-ima-old-ncr-capital'));
+});
 
 test('company X-Ray uses the selected NIM scenario and distinguishes its income basis from the 2027 cost basis', () => {
   const scenario = computeNim(D, {period:'2027', companyBp:{meritz:250}, imaBp:180});

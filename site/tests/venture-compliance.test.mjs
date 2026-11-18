@@ -10,23 +10,28 @@ afterEach(() => Object.assign(explorerState, initial));
 const compact = html => html.replace(/\s+/g, ' ');
 const text = spec => [spec.title, spec.formula, ...(spec.rows || []).flat(), spec.source, spec.caveat].join(' ');
 
-test('P-CBO diagram reconciles each benchmark mode with 14% of one trillion in new funding', () => {
+test('single AAA bank 3Y benchmark reconciles the nominal gap with the conditional 14% funding basket', () => {
   const benchmark = D.ventureCapitalChain2027.pcboCleanBenchmark;
   assert.equal(Math.round(benchmark.fscEmpirical26Q2.pcboTril / benchmark.fscEmpirical26Q2.totalVcTril * 1000) / 10, 29.3);
-  for (const mode of benchmark.modes) {
-    explorerState.pcboMode = mode.id;
-    const gap = Math.round((mode.normalYieldPct - mode.pcboYieldPct) * 100);
-    const tax = Math.round(gap * .14 * 10) / 10;
-    assert.equal(gap, mode.forgoneSpreadBp);
-    assert.equal(tax, mode.shadowTax27Bp);
-    assert.equal(tax, mode.shadowTax27EokPerTril);
-    const html = compact(renderVentureDeepDive(D));
-    assert(html.includes('id="pcbo-benchmark-svg"'));
-    assert(html.includes('포기 명목마진'));
-    assert(html.includes(`−${gap}bp`), mode.id);
-    assert(html.includes(`수신 1조당 연 −${tax.toFixed(1)}억 원 (−${tax.toFixed(1)}bp)`), mode.id);
-    assert(!/NaN|undefined/.test(html));
-  }
+  assert.equal(benchmark.modes.length, 1);
+  const mode = benchmark.modes[0];
+  const gap = Math.round((mode.normalYieldPct - mode.pcboYieldPct) * 1000) / 10;
+  const tax = Math.round(gap * .14 * 1000) / 1000;
+  assert.equal(gap,73.7);
+  assert.equal(gap,mode.forgoneSpreadBp);
+  assert.equal(tax,10.318);
+  assert.equal(tax,mode.shadowTax27Bp);
+  assert.equal(tax,mode.shadowTax27EokPerTril);
+  const html = compact(renderVentureDeepDive(D));
+  assert(html.includes('id="pcbo-benchmark-svg"'));
+  assert(html.includes('AAA 금융채 3년 · 명목 금리차 비교'));
+  assert(html.includes('AAA 은행채 3년'));
+  assert(html.includes('4.113%'));
+  assert(html.includes(`${gap.toFixed(1)}bp`));
+  assert(html.includes(`1,400억 × 0.737%p = ${tax.toFixed(3)}억 / 년`));
+  assert(html.includes(`수신 1조당 연 ${tax.toFixed(1)}억 원 차이`));
+  assert(!html.includes('data-pcbo-mode'));
+  assert(!/NaN|undefined/.test(html));
 });
 
 test('waterfall preserves loss, screening cost and vehicle-specific capital arithmetic for each selected asset', () => {
@@ -50,18 +55,18 @@ test('waterfall preserves loss, screening cost and vehicle-specific capital arit
   }
 });
 
-test('diagram values follow a changed but internally reconciled benchmark input rather than fixed default labels', () => {
+test('nominal comparison recalculates fractional bp and annual cost from changed rates rather than stored default labels', () => {
   const changed = structuredClone(D);
   const mode = changed.ventureCapitalChain2027.pcboCleanBenchmark.modes[0];
   mode.normalYieldPct = 5.00;
-  mode.forgoneSpreadBp = 165;
-  mode.shadowTax27Bp = 23.1;
-  mode.shadowTax27EokPerTril = 23.1;
-  explorerState.pcboMode = mode.id;
+  // Keep the stored default gap deliberately stale; the diagram derives its values from rates.
+  assert.equal(mode.forgoneSpreadBp,73.7);
+  assert.equal(mode.shadowTax27EokPerTril,10.318);
   const html = renderVentureDeepDive(changed);
-  assert(html.includes('정상 우량 IB 수익률 5.00%'));
-  assert(html.includes('−165bp'));
-  assert(html.includes('수신 1조당 연 −23.1억 원 (−23.1bp)'));
+  assert(html.includes('정상 IB 가정 5.00%와 AAA 은행채 3년 4.113%의 명목 금리차 88.7bp'));
+  assert(html.includes('1,400억 × 0.887%p = 12.418억 / 년'));
+  assert(html.includes('수신 1조당 연 12.4억 원 차이'));
+  assert(!html.includes('수신 1조당 연 10.3억 원 차이'));
 });
 
 test('all ten compliance rules keep matching inspector evidence and category filters retain their complete partition', () => {

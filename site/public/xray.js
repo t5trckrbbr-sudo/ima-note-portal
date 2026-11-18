@@ -1,4 +1,5 @@
 import { getNimScenario } from './nim.js';
+import { getImaNcrScenario } from './ima-ncr.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
@@ -52,7 +53,11 @@ const QA_DIGEST = {
   },
   'guide-pcbo-assumption': {
     title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
-    summary: '표면금리가 0%라는 뜻이 아니라, 신보 보증 선순위 P-CBO 수익률(3% 초반)에서 발행어음 조달원가·보증비용을 빼면 순운용스프레드가 0bp(손익분기)에 수렴한다는 보수적 기회비용 가정입니다.'
+    summary: '150bp는 전체 비용 계산기의 독립적인 사용자 가정입니다. 비교 도해는 KIS자산평가의 AAA 은행채 3년 4.113%(2026.11.13)를 사용하며, P-CBO 실측금리 또는 은행채의 모험자본 인정 여부를 뜻하지 않습니다.'
+  },
+  'guide-ima-old-ncr-capital': {
+    title: 'IMA의 5% 충당금 차감을 고려해도 위험액 50% 감경은 구NCR에 유리한가요?',
+    summary: '구NCR에서도 위험액 50% 감경을 반영하고 5% 영업용순자본 감소 부담을 함께 비교합니다. E=8조·R=4조·신규 A=1조의 보수적 예시에서는 위험률 약 5.06%부터 IMA 비율이 더 높습니다. 분기점은 회사의 기존 자본·위험액과 신규 규모에 따라 달라집니다.'
   },
   'guide-ima-maturity': {
     title: '2027.12~2028.04 IMA 만기 집중(2.60조)은 전체 시장을 뜻하나요?',
@@ -85,6 +90,30 @@ export function resolveXraySpec(specKey, D, context = {}) {
   const sc = D.shortYieldCurveAndMaturity;
   const bf = D.fundingOutlook2027BearFlattening;
   const vc = D.ventureCapitalChain2027;
+
+  if (specKey === 'ima-old-ncr') {
+    const n = context.ncrScenario || getImaNcrScenario();
+    return {
+      eyebrow: 'OLD NCR · 분자와 분모를 함께 비교',
+      title: '5% 영업용순자본 감소와 위험액 50% 감경의 순효과',
+      badge: '보수적 가정 · 조건부 비교',
+      formula: '어음 E/(R+A×r) · IMA (E−0.05×A)/(R+0.5×A×r) · r*=0.05×R/(0.5×E−0.05×A)',
+      rows: n.valid ? [
+        ['현재 입력값 · 설명용', `E ${fmt(n.capital)}조 / R ${fmt(n.existingRisk)}조 / A ${fmt(n.amount)}조 / 취득 자산 위험률 ${fmt(n.riskPct,1)}%`],
+        ['분자 감소 가정', `${fmt(n.reserve*10000,0)}억 원 (신규 운용액의 5% 전액 감소 가정)`],
+        ['위험액 절감 가정', `${fmt(n.riskSaved*10000,0)}억 원 (감경 자격·자기자본 한도 내 신규액 가정)`],
+        ['구NCR 비교 · 위험액 감경 반영', `어음 ${fmt(n.notePct)}% / IMA ${fmt(n.imaPct)}% · 차이 ${fmt(n.differencePp)}%p`],
+        ['두 곡선의 교차 위험률', n.amount===0?'신규 운용액 0 · 두 방식 동일':n.crossingPct===null?'양의 교차점 없음':`${fmt(n.crossingPct,3)}% · 회사의 자본·위험액·신규 규모에 따라 달라짐`]
+      ] : [['입력 확인', n.error]],
+      source: '<a href="https://www.fsc.go.kr/no010101/84322" target="_blank" rel="noopener noreferrer">금융위 2025.04.09 제도 설명 · 영업용순자본비율 산출 시 IMA 운용자산 50% 반영</a> · <a href="https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020" target="_blank" rel="noopener noreferrer">금융투자업규정 제3-6조·제3-24조의4④·제4-99조</a> · <a href="https://www.law.go.kr/LSW/flDownload.do?flSeq=166876081" target="_blank" rel="noopener noreferrer">시행세칙 제3-20조의6, 9쪽</a>',
+      caveat: '구NCR에서도 위험액 50% 감경을 반영하는 비교입니다. 손실충당금과 손실준비금의 회계처리는 다르며 5% 전액 감소는 보수적 가정입니다. 이미 차감한 금액이나 별도 시딩 부담을 중복 차감하지 않습니다. 자기자본 100% 초과 수탁금 원본의 감경 제외와 연결 E/R 150% 초과 등 요건, 폐쇄형 IMA의 유지 예외는 별도로 확인합니다. E는 영업용순자본으로 자기자본과 다릅니다.',
+      qas: makeQaItems(['guide-ima-old-ncr-capital','guide-ima-maturity']),
+      actions: [
+        {label:'위험률별 그래프로 돌아가기 →',tab:'ima-maturity',scrollTo:'ima-old-ncr-panel',primary:true},
+        {label:'관련 질문·답변 전문 →',qa:'guide-ima-old-ncr-capital'}
+      ]
+    };
+  }
 
   if (kind === 'firm' || kind === 'nim-firm') {
     const chain = (D.ib9FirmsCuriosityChain || []).find(x => x.key === id || x.firm === id);
@@ -259,8 +288,8 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${base.evaNoteBp - r.evaNoteBp}bp)`],
         ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${base.evaImaBp - r.evaImaBp}bp)`]
       ],
-      source: 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 별표 10(IMA 50% 반영)',
-      caveat: `${r.elBasisNote || r.note}`,
+      source: r.id === 'pcbo_senior' ? '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13) · AAA 은행채 3년 비교금리</a> · 위험값·비용은 별도 P-CBO 설명용 가정' : 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 금융투자업규정 제3-24조의4④(IMA 순자본비율 특례)',
+      caveat: `${r.elBasisNote || r.note} 50% 특례에는 별도 요건과 한도가 있습니다. IMA 5% 적립 부담은 위 단순 EVA에서 자동 전액 비용으로 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
       actions: [
         { label: 'P-CBO 도해 & EL·RAROC 워터폴 보기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
@@ -299,21 +328,21 @@ export function resolveXraySpec(specKey, D, context = {}) {
       const pb = vc?.pcboCleanBenchmark;
       const fsc = pb?.fscEmpirical26Q2;
       return {
-        eyebrow: 'CLEAN BENCHMARK · P-CBO AAA 3Y 명목금리차 기준선',
-        title: '왜 신보 보증 P-CBO AAA 3년물 비교가 가장 깔끔한 기회비용 기준선인가?',
-        badge: fsc ? `종투사 모험자본 비중 1위 (${fmt(fsc.pcboSharePct, 1)}%)` : '부도위험 0% 기준선',
-        formula: '정상 우량 IB(4.85% / 공모 AA- 4.42%) − P-CBO AAA(기발행 실효 3.35% / 신규표면 4.10%) = 포기 명목마진 75~150bp',
+        eyebrow: 'COMPARISON BENCHMARK · AAA 은행채 3년',
+        title: 'AAA 은행채 3년 금리를 비교 기준으로 쓰면?',
+        badge: '시장 평가수익률 · 모형 비교',
+        formula: (() => { const m = pb?.modes?.[0]; return m ? `정상 IB 가정 ${fmt(m.normalYieldPct)}% − AAA 은행채 3년 ${fmt(m.pcboYieldPct, 3)}% = ${fmt((m.normalYieldPct-m.pcboYieldPct)*100, 1)}bp` : 'AAA 은행채 3년 평가수익률과 정상 IB 가정을 비교'; })(),
         rows: [
           ['금융위 종투사 모험자본 실증 (\'26.2Q)', fsc ? `총 ${fmt(fsc.totalVcTril, 1)}조 원 중 P-CBO ${fmt(fsc.pcboTril, 1)}조 원 (${fmt(fsc.pcboSharePct, 1)}%) — 단일 편입 수단 1위` : '11.6조 중 3.4조(29.3%)'],
-          ['중견 · A급 30% 상한 적용 여부', '미적용 (비A급 순수 의무 14% 구간에 한도 없이 100% 전액 인정)'],
-          ['신용위험(PD) 및 신NCR 위험값(RW)', '신보·기보 보증 AAA로 PD ≈ 0%, 신NCR RW ≈ 0~0.4% → 주관적 부도율 논쟁 완전 제거'],
-          ['기발행·실효(3.35%) vs 신규표면(4.10%)', '기발행 실효 기준 포기폭 −150bp(수신 1조당 −21.0억) / 신규발행 표면(국고3Y+35bp) 단순 비교 시 −75bp(−10.5억)']
+          ['금리의 정의와 기준일', `${pb?.observedDate || '2026-11-13'} · KIS자산평가 AAA 은행채 3년 평가수익률 (P-CBO 실제 발행금리 아님)`],
+          ['모험자본 인정과의 구분', 'AAA 은행채 자체를 모험자본 인정자산으로 가정하지 않습니다. P-CBO 편입 비중과 대체 비교금리는 별개입니다.'],
+          ['수신 1조 원 한계 단위의 조건부 계산', (() => { const m=pb?.modes?.[0]; const bp=m?(m.normalYieldPct-m.pcboYieldPct)*100:0; return `의무 20% × 비A급 가정 70% × ${fmt(bp, 1)}bp = 연 ${fmt(bp*.14, 3)}억 원 (전체 비용 계산기의 150bp 가정과 구분)`; })()]
         ],
-        source: '금융위원회 종투사 모험자본 공급실적(2026.2Q) · 신용보증기금 유동화회사보증(P-CBO) 발행조건 · KOFIA 민평(2026-11-13)',
-        caveat: '유통·발행 물량(연간 4~5조) 한계로 P-CBO만으로 업권 비A급 의무(11.9조)를 다 채울 수 없어 8~9.5% 비보증 자산을 병행하게 되며, 이때 EL·자본비용을 차감하면 기회비용은 다시 121~126bp로 수렴합니다.',
+        source: '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13), 13·57쪽</a> · KIS-NET/KIS자산평가. KOFIA 평가사 평균과 구분합니다.',
+        caveat: '정상 IB 4.85%와 조달원가 3.15%는 기존 설명용 모형 가정입니다. 같은 날짜의 은행채 평가수익률을 비교 기준으로 대입한 조건부 시산이며, 투자자별 실현수익이나 P-CBO 기회비용의 실측치가 아닙니다. AAA 등급은 무위험 보장을 뜻하지 않습니다.',
         qas: makeQaItems(['guide-pcbo-assumption', 'guide-sizing-growth']),
         actions: [
-          { label: 'P-CBO 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+          { label: 'AAA 은행채 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
           { label: '7대 인정 자산군 잠재 시장규모 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
         ]
       };

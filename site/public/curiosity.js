@@ -632,125 +632,69 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
    4. #invest — 모험자본 심화 3부작 (방안 C + A: 4대 기회비용 렌즈 · 선점전략 · 잠재시장)
    ========================================================================== */
 function renderPcboCleanDiagram(D) {
-  const vc = D.ventureCapitalChain2027;
-  const pb = vc?.pcboCleanBenchmark;
-  if (!pb) return '';
-  const m = pb.modes.find(x => x.id === explorerState.pcboMode) || pb.modes[0];
-  const fsc = pb.fscEmpirical26Q2;
-
-  const yBottom = 244;
-  const scale = 31.5; // px per 1.0% (0% -> 244, 6.0% -> 55)
-  const yAtPct = pct => yBottom - pct * scale;
-
+  const pb = D.ventureCapitalChain2027?.pcboCleanBenchmark;
+  if (!pb?.modes?.length) return '';
+  // Legacy key retained for existing deep links; there is one fixed comparison.
+  const m = pb.modes[0];
+  const gapBp = Math.round((m.normalYieldPct - m.pcboYieldPct) * 1000) / 10;
+  const proxyNetBp = (m.pcboYieldPct - m.fundingBasePct) * 100;
+  const shadowBp = gapBp * 0.20 * 0.70;
+  const yBottom = 240;
+  const yAtPct = pct => yBottom - pct * 31;
   const yFund = yAtPct(m.fundingBasePct);
   const yNorm = yAtPct(m.normalYieldPct);
-  const yACap = yAtPct(5.20);
-  const yPcbo = yAtPct(m.pcboYieldPct);
-  const normNetBp = Math.round((m.normalYieldPct - m.fundingBasePct) * 100);
-  const pcboNetBp = Math.round((m.pcboYieldPct - m.fundingBasePct) * 100);
-  const gapMidY = (yNorm + yPcbo) / 2;
-
+  const yProxy = yAtPct(m.pcboYieldPct);
+  const fsc = pb.fscEmpirical26Q2;
+  const bars = [
+    {x:72, value:m.normalYieldPct, label:'정상 우량 IB', sub:'기존 모형 가정', color:'#087f80', key:'vc-asset:0'},
+    {x:180, value:5.20, label:'중견 · A급', sub:'기존 모형 가정 · 30% 캡', color:'#3c78c8', key:'vc-asset:1'},
+    {x:292, value:m.pcboYieldPct, label:'AAA 은행채 3년', sub:'KIS 평가수익률 · 비교 대용', color:'#b97620', key:'kpi:pcbo-clean-bench'}
+  ];
   return `<div class="vc-diagram-box" id="pcbo-benchmark-diagram">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-      <div>
-        <div class="eyebrow" style="color:var(--teal)">STEP 01 · CLEANEST BENCHMARK · P-CBO AAA 3년물 무위험 명목금리차 도해</div>
-        <h3 style="margin-top:3px;font-size:17px">왜 P-CBO(AAA 3년물) 명목 금리차만 비교하는 것이 가장 명쾌한 기준선인가?</h3>
-        <p class="muted" style="margin-top:4px;font-size:12px">${pb.whyCleanestSummary}</p>
-      </div>
-      <div class="lens-switch" role="group" aria-label="P-CBO 비교 금리 기준 선택">
-        ${pb.modes.map(mode => `<button type="button" class="lens-btn ${explorerState.pcboMode === mode.id ? 'active' : ''}" data-pcbo-mode="${mode.id}">${mode.label}</button>`).join('')}
-      </div>
-    </div>
-
+    <div class="eyebrow" style="color:var(--teal)">STEP 01 · AAA 금융채 3년 · 명목 금리차 비교</div>
+    <h3 style="margin-top:3px;font-size:17px">AAA 은행채 3년을 기준으로 보면, 금리 차이는 얼마일까?</h3>
+    <p class="muted" style="font-size:12px">${pb.whyCleanestSummary}</p>
+    <p><span class="badge green">${m.label}</span></p>
     <div class="vc-svg-frame">
-      <svg id="pcbo-benchmark-svg" viewBox="0 0 880 304" role="img" aria-label="정상 우량 IB 수익률 ${fmt(m.normalYieldPct)}% 대비 신보 보증 P-CBO AAA 3년물 ${fmt(m.pcboYieldPct)}% 비교 및 포기 스프레드 ${m.forgoneSpreadBp}bp 도해">
-        <!-- Left Chart Background & Grid -->
-        <text x="24" y="24" font-size="11.5" font-weight="700" fill="#192e3d">① 자산별 표면·실효 금리 기둥과 포기하는 명목 스프레드 (조달원가 ${fmt(m.fundingBasePct)}% 기준)</text>
-        ${[0, 2, 4, 6].map(v => {
-          const y = yAtPct(v);
-          return `<line x1="48" x2="478" y1="${y}" y2="${y}" stroke="#eaeff3" stroke-dasharray="3 3"/>
-                  <text x="41" y="${y + 3}" text-anchor="end" font-size="9.5" fill="#8b9aa6">${v}.0%</text>`;
-        }).join('')}
-        <line x1="48" x2="478" y1="${yBottom}" y2="${yBottom}" stroke="#c9d5df" stroke-width="1.3"/>
-
-        <!-- Bar 1: Normal IB -->
-        <g class="xray-svg-pt" data-xray="vc-asset:0" tabindex="0" role="button" aria-label="정상 우량 IB 기업금융 ${fmt(m.normalYieldPct)}%">
-          <rect x="68" y="${yFund}" width="72" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
-          <rect x="68" y="${yNorm}" width="72" height="${yFund - yNorm}" fill="#087f80" rx="3"/>
-          <text x="104" y="${yNorm - 8}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#087f80">${fmt(m.normalYieldPct)}%</text>
-          <text x="104" y="${(yNorm + yFund) / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">+${normNetBp}bp</text>
-          <text x="104" y="${yFund + 28}" text-anchor="middle" font-size="9.5" fill="#5b6d7a">조달원가</text>
-          <text x="104" y="${yFund + 41}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#465865">${fmt(m.fundingBasePct)}%</text>
-          <text x="104" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">정상 우량 IB</text>
-          <text x="104" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#6d7f8c">(AA- 기업여신·사모)</text>
-        </g>
-
-        <!-- Bar 2: A-grade 30% Cap -->
-        <g class="xray-svg-pt" data-xray="vc-asset:1" tabindex="0" role="button" aria-label="중견 A급 채권 5.20% 의무의 30% 상한">
-          <rect x="176" y="${yFund}" width="72" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
-          <rect x="176" y="${yACap}" width="72" height="${yFund - yACap}" fill="#3c78c8" rx="3"/>
-          <text x="212" y="${yACap - 8}" text-anchor="middle" font-size="12" font-weight="700" fill="#2c62ad">5.20%</text>
-          <text x="212" y="${(yACap + yFund) / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">+205bp</text>
-          <text x="212" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">중견 · A급 채권</text>
-          <text x="212" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#b86b23" font-weight="600">(의무액 30% 캡)</text>
-        </g>
-
-        <!-- Bar 3: P-CBO AAA 3Y + Red Forgone Spread Highlight -->
-        <g class="xray-svg-pt" data-xray="kpi:pcbo-clean-bench" tabindex="0" role="button" aria-label="신보 보증 P-CBO AAA 3년물 ${fmt(m.pcboYieldPct)}%, 포기하는 명목 금리차 ${m.forgoneSpreadBp}bp">
-          <rect x="292" y="${yFund}" width="78" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
-          ${pcboNetBp > 0 ? `<rect x="292" y="${yPcbo}" width="78" height="${Math.max(3, yFund - yPcbo)}" fill="#e08b2c" rx="2"/>` : ''}
-          <!-- Shaded Red Forgone Spread Zone -->
-          <rect x="292" y="${yNorm}" width="78" height="${Math.max(8, yPcbo - yNorm)}" fill="#fdeaea" fill-opacity="0.88" stroke="#d64545" stroke-width="1.6" stroke-dasharray="4 3" rx="3"/>
-          <line x1="140" y1="${yNorm}" x2="388" y2="${yNorm}" stroke="#d64545" stroke-width="1.2" stroke-dasharray="3 3"/>
-          <line x1="370" y1="${yPcbo}" x2="388" y2="${yPcbo}" stroke="#d64545" stroke-width="1.2"/>
-          <!-- Bracket & Callout -->
-          <line x1="385" y1="${yNorm + 2}" x2="385" y2="${yPcbo - 2}" stroke="#d64545" stroke-width="2.2"/>
-          <rect x="392" y="${gapMidY - 22}" width="92" height="44" rx="6" fill="#fff2f1" stroke="#d64545" stroke-width="1.4"/>
-          <text x="438" y="${gapMidY - 5}" text-anchor="middle" font-size="10" font-weight="700" fill="#b42d2d">포기 명목마진</text>
-          <text x="438" y="${gapMidY + 13}" text-anchor="middle" font-size="13.5" font-weight="800" fill="#c93030">−${m.forgoneSpreadBp}bp</text>
-
-          <text x="331" y="${yPcbo + 15}" text-anchor="middle" font-size="11" font-weight="800" fill="#8b4d0e">${fmt(m.pcboYieldPct)}%</text>
-          <rect x="285" y="${yFund + 18}" width="92" height="20" rx="10" fill="#e7f6f2" stroke="#9ad5c7"/>
-          <text x="331" y="${yFund + 31}" text-anchor="middle" font-size="9" font-weight="700" fill="#087f80">PD≈0% · RW≈0%</text>
-          <text x="331" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#c93030">P-CBO AAA 3Y</text>
-          <text x="331" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#087f80" font-weight="600">(비중 29.3% 1위 · 무제한)</text>
-        </g>
-
-        <!-- Funding Cost Line Across Bars -->
-        <line x1="54" x2="382" y1="${yFund}" y2="${yFund}" stroke="#445866" stroke-width="1.4" stroke-dasharray="5 3"/>
-        <rect x="54" y="${yFund - 16}" width="102" height="15" rx="3" fill="#445866"/>
-        <text x="105" y="${yFund - 5}" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">조달원가 ${fmt(m.fundingBasePct)}%</text>
-
-        <!-- Right Box: 1 Trillion Won New Funding Basket & Shadow Tax -->
-        <g class="xray-svg-pt" data-xray="kpi:pcbo-clean-bench" tabindex="0" role="button" aria-label="수신 1조 원 증액 시 P-CBO 기반 규제 그림자 조세 연 ${fmt(m.shadowTax27EokPerTril, 1)}억 원">
-          <rect x="500" y="14" width="366" height="276" rx="9" fill="#f7fbfa" stroke="#cbe0da" stroke-width="1.3"/>
-          <text x="518" y="38" font-size="11.5" font-weight="800" fill="#192e3d">② 2027년 신규 수신 1조 원(10,000억) 증액 시 배분 바구니</text>
-          <text x="518" y="55" font-size="9.8" fill="#5b6f7c">금융위 실증('26.2Q): 종투사 모험자본 ${fmt(fsc.totalVcTril, 1)}조 중 P-CBO ${fmt(fsc.pcboTril, 1)}조(${fmt(fsc.pcboSharePct, 1)}%) 1위</text>
-
-          <!-- Stacked Basket Bar (width 330) -->
-          <rect x="518" y="70" width="264" height="32" fill="#087f80" rx="4"/>
-          <rect x="782" y="70" width="20" height="32" fill="#3c78c8"/>
-          <rect x="802" y="70" width="46" height="32" fill="#d64545" rx="4"/>
-          <text x="650" y="90" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">정상 기업금융 80% (8,000억)</text>
-          <text x="825" y="90" text-anchor="middle" font-size="9.5" font-weight="800" fill="#ffffff">14%</text>
-
-          <!-- Breakdown Lines -->
-          <text x="518" y="124" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="700" fill="#087f80">정상 우량 IB 8,000억 (80%)</tspan> : 원래 목표 마진 그대로 수취 (기회비용 0)</text>
-          <text x="518" y="144" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="700" fill="#2c62ad">중견·A급 600억 (의무 20%×30%캡 = 6%)</tspan> : 우량 여신급 마진 유지</text>
-          <text x="518" y="164" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="800" fill="#c93030">비A급 의무 1,400억 (14%) → P-CBO AAA 편입</tspan> : −${m.forgoneSpreadBp}bp 발생</text>
-
-          <!-- Final Shadow Tax Verdict Box -->
-          <rect x="518" y="182" width="330" height="92" rx="8" fill="#fff4f3" stroke="#e39b95" stroke-width="1.5"/>
-          <text x="683" y="203" text-anchor="middle" font-size="10" font-weight="700" fill="#9c3535">산식: 비A급 1,400억(14%) × 포기 금리차 ${m.forgoneSpreadBp}bp(${fmt(m.forgoneSpreadBp / 100)}%p)</text>
-          <text x="683" y="232" text-anchor="middle" font-size="18.5" font-weight="800" fill="#c22929">수신 1조당 연 −${fmt(m.shadowTax27EokPerTril, 1)}억 원 (−${fmt(m.shadowTax27Bp, 1)}bp)</text>
-          <text x="683" y="254" text-anchor="middle" font-size="9.8" fill="#664343">PD · LGD · 자본비용 논쟁 Zero → 가장 직관적인 ‘규제 그림자 조세’ 기준선</text>
-          <text x="683" y="268" text-anchor="middle" font-size="9" fill="#087f80" font-weight="700">[클릭하여 P-CBO 실증 비중 · 표면 vs 실효금리 근거 열기 ↗]</text>
+      <svg id="pcbo-benchmark-svg" viewBox="0 0 880 310" role="img" aria-labelledby="aaa-bank-title aaa-bank-desc">
+        <title id="aaa-bank-title">정상 IB 가정 ${fmt(m.normalYieldPct)}%와 AAA 은행채 3년 ${fmt(m.pcboYieldPct,3)}%의 명목 금리차 ${fmt(gapBp,1)}bp</title>
+        <desc id="aaa-bank-desc">은행채 관측수익률을 인정자산 수익률의 대용값으로 놓은 조건부 비교입니다. 신규 수신 1조의 14%에 적용한 연간 차이는 ${fmt(shadowBp,3)}억 원입니다. 은행채 자체가 모험자본 인정자산이라는 의미는 아닙니다.</desc>
+        <text x="24" y="24" font-size="11.5" font-weight="700" fill="#192e3d">① 정상 IB·조달 가정 vs AAA 은행채 관측수익률</text>
+        ${[0,2,4,6].map(v=>`<line x1="48" x2="478" y1="${yAtPct(v)}" y2="${yAtPct(v)}" stroke="#eaeff3" stroke-dasharray="3 3"/><text x="41" y="${yAtPct(v)+3}" text-anchor="end" font-size="9.5" fill="#8b9aa6">${v}.0%</text>`).join('')}
+        <line x1="48" x2="478" y1="${yBottom}" y2="${yBottom}" stroke="#c9d5df"/>
+        ${bars.map(b=>`<g class="xray-svg-pt" data-xray="${b.key}" tabindex="0" role="button" aria-label="${b.label} ${fmt(b.value,3)}% · ${b.sub}">
+          <rect x="${b.x}" y="${yFund}" width="72" height="${yBottom-yFund}" fill="#dfe7ee" rx="2"/>
+          <rect x="${b.x}" y="${yAtPct(b.value)}" width="72" height="${yFund-yAtPct(b.value)}" fill="${b.color}" rx="3"/>
+          <text x="${b.x+36}" y="${yAtPct(b.value)-8}" text-anchor="middle" font-size="12" font-weight="800" fill="${b.color}">${fmt(b.value,b.x===292?3:2)}%</text>
+          <text x="${b.x+36}" y="${(yAtPct(b.value)+yFund)/2+4}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">+${fmt((b.value-m.fundingBasePct)*100,b.x===292?1:0)}bp</text>
+          <text x="${b.x+36}" y="${yBottom+19}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">${b.label}</text>
+          <text x="${b.x+36}" y="${yBottom+34}" text-anchor="middle" font-size="8.5" fill="#6d7f8c">${b.sub}</text>
+        </g>`).join('')}
+        <rect x="292" y="${yNorm}" width="72" height="${Math.max(0,yProxy-yNorm)}" fill="#fdeaea" stroke="#d64545" stroke-dasharray="4 3"/>
+        <line x1="144" y1="${yNorm}" x2="386" y2="${yNorm}" stroke="#d64545" stroke-dasharray="3 3"/>
+        <line x1="376" y1="${yNorm}" x2="376" y2="${yProxy}" stroke="#d64545" stroke-width="2"/>
+        <text x="388" y="${(yNorm+yProxy)/2+4}" font-size="12" font-weight="800" fill="#c93030">${fmt(gapBp,1)}bp</text>
+        <line x1="54" x2="372" y1="${yFund}" y2="${yFund}" stroke="#445866" stroke-dasharray="5 3"/>
+        <text x="68" y="${yFund+20}" font-size="10" fill="#445866">조달원가 가정 ${fmt(m.fundingBasePct)}%</text>
+        <text x="292" y="${yFund+20}" font-size="9" fill="#6d7f8c">국고 대비 +${fmt((m.pcboYieldPct-m.ktb3yPct)*100,1)}bp</text>
+        <g class="xray-svg-pt" data-xray="kpi:pcbo-clean-bench" tabindex="0" role="button" aria-label="AAA 은행채 금리 대용 시나리오 · 수신 1조당 연 ${fmt(shadowBp,3)}억 원 차이">
+          <rect x="500" y="14" width="366" height="278" rx="9" fill="#f7fbfa" stroke="#cbe0da"/>
+          <text x="518" y="39" font-size="11.5" font-weight="800" fill="#192e3d">② 신규 수신 1조 원 · 비교 대용 시나리오</text>
+          <text x="518" y="60" font-size="10" fill="#5b6f7c">의무 20% 중 A급 상한 30%를 활용하면 잔여 의무는 14%</text>
+          <rect x="518" y="76" width="264" height="30" fill="#087f80" rx="4"/><rect x="782" y="76" width="20" height="30" fill="#3c78c8"/><rect x="802" y="76" width="46" height="30" fill="#d64545" rx="4"/>
+          <text x="650" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">정상 기업금융 80%</text><text x="825" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">14%</text>
+          <text x="518" y="130" font-size="10" fill="#2c3e4c">비A급 인정자산 1,400억을 AAA 은행채와 같은</text>
+          <text x="518" y="147" font-size="10" fill="#2c3e4c">수익률 ${fmt(m.pcboYieldPct,3)}%로 운용한다고 가정한 금리 차이</text>
+          <rect x="518" y="163" width="330" height="76" rx="8" fill="#fff4f3" stroke="#e39b95"/>
+          <text x="683" y="186" text-anchor="middle" font-size="10" fill="#9c3535">1,400억 × ${fmt(gapBp/100,3)}%p = ${fmt(shadowBp,3)}억 / 년</text>
+          <text x="683" y="217" text-anchor="middle" font-size="18" font-weight="800" fill="#c22929">수신 1조당 연 ${fmt(shadowBp,1)}억 원 차이</text>
+          <text x="518" y="260" font-size="9.5" fill="#5b6f7c">P-CBO 실측금리·실제 규제비용을 확정한 결과가 아닙니다.</text>
+          <text x="518" y="277" font-size="9.5" font-weight="700" fill="#087f80">은행채 자체의 모험자본 인정 여부와는 별개입니다.</text>
         </g>
       </svg>
     </div>
-    <p class="drill-subnote" style="margin-top:8px;margin-bottom:0">
-      <b>선택 기준 해설</b> · ${m.note} (참고: 국고채 3년 ${fmt(m.ktb3yPct)}%, 공모 회사채 AA- 3년 민평 ${fmt(m.publicAamPct)}% 대비 시에도 P-CBO 실효금리 차이는 −107bp에 달합니다.)
-    </p>
+    <p class="drill-subnote"><b>산식·범위</b> · ${m.note} AAA 은행채의 조달원가 차감 명목마진은 ${fmt(proxyNetBp,1)}bp입니다. EL·유동성·자본비용을 맞춘 위험조정 비교는 별도입니다.</p>
+    <p class="drill-subnote"><a href="${pb.sourceUrl}" target="_blank" rel="noopener noreferrer">${pb.sourceTitle} ↗</a> · 관측일 ${pb.sourceDate}. P-CBO 비중 ${fmt(fsc.pcboSharePct,1)}%(${fmt(fsc.pcboTril,1)}조/${fmt(fsc.totalVcTril,1)}조, 저장소 2026.2Q 실적 집계)는 금리의 출처·기준일과 구분합니다.</p>
   </div>`;
 }
 
@@ -874,7 +818,7 @@ function renderVcThoughtWaterfall(D) {
         <strong>RW ${ar.ncrRwPct}% → ${isIma ? `IMA −${ar.capCostImaBp}bp` : `어음 −${ar.capCostNoteBp}bp`}</strong>
       </div>
       <div class="pd-formula-chip" style="border-color:#bfe0d8;background:#f3faf8">
-        <small>④ 핵심 결론 (P-CBO 기준선과의 수렴)</small>
+        <small>④ 선택 자산의 위험조정 비교 결과</small>
         <strong style="color:var(--teal)">실질 기회비용 ${trueOc}bp (${fmt(trueOc / 100)}억/100억)</strong>
       </div>
     </div>
@@ -893,9 +837,9 @@ export function renderVentureDeepDive(D) {
       <div>
         <div class="eyebrow">OPPORTUNITY COST METHODOLOGY · 기회비용 산정 방식 비교</div>
         <h2>모험자본 취득에 따른 기회비용, 어떤 산정 방식이 있고 무엇이 가장 적절할까?</h2>
-        <p>① 실무 비중 1위인 <b>P-CBO(AAA 3년물) 무위험 명목금리차</b>로 기준선을 먼저 세운 뒤, ② 비보증 고수익 자산을 담을 때 <b>EL(PD×LGD)·신NCR 자본비용(RAROC)</b>이 어떻게 차감되어 같은 결론으로 수렴하는지 시각적으로 확인하세요.</p>
+        <p>① <b>AAA 은행채 3년의 확인된 평가수익률</b>로 명목 금리차를 비교하고, ② 선택 자산의 <b>EL(PD×LGD)·자본비용</b>을 차감한 순EVA가 정상 IB와 얼마나 다른지 확인하세요. 자산별 결과는 위험·비용 가정에 따라 달라집니다.</p>
       </div>
-      <span class="badge green">KOFIA ${vc.observedYieldDate} · 별표 5 반영</span>
+      <span class="badge green">금리 관측치 + 위험·비용 모형 가정</span>
     </div>
 
     <div id="pcbo-diagram-mount" aria-live="polite">
@@ -922,7 +866,7 @@ export function renderVentureDeepDive(D) {
     <div id="vc-lens-content" aria-live="polite">
       ${renderVcLensBody(D)}
     </div>
-    ${srcBox(`KOFIA 채권 시가평가 기준수익률(${vc.observedYieldDate}) · 금융위원회 종투사 모험자본 공급실적('26.2Q 11.6조 중 P-CBO 3.4조[29.3%]) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정입니다.`, 'kpi:pcbo-clean-bench')}
+    ${srcBox(`AAA 은행채 3년은 KIS자산평가 KIS WEEKLY 1212호(${vc.pcboCleanBenchmark.sourceDate}) 4.113%이며 P-CBO 수익률 대용값입니다. 다른 자산의 금리·EL·위험률·원가는 기존 설명용 모형 입력입니다. · 저장소 종투사 모험자본 공급실적('26.2Q 11.6조 중 P-CBO 3.4조[29.3%]) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정입니다.`, 'kpi:pcbo-clean-bench')}
   </section>
 
   <section class="panel" id="vc-preemptive-strategy">
@@ -1034,7 +978,7 @@ function renderVcLensBody(D) {
           <p class="muted">무규제(${evaNorm}bp) 대비 <b>규제 그림자 조세 −${fmt(shadowTaxGood, 1)}bp</b></p>
         </div>
         <div class="metric" data-xray="kpi:mrmc-qstar" tabindex="0" role="button">
-          <small>시나리오 B · 비A급 전액 무수익 P-CBO 충당 시</small>
+          <small>시나리오 B · 비A급 수익률을 AAA 은행채로 대용 시</small>
           <strong>+${fmt(pkgPcbo, 1)} <small>bp (연 +${fmt(pkgPcbo, 1)}억/조)</small></strong>
           <p class="muted">무규제 대비 <b>규제 그림자 조세 −${fmt(evaNorm - pkgPcbo, 1)}bp</b></p>
         </div>
@@ -1137,19 +1081,7 @@ function renderVcPoolTable(D) {
 export function bindVentureDeepDive(D) {
   const labRoot = document.getElementById('vc-raroc-lab');
   if (!labRoot) return;
-  const pcboMount = document.getElementById('pcbo-diagram-mount');
   const wfMount = document.getElementById('vc-waterfall-mount');
-
-  const bindPcboDiagram = () => {
-    if (!pcboMount) return;
-    pcboMount.querySelectorAll('[data-pcbo-mode]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        explorerState.pcboMode = btn.dataset.pcboMode;
-        pcboMount.innerHTML = renderPcboCleanDiagram(D);
-        bindPcboDiagram();
-      });
-    });
-  };
 
   const bindWaterfall = () => {
     if (!wfMount) return;
@@ -1192,7 +1124,6 @@ export function bindVentureDeepDive(D) {
     });
   });
 
-  bindPcboDiagram();
   refreshLens();
 
   document.querySelectorAll('[data-vc-strat]').forEach(card => {

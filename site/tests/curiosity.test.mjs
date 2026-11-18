@@ -91,7 +91,9 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       const vcHtml = renderVentureDeepDive(D);
       assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
       assert(vcHtml.includes('id="vc-waterfall-svg"'));
-      assert(vcHtml.includes('P-CBO AAA 3Y'));
+      assert(vcHtml.includes('AAA 은행채 3년'));
+      assert(!vcHtml.includes('data-pcbo-mode'));
+      assert(!vcHtml.includes('무위험 명목금리차'));
       assert(vcHtml.includes('PD · LGD 산정 근거 공개'));
       assert(vcHtml.includes('모험자본 취득에 따른 기회비용'));
       assert(vcHtml.includes('선제적 확보를 통한 경쟁자 견제 타당성'));
@@ -249,4 +251,40 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
   assert(multiTrail.includes('id="crumb"'));
   assert(multiTrail.includes('data-trail-back='));
   assert(multiTrail.includes('메리츠증권'));
+});
+
+
+test('AAA bank 3Y proxy uses a dated primary valuation source and recalculates its conditional nominal gap', () => {
+  const pb = D.ventureCapitalChain2027.pcboCleanBenchmark;
+  assert.equal(pb.benchmarkType, 'aaa_bank_3y_proxy');
+  assert.equal(pb.sourceDate, '2026-11-13');
+  assert.equal(pb.sourceUrl, 'https://www.bond.co.kr/post/dawn/37184');
+  assert.equal(pb.modes.length, 1);
+  const mode = pb.modes[0];
+  assert.equal(mode.pcboYieldPct, 4.113);
+  assert(Math.abs((mode.pcboYieldPct-mode.ktb3yPct)*100-36.3) < 1e-9);
+  assert(Math.abs((mode.normalYieldPct-mode.pcboYieldPct)*100-73.7) < 1e-9);
+  assert.equal(mode.shadowTax27EokPerTril, 10.318);
+  const html = renderVentureDeepDive(D);
+  assert(html.includes('4.113%'));
+  assert(html.includes('73.7bp'));
+  assert(html.includes('10.318억 / 년'));
+  assert(html.includes('은행채 자체가 모험자본 인정자산이라는 뜻도 아닙니다'));
+  assert(!html.includes('기발행·실효수익률 기준'));
+  assert(!html.includes('신규발행 표면금리 기준'));
+  assert(!html.includes('PD≈0% · RW≈0%'));
+
+  const changed = structuredClone(D);
+  changed.ventureCapitalChain2027.pcboCleanBenchmark.modes[0].normalYieldPct = 5.0;
+  const changedHtml = renderVentureDeepDive(changed);
+  assert(changedHtml.includes('88.7bp'));
+  assert(changedHtml.includes('12.418억 / 년'));
+
+  const row = D.ventureCapitalChain2027.assetRarocBenchmarks.find(row => row.id === 'pcbo_senior');
+  assert.equal(row.yieldPct, 4.113);
+  assert.equal(row.grossSpreadBp, 96.3);
+  assert(Math.abs(row.grossSpreadBp-row.elCostBp-row.capCostNoteBp-row.evaNoteBp)<1e-9);
+  assert(Math.abs(row.grossSpreadBp-row.elCostBp-row.capCostImaBp-row.evaImaBp)<1e-9);
+  assert(row.note.includes('은행채 실측치가 아닙니다'));
+  assert.equal(D.opportunityCostAssumptions.nominalGapAssumptionBp,150);
 });

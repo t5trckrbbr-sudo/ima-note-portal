@@ -1,8 +1,38 @@
 const baseCreatedAt='2026-11-12T00:00:00.000Z';
 const defaultSourceUrl='https://github.com/t5trckrbbr-sudo/ima-note-portal/blob/main/QA_VERIFIED_ANSWERS.md';
 
-// Verified research Q&A starter entries (17 items). Plain-text formatted for .qa-prose (pre-wrap).
+// Research Q&A starter entries (18 items). Plain-text formatted for .qa-prose (pre-wrap).
 const entries=[
+ {
+  id:'guide-ima-old-ncr-capital',category:'regulation',timeframe:'timeless',
+  createdAt:'2026-11-18T11:16:47.000Z',observedAt:'2026-11-18',
+  title:'IMA의 5% 충당금 차감을 고려해도 위험액 50% 감경은 구NCR에 유리한가요?',
+  body:'IMA 만기 타임라인의 자본효율 그래프입니다. 취득 자산의 위험률을 x축으로 놓고, 5% 손실충당금의 영업용순자본 부담과 위험액 50% 감경을 구NCR에 함께 반영하면 어느 수준부터 IMA가 유리한가요?',
+  sourceUrl:'https://www.fsc.go.kr/no010101/84322',
+  sourceTitle:'금융위원회 증권업 기업금융 경쟁력 제고방안(2025.4.9) · 금융투자업규정·시행세칙의 IMA 위험액 특례',
+  answer:`구NCR에 위험액 50% 감경을 반영하더라도 IMA가 항상 유리하지는 않습니다. 영업용순자본 ÷ 총위험액이라는 비율에서, 5% 적립에 따른 분자 부담과 위험액 감경에 따른 분모 절감을 함께 봐야 합니다. 자산 위험률이 낮으면 분자 부담이, 높으면 분모 절감이 더 크게 작용할 수 있습니다.
+
+[1] 그림의 비교 전제
+금융위원회는 2025-04-09 제도개선 설명에서 손실충당금이 충분히 적립된 경우 ‘영업용순자본비율(NCR) 산출시 IMA 운용자산은 50%만 반영’한다고 밝혔습니다(https://www.fsc.go.kr/no010101/84322). 이 그림은 구NCR 산출에도 IMA 운용자산의 위험액 50% 감경을 반영하는 비교입니다. 신규 수탁고 5% 전액만큼 영업용순자본이 감소한다고 보수적으로 가정하며, 손실은 0, 다른 손익·세금·기존 위험액 변화는 고정합니다. 모든 손실충당금·손실준비금이 법적으로 같은 차감항목이라는 뜻은 아닙니다. 실제 감독보고 적용과 충당금·준비금의 회계·규제 처리는 별도로 확인해야 합니다.
+
+[2] 취득 자산 위험률에 따른 산식
+E = 신규 차감 전 영업용순자본, R = 기존 총위험액, A = 신규 취득액, r = 감경 전 신규 총위험액 ÷ 취득액, c = 5%로 둡니다. r은 PD나 은행의 위험가중치가 아닙니다.
+• 발행어음 비교선: E ÷ (R + A×r) × 100
+• IMA 감경 반영 비교선: (E − c×A) ÷ (R + 0.5×A×r) × 100
+• E > 2cA일 때 교차 위험률: r* = cR ÷ (0.5E − cA)
+교차점보다 높은 위험률에서는 IMA 선이 더 높습니다. E, R, A와 실제 순자본 감소율이 달라지면 교차점도 달라지며, 어느 회사에나 동일한 효과를 뜻하지 않습니다.
+
+[3] 설명용 예시: E 8조 원, R 4조 원, A 1조 원
+이 값은 특정 회사 실적이 아닌 가정입니다. 5% 차감액은 0.05조 원(500억 원)이고, 두 선의 교차 위험률은 약 5.0633%입니다. 위험률 10%에서는 발행어음 구NCR 195.12% vs IMA 감경 반영 구NCR 196.30%로 IMA가 약 1.17%p 높습니다. 위험률이 아주 낮으면 분모 절감이 작아 5% 분자 부담이 더 클 수 있습니다. 그림의 구NCR 수치만으로 법령상 150% 자격 충족을 자동 판정하지 않습니다. 자격 판단에 쓰는 총위험액의 적용 범위·감경 전후 처리는 실제 보고 기준과 별도로 대조해야 합니다.
+
+[4] 감경 요건과 한도
+금융투자업규정 제3-24조의4④ 및 시행세칙 제3-20조의6의 요건을 함께 확인합니다. 원본결손액 + 원본의 5% 이상에 해당하는 손실충당금·손실준비금 합계와 연결 기준 구NCR 150% 초과가 요건입니다(시행세칙: https://www.law.go.kr/LSW/flDownload.do?flSeq=166876081, PDF 9쪽). 만기 전 해지가 불가능한 IMA가 두 요건을 충족한 상태에서 납입받은 수탁금의 운용자산이면 이후 150% 요건 미충족도 충족한 것으로 보는 예외가 있습니다.
+자기자본 100%를 초과하는 수탁금 원본에는 50% 감경을 적용하지 않는 한도가 있으므로, 그림은 신규 A 전부가 감경 요건과 한도 안에 있다고 가정합니다. 영업용순자본 E와 자기자본은 달라 E로 이 한도를 판정하지 않습니다. 규정 원문: https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020
+
+이미 5% 상당액을 차감한 영업용순자본에서 다시 5%를 빼거나, 5% 시딩과 손실충당금을 자동으로 합쳐 10%를 차감하지 않습니다. 이 비교를 실제 인가·투자가능 한도의 확정 계산으로 해석하지 않습니다.
+
+IMA 만기 타임라인(#ima-maturity)의 ‘위험률별 구NCR’ 그래프에서 두 곡선과 교차점을 확인할 수 있습니다.`
+ },
  {
   id:'guide-2027-funding-outlook-bear-flattening',category:'strategy',timeframe:'2027',
   createdAt:'2026-11-17T07:00:00.000Z',
@@ -239,13 +269,14 @@ const entries=[
   id:'guide-pcbo-assumption',category:'returns',timeframe:'timeless',
   title:'계산기의 P-CBO 0bp는 실제로 수익이 없다는 뜻인가요?',
   body:'모험자본 기회비용을 계산할 때 사용하는 0bp가 어떤 가정인지 알고 싶습니다.',
-  sourceUrl:'https://www.kodit.co.kr/',
-  sourceTitle:'신용보증기금 P-CBO 구조 및 대시보드 기회비용 시뮬레이터 산식',
-  answer:`P-CBO(프라이머리 채권담보부증권) 표면금리가 0%라는 뜻이 아니라, 발행어음 조달비용과 제반 보증·유동화 비용을 차감한 뒤 증권사에 남는 ‘순운용스프레드(Net Spread)’가 0bp에 수렴한다는 보수적 실무 가정입니다.
+  sourceUrl:'https://www.bond.co.kr/post/dawn/37184',observedAt:'2026-11-18',
+  sourceTitle:'KIS자산평가 KIS WEEKLY 1212호(2026.11.13), PDF 13·57쪽 · 사용자 기회비용 가정',
+  answer:`0bp는 P-CBO 표면금리가 0%라는 뜻이 아닙니다. 계산기에서 ‘의무 자산 순스프레드 0bp, 정상 운용 대비 기회비용 150bp’로 둔 독립적인 사용자 가정입니다. 확인된 모든 P-CBO의 실제 순마진이 0bp라고 해석하면 안 됩니다.
 
-1) 실무적 배경: 신용보증기금 등이 보증하는 선순위 P-CBO는 신용보강 덕분에 표면금리가 국공채·우량채 수준(연 3%대 초반)으로 낮게 발행됩니다. 반면 증권사의 발행어음 조달금리 역시 평시 기준금리+30bp(특판 시 +70~90bp, 연 3.0~3.5% 내외) 수준이므로, 대규모 모험자본 의무를 단기에 채우기 위해 P-CBO를 대거 편입하면 운용수익률에서 조달비용을 뺀 순마진이 0bp(손익분기 수준)에 가까워집니다.
-2) 기회비용의 경제적 의미: 이 자금을 정상 기업금융(순스프레드 150bp 가정)에 운용했을 때 얻을 수 있었던 이익을 포기하는 상대적 기회비용(회계상 확정 손실 아님)입니다. 신규 수신 1조 원당 의무액 0.20조 원 × 150bp = 연 30억 원(중견·A급 30% 상한 활용 시 연 21억 원)의 기회비용이 추산됩니다.
-3) 중복 차감 주의: 수신 화면(#funding)의 NIM 계산기에서 이미 모험자본 편입에 따른 마진 하락을 반영해 평균 NIM을 낮춰 입력했다면, 기회비용 계산기(#invest)의 금액을 한 번 더 중복 차감하지 않도록 주의해야 합니다.`
+1) 비교 도해의 금리 정정(2026-11-18): 원출처·비용 차감 근거가 확인되지 않은 기존 P-CBO 3.35%를 쓰지 않습니다. 대체 비교 기준은 KIS자산평가의 2026-11-13 AAA 은행채 3년 평가수익률 4.113%입니다(KIS WEEKLY 1212호 13·57쪽). 같은 자료의 국고채 3년 3.750%보다 36.3bp 높습니다. 이는 은행채 평가수익률이며 P-CBO 실측 발행·유통수익률이나 KOFIA 평가사 평균이 아닙니다. 은행채 자체가 모험자본 인정 자산이라는 뜻도 아닙니다.
+2) 새 비교 도해의 계산: 정상 IB 4.85%와 조달원가 3.15%는 기존 모형 가정입니다. 정상 IB 4.85% − AAA 은행채 4.113% = 명목 금리차 73.7bp입니다. 이를 비A급 의무 구간 14%(20%×70%)의 대체 수익률로 가정하면 신규 수신 1조 원당 연 10.318억 원(약 10.3억 원)의 기회비용입니다. 동일 위험·비용을 조정한 확정 손익이 아닙니다.
+3) 상단 계산기와 구분: 상단 기회비용 계산기의 기본 150bp는 위 은행채 금리에서 자동 도출한 값이 아닙니다. 독립 가정으로 신규 수신 1조 원 × 의무 20% × 150bp = 연 30억 원, 중견·A급 30% 활용 가정에서는 연 21억 원입니다. 실제 P-CBO 투자수익률·투자자 부담 비용·운용기간을 확인하면 별도로 조정해야 합니다. 발행기업 부담 보증료·후순위 인수비용을 선순위 투자자 비용으로 자동 차감하지 않습니다.
+4) 중복 차감 주의: 수신 화면(#funding)의 NIM에 모험자본 편입 영향을 이미 반영했다면 기회비용을 다시 차감하지 않습니다. 전체 비용 계산은 신규 증가분×20%와 기존 기준 잔액×10%p를 항상 합산하며, 위 신규 수신 1조 단위 도해와 구분합니다.`
  },
  {
   id:'guide-ima-maturity',category:'risk',timeframe:'2027',
@@ -301,7 +332,7 @@ const entries=[
  }
 ];
 
-export const seedQuestions=entries.map(({answer,createdAt:entryCreatedAt,sourceUrl:entrySourceUrl,sourceTitle:entrySourceTitle,...question})=>{
+export const seedQuestions=entries.map(({answer,createdAt:entryCreatedAt,sourceUrl:entrySourceUrl,sourceTitle:entrySourceTitle,observedAt:entryObservedAt,...question})=>{
  const ts=entryCreatedAt||baseCreatedAt;
  return {
   ...question,author:'리서치 가이드',createdAt:ts,updatedAt:ts,seed:true,
@@ -310,7 +341,7 @@ export const seedQuestions=entries.map(({answer,createdAt:entryCreatedAt,sourceU
    body:answer,author:'리서치 가이드',kind:'guide',
    sourceUrl:entrySourceUrl||defaultSourceUrl,
    sourceTitle:entrySourceTitle||'법령 · 공공통계 · 약관 검토 기준 (2026-11-12)',
-   observedAt:'2026-11-12',
+   observedAt:entryObservedAt||'2026-11-12',
    createdAt:ts,updatedAt:ts,revision:1
   }
  };

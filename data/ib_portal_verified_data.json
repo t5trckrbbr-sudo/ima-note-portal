@@ -1677,9 +1677,9 @@
         "id": "nominal",
         "badge": "방식 ① · 현행 기본식",
         "title": "명목 스프레드 단순 차감법",
-        "formula": "OC = s_정상IB − s_모험명목 (예: 150bp − P-CBO 0bp = 150bp)",
-        "bestFor": "무수익·저마진 정책보증채(P-CBO 선순위 등) 강제 편입 시 직관적 손실 시산",
-        "distortion": "BBB- 회사채(민평 9.37%)나 고금리 사모채를 대입하면 명목금리가 AA-(4.42%)보다 높아 기회비용이 음수(초과이익)로 잘못 산출되는 착시 발생",
+        "formula": "OC = 정상 IB 가정수익률 − 비교 자산수익률 (AAA 은행채 3년 대용: 4.85% − 4.113% = 73.7bp)",
+        "bestFor": "금리 수준이 확인되는 비교 기준을 사용한 명목 차이의 조건부 시산. 상단 계산기 150bp는 별도의 사용자 가정이며 관측 금리차가 아님",
+        "distortion": "위험·유동성·비용이 서로 다른 자산의 명목금리 차이로 실제 기회비용을 확정할 수 없음. 은행채는 모험자본 인정자산의 수익률 대용값일 뿐 인정 여부나 P-CBO 실측치를 뜻하지 않음",
         "verdict": "단순 보완재 한정 보조지표"
       },
       {
@@ -1751,22 +1751,22 @@
       },
       {
         "id": "pcbo_senior",
-        "asset": "모험 ② 유동화회사보증 P-CBO 선순위채",
+        "asset": "모험 ② P-CBO 수익률 대용 · AAA 은행채 3년",
         "capTag": "무제한 인정",
-        "yieldPct": 3.35,
-        "grossSpreadBp": 20,
+        "yieldPct": 4.113,
+        "grossSpreadBp": 96.3,
         "elCostBp": 5,
         "ncrRwPct": 0.4,
         "capCostNoteBp": 5,
         "capCostImaBp": 3,
-        "evaNoteBp": 10,
-        "evaImaBp": 12,
-        "note": "신보 보증 AAA로 신용위험은 거의 없으나 조달원가(3.15%) 차감 시 마진이 전무해 순수 비율 충족용 보완재(기회비용 126bp)",
+        "evaNoteBp": 86.3,
+        "evaImaBp": 88.3,
+        "note": "수익률만 KIS AAA 은행채 3년 4.113%(2026.11.13)를 비교 대용값으로 적용합니다. 은행채 자체의 모험자본 인정을 뜻하지 않습니다. EL·원가·위험률·자본비용은 기존 P-CBO 설명용 가정이며 은행채 실측치가 아닙니다. 정상 IB 대비 어음 순EVA 차이 49.7bp·IMA 58.7bp로 조건부 계산합니다.",
         "pdPct": 0.01,
         "lgdPct": 20,
         "pureElBp": 0,
         "opsCostBp": 5,
-        "elBasisNote": "신보·기보 보증 AAA로 신용 부도손실 0bp 수렴 · 유동화 사무·관리 실비 5bp만 반영"
+        "elBasisNote": "P-CBO 설명용 기존 가정: PD 0.01% × LGD 20% ≈ 0bp(반올림) + 관리원가 5bp. 보증이 위험을 완전히 제거한다는 뜻이 아니며, AAA 은행채의 확인된 손실률·원가 자료가 아닙니다."
       },
       {
         "id": "bbb_private",
@@ -1957,54 +1957,29 @@
         "pcboSharePct": 29.3,
         "rankLabel": "종투사 모험자본 편입 부동의 1위 (29.3% · 중견·A급 30% 상한 미적용 무제한 인정)"
       },
-      "whyCleanestSummary": "신용보증기금·기술보증기금이 원리금을 보증하는 P-CBO 선순위(AAA 3년물)는 부도확률(PD ≈ 0%)과 신NCR 신용위험값(RW ≈ 0~0.4%)이 모두 사실상 0입니다. 따라서 연구자마다 가정이 달라지는 부도율(PD)·회수율(LGD)·자본비용 논쟁 없이, 오직 ‘정상 우량 기업금융 금리 − P-CBO AAA 금리’라는 객관적 명목금리 차이만으로 규제 기회비용의 기준선(Clean Benchmark)을 가장 명쾌하게 보여줍니다.",
+      "whyCleanestSummary": "사용자 지정에 따라 출처가 확인되는 AAA 금융채의 대표 기준으로 KIS자산평가 AAA 은행채 3년 평가수익률을 사용합니다. 2026.11.13 4.113%는 같은 날 국고 3년 3.750%보다 36.3bp 높습니다. P-CBO 실측금리나 무위험 수익률이 아니며, 은행채 자체가 모험자본 인정자산이라는 뜻도 아닙니다.",
       "modes": [
         {
           "id": "effective",
-          "label": "기발행·실효수익률 기준 (3.35%)",
+          "label": "AAA 은행채 3년 · 4.113% (2026.11.13, KIS자산평가)",
           "normalLabel": "정상 우량 IB (AA- 인수금융·사모 3Y)",
           "normalYieldPct": 4.85,
           "publicAamPct": 4.42,
-          "pcboLabel": "신보 보증 P-CBO AAA 3Y (기발행·제비용 차감 실효)",
-          "pcboYieldPct": 3.35,
+          "pcboLabel": "AAA 은행채 3년 평가수익률 · P-CBO 비교 대용값",
+          "pcboYieldPct": 4.113,
           "fundingBasePct": 3.15,
           "ktb3yPct": 3.75,
-          "forgoneSpreadBp": 150,
-          "shadowTax27Bp": 21.0,
-          "shadowTax27EokPerTril": 21.0,
-          "note": "조달원가(3.15%) 위 정상 IB 순마진(+170bp) vs P-CBO 실효 순마진(+20bp) → 포기하는 명목 스프레드 150bp (공모 AA- 4.42% 대비 시 107bp)"
-        },
-        {
-          "id": "new_issue",
-          "label": "신규발행 표면금리 기준 (4.10%)",
-          "normalLabel": "정상 우량 IB (AA- 인수금융·사모 3Y)",
-          "normalYieldPct": 4.85,
-          "publicAamPct": 4.42,
-          "pcboLabel": "신보 보증 P-CBO AAA 3Y (국고3Y 3.75% + 가산 35bp)",
-          "pcboYieldPct": 4.1,
-          "fundingBasePct": 3.15,
-          "ktb3yPct": 3.75,
-          "forgoneSpreadBp": 75,
-          "shadowTax27Bp": 10.5,
-          "shadowTax27EokPerTril": 10.5,
-          "note": "유동화·후순위 의무인수 비용 차감 전 순수 선순위 표면금리(4.10%) 단순 비교 시 포기 스프레드 75bp (주관사 후순위 일부 인수·보증수수료 반영 시 실효 포기폭은 약 115~130bp로 확대)"
-        },
-        {
-          "id": "calc_zero",
-          "label": "상단 계산기 기본식 (순마진 0bp)",
-          "normalLabel": "정상 기업금융 기준 (순마진 +150bp)",
-          "normalYieldPct": 4.65,
-          "publicAamPct": 4.42,
-          "pcboLabel": "P-CBO 손익분기 가정 (순마진 0bp)",
-          "pcboYieldPct": 3.15,
-          "fundingBasePct": 3.15,
-          "ktb3yPct": 3.75,
-          "forgoneSpreadBp": 150,
-          "shadowTax27Bp": 21.0,
-          "shadowTax27EokPerTril": 21.0,
-          "note": "상단 기회비용 계산기(정상 150bp − P-CBO 0bp = 150bp)와 정확히 일치하는 보수적 시뮬레이션 기준선 → 수신 1조당 비A급 14% 구간 기회비용 연 21.0억 원(−21bp)"
+          "forgoneSpreadBp": 73.7,
+          "shadowTax27Bp": 10.318,
+          "shadowTax27EokPerTril": 10.318,
+          "note": "정상 IB 4.85%·조달원가 3.15%는 기존 모형 가정입니다. AAA 은행채 3년 관측치 4.113%를 인정자산 수익률의 비교 대용값으로 두면 명목 금리차는 73.7bp입니다. 신규 수신의 14%(의무 20% × 비A급 70%)를 이 수익률로 운용한다는 조건에서 연 10.318억 원/수신 1조의 차이가 납니다. 실제 P-CBO 거래수익률·위험·비용을 검증한 결과가 아닙니다."
         }
-      ]
+      ],
+      "benchmarkType": "aaa_bank_3y_proxy",
+      "sourceTitle": "KIS자산평가 KIS WEEKLY 1212호 · Appendix 1(57쪽), 은행채 시황(13쪽)",
+      "sourceUrl": "https://www.bond.co.kr/post/dawn/37184",
+      "sourceDate": "2026-11-13",
+      "crossCheckUrl": "https://www.newspim.com/news/view/20261116000108"
     }
   },
   "moneyMoveAndSafety2026Q4": {
@@ -3158,10 +3133,10 @@
         "idx": 6,
         "category": "liquidity_capital",
         "categoryBadge": "신NCR · 손실충당금",
-        "title": "영업용순자본비율(신NCR ≥ 100%) 위험액 반영 & IMA 5% 고유충당금",
+        "title": "순자본비율(신NCR ≥ 100%) · IMA 감경 조건과 손실흡수 적립",
         "promNoteRule": "발행어음 운용자산의 시장·신용위험액을 종투사 신NCR 총위험액에 100% 전액 반영 (별표 5 신용위험값: AA급 1.6~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합 12~20%)",
-        "imaRule": "수탁금의 5% 이상을 고유재산으로 손실충당금(초기 손실흡수 버퍼)으로 우선 적립 시 IMA 운용자산 위험액의 50%만 신NCR 총위험액에 반영 (초과 손실 발생 시 추가 반영)",
-        "statute": "자본시장법 제30조(재무건전성 유지) · 금융투자업규정 제3-6조~제3-24조·제3-24조의4·제4-102조의9 · 시행세칙 [별표 5]·[별표 10]",
+        "imaRule": "손실충당금·손실준비금 합계를 매 결산 원본 결손액+원본 5% 이상 유지하고 연결 영업용순자본/총위험액이 150%를 초과하는 등 요건을 충족하면 IMA 운용자산 50%를 반영하는 특례. 자기자본 100% 초과 수탁금 원본은 제외. 적격 납입한 만기 전 해지 불가 IMA에는 이후 150% 유지 예외. IMA 만기 화면에서는 구NCR에도 위험액 감경을 반영해 5% 자본 감소 부담과 함께 비교하며, 5% 전액 감소는 보수적 계산 가정으로 구분.",
+        "statute": "자본시장법 제30조 · 금융투자업규정 제3-6조·제3-10조·제3-24조의4제4항·제4-99조 · 금융투자업규정 시행세칙 제3-20조의6 (2026.07.08 시행) · https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020 · 금융위원회 2025.04.09 제도 설명 https://www.fsc.go.kr/no010101/84322",
         "reportingCycle": "월보(익월 말일) · 분기보(분기 후 45일, FISIS SF408 연결 / SF308 개별) + 비율 급변 시 수시 보고",
         "curePeriod": "유예기간 없음 (즉시 적기시정조치 발동): 신NCR 100% 미만 경영개선권고, 50% 미만 경영개선요구, 0% 미만 경영개선명령 → 1~2개월 내 계획서 제출, 6개월~1년 내 이행(규정 제3-28조~제3-32조)",
         "penalty": "배당 제한·신규업무 금지·임원 직무정지·영업정지·계약이전·인가취소(금산법 제10조~제14조, 자본시장법 제420조)",
@@ -3212,6 +3187,7 @@
     "includeExistingBalanceStepUp": true,
     "newFundingMandatePct": 20,
     "existingIncreasePctPoints": 10,
-    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다."
+    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다. 기본 150bp는 독립적인 사용자 시뮬레이션 가정이며 AAA 은행채 3년 비교 도해의 관측·가정 금리차 73.7bp와 구분합니다.",
+    "nominalGapAssumptionBp": 150
   }
 }
