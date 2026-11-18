@@ -14,3 +14,51 @@
 @media(min-width:1001px) and (max-width:1200px){.brand-name{font-size:16px;letter-spacing:-1px}.brand-name small{font-size:5px;letter-spacing:.7px}.brand{gap:6px}}
 @media(min-width:701px) and (max-width:1000px){.brand-name{font-size:14px;letter-spacing:-1px}.brand-name small{font-size:4.6px;letter-spacing:.5px}.brand{gap:3px}.brand-mark{width:33px;padding:8px;gap:3px;flex-shrink:0}}
 @media(max-width:700px){.brand-name{font-size:21px}.brand-name small{font-size:6.5px}}
+
+/* Curiosity-driven hybrid UX: inline drilldowns, synchronized entity lens, RAROC switcher */
+[role="button"]:focus-visible{outline:2px solid #50b8ae;outline-offset:-2px}
+.drill-table .drill-summary-row{cursor:pointer;transition:background .15s}
+.drill-table .drill-summary-row:hover{background:#eff8f5}
+.drill-table .drill-summary-row.selected{background:#e7f4f0}
+.drill-detail-row td{background:#f7fbfa;padding:16px 18px;white-space:normal;text-align:left;border-bottom:2px solid #d5e8e3}
+.drill-detail-row:hover td{background:#f7fbfa}
+.drill-card{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.drill-col{background:#fff;border:1px solid #e1ece8;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.drill-step-tag{font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.4px;margin-bottom:2px}
+.drill-kv{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;padding:5px 0;border-bottom:1px dashed #e9eff2}
+.drill-kv span{color:var(--muted)}
+.drill-kv b{text-align:right;font-weight:600}
+.drill-prose{font-size:11.5px;line-height:1.78;color:#304553;margin-top:4px}
+.drill-subnote{font-size:10.5px;line-height:1.68;color:var(--muted);margin-top:3px}
+.drill-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:8px}
+.firm-cell-wrap{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap}
+.drill-chevron{display:inline-block;width:12px;color:var(--teal);font-weight:700;font-size:12px}
+.mini-mix-bar{height:16px;display:flex;border-radius:4px;overflow:hidden;width:100%;margin:5px 0;background:#edf1f4}
+.mini-mix-bar span{display:block;height:100%}
+.drill-rate-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.rate-pill{font-size:10px;padding:3px 7px;border-radius:4px;background:#f3f6f8;border:1px solid #e4eaee;color:#4f6270}
+.rate-pill.highlight{background:var(--teal-light);border-color:#a8dad1;color:var(--teal)}
+.lens-toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.lens-switch{display:inline-flex;flex-wrap:wrap;gap:4px;background:#f1f5f8;border:1px solid var(--border);padding:4px;border-radius:7px}
+.lens-btn{border:0;background:transparent;padding:6px 11px;border-radius:5px;font-size:11px;font-weight:500;color:#5a6b77;transition:background .15s,color .15s}
+.lens-btn:hover{color:var(--ink)}
+.lens-btn.active{background:#fff;color:var(--teal);font-weight:700;box-shadow:0 1px 3px #152e3c14}
+.sub-lens-card{background:#f8fbfa;border:1px solid #e1ece8;border-radius:8px;padding:15px 16px}
+.sub-lens-card.warn{background:#fdf9f3;border-color:#efe1c9}
+.formula-pill{display:block;margin-top:8px;padding:7px 10px;background:#fff;border:1px solid #dce8e4;border-radius:5px;font-size:11px;color:#193d48;font-family:'DM Sans','Noto Sans KR',monospace;word-break:break-word;white-space:normal}
+#vc-raroc-lab .data-table td:first-child{white-space:normal;min-width:220px;max-width:320px}
+.strategy-card{border:1px solid var(--border);border-radius:9px;padding:18px 20px;background:#fafcfd;cursor:pointer;transition:border-color .18s,box-shadow .18s,background .18s}
+.strategy-card.valid{background:#f6fbf9;border-color:#cde6df}
+.strategy-card.invalid{background:#fdf8f7;border-color:#efd7d3}
+.strategy-card.focused{box-shadow:0 4px 16px #087f8016}
+.strategy-card.valid.focused{border-color:var(--teal)}
+.strategy-card.invalid.focused{border-color:var(--red)}
+.mech-list{margin:0;padding-left:18px;display:grid;gap:8px;font-size:11.5px;line-height:1.78;color:#2f4350}
+.metric.metric-highlight{background:#eff8f5;border-color:#b7dfd6}
+.pool-detail-box{font-size:12px;line-height:1.8;color:#2d424f;background:#fff;border-left:3px solid var(--teal);padding:11px 14px;border-radius:0 6px 6px 0}
+.sync-highlight-panel{border-color:#a8d8cf;box-shadow:0 4px 18px #087f800d}
+.grid4-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.eff-rate-list{display:grid;gap:8px;background:#f8fafb;border:1px solid #e7edf0;border-radius:8px;padding:12px 15px}
+.eff-rate-item{font-size:11px}
+@media(max-width:1100px){.drill-card{grid-template-columns:1fr}.grid4-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.grid4-metrics{grid-template-columns:1fr}.lens-switch{width:100%}.lens-btn{flex:1 1 auto;text-align:center;font-size:10px;padding:6px 8px}}
