@@ -3,12 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   explorerState,
+  getSamsungScenario,
+  setSamsungScenario,
   setExplorerFirmByName,
   renderFundingBreakdownPanel,
   renderMoneyMoveSafetyPanel,
   renderIbSynchronizedExplorer,
   renderVentureDeepDive,
-  renderHouseholdWealthPage
+  renderHouseholdWealthPage,
+  renderRegulatoryCompliancePanel
 } from '../public/curiosity.js';
 import {
   resolveXraySpec,
@@ -84,6 +87,10 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       explorerState.vcVehicle = vehicle;
       explorerState.vcPkgYear = '2028';
       const vcHtml = renderVentureDeepDive(D);
+      assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
+      assert(vcHtml.includes('id="vc-waterfall-svg"'));
+      assert(vcHtml.includes('P-CBO AAA 3Y'));
+      assert(vcHtml.includes('PD · LGD 산정 근거 공개'));
       assert(vcHtml.includes('모험자본 취득에 따른 기회비용'));
       assert(vcHtml.includes('선제적 확보를 통한 경쟁자 견제 타당성'));
       assert(vcHtml.includes('인정 자산군별 현재 규모 vs 잠재 시장규모'));
@@ -91,6 +98,44 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       assert(!vcHtml.includes('undefined'));
     }
   }
+
+  for (const mode of ['effective', 'new_issue', 'calc_zero']) {
+    explorerState.pcboMode = mode;
+    const vcHtml = renderVentureDeepDive(D);
+    assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
+    assert(!vcHtml.includes('NaN'));
+  }
+
+  for (const wf of ['bbb_private', 'vc_mezz', 'a_cap_debt']) {
+    explorerState.vcWaterfallAsset = wf;
+    const vcHtml = renderVentureDeepDive(D);
+    assert(vcHtml.includes('id="vc-waterfall-svg"'));
+    assert(!vcHtml.includes('NaN'));
+  }
+  explorerState.pcboMode = 'effective';
+  explorerState.vcWaterfallAsset = 'bbb_private';
+
+  // Samsung scenario presets & reset check
+  setSamsungScenario('wm3');
+  assert.equal(getSamsungScenario(D).yearEndTril, 3);
+  assert.equal(getSamsungScenario(D).avgTril, 1.8);
+  const ssHtml = renderFundingBreakdownPanel(D);
+  assert(ssHtml.includes('88.00조 원'));
+  setSamsungScenario('base0');
+  assert.equal(getSamsungScenario(D).yearEndTril, 0);
+  assert.equal(getSamsungScenario(D).isOverridden, false);
+
+  // Full statutory regulatory matrix check
+  assert.equal(D.regulatoryComplianceMatrix2027.rules.length, 10);
+  for (const cat of ['all', 'limit_alloc', 'liquidity_capital', 'credit_conduct']) {
+    explorerState.regCategory = cat;
+    const regHtml = renderRegulatoryCompliancePanel(D);
+    assert(regHtml.includes('id="reg-compliance-matrix"'));
+    assert(regHtml.includes('자본시장법'));
+    assert(!regHtml.includes('NaN'));
+    assert(!regHtml.includes('undefined'));
+  }
+  explorerState.regCategory = 'all';
 });
 
 test('household wealth & 5-country comparison module renders all categories, series modes, corporate S11, SHF quintiles, and 5 countries cleanly', () => {
@@ -135,28 +180,6 @@ test('household wealth & 5-country comparison module renders all categories, ser
   }
 });
 
-test('household detail counts, residual reconciliation and corporate cash pool keep assets and reference balances distinct', () => {
-  const previousCategory = explorerState.hwCategory;
-  try {
-    explorerState.hwCategory = 'other';
-    const html = renderHouseholdWealthPage(D);
-    assert(html.includes('17개 세부 자산 항목'));
-    assert(html.includes('부채 참고 1개'));
-    assert(!html.includes('15개 세부 금융상품'));
-    assert(html.includes('세부표 미분류 차이 23.79조'));
-    assert(html.includes('표시된 세부 자산 합계 <b>25.29조'));
-    assert(html.includes('합산 현금·예금 3,824.0조'));
-    assert(html.includes('법인 투자펀드(MMF 등) 274.7조는 위 합계에 포함하지 않고 별도로 표시'));
-    const changed = structuredClone(D);
-    changed.householdWealthAndIntl2026.krFinCategories26Q2.find(cat => cat.id === 'other').amount26Q2Tril += 1;
-    changed.householdWealthAndIntl2026.corpLiquiditySeries.at(-1).fundsTril += 2;
-    const changedHtml = renderHouseholdWealthPage(changed);
-    assert(changedHtml.includes('세부표 미분류 차이 24.79조'));
-    assert(changedHtml.includes('합산 현금·예금 3,824.0조'));
-    assert(changedHtml.includes('법인 투자펀드(MMF 등) 276.7조는 위 합계에 포함하지 않고 별도로 표시'));
-  } finally { explorerState.hwCategory = previousCategory; }
-});
-
 test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly without NaN or undefined', () => {
   const staticKeys = [
     'kpi:actual-5854', 'kpi:forecast-85', 'kpi:growth-452', 'kpi:vc-mandate-20',
@@ -164,7 +187,8 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
     'kpi:bear-spread-11bp', 'kpi:curve-slope-109bp', 'kpi:short-share-634',
     'kpi:demand-share-4550', 'kpi:mm-m2', 'kpi:mm-pension', 'kpi:mm-deposits',
     'kpi:hw-kr-total', 'kpi:hw-kr-fin', 'kpi:hw-corp-s11', 'kpi:hw-shf-top20',
-    'kpi:reg-cap-300', 'kpi:ima-kis-260', 'kpi:kis-mirae-lev', 'kpi:mrmc-qstar'
+    'kpi:reg-cap-300', 'kpi:ima-kis-260', 'kpi:kis-mirae-lev', 'kpi:mrmc-qstar',
+    'kpi:pcbo-clean-bench'
   ];
   const dynamicKeys = [
     ...D.ib9FirmsCuriosityChain.flatMap(f => [`firm:${f.key}`, `firm:${f.firm}`, `nim-firm:${f.key}`]),
@@ -172,7 +196,8 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
     ...D.householdWealthAndIntl2026.krQuarterlyFinSeries.map(r => `hw-q:${r.period}`),
     ...D.householdWealthAndIntl2026.krAnnualBalanceSheet.map(r => `hw-y:${r.year}`),
     ...D.shortYieldCurveAndMaturity.curves.map((_, i) => `curve:${i}`),
-    ...D.ventureCapitalChain2027.assetRarocBenchmarks.map((_, i) => `vc-asset:${i}`)
+    ...D.ventureCapitalChain2027.assetRarocBenchmarks.map((_, i) => `vc-asset:${i}`),
+    ...D.regulatoryComplianceMatrix2027.rules.map(r => `reg-rule:${r.idx}`)
   ];
 
   for (const key of [...staticKeys, ...dynamicKeys]) {

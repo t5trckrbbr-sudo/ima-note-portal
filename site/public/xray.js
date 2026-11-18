@@ -1,5 +1,4 @@
-import {getNimScenario} from './nim.js';
-
+import { getSamsungScenario } from './curiosity.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
@@ -77,7 +76,7 @@ function makeQaItems(ids) {
   return (ids || []).map(id => QA_DIGEST[id] ? { id, ...QA_DIGEST[id] } : null).filter(Boolean);
 }
 
-export function resolveXraySpec(specKey, D, context = {}) {
+export function resolveXraySpec(specKey, D) {
   if (!specKey || !D) return null;
   const [kind, ...rest] = String(specKey).split(':');
   const id = rest.join(':');
@@ -95,34 +94,31 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
+    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
     const base26 = chain.base26Q2NoteTril + chain.base26Q2ImaTril;
-    const est27 = chain.est27ModelNoteTril + chain.est27ModelImaTril;
-    const scenario = context.nimScenario || getNimScenario(D);
-    const nimRow = scenario.rows.find(row => row.key === chain.key);
-    if (!nimRow) return null;
-    const periodLabel = scenario.period === '2026' ? '2026.2Q 제공 잔액' : '2027E';
-    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.2Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
-    const oppAfterCapEok = opp ? opp.oppCostNewAfter30CapEok : 0;
+    const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
+    const est27 = estNote + chain.est27ModelImaTril;
+    const incBaseNote = ss?.isOverridden ? ss.avgTril : (chain.est27AverageNoteTril ?? chain.est27ModelNoteTril);
+    const nim150Eok = incBaseNote * 150 + chain.est27ModelImaTril * 120;
+    const oppAfterCapEok = ss?.isOverridden ? (estNote * 0.2 * 150 * 0.7) : (opp ? opp.oppCostNewAfter30CapEok : 0);
 
     return {
       eyebrow: `COMPANY X-RAY · ${fRow.strategyGroup}`,
       title: `${chain.firm} · 수신·조달원가·기회비용·ROE 통합 검증`,
       badge: `${chain.creditRating} · ${chain.statusBadge}`,
-      formula: `${periodLabel} 수익시나리오(${fmt(nimRow.total, 0)}억) = 어음 ${fmt(nimRow.noteIncomeBase)}조 × ${fmt(nimRow.noteBp, 0)}bp + IMA ${fmt(nimRow.ima)}조 × ${fmt(nimRow.imaBp, 0)}bp · 2027E 기회비용(상한활용 ${fmt(oppAfterCapEok, 0)}억)`,
+      formula: `'27E 수익시나리오(${fmt(nim150Eok, 0)}억) vs 모험자본 기회비용(상한활용 ${fmt(oppAfterCapEok, 0)}억)`,
       rows: [
         ['인가 비히클 현황', `어음(${chain.noteLicense}) / IMA(${chain.imaLicense})`],
         ['별도 자기자본 · 법정한도(200%)', `${fmt(fRow.equity)}조 원 / 어음한도 ${fmt(fRow.equity * 2)}조 원`],
-        ['2026.2Q 실적 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조)`],
-        ['선택한 NIM 시나리오 기준', `${periodLabel} · 어음 잔액 ${fmt(nimRow.note)}조 / IMA ${fmt(nimRow.ima)}조`],
-        ['NIM 수익 계산용 어음 잔액', `${fmt(nimRow.noteIncomeBase)}조 원 (${incomeBasisLabel})`],
-        ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
-        ['시나리오 수익 기여', `어음 ${fmt(nimRow.noteIncome, 0)}억 + IMA ${fmt(nimRow.imaIncome, 0)}억 = 합계 ${fmt(nimRow.total, 0)}억`],
+        ['\'26.2Q 실적 → \'27E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조${ss?.isOverridden ? ' · 삼성 시나리오 반영' : ''})`],
+        ['NIM 수익 계산용 어음 잔액', `${fmt(incBaseNote)}조 원 (${ss?.isOverridden ? '삼성 사용자 시나리오 평잔' : chain.est27AverageNoteTril ? '메리츠 IR 평잔 목표 적용' : '연말 잔액 대용치'})`],
         ['\'26.1H 실효금리 (어음 / RP / 사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
-        ['모험자본 추가 의무 · 기회비용(150bp)', opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
+        ['모험자본 추가 의무 · 기회비용(150bp)', ss?.isOverridden ? `의무 ${fmt(estNote * 0.2)}조 · 전액P-CBO ${fmt(estNote * 0.2 * 150, 0)}억 (30%캡 ${fmt(oppAfterCapEok, 0)}억)` : opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
+        ...(chain.key === 'samsung' ? [['언론 보도 전수 확인 (\'26.09~11)', '연말 단일 목표액 미공개 · 9~10월 1·2차 특판 2,100억 완판 · \'28년까지 모험자본 5조 공급 공식 발표']] : []),
         ['전사 영업 수익성 (ROE · 판관비율)', `${p.h126AnnRoePct ? `'26.1H 연환산 ROE ${fmt(p.h126AnnRoePct, 1)}%` : `'25 연결 ROE ${fmt(p.fy25CfsRoePct, 1)}%`}${p.h126CostIncomePct ? ` · 판관비율 ${fmt(p.h126CostIncomePct, 1)}%` : ''}`]
       ],
       source: 'FISIS 202606 (SF304 자본 · SF325 차입부채 · SF321 이자비용 · SF307 손익) 및 DART 연결 사업보고서',
-      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 함께 표시한 기회비용(${fmt(oppAfterCapEok, 0)}억)은 2027년 말 증가분·150bp 기준의 별도 연환산 시나리오이므로 기간과 분모를 맞춰 비교해야 하며, 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
+      caveat: `${chain.growthPremise} NIM 시나리오(${fmt(nim150Eok, 0)}억)는 판관비·충당금 차감 전 상품 단위 추정치이며, 이미 모험자본 저마진을 반영해 NIM을 낮췄다면 기회비용(${fmt(oppAfterCapEok, 0)}억)을 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
@@ -183,7 +179,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       caveat: '자금순환 통계는 상장주식·펀드의 분기 말 시가평가 변동이 반영되므로, 지분증권 비중 상승에는 신규 자금 유입과 주가 상승 효과가 함께 포함되어 있습니다.',
       qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
       actions: [
-        { label: '세부 금융상품·부채 참고 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+        { label: '5대 부문 → 15개 세부 금융상품 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
         { label: '머니무브 수신금리 사다리(#funding) →', tab: 'funding', scrollTo: 'money-move-safety' }
       ]
     };
@@ -251,22 +247,70 @@ export function resolveXraySpec(specKey, D, context = {}) {
       rows: [
         ['대표 명목 수익률', `${fmt(r.yieldPct)}%`],
         ['기준 조달원가 차감 명목마진', `+${r.grossSpreadBp}bp (조달원가 ${fmt(vc.fundingCostBasePct)}% 가정)`],
-        ['예상 부도손실(EL) + 심사원가', `−${r.elCostBp}bp`],
+        ['PD × LGD + 심사원가 분해', r.pdPct != null ? `PD ${fmt(r.pdPct)}% × LGD ${r.lgdPct}% = 순수EL ${r.pureElBp}bp + 심사원가 ${r.opsCostBp}bp (합계 −${r.elCostBp}bp)` : `−${r.elCostBp}bp`],
         ['신NCR 신용위험값 (별표 5)', `위험값(RW) ${r.ncrRwPct}% · 목표 CoE ${fmt(vc.targetCoePct, 1)}%`],
         ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${base.evaNoteBp - r.evaNoteBp}bp)`],
         ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${base.evaImaBp - r.evaImaBp}bp)`]
       ],
       source: 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 별표 10(IMA 50% 반영)',
-      caveat: `${r.note}. 회사별 실제 내부 자본배정 계수와 부도율(PD·LGD)에 따라 개별 딜의 RAROC는 달라질 수 있습니다.`,
+      caveat: `${r.elBasisNote || r.note}`,
       qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
       actions: [
-        { label: '7대 인정 자산군 잠재 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-addressable-market', primary: true },
-        { label: '발행어음 vs IMA 규제 비교(#pnl) →', tab: 'pnl' }
+        { label: 'P-CBO 도해 & EL·RAROC 워터폴 보기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+        { label: '7대 인정 자산군 잠재 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
+      ]
+    };
+  }
+
+  if (kind === 'reg-rule' && D.regulatoryComplianceMatrix2027) {
+    const r = D.regulatoryComplianceMatrix2027.rules.find(x => String(x.idx) === String(id));
+    if (!r) return null;
+    return {
+      eyebrow: `STATUTORY COMPLIANCE · ${r.categoryBadge}`,
+      title: r.title,
+      badge: '법령 · 감독규정 근거',
+      formula: r.statute,
+      rows: [
+        ['발행어음 (단기금융업) 규제', r.promNoteRule],
+        ['IMA (종합투자계좌) 규제', r.imaRule],
+        ['금감원 보고 · 점검 주기', r.reportingCycle],
+        ['위반 시 복구(유예 · 시정) 기간', r.curePeriod],
+        ['법적 페널티 및 제재 조항', r.penalty]
+      ],
+      source: r.statute,
+      caveat: '비자발적 신용공여 한도 초과(자본시장법 제77조의3제7항 1년 유예)를 제외한 재무건전성·유동성 미달은 사전 자동유예 없이 즉시 금감원장 사유·시정계획 보고 대상이며, 고의적 행위규제 위반(자전거래·대주주 신용공여·불완전판매)은 적발 즉시 제재가 개시됩니다.',
+      qas: makeQaItems(['guide-product-difference', 'guide-demand-note-cash-buffer']),
+      actions: [
+        { label: '10대 전수 규제·페널티 총람표 보기 →', tab: 'pnl', scrollTo: 'reg-compliance-matrix', primary: true },
+        { label: '법령 포털 및 통계 코드(#sources) →', tab: 'sources' }
       ]
     };
   }
 
   const staticSpecs = {
+    'kpi:pcbo-clean-bench': (() => {
+      const pb = vc?.pcboCleanBenchmark;
+      const fsc = pb?.fscEmpirical26Q2;
+      return {
+        eyebrow: 'CLEAN BENCHMARK · P-CBO AAA 3Y 명목금리차 기준선',
+        title: '왜 신보 보증 P-CBO AAA 3년물 비교가 가장 깔끔한 기회비용 기준선인가?',
+        badge: fsc ? `종투사 모험자본 비중 1위 (${fmt(fsc.pcboSharePct, 1)}%)` : '부도위험 0% 기준선',
+        formula: '정상 우량 IB(4.85% / 공모 AA- 4.42%) − P-CBO AAA(기발행 실효 3.35% / 신규표면 4.10%) = 포기 명목마진 75~150bp',
+        rows: [
+          ['금융위 종투사 모험자본 실증 (\'26.2Q)', fsc ? `총 ${fmt(fsc.totalVcTril, 1)}조 원 중 P-CBO ${fmt(fsc.pcboTril, 1)}조 원 (${fmt(fsc.pcboSharePct, 1)}%) — 단일 편입 수단 1위` : '11.6조 중 3.4조(29.3%)'],
+          ['중견 · A급 30% 상한 적용 여부', '미적용 (비A급 순수 의무 14% 구간에 한도 없이 100% 전액 인정)'],
+          ['신용위험(PD) 및 신NCR 위험값(RW)', '신보·기보 보증 AAA로 PD ≈ 0%, 신NCR RW ≈ 0~0.4% → 주관적 부도율 논쟁 완전 제거'],
+          ['기발행·실효(3.35%) vs 신규표면(4.10%)', '기발행 실효 기준 포기폭 −150bp(수신 1조당 −21.0억) / 신규발행 표면(국고3Y+35bp) 단순 비교 시 −75bp(−10.5억)']
+        ],
+        source: '금융위원회 종투사 모험자본 공급실적(2026.2Q) · 신용보증기금 유동화회사보증(P-CBO) 발행조건 · KOFIA 민평(2026-11-13)',
+        caveat: '유통·발행 물량(연간 4~5조) 한계로 P-CBO만으로 업권 비A급 의무(11.9조)를 다 채울 수 없어 8~9.5% 비보증 자산을 병행하게 되며, 이때 EL·자본비용을 차감하면 기회비용은 다시 121~126bp로 수렴합니다.',
+        qas: makeQaItems(['guide-pcbo-assumption', 'guide-sizing-growth']),
+        actions: [
+          { label: 'P-CBO 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+          { label: '7대 인정 자산군 잠재 시장규모 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
+        ]
+      };
+    })(),
     'kpi:actual-5854': {
       eyebrow: 'BASELINE VERIFICATION · 2026.2Q 실적 기준선',
       title: '2026.2Q 어음 + IMA 합산 잔액 58.54조 원',
@@ -569,7 +613,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         caveat: '가계 총자산의 62.7%가 부동산에 묶여 있으나, 금융자산(6,930.2조) 내에서도 정기예금(1,474조)과 연금(1,633조)의 중수익 전환 여력이 막대합니다.',
         qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
         actions: [
-          { label: '세부 금융상품·부채 참고 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+          { label: '실물·금융·15개 세부상품 분해표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
           { label: '한·미·영·일·중 5개국 비교 바로가기 ↓', tab: 'household-wealth', scrollTo: 'hw-intl-5country' }
         ]
       };
@@ -577,20 +621,19 @@ export function resolveXraySpec(specKey, D, context = {}) {
     'kpi:hw-kr-fin': (() => {
       const hk = hw?.headlineKpis;
       const qLat = hw?.krQuarterlyFinSeries?.at(-1);
-      const categories = hw?.krFinCategories26Q2 || [];
-      const totalFin = hk?.krFinAssets26Q2Tril ?? qLat?.totalFinTril ?? categories.reduce((sum, category) => sum + category.amount26Q2Tril, 0);
-      const bonds = categories.find(category => category.id === 'bonds');
       return {
         eyebrow: 'ECOS 281Y002 · 최신 분기 가계 금융자산',
-        title: `2026.2Q 가계 금융자산 ${fmt(totalFin, 2)}조 원`,
+        title: `2026.2Q 가계 금융자산 ${hk ? fmt(hk.krFinAssets26Q2Tril, 1) : '6,930.2'}조 원`,
         badge: `순금융자산 ${hk ? fmt(hk.krNetFin26Q2Tril, 1) : '4,435.2'}조`,
-        formula: `${categories.map(category => `${category.label}(${fmt(category.amount26Q2Tril, 2)}조)`).join(' + ')} = ${fmt(totalFin, 2)}조 원`,
+        formula: '예금(2,688.1) + 주식·펀드(2,381.1) + 보험·연금(1,633.0) + 채권(182.9) + 기타(45.1)',
         rows: [
-          ...categories.map(category => [`${category.label} (${fmt(category.share26Q2Pct, 1)}%)`, `${fmt(category.amount26Q2Tril, 2)}조 원`]),
-          ['금융부채 및 건전성 배율', hk ? `금융부채 ${fmt(hk.krFinLiab26Q2Tril, 1)}조 원 · 금융자산/부채 배율 ${qLat ? fmt(qLat.assetLiabRatioX, 2) : '2.78'}배` : '—']
+          ['① 현금·예금 (38.8%)', '2,688.1조 원 — 저축성예금 1,923.3조(정기예금 1,474.3조) + 결제성 502.3조'],
+          ['② 지분증권·투자펀드 (34.4%)', '2,381.1조 원 — 국내주식 1,622.5조 + 해외주식 348.2조 + 펀드 327.0조'],
+          ['③ 보험·연금준비금 (23.6%)', '1,633.0조 원 / ④ 채권 직접보유 182.9조 원 (2.6%)'],
+          ['금융부채 및 건전성 배율', hk ? `금융부채 ${fmt(hk.krFinLiab26Q2Tril, 1)}조 원 · 금융자산/부채 배율 ${qLat ? fmt(qLat.assetLiabRatioX, 2) : '2.78'}배` : '금융부채 2,495.1조 원 · 배율 2.78배']
         ],
         source: '한국은행 『2026년 2분기 자금순환(잠정)』(ECOS 281Y002, S14 가계 및 비영리단체)',
-        caveat: bonds ? `가계 금융자산 중 ${bonds.label}은 ${fmt(bonds.share26Q2Pct, 1)}%(${fmt(bonds.amount26Q2Tril, 2)}조)입니다. 자산별 위험·만기·원금보호 조건을 구분하고, 발행어음·IMA를 예금과 동일한 보호 구조로 해석하지 않습니다.` : '세부 금융상품의 잔액·위험·만기·원금보호 조건을 함께 확인합니다.',
+        caveat: '가계의 직접 채권 보유는 2.6%(장기채 126.2조·단기채 7.3조)에 불과해, 발행어음·IMA가 예금과 채권 사이의 핵심 가교 상품으로 작동합니다.',
         qas: makeQaItems(['guide-latest-rate', 'guide-product-difference']),
         actions: [
           { label: '분기별 금융자산 시계열 차트 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-timeseries', primary: true },
@@ -649,7 +692,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       caveat: '통합 300% 한도가 있다고 해서 발행어음만으로 300%를 채울 수는 없으며, 200% 초과 구간은 반드시 IMA로 조달해야 합니다.',
       qas: makeQaItems(['guide-product-difference', 'guide-sizing-growth']),
       actions: [
-        { label: '7사 발행어음 한도 소진율(#pnl) →', tab: 'pnl', primary: true },
+        { label: '10대 전수 규제·보고주기·페널티 총람(#pnl) →', tab: 'pnl', scrollTo: 'reg-compliance-matrix', primary: true },
         { label: '발행어음 vs IMA 제도 비교(#ima-maturity) →', tab: 'ima-maturity' }
       ]
     },
@@ -773,35 +816,6 @@ let lastTriggerEl = null;
 let getDataFn = () => null;
 let onActionFn = () => {};
 const drawerStack = [];
-const backgroundInertState = new Map();
-const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-function focusableDrawerItems() {
-  return [...drawerEl.querySelectorAll(focusableSelector)].filter(el => !el.hidden && !el.closest('[hidden]') && !el.inert);
-}
-
-function setBackgroundInert(locked) {
-  if (locked) {
-    for (const el of document.body.children) {
-      if (el === drawerEl || el === backdropEl || backgroundInertState.has(el)) continue;
-      backgroundInertState.set(el, {inert: !!el.inert, attribute: el.hasAttribute('inert')});
-      el.inert = true;
-      el.setAttribute('inert', '');
-    }
-  } else {
-    for (const [el, saved] of backgroundInertState) {
-      el.inert = saved.inert;
-      if (saved.attribute) el.setAttribute('inert', '');
-      else el.removeAttribute('inert');
-    }
-    backgroundInertState.clear();
-  }
-}
-
-function focusDrawerStart() {
-  const target = drawerEl.querySelector('#xray-close-btn') || focusableDrawerItems()[0] || drawerEl;
-  target.focus({preventScroll: true});
-}
 
 function ensureDrawerDom() {
   if (drawerEl) return;
@@ -814,11 +828,6 @@ function ensureDrawerDom() {
   drawerEl.id = 'xray-drawer';
   drawerEl.className = 'xray-drawer';
   drawerEl.setAttribute('aria-hidden', 'true');
-  drawerEl.setAttribute('role', 'dialog');
-  drawerEl.setAttribute('aria-modal', 'true');
-  drawerEl.setAttribute('tabindex', '-1');
-  drawerEl.inert = true;
-  drawerEl.setAttribute('inert', '');
   drawerEl.setAttribute('aria-label', '데이터 근거 및 연관 질문 인스펙터');
 
   document.body.appendChild(backdropEl);
@@ -826,24 +835,10 @@ function ensureDrawerDom() {
 
   backdropEl.addEventListener('click', closeXray);
   document.addEventListener('keydown', e => {
-    if (!drawerEl || !drawerEl.classList.contains('open')) return;
-    if (e.key === 'Escape') {
-      e.preventDefault();
+    if (e.key === 'Escape' && drawerEl && drawerEl.classList.contains('open')) {
       e.stopPropagation();
       closeXray();
-      return;
     }
-    if (e.key === 'Tab') {
-      const items = focusableDrawerItems();
-      const first = items[0] || drawerEl, last = items.at(-1) || drawerEl;
-      if (!drawerEl.contains(document.activeElement) || !items.length || (e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
-        e.preventDefault();
-        (e.shiftKey ? last : first).focus({preventScroll: true});
-      }
-    }
-  });
-  document.addEventListener('focusin', e => {
-    if (drawerEl.classList.contains('open') && !drawerEl.contains(e.target)) focusDrawerStart();
   });
 }
 
@@ -851,9 +846,6 @@ export function closeXray() {
   if (!drawerEl) return;
   drawerEl.classList.remove('open');
   drawerEl.setAttribute('aria-hidden', 'true');
-  drawerEl.inert = true;
-  drawerEl.setAttribute('inert', '');
-  setBackgroundInert(false);
   if (backdropEl) backdropEl.hidden = true;
   drawerStack.length = 0;
   if (lastTriggerEl && typeof lastTriggerEl.focus === 'function') {
@@ -936,7 +928,11 @@ export function openXray(specKey, triggerEl = null, pushStack = false) {
   });
 
   drawerEl.querySelectorAll('[data-xray-dismiss]').forEach(el => {
-    el.addEventListener('click', closeXray);
+    el.addEventListener('click', () => {
+      drawerEl.classList.remove('open');
+      drawerEl.setAttribute('aria-hidden', 'true');
+      if (backdropEl) backdropEl.hidden = true;
+    });
   });
 
   drawerEl.querySelectorAll('[data-xray-act]').forEach(btn => {
@@ -951,10 +947,6 @@ export function openXray(specKey, triggerEl = null, pushStack = false) {
   backdropEl.hidden = false;
   drawerEl.classList.add('open');
   drawerEl.setAttribute('aria-hidden', 'false');
-  drawerEl.inert = false;
-  drawerEl.removeAttribute('inert');
-  setBackgroundInert(true);
-  focusDrawerStart();
   return true;
 }
 

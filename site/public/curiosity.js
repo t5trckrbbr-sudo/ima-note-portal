@@ -36,17 +36,67 @@ export const explorerState = {
   expandedFirmKey: 'kis',
   pendingInvestKey: null,
   safetyLens: 'rates',
+  pcboMode: 'effective',
+  vcWaterfallAsset: 'bbb_private',
   vcLens: 'raroc_eva',
   vcVehicle: 'note',
   vcPkgYear: '2027',
   vcStrategyIdx: 1,
   vcPoolFilter: 'all',
   expandedPoolId: 'vc_ntfc',
+  samsungScenarioId: 'base0',
+  samsungCustomNoteTril: 3.0,
+  samsungCustomAvgTril: 1.8,
+  regCategory: 'all',
   hwCategory: 'deposits',
   hwSeriesMode: 'quarterly_fin',
   hwCountryLens: 'composition',
   hwSelectedCountry: 'KR'
 };
+
+export function getSamsungScenario(D) {
+  const sm = D?.fundingForecast2027?.samsungMediaCheck2026;
+  const presets = sm?.scenarioPresets || [];
+  if (explorerState.samsungScenarioId === 'custom') {
+    const rawNote = Number(explorerState.samsungCustomNoteTril);
+    const rawAvg = Number(explorerState.samsungCustomAvgTril);
+    const yearEndTril = Number.isFinite(rawNote) ? Math.max(0, Math.min(16.32, rawNote)) : 0;
+    const avgTril = Number.isFinite(rawAvg) ? Math.max(0, Math.min(yearEndTril, rawAvg)) : Number((yearEndTril * 0.6).toFixed(2));
+    return {
+      id: 'custom',
+      label: `직접 입력 (+${fmt(yearEndTril)}조 · 평잔 ${fmt(avgTril)}조)`,
+      yearEndTril,
+      avgTril,
+      isOverridden: yearEndTril > 0,
+      desc: `사용자 직접 입력 시나리오 (업권 합계 ${fmt(85 + yearEndTril)}조 원)`
+    };
+  }
+  const found = presets.find(p => p.id === explorerState.samsungScenarioId) || presets[0] || {
+    id: 'base0',
+    label: '기본 미반영 (+0.0조)',
+    yearEndTril: 0,
+    avgTril: 0,
+    desc: '공식 잔액 목표 미발표에 따른 기본선 유지 (업권 합계 85.00조 원)'
+  };
+  return {
+    ...found,
+    isOverridden: Number(found.yearEndTril) > 0
+  };
+}
+
+export function setSamsungScenario(id, customNote = null, customAvg = null) {
+  explorerState.samsungScenarioId = id;
+  if (customNote !== null && Number.isFinite(Number(customNote))) {
+    const cleanNote = Math.max(0, Math.min(16.32, Number(customNote)));
+    explorerState.samsungCustomNoteTril = cleanNote;
+    explorerState.samsungCustomAvgTril = customAvg !== null && Number.isFinite(Number(customAvg))
+      ? Math.max(0, Math.min(cleanNote, Number(customAvg)))
+      : Number((cleanNote * 0.6).toFixed(2));
+  }
+  if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+    window.dispatchEvent(new CustomEvent('samsung-scenario-change'));
+  }
+}
 
 export function setExplorerFirmByName(D, firmName) {
   const found = (D.ib9FirmsCuriosityChain || []).find(x => x.firm === firmName || firmName.includes(x.firm.replace('증권', '')));
@@ -75,6 +125,37 @@ function miniMixBar(fundingRow) {
 /* ==========================================================================
    1. #funding — 9대 종투사 2027E 85조 수정 전망 분해 & 인라인 연쇄 드릴다운 (방안 A + C)
    ========================================================================== */
+function renderSamsungMediaSimBox(D) {
+  const sm = D?.fundingForecast2027?.samsungMediaCheck2026;
+  if (!sm) return '';
+  const ss = getSamsungScenario(D);
+  const totalWithSs = 85 + ss.yearEndTril;
+  return `<div class="samsung-sim-box" id="samsung-media-sim-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div>
+        <span class="badge ${ss.isOverridden ? 'amber' : 'green'}">삼성증권 기사 전수 확인 (${sm.checkedAt})</span>
+        <b style="margin-left:6px;font-size:13px">${sm.headlineVerdict}</b>
+      </div>
+      <span class="badge blue" id="ss-live-total-badge">현재 적용 합계: ${fmt(totalWithSs)}조 원 (삼성 +${fmt(ss.yearEndTril)}조 · 평잔 ${fmt(ss.avgTril)}조)</span>
+    </div>
+    <ul class="samsung-fact-list">
+      ${sm.verifiedFacts.map(fact => `<li>${fact}</li>`).join('')}
+    </ul>
+    <div class="samsung-sim-controls" role="group" aria-label="삼성증권 2027년 발행어음 시나리오 가산 선택">
+      <span style="font-size:11.5px;font-weight:700;color:var(--ink)">삼성증권 '27E 시나리오 가산 (아래 표 · NIM · 비용계산기 동시 업데이트):</span>
+      ${sm.scenarioPresets.map(p => `<button type="button" class="chip ${ss.id === p.id ? 'active' : ''}" data-ss-preset="${p.id}" title="${p.desc}">${p.label}</button>`).join('')}
+      <span class="samsung-custom-wrap">
+        <label for="ss-custom-note">직접입력 연말</label>
+        <input id="ss-custom-note" type="number" min="0" max="16.32" step="0.5" value="${explorerState.samsungCustomNoteTril.toFixed(1)}" aria-label="삼성증권 2027 연말 발행어음 직접 입력 조 원">
+        <span>조 / 평잔</span>
+        <input id="ss-custom-avg" type="number" min="0" max="16.32" step="0.5" value="${explorerState.samsungCustomAvgTril.toFixed(1)}" aria-label="삼성증권 2027 평잔 발행어음 직접 입력 조 원">
+        <span>조</span>
+        <button type="button" class="btn ${ss.id === 'custom' ? 'primary' : ''}" id="ss-apply-custom" style="padding:3px 9px;font-size:11px">적용</button>
+      </span>
+    </div>
+  </div>`;
+}
+
 export function renderFundingBreakdownPanel(D) {
   const list = D.ib9FirmsCuriosityChain || [];
   if (!list.length) return '';
@@ -89,7 +170,10 @@ export function renderFundingBreakdownPanel(D) {
       <span class="badge green">9사 전원 인가 · 메리츠 IR 반영</span>
     </div>
     <div class="callout" style="margin-top:0">
-      <b>메리츠 2027 IR 목표(연말 4조 · 평잔 2조) 반영 &amp; 9사 전원 인가 요약</b> · 사용자가 전달한 <b>메리츠증권 2027년 발행어음 IR 목표(연말 잔액 4.00조 · 연간 NIM 수익 계산용 평잔 2.00조, 원문 링크 별도 확인 전)</b>로 기존 잠재 2사 합산 2.00조 가정을 대체해 연말 수정 전망은 <b>85.00조 원(발행어음 80.00조 + IMA 5.00조 · 원문 모형 83.00조)</b>입니다. 2026.09.09 8호 인가를 받은 삼성증권은 별도 목표 자료가 없어 추가 물량(0.00조)을 미반영했으며(0은 회사 발표 목표가 아님), 2026.09 삼성·메리츠 어음 인가 및 2026.03 NH IMA 3호 인가를 반영한 잠재 레인지는 행을 클릭하면 펼쳐집니다.
+      <b>메리츠 2027 IR 목표(연말 4조 · 평잔 2조) 반영 &amp; 9사 전원 인가 요약</b> · 사용자가 전달한 <b>메리츠증권 2027년 발행어음 IR 목표(연말 잔액 4.00조 · 연간 NIM 수익 계산용 평잔 2.00조, 원문 링크 별도 확인 전)</b>로 기존 잠재 2사 합산 2.00조 가정을 대체해 연말 수정 전망은 <b>85.00조 원(발행어음 80.00조 + IMA 5.00조 · 원문 모형 83.00조)</b>입니다. 2026.09.09 8호 인가를 받은 삼성증권은 별도 목표 자료가 없어 기본선에는 추가 물량(0.00조)을 미반영했으며(0은 회사 발표 목표가 아님), 아래 <b>삼성증권 기사 확인 요약 및 시나리오 가산 컨트롤</b>에서 2.0~4.0조 원(또는 직접 입력)을 즉시 대입해 볼 수 있습니다.
+    </div>
+    <div id="samsung-sim-mount">
+      ${renderSamsungMediaSimBox(D)}
     </div>
     <div class="table-wrap">
       <table class="data-table drill-table" id="funding-chain-table">
@@ -109,21 +193,24 @@ export function renderFundingBreakdownPanel(D) {
         </tbody>
       </table>
     </div>
-    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 0.00조는 별도 목표 미확인에 따른 미반영(발표 목표 아님)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.', 'kpi:forecast-85')}
+    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 기본값 0.00조는 연말 목표치 공식 미발표에 따른 미반영(발표 목표 아님, 9~10월 특판 2,100억 및 \'28년 모험자본 5조 공급 계획만 공개)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.', 'kpi:forecast-85')}
   </section>`;
 }
 
 function renderFundingChainRows(D) {
   const list = D.ib9FirmsCuriosityChain || [];
+  const ss = getSamsungScenario(D);
   return list.map(item => {
     const isOpen = explorerState.expandedFirmKey === item.key;
     const fRow = D.ib9FirmsFunding202606[item.fundingIdx];
     const fisisNote = D.promNoteFisis202606.find(x => x.firm === item.firm);
     const oppRow = (D.opportunityCost2027 || []).find(r => r.key === item.costKey);
     const baseTotal = item.base26Q2NoteTril + item.base26Q2ImaTril;
-    const estTotal = item.est27ModelNoteTril + item.est27ModelImaTril;
+    const estNote = item.key === 'samsung' && ss.isOverridden ? ss.yearEndTril : item.est27ModelNoteTril;
+    const avgNote = item.key === 'samsung' && ss.isOverridden ? ss.avgTril : item.est27AverageNoteTril;
+    const estTotal = estNote + item.est27ModelImaTril;
     const deltaActual = estTotal - baseTotal;
-    const deltaModel = oppRow ? oppRow.delta : deltaActual;
+    const deltaModel = item.key === 'samsung' && ss.isOverridden ? estTotal : (oppRow ? oppRow.delta : deltaActual);
     const capPct = fisisNote ? fisisNote.capRatioPct : 0;
     const effNote = fRow?.effRates26H1?.promNote;
     const p = item.profitability || {};
@@ -137,7 +224,7 @@ function renderFundingChainRows(D) {
           <div class="drill-col">
             <div class="drill-step-tag">01 · 인가 현황 &amp; '27E 전망 전제</div>
             <div class="drill-kv"><span>발행어음 / IMA</span><b>${item.noteLicense} / ${item.imaLicense}</b></div>
-            <div class="drill-kv"><span>수정 전망 '27E 구성</span><b>어음 ${fmt(item.est27ModelNoteTril)}조${item.est27AverageNoteTril ? ` (평잔 ${fmt(item.est27AverageNoteTril)}조)` : ''} + IMA ${fmt(item.est27ModelImaTril)}조</b></div>
+            <div class="drill-kv"><span>수정 전망 '27E 구성</span><b>어음 ${fmt(estNote)}조${avgNote ? ` (평잔 ${fmt(avgNote)}조)` : ''} + IMA ${fmt(item.est27ModelImaTril)}조</b></div>
             <div class="drill-kv"><span>잠재 범위 · 비고</span><b style="color:var(--teal)">${item.est27UpdatedRangeTril}</b></div>
             <p class="drill-prose">${item.growthPremise}</p>
           </div>
@@ -184,7 +271,7 @@ function renderFundingChainRows(D) {
           <div class="bar-track" style="margin-top:4px"><div class="bar-fill" style="width:${Math.min(100, capPct / 2)}%"></div></div>
         </div>
       </td>
-      <td><b>${fmt(estTotal)}조</b>${item.est27AverageNoteTril ? `<br><small class="muted">수익평잔 ${fmt(item.est27AverageNoteTril)}조</small>` : item.key === 'samsung' ? '<br><small class="muted">별도목표 미반영</small>' : ''}</td>
+      <td><b>${fmt(estTotal)}조</b>${avgNote ? `<br><small class="muted">${item.key === 'samsung' ? '시나리오 평잔 ' : '수익평잔 '}${fmt(avgNote)}조</small>` : item.key === 'samsung' ? '<br><small class="muted">별도목표 미반영</small>' : ''}</td>
       <td style="color:var(--teal);font-weight:600">+${fmt(deltaActual)}조${Math.abs(deltaModel - deltaActual) > 0.005 ? `<br><small class="muted">모형 +${fmt(deltaModel)}조</small>` : ''}</td>
       <td>${effNote === null || effNote === undefined ? '<span class="muted">26.09 인가</span>' : fmt(effNote) + '%'}${item.key === 'kb' ? ' <span class="badge amber" title="과거 고금리 약정물 만기정산 반영">이월정산</span>' : ''}</td>
       <td><b>${roeLabel}</b></td>
@@ -195,10 +282,32 @@ function renderFundingChainRows(D) {
 export function bindFundingBreakdownPanel(D, onNavigate) {
   const tbody = document.getElementById('funding-chain-tbody');
   if (!tbody) return;
+  const simMount = document.getElementById('samsung-sim-mount');
 
   const rerender = () => {
+    if (simMount) simMount.innerHTML = renderSamsungMediaSimBox(D);
     tbody.innerHTML = renderFundingChainRows(D);
     attachEvents();
+    bindSamsungControls();
+  };
+
+  const bindSamsungControls = () => {
+    if (!simMount) return;
+    simMount.querySelectorAll('[data-ss-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorerState.expandedFirmKey = 'samsung';
+        setSamsungScenario(btn.dataset.ssPreset);
+      });
+    });
+    const applyBtn = simMount.querySelector('#ss-apply-custom');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', () => {
+        const nVal = Number(simMount.querySelector('#ss-custom-note')?.value);
+        const aVal = Number(simMount.querySelector('#ss-custom-avg')?.value);
+        explorerState.expandedFirmKey = 'samsung';
+        setSamsungScenario('custom', nVal, aVal);
+      });
+    }
   };
 
   const attachEvents = () => {
@@ -238,7 +347,16 @@ export function bindFundingBreakdownPanel(D, onNavigate) {
     });
   };
 
+  if (typeof window !== 'undefined') {
+    if (window._ssFundingListener) window.removeEventListener('samsung-scenario-change', window._ssFundingListener);
+    window._ssFundingListener = () => {
+      if (document.getElementById('funding-chain-tbody')) rerender();
+    };
+    window.addEventListener('samsung-scenario-change', window._ssFundingListener);
+  }
+
   attachEvents();
+  bindSamsungControls();
 }
 
 /* ==========================================================================
@@ -622,6 +740,259 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
 /* ==========================================================================
    4. #invest — 모험자본 심화 3부작 (방안 C + A: 4대 기회비용 렌즈 · 선점전략 · 잠재시장)
    ========================================================================== */
+function renderPcboCleanDiagram(D) {
+  const vc = D.ventureCapitalChain2027;
+  const pb = vc?.pcboCleanBenchmark;
+  if (!pb) return '';
+  const m = pb.modes.find(x => x.id === explorerState.pcboMode) || pb.modes[0];
+  const fsc = pb.fscEmpirical26Q2;
+
+  const yBottom = 244;
+  const scale = 31.5; // px per 1.0% (0% -> 244, 6.0% -> 55)
+  const yAtPct = pct => yBottom - pct * scale;
+
+  const yFund = yAtPct(m.fundingBasePct);
+  const yNorm = yAtPct(m.normalYieldPct);
+  const yACap = yAtPct(5.20);
+  const yPcbo = yAtPct(m.pcboYieldPct);
+  const normNetBp = Math.round((m.normalYieldPct - m.fundingBasePct) * 100);
+  const pcboNetBp = Math.round((m.pcboYieldPct - m.fundingBasePct) * 100);
+  const gapMidY = (yNorm + yPcbo) / 2;
+
+  return `<div class="vc-diagram-box" id="pcbo-benchmark-diagram">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="eyebrow" style="color:var(--teal)">STEP 01 · CLEANEST BENCHMARK · P-CBO AAA 3년물 무위험 명목금리차 도해</div>
+        <h3 style="margin-top:3px;font-size:17px">왜 P-CBO(AAA 3년물) 명목 금리차만 비교하는 것이 가장 명쾌한 기준선인가?</h3>
+        <p class="muted" style="margin-top:4px;font-size:12px">${pb.whyCleanestSummary}</p>
+      </div>
+      <div class="lens-switch" role="group" aria-label="P-CBO 비교 금리 기준 선택">
+        ${pb.modes.map(mode => `<button type="button" class="lens-btn ${explorerState.pcboMode === mode.id ? 'active' : ''}" data-pcbo-mode="${mode.id}">${mode.label}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="vc-svg-frame">
+      <svg id="pcbo-benchmark-svg" viewBox="0 0 880 304" role="img" aria-label="정상 우량 IB 수익률 ${fmt(m.normalYieldPct)}% 대비 신보 보증 P-CBO AAA 3년물 ${fmt(m.pcboYieldPct)}% 비교 및 포기 스프레드 ${m.forgoneSpreadBp}bp 도해">
+        <!-- Left Chart Background & Grid -->
+        <text x="24" y="24" font-size="11.5" font-weight="700" fill="#192e3d">① 자산별 표면·실효 금리 기둥과 포기하는 명목 스프레드 (조달원가 ${fmt(m.fundingBasePct)}% 기준)</text>
+        ${[0, 2, 4, 6].map(v => {
+          const y = yAtPct(v);
+          return `<line x1="48" x2="478" y1="${y}" y2="${y}" stroke="#eaeff3" stroke-dasharray="3 3"/>
+                  <text x="41" y="${y + 3}" text-anchor="end" font-size="9.5" fill="#8b9aa6">${v}.0%</text>`;
+        }).join('')}
+        <line x1="48" x2="478" y1="${yBottom}" y2="${yBottom}" stroke="#c9d5df" stroke-width="1.3"/>
+
+        <!-- Bar 1: Normal IB -->
+        <g class="xray-svg-pt" data-xray="vc-asset:0" tabindex="0" role="button" aria-label="정상 우량 IB 기업금융 ${fmt(m.normalYieldPct)}%">
+          <rect x="68" y="${yFund}" width="72" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
+          <rect x="68" y="${yNorm}" width="72" height="${yFund - yNorm}" fill="#087f80" rx="3"/>
+          <text x="104" y="${yNorm - 8}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#087f80">${fmt(m.normalYieldPct)}%</text>
+          <text x="104" y="${(yNorm + yFund) / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">+${normNetBp}bp</text>
+          <text x="104" y="${yFund + 28}" text-anchor="middle" font-size="9.5" fill="#5b6d7a">조달원가</text>
+          <text x="104" y="${yFund + 41}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#465865">${fmt(m.fundingBasePct)}%</text>
+          <text x="104" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">정상 우량 IB</text>
+          <text x="104" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#6d7f8c">(AA- 기업여신·사모)</text>
+        </g>
+
+        <!-- Bar 2: A-grade 30% Cap -->
+        <g class="xray-svg-pt" data-xray="vc-asset:1" tabindex="0" role="button" aria-label="중견 A급 채권 5.20% 의무의 30% 상한">
+          <rect x="176" y="${yFund}" width="72" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
+          <rect x="176" y="${yACap}" width="72" height="${yFund - yACap}" fill="#3c78c8" rx="3"/>
+          <text x="212" y="${yACap - 8}" text-anchor="middle" font-size="12" font-weight="700" fill="#2c62ad">5.20%</text>
+          <text x="212" y="${(yACap + yFund) / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">+205bp</text>
+          <text x="212" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">중견 · A급 채권</text>
+          <text x="212" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#b86b23" font-weight="600">(의무액 30% 캡)</text>
+        </g>
+
+        <!-- Bar 3: P-CBO AAA 3Y + Red Forgone Spread Highlight -->
+        <g class="xray-svg-pt" data-xray="kpi:pcbo-clean-bench" tabindex="0" role="button" aria-label="신보 보증 P-CBO AAA 3년물 ${fmt(m.pcboYieldPct)}%, 포기하는 명목 금리차 ${m.forgoneSpreadBp}bp">
+          <rect x="292" y="${yFund}" width="78" height="${yBottom - yFund}" fill="#dfe7ee" rx="2"/>
+          ${pcboNetBp > 0 ? `<rect x="292" y="${yPcbo}" width="78" height="${Math.max(3, yFund - yPcbo)}" fill="#e08b2c" rx="2"/>` : ''}
+          <!-- Shaded Red Forgone Spread Zone -->
+          <rect x="292" y="${yNorm}" width="78" height="${Math.max(8, yPcbo - yNorm)}" fill="#fdeaea" fill-opacity="0.88" stroke="#d64545" stroke-width="1.6" stroke-dasharray="4 3" rx="3"/>
+          <line x1="140" y1="${yNorm}" x2="388" y2="${yNorm}" stroke="#d64545" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <line x1="370" y1="${yPcbo}" x2="388" y2="${yPcbo}" stroke="#d64545" stroke-width="1.2"/>
+          <!-- Bracket & Callout -->
+          <line x1="385" y1="${yNorm + 2}" x2="385" y2="${yPcbo - 2}" stroke="#d64545" stroke-width="2.2"/>
+          <rect x="392" y="${gapMidY - 22}" width="92" height="44" rx="6" fill="#fff2f1" stroke="#d64545" stroke-width="1.4"/>
+          <text x="438" y="${gapMidY - 5}" text-anchor="middle" font-size="10" font-weight="700" fill="#b42d2d">포기 명목마진</text>
+          <text x="438" y="${gapMidY + 13}" text-anchor="middle" font-size="13.5" font-weight="800" fill="#c93030">−${m.forgoneSpreadBp}bp</text>
+
+          <text x="331" y="${yPcbo + 15}" text-anchor="middle" font-size="11" font-weight="800" fill="#8b4d0e">${fmt(m.pcboYieldPct)}%</text>
+          <rect x="285" y="${yFund + 18}" width="92" height="20" rx="10" fill="#e7f6f2" stroke="#9ad5c7"/>
+          <text x="331" y="${yFund + 31}" text-anchor="middle" font-size="9" font-weight="700" fill="#087f80">PD≈0% · RW≈0%</text>
+          <text x="331" y="${yBottom + 18}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#c93030">P-CBO AAA 3Y</text>
+          <text x="331" y="${yBottom + 32}" text-anchor="middle" font-size="9.5" fill="#087f80" font-weight="600">(비중 29.3% 1위 · 무제한)</text>
+        </g>
+
+        <!-- Funding Cost Line Across Bars -->
+        <line x1="54" x2="382" y1="${yFund}" y2="${yFund}" stroke="#445866" stroke-width="1.4" stroke-dasharray="5 3"/>
+        <rect x="54" y="${yFund - 16}" width="102" height="15" rx="3" fill="#445866"/>
+        <text x="105" y="${yFund - 5}" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">조달원가 ${fmt(m.fundingBasePct)}%</text>
+
+        <!-- Right Box: 1 Trillion Won New Funding Basket & Shadow Tax -->
+        <g class="xray-svg-pt" data-xray="kpi:pcbo-clean-bench" tabindex="0" role="button" aria-label="수신 1조 원 증액 시 P-CBO 기반 규제 그림자 조세 연 ${fmt(m.shadowTax27EokPerTril, 1)}억 원">
+          <rect x="500" y="14" width="366" height="276" rx="9" fill="#f7fbfa" stroke="#cbe0da" stroke-width="1.3"/>
+          <text x="518" y="38" font-size="11.5" font-weight="800" fill="#192e3d">② 2027년 신규 수신 1조 원(10,000억) 증액 시 배분 바구니</text>
+          <text x="518" y="55" font-size="9.8" fill="#5b6f7c">금융위 실증('26.2Q): 종투사 모험자본 ${fmt(fsc.totalVcTril, 1)}조 중 P-CBO ${fmt(fsc.pcboTril, 1)}조(${fmt(fsc.pcboSharePct, 1)}%) 1위</text>
+
+          <!-- Stacked Basket Bar (width 330) -->
+          <rect x="518" y="70" width="264" height="32" fill="#087f80" rx="4"/>
+          <rect x="782" y="70" width="20" height="32" fill="#3c78c8"/>
+          <rect x="802" y="70" width="46" height="32" fill="#d64545" rx="4"/>
+          <text x="650" y="90" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">정상 기업금융 80% (8,000억)</text>
+          <text x="825" y="90" text-anchor="middle" font-size="9.5" font-weight="800" fill="#ffffff">14%</text>
+
+          <!-- Breakdown Lines -->
+          <text x="518" y="124" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="700" fill="#087f80">정상 우량 IB 8,000억 (80%)</tspan> : 원래 목표 마진 그대로 수취 (기회비용 0)</text>
+          <text x="518" y="144" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="700" fill="#2c62ad">중견·A급 600억 (의무 20%×30%캡 = 6%)</tspan> : 우량 여신급 마진 유지</text>
+          <text x="518" y="164" font-size="10.2" fill="#2c3e4c">• <tspan font-weight="800" fill="#c93030">비A급 의무 1,400억 (14%) → P-CBO AAA 편입</tspan> : −${m.forgoneSpreadBp}bp 발생</text>
+
+          <!-- Final Shadow Tax Verdict Box -->
+          <rect x="518" y="182" width="330" height="92" rx="8" fill="#fff4f3" stroke="#e39b95" stroke-width="1.5"/>
+          <text x="683" y="203" text-anchor="middle" font-size="10" font-weight="700" fill="#9c3535">산식: 비A급 1,400억(14%) × 포기 금리차 ${m.forgoneSpreadBp}bp(${fmt(m.forgoneSpreadBp / 100)}%p)</text>
+          <text x="683" y="232" text-anchor="middle" font-size="18.5" font-weight="800" fill="#c22929">수신 1조당 연 −${fmt(m.shadowTax27EokPerTril, 1)}억 원 (−${fmt(m.shadowTax27Bp, 1)}bp)</text>
+          <text x="683" y="254" text-anchor="middle" font-size="9.8" fill="#664343">PD · LGD · 자본비용 논쟁 Zero → 가장 직관적인 ‘규제 그림자 조세’ 기준선</text>
+          <text x="683" y="268" text-anchor="middle" font-size="9" fill="#087f80" font-weight="700">[클릭하여 P-CBO 실증 비중 · 표면 vs 실효금리 근거 열기 ↗]</text>
+        </g>
+      </svg>
+    </div>
+    <p class="drill-subnote" style="margin-top:8px;margin-bottom:0">
+      <b>선택 기준 해설</b> · ${m.note} (참고: 국고채 3년 ${fmt(m.ktb3yPct)}%, 공모 회사채 AA- 3년 민평 ${fmt(m.publicAamPct)}% 대비 시에도 P-CBO 실효금리 차이는 −107bp에 달합니다.)
+    </p>
+  </div>`;
+}
+
+function renderVcThoughtWaterfall(D) {
+  const vc = D.ventureCapitalChain2027;
+  if (!vc) return '';
+  const rows = vc.assetRarocBenchmarks;
+  const base = rows[0];
+  const ar = rows.find(x => x.id === explorerState.vcWaterfallAsset) || rows[3];
+  const isIma = explorerState.vcVehicle === 'ima';
+
+  const s1Gross = ar.grossSpreadBp;
+  const s2El = ar.elCostBp;
+  const afterEl = s1Gross - s2El;
+  const s3Cap = isIma ? ar.capCostImaBp : ar.capCostNoteBp;
+  const s4Eva = isIma ? ar.evaImaBp : ar.evaNoteBp;
+  const baseEva = isIma ? base.evaImaBp : base.evaNoteBp;
+  const trueOc = baseEva - s4Eva;
+  const imaSaveBp = ar.capCostNoteBp - ar.capCostImaBp;
+
+  const maxBp = Math.max(660, s1Gross + 65);
+  const yZero = 234;
+  const yTop = 44;
+  const yAt = bp => yZero - (bp / maxBp) * (yZero - yTop);
+
+  const yS1 = yAt(s1Gross);
+  const yAfterEl = yAt(afterEl);
+  const yS4 = yAt(s4Eva);
+  const yBase = yAt(baseEva);
+  const ocTop = Math.min(yBase, yS4);
+  const ocBot = Math.max(yBase, yS4);
+
+  const wfChoices = [
+    { id: 'bbb_private', label: 'BBB·중소 사모신용 (표면 8.00%)' },
+    { id: 'vc_mezz', label: '우량 VC·신기사·메자닌 (기대 9.50%)' },
+    { id: 'a_cap_debt', label: '중견·A급 채권·여신 (30%캡 · 5.20%)' }
+  ];
+
+  return `<div class="vc-diagram-box waterfall-theme" id="vc-waterfall-flow">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="eyebrow" style="color:#295dd8">STEP 02 · THOUGHT-FLOW WATERFALL · 고금리 비보증 모험자본의 EL · RAROC 사고의 흐름</div>
+        <h3 style="margin-top:3px;font-size:17px">P-CBO 물량 한계로 8~9.5% 고금리 모험자본을 담으면 어떨까? (100억 원 운용 가계부)</h3>
+        <p class="muted" style="margin-top:4px;font-size:12px">겉보기 명목마진(+${s1Gross}bp)에서 <b>② 부도손실(EL=PD×LGD)+심사원가(−${s2El}bp)</b>와 <b>③ 신NCR 자본비용(−${s3Cap}bp)</b>을 차례로 차감하면, 고금리 착시가 걷히며 결국 P-CBO 기회비용 수준으로 수렴하는 이유를 한눈에 보여줍니다.</p>
+      </div>
+      <div class="lens-switch" role="group" aria-label="워터폴 분석 대상 자산 선택">
+        ${wfChoices.map(ch => `<button type="button" class="lens-btn ${explorerState.vcWaterfallAsset === ch.id ? 'active' : ''}" data-wf-asset="${ch.id}">${ch.label}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="vc-svg-frame">
+      <svg id="vc-waterfall-svg" viewBox="0 0 880 296" role="img" aria-label="${ar.asset} 4단계 EL 및 RAROC 차감 워터폴: 명목마진 +${s1Gross}bp에서 EL·원가 −${s2El}bp, 자본비용 −${s3Cap}bp 차감 후 순EVA +${s4Eva}bp, 정상 IB(+${baseEva}bp) 대비 기회비용 ${trueOc}bp">
+        ${[0, 200, 400, 600].filter(v => v <= maxBp).map(v => {
+          const y = yAt(v);
+          return `<line x1="48" x2="850" y1="${y}" y2="${y}" stroke="#eaeff4" stroke-dasharray="3 3"/>
+                  <text x="41" y="${y + 3}" text-anchor="end" font-size="9.5" fill="#8b9aa6">+${v}bp</text>`;
+        }).join('')}
+        <line x1="48" x2="850" y1="${yZero}" y2="${yZero}" stroke="#bac8d4" stroke-width="1.3"/>
+
+        <!-- Step Connectors -->
+        <line x1="142" y1="${yS1}" x2="220" y2="${yS1}" stroke="#95a7b5" stroke-dasharray="4 3"/>
+        <line x1="306" y1="${yAfterEl}" x2="386" y2="${yAfterEl}" stroke="#95a7b5" stroke-dasharray="4 3"/>
+        <line x1="472" y1="${yS4}" x2="552" y2="${yS4}" stroke="#95a7b5" stroke-dasharray="4 3"/>
+
+        <!-- Col 1: Gross Nominal Spread -->
+        <rect x="56" y="${yS1}" width="86" height="${yZero - yS1}" fill="#1b7895" rx="3"/>
+        <text x="99" y="${yS1 - 17}" text-anchor="middle" font-size="12" font-weight="800" fill="#1b7895">+${s1Gross}bp</text>
+        <text x="99" y="${yS1 - 5}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#4f6b7a">(+${fmt(s1Gross / 100)}억/100억)</text>
+        <text x="99" y="${yZero + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#192e3d">① 명목마진</text>
+        <text x="99" y="${yZero + 32}" text-anchor="middle" font-size="9.2" fill="#6d7f8c">(${fmt(ar.yieldPct)}% − 조달 3.15%)</text>
+
+        <!-- Col 2: -EL & Screening Cost -->
+        <rect x="220" y="${yS1}" width="86" height="${Math.max(4, yAfterEl - yS1)}" fill="#e0664c" rx="3"/>
+        <text x="263" y="${yS1 - 8}" text-anchor="middle" font-size="12" font-weight="800" fill="#c8432b">−${s2El}bp</text>
+        <text x="263" y="${yAfterEl + 13}" text-anchor="middle" font-size="9.2" font-weight="700" fill="#526573">EL차감후 +${afterEl}bp</text>
+        <text x="263" y="${yZero + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c8432b">② −EL · 심사원가</text>
+        <text x="263" y="${yZero + 32}" text-anchor="middle" font-size="9.2" fill="#6d7f8c">(순수EL ${ar.pureElBp} + 원가 ${ar.opsCostBp})</text>
+
+        <!-- Col 3: -NCR Capital Charge -->
+        <rect x="386" y="${yAfterEl}" width="86" height="${Math.max(4, yS4 - yAfterEl)}" fill="#7360b5" rx="3"/>
+        ${isIma && imaSaveBp > 0 ? `<rect x="386" y="${yS4}" width="86" height="${Math.max(3, yAt(s4Eva - imaSaveBp) - yS4)}" fill="none" stroke="#087f80" stroke-width="1.4" stroke-dasharray="3 2" rx="2"/>
+        <text x="429" y="${yAt(s4Eva - imaSaveBp) + 13}" text-anchor="middle" font-size="9" font-weight="700" fill="#087f80">IMA +${imaSaveBp}bp 절감!</text>` : ''}
+        <text x="429" y="${yAfterEl - 8}" text-anchor="middle" font-size="12" font-weight="800" fill="#5c499e">−${s3Cap}bp</text>
+        <text x="429" y="${yZero + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#5c499e">③ −신NCR 자본비용</text>
+        <text x="429" y="${yZero + 32}" text-anchor="middle" font-size="9.2" fill="#6d7f8c">(RW ${ar.ncrRwPct}% · ${isIma ? 'IMA 50%' : '어음 100%'})</text>
+
+        <!-- Col 4: Final Net EVA -->
+        <rect x="552" y="${Math.min(yZero, yS4)}" width="86" height="${Math.max(4, Math.abs(yZero - yS4))}" fill="#087f80" rx="3"/>
+        <text x="595" y="${yS4 - 16}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#087f80">${s4Eva >= 0 ? '+' : ''}${s4Eva}bp</text>
+        <text x="595" y="${yS4 - 4}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#087f80">(${s4Eva >= 0 ? '+' : ''}${fmt(s4Eva / 100)}억/100억)</text>
+        <text x="595" y="${yZero + 18}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#087f80">④ 최종 순EVA</text>
+        <text x="595" y="${yZero + 32}" text-anchor="middle" font-size="9.2" fill="#6d7f8c">(위험 · 자본비용 차감 후)</text>
+
+        <!-- Col 5: Normal IB Benchmark + True Opportunity Cost Gap -->
+        <rect x="748" y="${yBase}" width="86" height="${yZero - yBase}" fill="#295dd8" rx="3"/>
+        <text x="791" y="${yBase - 16}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#295dd8">+${baseEva}bp</text>
+        <text x="791" y="${yBase - 4}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#295dd8">(+${fmt(baseEva / 100)}억/100억)</text>
+        <text x="791" y="${yZero + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#295dd8">정상 우량 IB</text>
+        <text x="791" y="${yZero + 32}" text-anchor="middle" font-size="9.2" fill="#6d7f8c">(비교 기준선 순EVA)</text>
+
+        <!-- Opportunity Cost Gap Bracket between Col 4 and Col 5 -->
+        <line x1="638" y1="${yS4}" x2="748" y2="${yS4}" stroke="#d64545" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <line x1="648" y1="${yBase}" x2="748" y2="${yBase}" stroke="#d64545" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <rect x="646" y="${ocTop}" width="94" height="${Math.max(24, ocBot - ocTop)}" rx="5" fill="#fff2f1" fill-opacity="0.95" stroke="#d64545" stroke-width="1.5"/>
+        <text x="693" y="${(ocTop + ocBot) / 2 - 3}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#a82c2c">진정한 기회비용</text>
+        <text x="693" y="${(ocTop + ocBot) / 2 + 12}" text-anchor="middle" font-size="13" font-weight="800" fill="#c92a2a">${trueOc > 0 ? '+' : ''}${trueOc}bp</text>
+      </svg>
+    </div>
+
+    <div class="pd-breakdown-strip">
+      <div class="pd-formula-chip">
+        <small>① 적용 부도율(PD) × 부도시손실률(LGD)</small>
+        <strong>PD ${fmt(ar.pdPct)}% × LGD ${ar.lgdPct}% = ${ar.pureElBp}bp</strong>
+      </div>
+      <div class="pd-formula-chip">
+        <small>② 직접 심사 · 사후관리 원가 가산</small>
+        <strong>+${ar.opsCostBp}bp → 총 차감 −${ar.elCostBp}bp</strong>
+      </div>
+      <div class="pd-formula-chip">
+        <small>③ 신NCR 위험값(RW) × 목표 CoE(${fmt(vc.targetCoePct, 0)}%)</small>
+        <strong>RW ${ar.ncrRwPct}% → ${isIma ? `IMA −${ar.capCostImaBp}bp` : `어음 −${ar.capCostNoteBp}bp`}</strong>
+      </div>
+      <div class="pd-formula-chip" style="border-color:#bfe0d8;background:#f3faf8">
+        <small>④ 핵심 결론 (P-CBO 기준선과의 수렴)</small>
+        <strong style="color:var(--teal)">실질 기회비용 ${trueOc}bp (${fmt(trueOc / 100)}억/100억)</strong>
+      </div>
+    </div>
+    <p class="drill-subnote" style="margin-top:8px;margin-bottom:0">
+      <b>PD · LGD 산정 근거 공개</b> · ${ar.elBasisNote}
+    </p>
+  </div>`;
+}
+
 export function renderVentureDeepDive(D) {
   const vc = D.ventureCapitalChain2027;
   if (!vc) return '';
@@ -631,9 +1002,22 @@ export function renderVentureDeepDive(D) {
       <div>
         <div class="eyebrow">OPPORTUNITY COST METHODOLOGY · 기회비용 산정 방식 비교</div>
         <h2>모험자본 취득에 따른 기회비용, 어떤 산정 방식이 있고 무엇이 가장 적절할까?</h2>
-        <p>단순 명목 금리차부터 부도손실(EL), 신NCR 자기자본 구속비용(RAROC), 수신 1조 패키지 한계이익까지 4가지 산정 렌즈를 전환하며 비교해 보세요.</p>
+        <p>① 실무 비중 1위인 <b>P-CBO(AAA 3년물) 무위험 명목금리차</b>로 기준선을 먼저 세운 뒤, ② 비보증 고수익 자산을 담을 때 <b>EL(PD×LGD)·신NCR 자본비용(RAROC)</b>이 어떻게 차감되어 같은 결론으로 수렴하는지 시각적으로 확인하세요.</p>
       </div>
       <span class="badge green">KOFIA ${vc.observedYieldDate} · 별표 5 반영</span>
+    </div>
+
+    <div id="pcbo-diagram-mount" aria-live="polite">
+      ${renderPcboCleanDiagram(D)}
+    </div>
+
+    <div id="vc-waterfall-mount" aria-live="polite">
+      ${renderVcThoughtWaterfall(D)}
+    </div>
+
+    <div class="section-title" style="margin-top:20px">
+      <h3>4대 기회비용 산정 렌즈 · 5대 자산군 상세 비교표</h3>
+      <span class="muted" style="font-size:10.5px">행 클릭 시 자산별 산식·근거 인스펙터 열림</span>
     </div>
     <div class="lens-toolbar">
       <div class="lens-switch" role="group" aria-label="기회비용 산정 방식 선택">
@@ -647,7 +1031,7 @@ export function renderVentureDeepDive(D) {
     <div id="vc-lens-content" aria-live="polite">
       ${renderVcLensBody(D)}
     </div>
-    ${srcBox(`KOFIA 채권 시가평가 기준수익률(${vc.observedYieldDate}) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정이며 회사별 내부 허들레이트에 따라 달라집니다.`, 'kpi:vc-mandate-20')}
+    ${srcBox(`KOFIA 채권 시가평가 기준수익률(${vc.observedYieldDate}) · 금융위원회 종투사 모험자본 공급실적('26.2Q 11.6조 중 P-CBO 3.4조[29.3%]) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정입니다.`, 'kpi:pcbo-clean-bench')}
   </section>
 
   <section class="panel" id="vc-preemptive-strategy">
@@ -862,9 +1246,37 @@ function renderVcPoolTable(D) {
 export function bindVentureDeepDive(D) {
   const labRoot = document.getElementById('vc-raroc-lab');
   if (!labRoot) return;
+  const pcboMount = document.getElementById('pcbo-diagram-mount');
+  const wfMount = document.getElementById('vc-waterfall-mount');
+
+  const bindPcboDiagram = () => {
+    if (!pcboMount) return;
+    pcboMount.querySelectorAll('[data-pcbo-mode]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorerState.pcboMode = btn.dataset.pcboMode;
+        pcboMount.innerHTML = renderPcboCleanDiagram(D);
+        bindPcboDiagram();
+      });
+    });
+  };
+
+  const bindWaterfall = () => {
+    if (!wfMount) return;
+    wfMount.querySelectorAll('[data-wf-asset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorerState.vcWaterfallAsset = btn.dataset.wfAsset;
+        wfMount.innerHTML = renderVcThoughtWaterfall(D);
+        bindWaterfall();
+      });
+    });
+  };
 
   const refreshLens = () => {
     document.getElementById('vc-lens-content').innerHTML = renderVcLensBody(D);
+    if (wfMount) {
+      wfMount.innerHTML = renderVcThoughtWaterfall(D);
+      bindWaterfall();
+    }
     labRoot.querySelectorAll('[data-vc-pkgyear]').forEach(btn => {
       btn.addEventListener('click', () => {
         explorerState.vcPkgYear = btn.dataset.vcPkgyear;
@@ -889,6 +1301,7 @@ export function bindVentureDeepDive(D) {
     });
   });
 
+  bindPcboDiagram();
   refreshLens();
 
   document.querySelectorAll('[data-vc-strat]').forEach(card => {
@@ -965,10 +1378,6 @@ export function renderHouseholdWealthPage(D) {
   if (!hw) return '';
   const k = hw.headlineKpis;
   const nbs25 = hw.krAnnualBalanceSheet.at(-1);
-  const detailItems = hw.krFinCategories26Q2.flatMap(cat => cat.subItems);
-  const assetDetailCount = detailItems.filter(item => item.ecosCode !== 'F00B_L').length;
-  const liabilityReferenceCount = detailItems.length - assetDetailCount;
-  const corpLatest = hw.corpLiquiditySeries.at(-1);
 
   return `
     <div class="grid4-metrics" style="margin-bottom:20px">
@@ -1002,7 +1411,7 @@ export function renderHouseholdWealthPage(D) {
         <div>
           <div class="eyebrow">STAGE 01–03 · 한국 가계자산 3단계 브레이크다운</div>
           <h2>가계 총자산 1경 6,641조 원은 실물·금융·세부 상품으로 어떻게 나뉠까?</h2>
-          <p>1단계(실물 vs 금융 총량)에서 시작해 아래 5대 금융자산 카드를 클릭하면 <b>${assetDetailCount}개 세부 자산 항목의 잔액·증감 시계열(ECOS 281Y002)과 부채 참고 ${liabilityReferenceCount}개</b>이 펼쳐집니다.</p>
+          <p>1단계(실물 vs 금융 총량)에서 시작해 아래 5대 금융자산 카드를 클릭하면 <b>15개 세부 금융상품 잔액·증감 시계열(ECOS 281Y002)</b>이 펼쳐집니다.</p>
         </div>
         <span class="badge green">'25말 총량 · '26.2Q 금융</span>
       </div>
@@ -1099,7 +1508,7 @@ export function renderHouseholdWealthPage(D) {
             </table>
           </div>
           <div class="callout" style="margin:12px 0 0">
-            <b>가계 + 법인 합산 현금·예금 ${fmt(k.combinedDepositsPool26Q2Tril, 1)}조 원</b> = 가계 현금·예금 ${fmt(k.krDeposits26Q2Tril, 1)}조 + 비금융법인 현금·예금 ${fmt(k.corpDeposits26Q2Tril, 1)}조입니다. 법인 투자펀드(MMF 등) ${fmt(corpLatest.fundsTril, 1)}조는 위 합계에 포함하지 않고 별도로 표시합니다.
+            <b>가계 + 법인 합산 예금성 모수 3,824.0조 원</b> · '26.2Q 가계 현금·예금(2,688.1조)에 비금융법인 현금·예금(1,135.9조)·법인 펀드(274.7조)가 더해져 단기 수신시장의 실제 유동성 저수지를 이룹니다.
           </div>
         </div>
 
@@ -1227,8 +1636,6 @@ export function renderHouseholdWealthPage(D) {
 function renderHwCategoryDetail(D) {
   const hw = D.householdWealthAndIntl2026;
   const cat = hw.krFinCategories26Q2.find(x => x.id === explorerState.hwCategory) || hw.krFinCategories26Q2[0];
-  const detailAssetTotal = cat.subItems.filter(item => item.ecosCode !== 'F00B_L').reduce((sum, item) => sum + item.q26_2, 0);
-  const residual = Math.round((cat.amount26Q2Tril - detailAssetTotal) * 100) / 100;
 
   return `<div class="sub-lens-card" style="border-left:4px solid ${cat.color}">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
@@ -1241,7 +1648,6 @@ function renderHwCategoryDetail(D) {
         : `<a class="btn" href="#funding">수신 전망 · 머니무브 금리 사다리 →</a>`}
     </div>
     <p class="drill-prose" style="margin-top:8px">${cat.implication}</p>
-    ${Math.abs(residual) > 0.02 ? `<div class="callout" data-hw-detail-reconciliation style="font-size:11px">선택 부문 총액 <b>${fmt(cat.amount26Q2Tril)}조</b> = 표시된 세부 자산 합계 <b>${fmt(detailAssetTotal)}조</b> ${residual < 0 ? '−' : '+'} <b>세부표 미분류 차이 ${fmt(Math.abs(residual))}조</b>입니다. 원문 부문 총액과 표시된 세부 항목 합계의 차이를 계산한 값이며, 추가 자산으로 분류한 금액은 아닙니다. 부채 참고행은 자산 합계에서 제외합니다.</div>` : ''}
     <div class="table-wrap" style="margin-top:12px">
       <table class="data-table">
         <thead>
@@ -1597,4 +2003,98 @@ export function bindHouseholdWealthPage(D, onNavigate = tab => { location.hash =
 
     bindVisualRows();
   }
+}
+
+/* ==========================================================================
+   6. #pnl — 발행어음 & IMA 금융당국 전수 규제 · 금감원 보고 주기 · 복구기간 · 법적 페널티 총람
+   ========================================================================== */
+function renderRegulatoryRows(D) {
+  const reg = D.regulatoryComplianceMatrix2027;
+  if (!reg) return '';
+  const filtered = reg.rules.filter(r =>
+    explorerState.regCategory === 'all' || r.category === explorerState.regCategory
+  );
+  return filtered.map(r => `<tr data-xray="reg-rule:${r.idx}" tabindex="0" role="button">
+    <td style="min-width:170px">
+      <span class="badge ${r.severity}">${r.categoryBadge}</span>
+      <div style="margin-top:5px"><b class="xray-token">${r.title}</b></div>
+      <span class="reg-statute-tag">${r.statute.split(' · ')[0]}</span>
+    </td>
+    <td style="min-width:195px">${r.promNoteRule}</td>
+    <td style="min-width:195px">${r.imaRule}</td>
+    <td style="min-width:155px"><b>${r.reportingCycle}</b></td>
+    <td style="min-width:185px">${r.curePeriod}</td>
+    <td style="min-width:210px">
+      <div style="color:#9e2a2b;font-weight:600">${r.penalty}</div>
+      <small class="muted" style="display:block;margin-top:4px">근거: ${r.statute}</small>
+    </td>
+  </tr>`).join('');
+}
+
+export function renderRegulatoryCompliancePanel(D) {
+  const reg = D.regulatoryComplianceMatrix2027;
+  if (!reg) return '';
+
+  return `<section class="panel" id="reg-compliance-matrix" style="scroll-margin-top:95px">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">FULL STATUTORY COMPLIANCE · 금융당국 전수 규제 · 보고 주기 · 복구기한 · 법적 제재</div>
+        <h2>발행어음 &amp; IMA 전수 건전성·운용 규제와 금감원 보고 주기 · 위반 복구기간 · 페널티 총람</h2>
+        <p>한도·자산배분뿐 아니라 <b>원화·외화 유동성비율(1·3개월 ≥100%), 규제 레버리지 차감 특례, 신NCR 위험액, 구분관리·자전거래 금지, 동일차주·대주주 신용공여 제한, 금소법 설명의무</b>까지 법적 조항 출처와 함께 정리했습니다. 각 행을 클릭하면 상세 조문·제재 인스펙터가 열립니다.</p>
+      </div>
+      <span class="badge green">법령 · 규정 조항 명시</span>
+    </div>
+
+    <div class="grid4-metrics" style="margin-bottom:16px">
+      ${reg.overviewCards.map(c => `<div class="metric" data-xray="${c.xrayKey}" tabindex="0" role="button">
+        <small>${c.label}</small>
+        <strong style="font-size:21px;color:var(--ink)">${c.value}</strong>
+        <p class="muted">${c.sub}</p>
+      </div>`).join('')}
+    </div>
+
+    <div class="lens-toolbar" style="margin-bottom:12px">
+      <div class="lens-switch" role="group" aria-label="규제 영역별 필터">
+        ${reg.categories.map(cat => `<button type="button" class="lens-btn ${explorerState.regCategory === cat.id ? 'active' : ''}" data-reg-cat="${cat.id}">${cat.label}</button>`).join('')}
+      </div>
+      <span class="muted" style="font-size:11px">${reg.updatedAsOf}</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table reg-matrix-table" id="reg-compliance-table">
+        <thead>
+          <tr>
+            <th scope="col">규제 영역 · 핵심 의무 (클릭 시 상세)</th>
+            <th scope="col">발행어음 (단기금융업)</th>
+            <th scope="col">IMA (종합투자계좌)</th>
+            <th scope="col">금감원 보고 · 점검 주기</th>
+            <th scope="col">위반 시 복구(유예 · 시정) 기간</th>
+            <th scope="col">법적 페널티 및 근거 조항 출처</th>
+          </tr>
+        </thead>
+        <tbody id="reg-compliance-tbody">
+          ${renderRegulatoryRows(D)}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-bottom:0">
+      <b>복구(유예) 기간의 법적 구분 핵심</b> · <b>① 비자발적 신용공여 한도 초과(자기자본 감소·차주 합병 등)</b>만 법률에 명시적 <b>‘1년 이내 해소 유예(자본시장법 제77조의3제7항)’</b>가 존재합니다. 반면 <b>② 원화 유동성비율(1·3개월 &lt;100%, 금투업규정 제3-24조의4)</b>과 <b>③ 신NCR(&lt;100%, 적기시정조치)</b>은 사전 자동 유예가 없으며 미달 즉시 금감원장 사유·시정계획 보고 후 단기(통상 1~3개월) 복구 명령을 이행해야 하고, <b>④ 대주주 신용공여·불건전 자전거래·불완전판매</b>는 고의·행위규제 위반으로 유예 없이 즉시 과징금·기관제재·형사벌 대상입니다.
+    </div>
+    ${srcBox('자본시장과 금융투자업에 관한 법률(제30조·제33조·제34조·제47조·제77조의3·제85조·제416조·제420조·제422조·제428조·제444조·제449조) · 동법 시행령(제36조·제77조의6) · 금융투자업규정(제3-24조·제3-24조의2·제3-24조의4·제3-28조~제3-32조·제3-66조·제4-102조의5~9·제5-23조의2) · 동 시행세칙(제2-8조의3·별표 5·별표 10) · 금융소비자보호법(제19조·제21조·제47조·제57조·제69조).', 'reg-rule:4')}
+  </section>`;
+}
+
+export function bindRegulatoryCompliancePanel(D) {
+  const root = document.getElementById('reg-compliance-matrix');
+  const tbody = document.getElementById('reg-compliance-tbody');
+  if (!root || !tbody) return;
+
+  root.querySelectorAll('[data-reg-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      explorerState.regCategory = btn.dataset.regCategory || btn.dataset.regCat;
+      root.querySelectorAll('[data-reg-cat]').forEach(el => el.classList.toggle('active', el === btn));
+      tbody.innerHTML = renderRegulatoryRows(D);
+    });
+  });
 }
