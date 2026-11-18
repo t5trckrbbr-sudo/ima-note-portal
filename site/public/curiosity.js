@@ -44,59 +44,12 @@ export const explorerState = {
   vcStrategyIdx: 1,
   vcPoolFilter: 'all',
   expandedPoolId: 'vc_ntfc',
-  samsungScenarioId: 'base0',
-  samsungCustomNoteTril: 3.0,
-  samsungCustomAvgTril: 1.8,
   regCategory: 'all',
   hwCategory: 'deposits',
   hwSeriesMode: 'quarterly_fin',
   hwCountryLens: 'composition',
   hwSelectedCountry: 'KR'
 };
-
-export function getSamsungScenario(D) {
-  const sm = D?.fundingForecast2027?.samsungMediaCheck2026;
-  const presets = sm?.scenarioPresets || [];
-  if (explorerState.samsungScenarioId === 'custom') {
-    const rawNote = Number(explorerState.samsungCustomNoteTril);
-    const rawAvg = Number(explorerState.samsungCustomAvgTril);
-    const yearEndTril = Number.isFinite(rawNote) ? Math.max(0, Math.min(16.32, rawNote)) : 0;
-    const avgTril = Number.isFinite(rawAvg) ? Math.max(0, Math.min(yearEndTril, rawAvg)) : Number((yearEndTril * 0.6).toFixed(2));
-    return {
-      id: 'custom',
-      label: `직접 입력 (+${fmt(yearEndTril)}조 · 평잔 ${fmt(avgTril)}조)`,
-      yearEndTril,
-      avgTril,
-      isOverridden: yearEndTril > 0,
-      desc: `사용자 직접 입력 시나리오 (업권 합계 ${fmt(85 + yearEndTril)}조 원)`
-    };
-  }
-  const found = presets.find(p => p.id === explorerState.samsungScenarioId) || presets[0] || {
-    id: 'base0',
-    label: '기본 미반영 (+0.0조)',
-    yearEndTril: 0,
-    avgTril: 0,
-    desc: '공식 잔액 목표 미발표에 따른 기본선 유지 (업권 합계 85.00조 원)'
-  };
-  return {
-    ...found,
-    isOverridden: Number(found.yearEndTril) > 0
-  };
-}
-
-export function setSamsungScenario(id, customNote = null, customAvg = null) {
-  explorerState.samsungScenarioId = id;
-  if (customNote !== null && Number.isFinite(Number(customNote))) {
-    const cleanNote = Math.max(0, Math.min(16.32, Number(customNote)));
-    explorerState.samsungCustomNoteTril = cleanNote;
-    explorerState.samsungCustomAvgTril = customAvg !== null && Number.isFinite(Number(customAvg))
-      ? Math.max(0, Math.min(cleanNote, Number(customAvg)))
-      : Number((cleanNote * 0.6).toFixed(2));
-  }
-  if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
-    window.dispatchEvent(new CustomEvent('samsung-scenario-change'));
-  }
-}
 
 export function setExplorerFirmByName(D, firmName) {
   const found = (D.ib9FirmsCuriosityChain || []).find(x => x.firm === firmName || firmName.includes(x.firm.replace('증권', '')));
@@ -123,37 +76,12 @@ function miniMixBar(fundingRow) {
 }
 
 /* ==========================================================================
-   1. #funding — 9대 종투사 2027E 85조 수정 전망 분해 & 인라인 연쇄 드릴다운 (방안 A + C)
+   1. #funding — 9대 종투사 2027E 수정 전망 분해 & 인라인 연쇄 드릴다운 (방안 A + C)
    ========================================================================== */
-function renderSamsungMediaSimBox(D) {
-  const sm = D?.fundingForecast2027?.samsungMediaCheck2026;
-  if (!sm) return '';
-  const ss = getSamsungScenario(D);
-  const totalWithSs = 85 + ss.yearEndTril;
-  return `<div class="samsung-sim-box" id="samsung-media-sim-box">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
-      <div>
-        <span class="badge ${ss.isOverridden ? 'amber' : 'green'}">삼성증권 기사 전수 확인 (${sm.checkedAt})</span>
-        <b style="margin-left:6px;font-size:13px">${sm.headlineVerdict}</b>
-      </div>
-      <span class="badge blue" id="ss-live-total-badge">현재 적용 합계: ${fmt(totalWithSs)}조 원 (삼성 +${fmt(ss.yearEndTril)}조 · 평잔 ${fmt(ss.avgTril)}조)</span>
-    </div>
-    <ul class="samsung-fact-list">
-      ${sm.verifiedFacts.map(fact => `<li>${fact}</li>`).join('')}
-    </ul>
-    <div class="samsung-sim-controls" role="group" aria-label="삼성증권 2027년 발행어음 시나리오 가산 선택">
-      <span style="font-size:11.5px;font-weight:700;color:var(--ink)">삼성증권 '27E 시나리오 가산 (아래 표 · NIM · 비용계산기 동시 업데이트):</span>
-      ${sm.scenarioPresets.map(p => `<button type="button" class="chip ${ss.id === p.id ? 'active' : ''}" data-ss-preset="${p.id}" title="${p.desc}">${p.label}</button>`).join('')}
-      <span class="samsung-custom-wrap">
-        <label for="ss-custom-note">직접입력 연말</label>
-        <input id="ss-custom-note" type="number" min="0" max="16.32" step="0.5" value="${explorerState.samsungCustomNoteTril.toFixed(1)}" aria-label="삼성증권 2027 연말 발행어음 직접 입력 조 원">
-        <span>조 / 평잔</span>
-        <input id="ss-custom-avg" type="number" min="0" max="16.32" step="0.5" value="${explorerState.samsungCustomAvgTril.toFixed(1)}" aria-label="삼성증권 2027 평잔 발행어음 직접 입력 조 원">
-        <span>조</span>
-        <button type="button" class="btn ${ss.id === 'custom' ? 'primary' : ''}" id="ss-apply-custom" style="padding:3px 9px;font-size:11px">적용</button>
-      </span>
-    </div>
-  </div>`;
+function renderSamsungAssumptionNote(D) {
+  const samsung = D.fundingForecast2027?.companies?.find(firm => firm.key === 'samsung');
+  if (!samsung) return '';
+  return `<div class="callout" id="samsung-assumption-note" style="margin-top:0"><b>삼성·메리츠: 연말 각 ${fmt(samsung.promNoteYearEndTril)}조 · 수익 계산 평잔 각 ${fmt(samsung.promNoteAverageTril)}조</b><p>삼성증권은 메리츠와 같은 숫자를 사용하는 사용자 가정으로 고정했습니다. 삼성의 공식 발표 목표를 뜻하지 않습니다. 합산 전망은 ${fmt(D.globalKpis.promNoteIma27EstTril)}조 원입니다.</p></div>`;
 }
 
 export function renderFundingBreakdownPanel(D) {
@@ -163,18 +91,13 @@ export function renderFundingBreakdownPanel(D) {
   return `<section class="panel" id="firm-growth-chain" style="scroll-margin-top:95px">
     <div class="panel-head">
       <div>
-        <div class="eyebrow">COMPANY BREAKDOWN · 85조 수정 전망에서 회사별 전략·수익성까지</div>
-        <h2>2027E 85조 원 수정 전망, 누가 왜 얼마나 늘리고 다른 수단·수익성은 어떻게 다를까?</h2>
+        <div class="eyebrow">COMPANY BREAKDOWN · ${fmt(D.globalKpis.promNoteIma27EstTril, 0)}조 수정 전망에서 회사별 전략·수익성까지</div>
+        <h2>2027E ${fmt(D.globalKpis.promNoteIma27EstTril, 0)}조 원 수정 전망, 누가 왜 얼마나 늘리고 다른 수단·수익성은 어떻게 다를까?</h2>
         <p>각 증권사 행을 클릭하면 <b>① 인가 현황·성장 전제 → ② 자본 대비 비율 격차 이유와 대체 조달·실효금리 → ③ 전사 영업 수익성(ROE)</b>이 그 자리에서 펼쳐집니다.</p>
       </div>
       <span class="badge green">9사 전원 인가 · 메리츠 IR 반영</span>
     </div>
-    <div class="callout" style="margin-top:0">
-      <b>메리츠 2027 IR 목표(연말 4조 · 평잔 2조) 반영 &amp; 9사 전원 인가 요약</b> · 사용자가 전달한 <b>메리츠증권 2027년 발행어음 IR 목표(연말 잔액 4.00조 · 연간 NIM 수익 계산용 평잔 2.00조, 원문 링크 별도 확인 전)</b>로 기존 잠재 2사 합산 2.00조 가정을 대체해 연말 수정 전망은 <b>85.00조 원(발행어음 80.00조 + IMA 5.00조 · 원문 모형 83.00조)</b>입니다. 2026.09.09 8호 인가를 받은 삼성증권은 별도 목표 자료가 없어 기본선에는 추가 물량(0.00조)을 미반영했으며(0은 회사 발표 목표가 아님), 아래 <b>삼성증권 기사 확인 요약 및 시나리오 가산 컨트롤</b>에서 2.0~4.0조 원(또는 직접 입력)을 즉시 대입해 볼 수 있습니다.
-    </div>
-    <div id="samsung-sim-mount">
-      ${renderSamsungMediaSimBox(D)}
-    </div>
+    ${renderSamsungAssumptionNote(D)}
     <div class="table-wrap">
       <table class="data-table drill-table" id="funding-chain-table">
         <thead>
@@ -193,24 +116,23 @@ export function renderFundingBreakdownPanel(D) {
         </tbody>
       </table>
     </div>
-    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 기본값 0.00조는 연말 목표치 공식 미발표에 따른 미반영(발표 목표 아님, 9~10월 특판 2,100억 및 \'28년 모험자본 5조 공급 계획만 공개)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.', 'kpi:forecast-85')}
+    ${srcBox(`발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 사용자 전달 IR 목표(원문 링크 별도 확인 전), 삼성의 같은 수치는 사용자가 정한 비교 가정이며 회사의 공식 발표 목표가 아닙니다. 수정 전망은 발행어음 ${fmt(D.globalKpis.promNote27EstTril)}조 + IMA ${fmt(D.globalKpis.ima27EstTril)}조 = ${fmt(D.globalKpis.promNoteIma27EstTril)}조입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.`, 'kpi:forecast-85')}
   </section>`;
 }
 
 function renderFundingChainRows(D) {
   const list = D.ib9FirmsCuriosityChain || [];
-  const ss = getSamsungScenario(D);
   return list.map(item => {
     const isOpen = explorerState.expandedFirmKey === item.key;
     const fRow = D.ib9FirmsFunding202606[item.fundingIdx];
     const fisisNote = D.promNoteFisis202606.find(x => x.firm === item.firm);
     const oppRow = (D.opportunityCost2027 || []).find(r => r.key === item.costKey);
     const baseTotal = item.base26Q2NoteTril + item.base26Q2ImaTril;
-    const estNote = item.key === 'samsung' && ss.isOverridden ? ss.yearEndTril : item.est27ModelNoteTril;
-    const avgNote = item.key === 'samsung' && ss.isOverridden ? ss.avgTril : item.est27AverageNoteTril;
+    const estNote = item.est27ModelNoteTril;
+    const avgNote = item.est27AverageNoteTril;
     const estTotal = estNote + item.est27ModelImaTril;
     const deltaActual = estTotal - baseTotal;
-    const deltaModel = item.key === 'samsung' && ss.isOverridden ? estTotal : (oppRow ? oppRow.delta : deltaActual);
+    const deltaModel = oppRow ? oppRow.delta : deltaActual;
     const capPct = fisisNote ? fisisNote.capRatioPct : 0;
     const effNote = fRow?.effRates26H1?.promNote;
     const p = item.profitability || {};
@@ -271,7 +193,7 @@ function renderFundingChainRows(D) {
           <div class="bar-track" style="margin-top:4px"><div class="bar-fill" style="width:${Math.min(100, capPct / 2)}%"></div></div>
         </div>
       </td>
-      <td><b>${fmt(estTotal)}조</b>${avgNote ? `<br><small class="muted">${item.key === 'samsung' ? '시나리오 평잔 ' : '수익평잔 '}${fmt(avgNote)}조</small>` : item.key === 'samsung' ? '<br><small class="muted">별도목표 미반영</small>' : ''}</td>
+      <td><b>${fmt(estTotal)}조</b>${avgNote ? `<br><small class="muted">수익평잔 ${fmt(avgNote)}조</small>` : ''}</td>
       <td style="color:var(--teal);font-weight:600">+${fmt(deltaActual)}조${Math.abs(deltaModel - deltaActual) > 0.005 ? `<br><small class="muted">모형 +${fmt(deltaModel)}조</small>` : ''}</td>
       <td>${effNote === null || effNote === undefined ? '<span class="muted">26.09 인가</span>' : fmt(effNote) + '%'}${item.key === 'kb' ? ' <span class="badge amber" title="과거 고금리 약정물 만기정산 반영">이월정산</span>' : ''}</td>
       <td><b>${roeLabel}</b></td>
@@ -282,32 +204,10 @@ function renderFundingChainRows(D) {
 export function bindFundingBreakdownPanel(D, onNavigate) {
   const tbody = document.getElementById('funding-chain-tbody');
   if (!tbody) return;
-  const simMount = document.getElementById('samsung-sim-mount');
 
   const rerender = () => {
-    if (simMount) simMount.innerHTML = renderSamsungMediaSimBox(D);
     tbody.innerHTML = renderFundingChainRows(D);
     attachEvents();
-    bindSamsungControls();
-  };
-
-  const bindSamsungControls = () => {
-    if (!simMount) return;
-    simMount.querySelectorAll('[data-ss-preset]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        explorerState.expandedFirmKey = 'samsung';
-        setSamsungScenario(btn.dataset.ssPreset);
-      });
-    });
-    const applyBtn = simMount.querySelector('#ss-apply-custom');
-    if (applyBtn) {
-      applyBtn.addEventListener('click', () => {
-        const nVal = Number(simMount.querySelector('#ss-custom-note')?.value);
-        const aVal = Number(simMount.querySelector('#ss-custom-avg')?.value);
-        explorerState.expandedFirmKey = 'samsung';
-        setSamsungScenario('custom', nVal, aVal);
-      });
-    }
   };
 
   const attachEvents = () => {
@@ -347,16 +247,7 @@ export function bindFundingBreakdownPanel(D, onNavigate) {
     });
   };
 
-  if (typeof window !== 'undefined') {
-    if (window._ssFundingListener) window.removeEventListener('samsung-scenario-change', window._ssFundingListener);
-    window._ssFundingListener = () => {
-      if (document.getElementById('funding-chain-tbody')) rerender();
-    };
-    window.addEventListener('samsung-scenario-change', window._ssFundingListener);
-  }
-
   attachEvents();
-  bindSamsungControls();
 }
 
 /* ==========================================================================
@@ -1400,9 +1291,9 @@ export function renderHouseholdWealthPage(D) {
         <strong style="font-size:25px">${fmt(k.combinedDepositsPool26Q2Tril, 1)} <small>조 원</small></strong>
         <p class="muted">가계 ${fmt(k.krDeposits26Q2Tril, 1)}조 + 비금융법인 ${fmt(k.corpDeposits26Q2Tril, 1)}조</p>
       </div>
-      <a href="#funding" class="metric metric-link-card" aria-label="2027E 발행어음·IMA 85조 전망 및 NIM 화면으로 이동">
+      <a href="#funding" class="metric metric-link-card" aria-label="2027E 발행어음·IMA ${fmt(D.globalKpis.promNoteIma27EstTril, 0)}조 전망 및 NIM 화면으로 이동">
         <div class="metric-link-top">
-          <small>'27E 어음+IMA(85조) 침투율</small>
+          <small>'27E 어음+IMA(${fmt(D.globalKpis.promNoteIma27EstTril, 0)}조) 침투율</small>
           <span class="badge green">수신 전망 ↗</span>
         </div>
         <strong style="font-size:25px;color:var(--teal)">${fmt(k.promNoteIma27ShareOfFinPct, 2)}%</strong>

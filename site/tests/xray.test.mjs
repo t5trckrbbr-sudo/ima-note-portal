@@ -13,7 +13,7 @@ test('company X-Ray uses the selected NIM scenario and distinguishes its income 
   assert(spec.formula.includes('2.00조 × 250bp'));
   assert(rowsText(spec).includes('메리츠 IR 평잔 목표 적용'));
   assert(rowsText(spec).includes('어음 잔액 4.00조'));
-  assert(spec.caveat.includes('2027년 말 증가분·150bp'));
+  assert(spec.caveat.includes('기존 잔액×10%p를 항상 포함'));
   assert(spec.caveat.includes('중복 차감하지 않습니다'));
 });
 
@@ -66,4 +66,21 @@ test('household financial X-Ray derives all category values and shares from the 
   assert(text.includes('39.08조') && text.includes('(0.6%)'));
   assert(!spec.formula.includes('182.9') && !spec.formula.includes('45.1'));
   assert(Math.abs(categories.reduce((sum, category) => sum + category.amount26Q2Tril, 0) - 6930.21) < 1e-8);
+});
+
+
+test('fixed Samsung assumption and mandatory existing-balance step-up are visible in company and market X-Rays', () => {
+  const samsung = resolveXraySpec('nim-firm:samsung', D);
+  assert(samsung.formula.includes('수익시나리오(300억)'));
+  assert(rowsText(samsung).includes('삼성 사용자 가정 평잔 적용'));
+  assert(rowsText(samsung).includes('어음 잔액 4.00조'));
+  const kisRow = D.opportunityCost2027.find(row => row.key === 'kis');
+  const obligation = (kisRow.q27Est-kisRow.q26Base)*0.2+kisRow.q26Base*0.1;
+  const kis = resolveXraySpec('firm:kis', D);
+  assert(rowsText(kis).includes('기존 잔액 '+kisRow.q26Base.toFixed(2)+'조 × 10%p'));
+  assert(rowsText(kis).includes('전액P-CBO '+Math.round(obligation*150).toLocaleString('ko-KR')+'억'));
+  const market = resolveXraySpec('kpi:forecast-85', D);
+  assert(market.title.includes('89.00조'));
+  assert(market.caveat.includes('12,600억'));
+  assert(market.rows.some(row=>row.join(' ').includes('공식 발표 목표가 아님')));
 });

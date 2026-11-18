@@ -11,8 +11,8 @@
     "promNote26Q2ExactTril": 55.94,
     "ima26Q2ExactTril": 2.6,
     "promNoteIma26Q2SimBaseTril": 57.26,
-    "promNoteIma27EstTril": 85,
-    "promNote27EstTril": 80,
+    "promNoteIma27EstTril": 89,
+    "promNote27EstTril": 84,
     "ima27EstTril": 5.0,
     "ib9BorrowingsTotal26Q2Tril": 472.75,
     "ib9InvestorDeposits26Q2Tril": 158.5,
@@ -80,10 +80,10 @@
     {
       "period": "2027E(전망)",
       "firms": 9,
-      "promNote": 80,
+      "promNote": 84,
       "ima": 5,
-      "total": 85,
-      "note": "메리츠 연말 4조 IR 목표(사용자 전달) 반영 · 삼성 별도 물량 미반영 · 원문 83조 대비 +2조"
+      "total": 89,
+      "note": "메리츠 IR 전달 목표와 동일한 연말 4조·평잔 2조를 삼성에도 고정 적용한 사용자 가정 · 합산 89조"
     }
   ],
   "promNoteFisis202606": [
@@ -194,11 +194,13 @@
       "q26Base": 25.07,
       "q27Est": 30.9,
       "delta": 5.83,
-      "vcNew20Tril": 1.17,
-      "vcTotalAddTril": 3.67,
-      "oppCostNew150bpEok": 175,
-      "oppCostNewAfter30CapEok": 122,
-      "fisis2606Exact": 25.07
+      "vcNew20Tril": 1.166,
+      "vcTotalAddTril": 3.673,
+      "oppCostNew150bpEok": 174.9,
+      "oppCostNewAfter30CapEok": 122.43,
+      "fisis2606Exact": 25.07,
+      "oppCostTotalAdd150bpEok": 550.95,
+      "oppCostTotalAddAfter30CapEok": 385.665
     },
     {
       "key": "kiwoom",
@@ -206,11 +208,13 @@
       "q26Base": 1.82,
       "q27Est": 6.0,
       "delta": 4.18,
-      "vcNew20Tril": 0.84,
-      "vcTotalAddTril": 1.02,
-      "oppCostNew150bpEok": 125,
-      "oppCostNewAfter30CapEok": 88,
-      "fisis2606Exact": 1.82
+      "vcNew20Tril": 0.836,
+      "vcTotalAddTril": 1.018,
+      "oppCostNew150bpEok": 125.4,
+      "oppCostNewAfter30CapEok": 87.78,
+      "fisis2606Exact": 1.82,
+      "oppCostTotalAdd150bpEok": 152.7,
+      "oppCostTotalAddAfter30CapEok": 106.89
     },
     {
       "key": "hana",
@@ -220,9 +224,11 @@
       "delta": 3.5,
       "vcNew20Tril": 0.7,
       "vcTotalAddTril": 0.8,
-      "oppCostNew150bpEok": 105,
-      "oppCostNewAfter30CapEok": 74,
-      "fisis2606Exact": 1.0
+      "oppCostNew150bpEok": 105.0,
+      "oppCostNewAfter30CapEok": 73.5,
+      "fisis2606Exact": 1.0,
+      "oppCostTotalAdd150bpEok": 120.0,
+      "oppCostTotalAddAfter30CapEok": 84.0
     },
     {
       "key": "shinhan",
@@ -230,11 +236,13 @@
       "q26Base": 0.29,
       "q27Est": 3.3,
       "delta": 3.01,
-      "vcNew20Tril": 0.6,
-      "vcTotalAddTril": 0.63,
-      "oppCostNew150bpEok": 90,
-      "oppCostNewAfter30CapEok": 63,
-      "fisis2606Exact": 0.29
+      "vcNew20Tril": 0.602,
+      "vcTotalAddTril": 0.631,
+      "oppCostNew150bpEok": 90.3,
+      "oppCostNewAfter30CapEok": 63.21,
+      "fisis2606Exact": 0.29,
+      "oppCostTotalAdd150bpEok": 94.65,
+      "oppCostTotalAddAfter30CapEok": 66.255
     },
     {
       "key": "nh",
@@ -244,9 +252,11 @@
       "delta": 3.0,
       "vcNew20Tril": 0.6,
       "vcTotalAddTril": 1.35,
-      "oppCostNew150bpEok": 90,
-      "oppCostNewAfter30CapEok": 63,
-      "fisis2606Exact": 8.78
+      "oppCostNew150bpEok": 90.0,
+      "oppCostNewAfter30CapEok": 63.0,
+      "fisis2606Exact": 8.78,
+      "oppCostTotalAdd150bpEok": 202.5,
+      "oppCostTotalAddAfter30CapEok": 141.75
     },
     {
       "key": "mirae",
@@ -254,11 +264,13 @@
       "q26Base": 10.58,
       "q27Est": 13.0,
       "delta": 2.42,
-      "vcNew20Tril": 0.48,
-      "vcTotalAddTril": 1.54,
-      "oppCostNew150bpEok": 73,
-      "oppCostNewAfter30CapEok": 51,
-      "fisis2606Exact": 10.58
+      "vcNew20Tril": 0.484,
+      "vcTotalAddTril": 1.542,
+      "oppCostNew150bpEok": 72.6,
+      "oppCostNewAfter30CapEok": 50.82,
+      "fisis2606Exact": 10.58,
+      "oppCostTotalAdd150bpEok": 231.3,
+      "oppCostTotalAddAfter30CapEok": 161.91
     },
     {
       "key": "meritz",
@@ -272,20 +284,25 @@
       "oppCostNewAfter30CapEok": 84.0,
       "fisis2606Exact": 0.0,
       "q27AveragePromNoteTril": 2.0,
-      "assumptionNote": "사용자 전달 IR 목표: 평잔 2조·연말 4조. 이 계산기의 잔액·추가 의무액은 연말 4조 기준."
+      "assumptionNote": "사용자 전달 IR 목표: 평잔 2조·연말 4조. 이 계산기의 잔액·추가 의무액은 연말 4조 기준.",
+      "oppCostTotalAdd150bpEok": 120.0,
+      "oppCostTotalAddAfter30CapEok": 84.0
     },
     {
       "key": "samsung",
-      "name": "삼성증권(별도 목표 미반영)",
+      "name": "삼성증권",
       "q26Base": 0.0,
-      "q27Est": 0.0,
-      "delta": 0.0,
-      "vcNew20Tril": 0.0,
-      "vcTotalAddTril": 0.0,
-      "oppCostNew150bpEok": 0.0,
-      "oppCostNewAfter30CapEok": 0.0,
+      "q27Est": 4,
+      "delta": 4.0,
+      "vcNew20Tril": 0.8,
+      "vcTotalAddTril": 0.8,
+      "oppCostNew150bpEok": 120.0,
+      "oppCostNewAfter30CapEok": 84.0,
       "fisis2606Exact": 0.0,
-      "assumptionNote": "별도 목표 자료가 없어 추가 물량 미반영. 0은 회사 발표 목표가 아님."
+      "assumptionNote": "사용자 고정 가정: 연말 4조·평잔 2조. 삼성 공식 목표가 아님. 기회비용은 연말 잔액 기준.",
+      "q27AveragePromNoteTril": 2,
+      "oppCostTotalAdd150bpEok": 120.0,
+      "oppCostTotalAddAfter30CapEok": 84.0
     },
     {
       "key": "kb",
@@ -295,21 +312,25 @@
       "delta": 1.8,
       "vcNew20Tril": 0.36,
       "vcTotalAddTril": 1.46,
-      "oppCostNew150bpEok": 54,
-      "oppCostNewAfter30CapEok": 38,
-      "fisis2606Exact": 11.0
+      "oppCostNew150bpEok": 54.0,
+      "oppCostNewAfter30CapEok": 37.8,
+      "fisis2606Exact": 11.0,
+      "oppCostTotalAdd150bpEok": 219.0,
+      "oppCostTotalAddAfter30CapEok": 153.3
     },
     {
       "key": "all",
       "name": "전 증권사 합계",
       "q26Base": 57.26,
-      "q27Est": 85.0,
-      "delta": 27.74,
-      "vcNew20Tril": 5.548,
-      "vcTotalAddTril": 11.274,
-      "oppCostNew150bpEok": 832.2,
-      "oppCostNewAfter30CapEok": 582.54,
-      "fisis2606Exact": 58.54
+      "q27Est": 89,
+      "delta": 31.74,
+      "vcNew20Tril": 6.348,
+      "vcTotalAddTril": 12.074,
+      "oppCostNew150bpEok": 952.2,
+      "oppCostNewAfter30CapEok": 666.54,
+      "fisis2606Exact": 58.54,
+      "oppCostTotalAdd150bpEok": 1811.1,
+      "oppCostTotalAddAfter30CapEok": 1267.77
     }
   ],
   "imaTranchesKis": [
@@ -1079,7 +1100,7 @@
       3.25,
       3.5
     ],
-    "volumeVerdict": "확장 우위 (발행어음 80조 · IMA 포함 85조, 메리츠 목표 반영; 원문 합산 83조)",
+    "volumeVerdict": "확장 우위 (발행어음 84조 · IMA 포함 89조, 삼성·메리츠 연말 각 4조 가정 반영; 원문 합산 83조)",
     "marginVerdict": "상박하후 (1H 원가·마진 압박 → 2H 완화)",
     "headwinds": [
       {
@@ -1165,14 +1186,14 @@
     }
   },
   "fundingForecast2027": {
-    "updatedAt": "2026-11-17",
+    "updatedAt": "2026-11-18",
     "originalModel": {
       "promNoteTril": 78,
       "imaTril": 5,
       "totalTril": 83,
       "potentialCombinedTril": 2
     },
-    "assumptionNote": "기존 삼성·메리츠 합산 2조 원 가정을 메리츠 연말 4조 원 목표로 대체합니다. 삼성은 별도 목표 자료가 없어 추가 물량을 반영하지 않습니다. 기존 다른 회사 가정은 유지해 연말 합계는 발행어음 80조 원 + IMA 5조 원 = 85조 원입니다.",
+    "assumptionNote": "삼성증권에도 메리츠와 동일한 연말 4조 원·수익 계산 평잔 2조 원을 고정 적용합니다. 삼성의 수치는 사용자가 지정한 비교 가정이며 회사가 발표한 목표가 아닙니다. 다른 회사 가정은 유지해 연말 합계는 발행어음 84조 원 + IMA 5조 원 = 89조 원입니다.",
     "source": {
       "kind": "user-provided-ir-target",
       "receivedAt": "2026-11-17",
@@ -1255,12 +1276,12 @@
       },
       {
         "key": "samsung",
-        "name": "삼성증권(별도 목표 미반영)",
-        "promNoteYearEndTril": 0,
+        "name": "삼성증권",
+        "promNoteYearEndTril": 4,
         "imaYearEndTril": 0,
-        "promNoteAverageTril": null,
-        "noteIncomeBasis": "year-end-proxy",
-        "assumptionNote": "별도 목표 미확인으로 추가 물량 미반영(0은 회사 목표가 아님)."
+        "promNoteAverageTril": 2,
+        "noteIncomeBasis": "average-assumption",
+        "assumptionNote": "사용자 지정: 메리츠와 같은 연말 4조·평잔 2조를 고정 적용. 삼성의 공식 발표 목표가 아닙니다."
       }
     ],
     "samsungMediaCheck2026": {
@@ -1271,37 +1292,16 @@
         "2026.09.21 첫 출시 및 1차 특판 1,100억 원: 1년물 연 4.3%(1,000억 한도, 출시 2.5일 만에 완판) + 신규·소액 2~90일물 연 5.5%(100억 한도)",
         "2026.10.12 2차 1년물 특판 1,000억 원(연 4.3%) 추가 출시 및 발행어음형 CMA(수시 연 2.55%, 상시 1년물 3.95%, 적립형 4.60%) 라인업 가동",
         "공식 발표 중장기 목표: 『2028년까지 중소·벤처·신기사 등 모험자본 누적 5조 원 공급 계획』 천명 (단, 메리츠와 달리 2026~2027년 말 발행어음 총잔액 목표 액수는 보수적 운용 기조 하 대외 미공개)"
-      ],
-      "scenarioPresets": [
-        {
-          "id": "base0",
-          "label": "기본 미반영 (+0.0조)",
-          "yearEndTril": 0.0,
-          "avgTril": 0.0,
-          "desc": "공식 잔액 목표 미발표에 따른 기본선 유지 (업권 합계 85.00조 원)"
-        },
-        {
-          "id": "cons2",
-          "label": "보수 안착 (+2.0조 · 평잔 1.2조)",
-          "yearEndTril": 2.0,
-          "avgTril": 1.2,
-          "desc": "초기 보수적 딜 소싱 속도 반영 (업권 합계 87.00조 원)"
-        },
-        {
-          "id": "wm3",
-          "label": "WM 컨센서스 (+3.0조 · 평잔 1.8조)",
-          "yearEndTril": 3.0,
-          "avgTril": 1.8,
-          "desc": "업계 최대 고액자산가(HNWI)·예탁금 전환 감안 증권가 중위 추정 (업권 합계 88.00조 원)"
-        },
-        {
-          "id": "peer4",
-          "label": "메리츠 동등·5조 경로 (+4.0조 · 평잔 2.2조)",
-          "yearEndTril": 4.0,
-          "avgTril": 2.2,
-          "desc": "동기 인가 메리츠(연말 4조) 동등 및 '28년 모험자본 5조 공급 목표 경로 (업권 합계 89.00조 원)"
-        }
       ]
+    },
+    "samsungAssumption": {
+      "kind": "user-specified-peer-assumption",
+      "appliedAt": "2026-11-18",
+      "referenceFirm": "meritz",
+      "yearEndTril": 4,
+      "averageTril": 2,
+      "companyPublishedTarget": false,
+      "note": "선택 메뉴 없이 메리츠와 같은 숫자를 사용하는 고정 가정입니다."
     }
   },
   "ib9FirmsCuriosityChain": [
@@ -1599,10 +1599,10 @@
       "statusTone": "blue",
       "base26Q2NoteTril": 0.0,
       "base26Q2ImaTril": 0.0,
-      "est27ModelNoteTril": 0.0,
+      "est27ModelNoteTril": 4,
       "est27ModelImaTril": 0.0,
-      "est27UpdatedRangeTril": "연말 잔고 목표 미공개 (9~10월 1·2차 특판 2,100억 · '28년까지 모험자본 5조 공급 발표 · WM 잠재 2.0~4.0조)",
-      "growthPremise": "2026.09.09 제8호 인가(법정한도 약 16.32조) 후 09.21 출시. 언론 기사 전수 확인 결과 메리츠(연말 4조·평잔 2조 IR 제시)와 달리 '2027년 말 발행어음 단일 목표액'은 대외 미공개(운용처 확보 연동 점진 확대 기조)이나, ① 9/21 1차 특판 1,100억(1년물 4.3% 1,000억 2.5일 완판 + 단기 5.5% 100억) 및 10/12 2차 특판 1,000억·발행어음형 CMA(2.55%) 출시, ② '2028년까지 모험자본 누적 5조 원 공급 계획'을 공식 발표했습니다. 기본 전망(85조)에는 0.00조(발표 목표 아님)로 두되 시나리오 가산 컨트롤로 2.0~4.0조 원을 즉시 대입해 비교할 수 있습니다.",
+      "est27UpdatedRangeTril": "연말 4.00조·평잔 2.00조 고정 가정 (메리츠와 동일 · 삼성 공식 목표 아님)",
+      "growthPremise": "2026.09.09 제8호 인가(법정한도 약 16.32조) 후 09.21 출시. 언론 기사 전수 확인 결과 메리츠(연말 4조·평잔 2조 IR 제시)와 달리 '2027년 말 발행어음 단일 목표액'은 대외 미공개(운용처 확보 연동 점진 확대 기조)이나, ① 9/21 1차 특판 1,100억(1년물 4.3% 1,000억 2.5일 완판 + 단기 5.5% 100억) 및 10/12 2차 특판 1,000억·발행어음형 CMA(2.55%) 출시, ② '2028년까지 모험자본 누적 5조 원 공급 계획'을 공식 발표했습니다. 사용자 요청으로 메리츠와 동일한 연말 4.00조·수익 계산 평잔 2.00조를 고정 적용합니다. 삼성의 회사 발표 목표가 아니며, 시나리오 선택 메뉴 없이 수정 전망 89조에 포함합니다.",
       "capRatioWhy": "2026년 9월 이전까지 단기금융업 미인가 상태였기 때문에 자본 8.16조에도 어음 잔액이 0원이었으며, 대고객·기관 RP매도(49.2%, 실효 2.26%) 중심의 저위험 담보조달 유지",
       "altFundingNote": "차입부채(35.24조)가 자본 규모 대비 가장 적고 RP 비중(49.2%)이 절대적 · 발행어음 가세로 기존 저마진 RP 외 기업금융 스프레드 자산 편입 여력 신설",
       "profitability": {
@@ -1624,7 +1624,7 @@
         "h126AnnRoePct": 22.4,
         "takeaway": "발행어음 없이도 초고액 WM·운용 경쟁력으로 '25년 순익 9,713억·'26.1H 연환산 ROE 22.4%를 달성했으며, 어음 장착으로 IB 이자수익원 추가"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": 2
     },
     {
       "key": "meritz",
@@ -1843,13 +1843,13 @@
           "note": "종투사 총자산 대비 2.23%"
         },
         {
-          "period": "2027E 의무 (수정전망 85조 기준)",
-          "totalFundingTril": 85.0,
+          "period": "2027E 의무 (수정전망 89조 기준)",
+          "totalFundingTril": 89,
           "mandatePct": 20,
-          "totalMandateTril": 17.0,
-          "aCapTril": 5.1,
-          "nonACapNetTril": 11.9,
-          "note": "비A급 70% 순의무 11.90조 (원문 83조 기준 시 16.60/11.62조)"
+          "totalMandateTril": 17.8,
+          "aCapTril": 5.34,
+          "nonACapNetTril": 12.46,
+          "note": "비A급 70% 순의무 12.46조 (원문 83조 기준 시 16.60/11.62조)"
         },
         {
           "period": "2028E 의무 (수신 98조 가정)",
@@ -1872,7 +1872,7 @@
           "potential2728": "연 발행 14.0~16.0조 안정 유지",
           "status": "캡 제한",
           "statusTone": "blue",
-          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.10조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
+          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.34조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
         },
         {
           "id": "bbb_public",
@@ -2083,8 +2083,8 @@
       "krDeposits26Q2Tril": 2688.07,
       "corpDeposits26Q2Tril": 1135.92,
       "combinedDepositsPool26Q2Tril": 3823.99,
-      "promNoteIma27ShareOfFinPct": 1.23,
-      "promNoteIma27ShareOfHhDepPct": 3.16
+      "promNoteIma27ShareOfFinPct": 1.28,
+      "promNoteIma27ShareOfHhDepPct": 3.31
     },
     "surveyComparison": [
       {
@@ -3207,5 +3207,11 @@
         "severity": "amber"
       }
     ]
+  },
+  "opportunityCostAssumptions": {
+    "includeExistingBalanceStepUp": true,
+    "newFundingMandatePct": 20,
+    "existingIncreasePctPoints": 10,
+    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다."
   }
 }

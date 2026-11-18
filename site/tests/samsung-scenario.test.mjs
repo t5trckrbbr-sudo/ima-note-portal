@@ -1,107 +1,81 @@
-import test, {afterEach} from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {explorerState, getSamsungScenario, setSamsungScenario} from '../public/curiosity.js';
-import {computeNim, getNimScenario} from '../public/nim.js';
-import {resolveXraySpec} from '../public/xray.js';
+import {computeNim, getNimScenario, renderNim} from '../public/nim.js';
 
 const D = JSON.parse(fs.readFileSync(new URL('../public/data.json', import.meta.url), 'utf8'));
-const original = JSON.stringify(D);
-const presets = D.fundingForecast2027.samsungMediaCheck2026.scenarioPresets;
-const samsung = scenario => scenario.rows.find(row => row.key === 'samsung');
-const meritz = scenario => scenario.rows.find(row => row.key === 'meritz');
-afterEach(() => {
-  setSamsungScenario('base0');
-  explorerState.samsungCustomNoteTril = 3;
-  explorerState.samsungCustomAvgTril = 1.8;
-  assert.equal(JSON.stringify(D), original, 'interactive assumptions must not rewrite the supplied baseline');
-});
+const baseline = JSON.stringify(D);
+const close = (actual, expected) => assert(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`);
 
-test('Samsung baseline remains an unallocated zero within the 85T forecast and the pure NIM contract', () => {
-  setSamsungScenario('base0');
-  assert.equal(D.globalKpis.promNoteIma27EstTril, 85);
-  assert.equal(D.fundingForecast2027.companies.find(row => row.key === 'samsung').promNoteYearEndTril, 0);
-  const base = computeNim(D);
-  assert.equal(base.totals.note + base.totals.ima, 85);
-  assert.equal(base.totals.total, 12300);
-  assert.equal(samsung(base).note, 0);
-  assert.equal(samsung(base).noteIncome, 0);
-  assert.equal(meritz(base).note, 4);
-  assert.equal(meritz(base).noteIncomeBase, 2);
-  assert.equal(meritz(base).noteIncome, 300);
-  setSamsungScenario('peer4');
-  assert.deepEqual(computeNim(D), base, 'a shared interactive override must not alter the default pure computation');
-});
-
-test('all four Samsung presets distinguish end balance from average income and reach live X-Ray consistently', () => {
-  assert.deepEqual(presets.map(p => p.yearEndTril), [0, 2, 3, 4]);
-  for (const preset of presets) {
-    setSamsungScenario(preset.id);
-    const ss = getSamsungScenario(D), scenario = getNimScenario(D), row = samsung(scenario);
-    assert.equal(ss.yearEndTril, preset.yearEndTril);
-    assert.equal(ss.avgTril, preset.avgTril);
-    assert.equal(row.note, preset.yearEndTril);
-    assert.equal(row.noteIncomeBase, preset.avgTril);
-    assert.equal(row.noteIncome, preset.avgTril * 150);
-    assert.equal(scenario.totals.note + scenario.totals.ima, 85 + preset.yearEndTril);
-    assert.equal(scenario.totals.total, 12300 + preset.avgTril * 150);
-    const spec = resolveXraySpec('nim-firm:samsung', D);
-    assert(spec.formula.includes(`수익시나리오(${Math.round(row.noteIncome)}억)`));
-    assert(spec.rows.some(([label, value]) => label.includes('연말 전망') && value.includes(preset.yearEndTril.toFixed(2) + '조')));
-    assert.equal(meritz(scenario).noteIncome, 300);
+test('Samsung uses the same fixed year-end and average balance as Meritz without treating it as a published company target', () => {
+  const result = computeNim(D);
+  for (const key of ['samsung','meritz']) {
+    const row = result.rows.find(row => row.key === key);
+    assert.equal(row.note, 4);
+    assert.equal(row.noteIncomeBase, 2);
+    assert.equal(row.noteIncome, 300);
   }
+  assert.equal(result.rows.find(row => row.key === 'samsung').noteIncomeBasis, 'average-assumption');
+  assert.equal(D.fundingForecast2027.samsungAssumption.companyPublishedTarget, false);
+  assert.equal(D.fundingForecast2027.samsungMediaCheck2026.scenarioPresets, undefined);
+  close(result.totals.note, 84);
+  close(result.totals.noteIncomeBase, 80);
+  close(result.totals.note + result.totals.ima, 89);
+  close(result.totals.total, 12600);
+  assert.equal(JSON.stringify(D), baseline);
 });
 
-test('custom Samsung balances are bounded by the license limit and the average cannot exceed the year-end assumption', () => {
-  for (const [end, avg, expectedEnd, expectedAvg] of [[5, 2.7, 5, 2.7], [-2, -1, 0, 0], [100, 100, 16.32, 16.32], [3, 9, 3, 3], [2, null, 2, 1.2]]) {
-    setSamsungScenario('custom', end, avg);
-    const ss = getSamsungScenario(D), row = samsung(getNimScenario(D));
-    assert.equal(ss.yearEndTril, expectedEnd);
-    assert.equal(ss.avgTril, expectedAvg);
-    assert.equal(row.note, expectedEnd);
-    assert.equal(row.noteIncomeBase, expectedAvg);
-    assert.equal(row.noteIncome, expectedAvg * 150);
+test('retired Samsung override options cannot restore hidden presets or change the fixed forecast', () => {
+  const result = computeNim(D);
+  for (const [end, average] of [[0,0], [2,1.2], [4,2.2], [16.32,16.32], [-2,-1]]) {
+    assert.deepEqual(computeNim(D, {samsungNoteTril:end, samsungAvgTril:average}), result);
   }
-  setSamsungScenario('custom', Infinity, NaN);
-  let ss = getSamsungScenario(D);
-  assert(Number.isFinite(ss.yearEndTril));
-  assert(Number.isFinite(ss.avgTril));
-  assert(ss.avgTril >= 0 && ss.avgTril <= ss.yearEndTril);
-  explorerState.samsungCustomNoteTril = NaN;
-  explorerState.samsungCustomAvgTril = Infinity;
-  ss = getSamsungScenario(D);
-  assert.equal(ss.yearEndTril, 0);
-  assert.equal(ss.avgTril, 0);
+  assert.deepEqual(getNimScenario(D), result);
+  const html = renderNim(D);
+  assert(!html.includes('data-nim-ss'));
+  assert(!html.includes('nim-ss-bar'));
+  assert(html.includes('data-nim-note="samsung">4.00'));
+  assert(html.includes('data-nim-base="samsung">2.00'));
+  assert(html.includes('사용자 가정 평잔'));
 });
 
-test('explicit X-Ray income scenarios preserve the shared Samsung forecast and cost assumption', () => {
-  setSamsungScenario('peer4');
-  const ss = getSamsungScenario(D);
-  const income = computeNim(D, {period:'2027', samsungNoteTril:ss.yearEndTril, samsungAvgTril:ss.avgTril});
-  const live = resolveXraySpec('nim-firm:samsung', D);
-  const explicit = resolveXraySpec('nim-firm:samsung', D, {nimScenario:income});
-  assert.deepEqual(explicit.rows, live.rows);
-  assert.equal(explicit.formula, live.formula);
-  assert(explicit.formula.includes('상한활용 84억'));
-  const actual = computeNim(D, {period:'2026'});
-  const historical = resolveXraySpec('nim-firm:samsung', D, {nimScenario:actual});
-  assert(historical.formula.includes('2026.2Q 제공 잔액 수익시나리오(0억)'));
-  assert(historical.formula.includes('2027E 기회비용(상한활용 84억)'));
-  assert(historical.rows.some(([label, value]) => label.includes('연말 전망') && value.includes('4.00조')));
+test('2026 snapshots stay unchanged while fixed average balances follow company-specific NIM inputs', () => {
+  const historical = computeNim(D, {period:'2026', samsungNoteTril:4, samsungAvgTril:2});
+  close(historical.totals.note, 55.94);
+  close(historical.totals.ima, 2.6);
+  close(historical.totals.total, 8703);
+  for (const key of ['samsung','meritz']) assert.equal(historical.rows.find(row => row.key === key).noteIncome, 0);
+  const modified = computeNim(D, {noteBp:100, imaBp:0, companyBp:{samsung:250}});
+  close(modified.rows.find(row => row.key === 'samsung').noteIncome, 500);
+  close(modified.totals.total, 8300);
+  assert.equal(JSON.stringify(D), baseline);
 });
 
-test('a 2027 Samsung override cannot leak into the 2026 snapshot and resetting returns to 85T', () => {
-  setSamsungScenario('peer4');
-  const ss = getSamsungScenario(D);
-  const actual = computeNim(D, {period:'2026', samsungNoteTril:ss.yearEndTril, samsungAvgTril:ss.avgTril});
-  assert.equal(actual.totals.note, 55.94);
-  assert.equal(actual.totals.ima, 2.6);
-  assert.equal(actual.totals.total, 8703);
-  assert.equal(samsung(actual).noteIncome, 0);
-  assert.equal(meritz(actual).noteIncome, 0);
-  setSamsungScenario('base0');
-  const reset = getNimScenario(D);
-  assert.equal(reset.totals.note + reset.totals.ima, 85);
-  assert.equal(reset.totals.total, 12300);
-  assert.equal(samsung(reset).noteIncome, 0);
+test('fixed forecast is reconciled across the nine-company chain and mandatory existing-balance cost fields', () => {
+  close(D.ib9FirmsCuriosityChain.reduce((sum,row) => sum + row.est27ModelNoteTril + row.est27ModelImaTril, 0), 89);
+  close(D.opportunityCost2027.filter(row => row.key !== 'all').reduce((sum,row) => sum + row.q27Est, 0), 89);
+  for (const row of D.opportunityCost2027) {
+    close(row.vcNew20Tril, (row.q27Est - row.q26Base) * .2);
+    close(row.vcTotalAddTril, row.vcNew20Tril + row.q26Base * .1);
+    close(row.oppCostTotalAdd150bpEok, row.vcTotalAddTril * 150);
+    close(row.oppCostTotalAddAfter30CapEok, row.oppCostTotalAdd150bpEok * .7);
+  }
+  const total = D.opportunityCost2027.find(row => row.key === 'all');
+  close(total.vcTotalAddTril, 12.074);
+  close(total.oppCostTotalAdd150bpEok, 1811.1);
+  close(total.oppCostTotalAddAfter30CapEok, 1267.77);
+  assert.equal(D.opportunityCostAssumptions.includeExistingBalanceStepUp, true);
+});
+
+test('2027 demand follows the new 89T baseline while the separate 2028 forecast remains 98T', () => {
+  const rows = D.ventureCapitalChain2027.addressableMarket.demandSchedule;
+  const year27 = rows.find(row => row.period.startsWith('2027'));
+  close(year27.totalFundingTril, 89);
+  close(year27.totalMandateTril, 17.8);
+  close(year27.aCapTril, 5.34);
+  close(year27.nonACapNetTril, 12.46);
+  const year28 = rows.find(row => row.period.startsWith('2028'));
+  close(year28.totalFundingTril, 98);
+  close(year28.totalMandateTril, 24.5);
+  close(year28.nonACapNetTril, 17.15);
 });

@@ -1,11 +1,10 @@
-import { getSamsungScenario } from './curiosity.js';
 import { getNimScenario } from './nim.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
   'guide-2027-funding-outlook-bear-flattening': {
     title: '2027년 수신환경(3대 악화 vs 3대 강화)과 ‘베어 플랫’ 종합 전망·대응 전략은?',
-    summary: '외형은 85조(수정 전망)로 확장 우위이나, 상반기 금리인상·특판·베어 플랫(3Y−1Y +11.1bp)이 겹쳐 마진은 상박하후 경로가 유력합니다. 고점 1년물 Lock-in을 피하고 단기(≤3M) 조달을 유지하는 ALM이 핵심입니다.'
+    summary: '외형은 89조(삼성·메리츠 고정 가정 반영)로 확장 우위이나, 상반기 금리인상·특판·베어 플랫(3Y−1Y +11.1bp)이 겹쳐 마진은 상박하후 경로가 유력합니다. 고점 1년물 Lock-in을 피하고 단기(≤3M) 조달을 유지하는 ALM이 핵심입니다.'
   },
   'guide-yield-curve-short-funding': {
     title: '발행어음 수익률곡선은 왜 가파르며, 3개월 이하(63.4%)·수시물 비중은 어느 정도인가요?',
@@ -45,11 +44,11 @@ const QA_DIGEST = {
   },
   'guide-nim-income': {
     title: 'NIM과 순이자수익, 전사 순영업수익은 어떻게 구분해 읽어야 하나요?',
-    summary: 'NIM 시뮬레이션(기본 합산 12,300억)은 판관비·충당금 차감 전 상품 단위 시나리오입니다. 메리츠는 IR 평잔 2조(연말 4조와 구분), 타사는 연말 잔액 대용치를 사용하며 전사 순영업수익과 다릅니다.'
+    summary: 'NIM 시뮬레이션(기본 합산 12,600억)은 판관비·충당금 차감 전 상품 단위 시나리오입니다. 삼성과 메리츠는 평잔 2조(연말 4조와 구분)를 사용하며, 삼성은 사용자 가정·메리츠는 전달 IR 목표입니다. 나머지 회사는 연말 잔액 대용치를 사용하고 전사 순영업수익과 다릅니다.'
   },
   'guide-growth-baseline': {
-    title: '2027년 수신 전망은 왜 83조에서 85조로 바뀌었고, 기준선(58.54 vs 57.26조) 차이는 무엇인가요?',
-    summary: '원문 삼성·메리츠 합산 2조를 메리츠 IR 연말 목표 4조로 대체해 85조(어음 80+IMA 5)가 되었습니다. 58.54조(공시 NH 8.78조)와 57.26조(모형 NH 7.50조)는 NH 기준선 1.28조 차이입니다.'
+    title: '2027년 수신 전망은 왜 89조로 바뀌었고, 기준선(58.54 vs 57.26조) 차이는 무엇인가요?',
+    summary: '원문 삼성·메리츠 합산 2조를 각사 연말 4조로 대체해 89조(어음 84+IMA 5)가 되었습니다. 삼성은 메리츠와 같게 둔 사용자 가정이며 공식 발표 목표가 아닙니다. 58.54조(공시 NH 8.78조)와 57.26조(모형 NH 7.50조)는 NH 기준선 1.28조 차이입니다.'
   },
   'guide-pcbo-assumption': {
     title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
@@ -94,16 +93,18 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
-    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
     const base26 = chain.base26Q2NoteTril + chain.base26Q2ImaTril;
-    const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
+    const estNote = chain.est27ModelNoteTril;
     const est27 = estNote + chain.est27ModelImaTril;
     const scenario = context.nimScenario || getNimScenario(D);
     const nimRow = scenario.rows.find(row => row.key === chain.key);
     if (!nimRow) return null;
     const periodLabel = scenario.period === '2026' ? '2026.2Q 제공 잔액' : '2027E';
-    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'scenario-avg' ? '삼성 사용자 시나리오 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.2Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
-    const oppAfterCapEok = ss?.isOverridden ? (estNote * 0.2 * 150 * 0.7) : (opp ? opp.oppCostNewAfter30CapEok : 0);
+    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'average-assumption' ? '삼성 사용자 가정 평잔 적용' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.2Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
+    const costBase = opp?.q26Base || 0;
+    const totalAddTril = opp ? (opp.q27Est - costBase) * 0.2 + costBase * 0.1 : 0;
+    const totalCostEok = totalAddTril * 150;
+    const oppAfterCapEok = totalCostEok * 0.7;
 
     return {
       eyebrow: `COMPANY X-RAY · ${fRow.strategyGroup}`,
@@ -113,18 +114,18 @@ export function resolveXraySpec(specKey, D, context = {}) {
       rows: [
         ['인가 비히클 현황', `어음(${chain.noteLicense}) / IMA(${chain.imaLicense})`],
         ['별도 자기자본 · 법정한도(200%)', `${fmt(fRow.equity)}조 원 / 어음한도 ${fmt(fRow.equity * 2)}조 원`],
-        ['2026.2Q 실적 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조${ss?.isOverridden ? ' · 삼성 시나리오 반영' : ''})`],
+        ['2026.2Q 실적 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조${chain.key === 'samsung' ? ' · 사용자 고정 가정' : ''})`],
         ['선택한 NIM 시나리오 기준', `${periodLabel} · 어음 잔액 ${fmt(nimRow.note)}조 / IMA ${fmt(nimRow.ima)}조`],
         ['NIM 수익 계산용 어음 잔액', `${fmt(nimRow.noteIncomeBase)}조 원 (${incomeBasisLabel})`],
         ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
         ['시나리오 수익 기여', `어음 ${fmt(nimRow.noteIncome, 0)}억 + IMA ${fmt(nimRow.imaIncome, 0)}억 = 합계 ${fmt(nimRow.total, 0)}억`],
         ['\'26.1H 실효금리 (어음 / RP / 사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
-        ['모험자본 추가 의무 · 기회비용(150bp)', ss?.isOverridden ? `의무 ${fmt(estNote * 0.2)}조 · 전액P-CBO ${fmt(estNote * 0.2 * 150, 0)}억 (30%캡 ${fmt(oppAfterCapEok, 0)}억)` : opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
+        ['모험자본 추가 의무 · 기회비용(150bp)', opp ? `총 추가 의무 ${fmt(totalAddTril)}조 = 신규 증가분 × 20% + 기존 잔액 ${fmt(costBase)}조 × 10%p · 전액P-CBO ${fmt(totalCostEok, 0)}억 (30%캡 ${fmt(oppAfterCapEok, 0)}억)` : '—'],
         ...(chain.key === 'samsung' ? [['언론 보도 전수 확인 (\'26.09~11)', '연말 단일 목표액 미공개 · 9~10월 1·2차 특판 2,100억 완판 · \'28년까지 모험자본 5조 공급 공식 발표']] : []),
         ['전사 영업 수익성 (ROE · 판관비율)', `${p.h126AnnRoePct ? `'26.1H 연환산 ROE ${fmt(p.h126AnnRoePct, 1)}%` : `'25 연결 ROE ${fmt(p.fy25CfsRoePct, 1)}%`}${p.h126CostIncomePct ? ` · 판관비율 ${fmt(p.h126CostIncomePct, 1)}%` : ''}`]
       ],
       source: 'FISIS 202606 (SF304 자본 · SF325 차입부채 · SF321 이자비용 · SF307 손익) 및 DART 연결 사업보고서',
-      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 함께 표시한 기회비용(${fmt(oppAfterCapEok, 0)}억)은 2027년 말 증가분·150bp 기준의 별도 연환산 시나리오이므로 기간과 분모를 맞춰 비교해야 하며, 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
+      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 함께 표시한 기회비용(${fmt(oppAfterCapEok, 0)}억)은 2027년 말 증가분×20% + 기존 잔액×10%p를 항상 포함한 150bp 기준의 별도 연환산 시나리오이므로 기간과 분모를 맞춰 비교해야 하며, 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
@@ -152,9 +153,9 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['직전 시점 대비 증감', prev ? `+${fmt(diff)}조 원 (+${fmt(pct, 1)}%)` : '시계열 기점 (선발 4사 체제 완성)'],
         ['핵심 시장 이벤트', pt.note]
       ],
-      source: '금융감독원 FISIS SF325:A13(발행어음) · 한국투자 IMA 설정액 · 2027E는 원문 전망 + 메리츠 IR 목표 반영',
+      source: '금융감독원 FISIS SF325:A13(발행어음) · 한국투자 IMA 설정액 · 2027E는 원문 전망 + 메리츠 IR 전달 목표 + 삼성 사용자 고정 가정',
       caveat: idx === 6
-        ? '2027E 85.00조 원은 기존 삼성·메리츠 합산 2조 가정을 메리츠 연말 목표 4.00조(수익 계산 평잔은 2.00조)로 대체한 수정 전망이며, 삼성 별도 목표는 미반영(0.00조) 상태입니다.'
+        ? `2027E ${fmt(g.promNoteIma27EstTril)}조 원은 삼성과 메리츠를 각각 연말 4조·수익 계산 평잔 2조로 반영한 고정 가정입니다. 삼성은 사용자 가정이며 공식 목표로 표시하지 않습니다. 원문 83조와 직전 85조는 비교 기준입니다.`
         : '2021~2025년은 연말 잔액이며, 2026.2Q는 반기 말 확정 공시 잔액(58.54조 원)으로 2026년 말 결산값은 아직 없습니다.',
       qas: makeQaItems(idx >= 5 ? ['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening'] : ['guide-product-difference', 'guide-account-separation']),
       actions: [
@@ -329,7 +330,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['전사 차입부채(472.75조) 내 비중', '발행어음 단독 11.8% (고객예수금 158.50조 별도)']
       ],
       source: '금융감독원 FISIS 202606 (SF325 차입부채 상세 A13) 및 한국투자증권 IMA 상품 설정 내역',
-      caveat: '성장률 계산 시 공시 기준선(58.54조 → 85조, +45.2%)과 시뮬레이션 기준선(57.26조 → 85조, +48.4%)을 혼용하지 않도록 구분 표기합니다.',
+      caveat: `성장률 계산 시 공시 기준선(58.54조 → ${fmt(g.promNoteIma27EstTril)}조, +${fmt((g.promNoteIma27EstTril/58.54-1)*100,1)}%)과 시뮬레이션 기준선(57.26조 → ${fmt(g.promNoteIma27EstTril)}조, +${fmt((g.promNoteIma27EstTril/57.26-1)*100,1)}%)을 혼용하지 않습니다.`,
       qas: makeQaItems(['guide-growth-baseline', 'guide-account-separation']),
       actions: [
         { label: '9사별 기준선·전망 분해표 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
@@ -337,37 +338,37 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ]
     },
     'kpi:forecast-85': {
-      eyebrow: '2027E REVISED OUTLOOK · 수정 전망 산식',
-      title: '2027년 말 수신 시장 전망 85.00조 원',
-      badge: '메리츠 IR 반영',
-      formula: '발행어음 80.00조(기존 78 + 메리츠 4 − 잠재합산 2) + IMA 5.00조 = 85.00조 원',
+      eyebrow: '2027E REVISED OUTLOOK · 고정 전망 가정',
+      title: `2027년 말 수신 시장 전망 ${fmt(g.promNoteIma27EstTril)}조 원`,
+      badge: '삼성·메리츠 연말 4조·평잔 2조',
+      formula: `발행어음 ${fmt(g.promNote27EstTril)}조 + IMA ${fmt(g.ima27EstTril)}조 = ${fmt(g.promNoteIma27EstTril)}조 원`,
       rows: [
-        ['선발 4사 \'27E 합계 (한투·미래·NH·KB)', '61.50조 원 (어음 56.50조 + 한투·미래·NH IMA 5.00조)'],
-        ['2년차 3사 \'27E 합계 (키움·하나·신한)', '19.50조 원 (키움 7.50 · 하나 6.50 · 신한 5.50)'],
-        ['신규 인가 메리츠 · 삼성 반영 기준', '메리츠 연말 4.00조(수익평잔 2.00조) 반영 · 삼성 별도목표 미반영(0.00조)'],
-        ['원문 모형(83.00조) 대비 변화', '+2.00조 원 상향 (공시 기준선 대비 +26.46조 · +45.2% / 18개월 구간)']
+        ['신규 인가 메리츠 · 삼성 반영 기준', '각사 연말 4.00조·수익 평잔 2.00조. 삼성은 메리츠와 동일하게 둔 사용자 가정이며 공식 발표 목표가 아님'],
+        ['원문 모형과 직전 가정', '원문 83조 → 메리츠 반영 85조 → 삼성 4조 추가 고정 89조'],
+        ['공시 기준선 대비 변화', `+${fmt(g.promNoteIma27EstTril-58.54)}조 · +${fmt((g.promNoteIma27EstTril/58.54-1)*100,1)}% / 약 18개월 누적`],
+        ['연말 잔액과 수익 계산용 평잔 구분', '삼성·메리츠 각사 연말 4조와 수익 계산 평잔 2조를 구분. 나머지 회사는 연말 잔액을 평잔 대용']
       ],
-      source: '원문 전망 모형(Module B) + 2026-11-17 사용자 전달 메리츠증권 IR 목표(원문 URL 별도 확인 전)',
-      caveat: '연말 시장 규모(85조)에는 메리츠 연말 4조가 들어가지만, 연간 NIM 수익 계산기에는 메리츠 평잔 목표 2조가 적용되어 수익 계산용 어음 분모는 78조 원이 됩니다.',
+      source: '원문 전망 모형 + 사용자 전달 메리츠 IR 목표 + 삼성에 같은 수치를 적용하라는 사용자 가정',
+      caveat: '연말 어음 잔액 84조와 수익 계산용 어음 잔액 80조는 다릅니다. 기본 NIM 150bp·IMA 120bp에서 12,000억 + 600억 = 12,600억 원이며 실제 연간 손익 전망으로 확정하지 않습니다.',
       qas: makeQaItems(['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: '회사별 성장 전제 드릴다운 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
-        { label: 'NIM 수익 계산기(#nim-lab) 시뮬레이션 →', tab: 'funding', scrollTo: 'nim-lab' }
+        { label: 'NIM 수익 계산기(#nim-lab) 직접 조정 →', tab: 'funding', scrollTo: 'nim-lab' }
       ]
     },
     'kpi:growth-452': {
       eyebrow: 'GROWTH RATE BASIS · 순증 및 증가율 기준',
-      title: '실적 기준선 대비 +26.46조 원 (+45.2%) 순증',
+      title: `실적 기준선 대비 +${fmt(g.promNoteIma27EstTril-58.54)}조 원 (+${fmt((g.promNoteIma27EstTril/58.54-1)*100,1)}%) 순증`,
       badge: '약 18개월 누적',
-      formula: '(85.00조 ÷ 58.54조 − 1) × 100 = +45.20% (연율화 CAGR 아님)',
+      formula: `(${fmt(g.promNoteIma27EstTril)}조 ÷ 58.54조 − 1) × 100 = +${fmt((g.promNoteIma27EstTril/58.54-1)*100,1)}% (연율화 CAGR 아님)`,
       rows: [
-        ['공시 실적 기준선 (58.54조 출발)', '순증 +26.46조 원 / 누적 증가율 +45.2%'],
-        ['원문 모형 기준선 (57.26조 출발)', '순증 +27.74조 원 / 누적 증가율 +48.4%'],
-        ['신규 모험자본 20% 추가 의무액', '실적 기준 5.29조 원 / 모형 기준 5.55조 원'],
-        ['비교 기간 정의', '2026년 6월 말 ~ 2027년 12월 말 (1.5년 = 18개월 누적 구간)']
+        ['공시 실적 기준선 (58.54조 출발)', `순증 +${fmt(g.promNoteIma27EstTril-58.54)}조 / 누적 증가율 +${fmt((g.promNoteIma27EstTril/58.54-1)*100,1)}%`],
+        ['원문 모형 기준선 (57.26조 출발)', `순증 +${fmt(g.promNoteIma27EstTril-57.26)}조 / 누적 증가율 +${fmt((g.promNoteIma27EstTril/57.26-1)*100,1)}%`],
+        ['비용 계산기의 추가 의무', '신규 증가분 × 20% + 기존 기준 잔액 × 의무비율 상승분 10%p를 항상 포함'],
+        ['비교 기간 정의', '2026년 6월 말 ~ 2027년 12월 말 (1.5년 = 약 18개월 누적 구간)']
       ],
-      source: 'FISIS 202606 확정 공시 및 대시보드 수정 전망 산식',
-      caveat: '1년 연간 성장률이 아닌 6개 분기(18개월) 누적 성장률이며, 모험자본 기회비용 계산기(#invest)에서는 두 기준선을 직접 전환해 비교할 수 있습니다.',
+      source: 'FISIS 202606 제공 공시 및 대시보드 고정 전망 가정',
+      caveat: '기존 잔액 적용은 선택 항목이 아닙니다. 비용은 기준선별 기존 잔액도 포함한 연환산 시나리오이며 회계상 확정 손실과 구분합니다.',
       qas: makeQaItems(['guide-growth-baseline', 'guide-sizing-growth']),
       actions: [
         { label: '모험자본 기회비용 기준선 비교(#invest) →', tab: 'invest', primary: true },
@@ -382,7 +383,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       rows: [
         ['연도별 의무비율 로드맵', '2026년 10% → 2027년 20% → 2028년 이후 25%'],
         ['중견기업 · A급 채권 인정 상한', '모험자본 의무액의 최대 30% (2027년 총자산의 6%, 2028년 7.5%)'],
-        ['2027E 85조 기준 업권 총의무액', '총 17.00조 원 (A급 캡 5.10조 제외 비A급 순의무 11.90조 원)'],
+        [`2027E ${fmt(g.promNoteIma27EstTril)}조 기준 업권 총의무액`, `총 ${fmt(g.promNoteIma27EstTril*.2)}조 원 (A급 캡 ${fmt(g.promNoteIma27EstTril*.2*.3)}조 제외 비A급 순의무 ${fmt(g.promNoteIma27EstTril*.2*.7)}조 원)`],
         ['규제 적용 구조', '기업금융(50/70%)·부동산(≤10%)·기타 합계 100% 안에서의 별도 교차 요건']
       ],
       source: '금융위원회 『종투사 기업금융 경쟁력 제고방안』(2025.04.09) 및 금융투자업규정 제4-102조의5 개정안',
@@ -434,7 +435,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
     },
     'kpi:bear-volume': {
       eyebrow: '2027 VOLUME VERDICT · 수신 외형 판정',
-      title: '2027년 수신 외형(잔액): 확장 우위 (58.54조 → 85조E)',
+      title: `2027년 수신 외형(잔액): 확장 우위 (58.54조 → ${fmt(g.promNoteIma27EstTril)}조E)`,
       badge: '3대 강화 > 3대 악화',
       formula: '강화(9사 체제 완성 + 단기 파킹 머니무브 + 연금·ISA 기대) > 악화(특판 경합 + 금리인상)',
       rows: [
@@ -551,7 +552,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       formula: '현금통화 + 요구불예금 + 수시입출식 저축성예금(M1) + 2년 미만 정기예적금·MMF·CMA·수익증권 등',
       rows: [
         ['광의통화 M2 규모 (2026.09)', '4,278.8조 원 — 국내 단기·준결제성 유동성 총량 지표'],
-        ['발행어음+IMA 시장(58.54조 → 85조E) 비중', 'M2 대비 현재 1.37% → 2027E 1.99% (2% 미만의 초기 침투율)'],
+        [`발행어음+IMA 시장(58.54조 → ${fmt(g.promNoteIma27EstTril)}조E) 비중`, `M2 대비 현재 1.37% → 2027E ${fmt(g.promNoteIma27EstTril/4278.8*100)}%`],
         ['상반기 베어 플랫기 머니무브 경로', '은행 저원가 요구불예금(0.1~0.5%) → 증권 발행어음형 CMA(2.8~3.2%) 스윕 유입']
       ],
       source: '한국은행 경제통계시스템(ECOS) 통화 및 유동성 통계(2026.09 평잔 기준)',
