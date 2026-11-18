@@ -1,4 +1,5 @@
 import { getSamsungScenario } from './curiosity.js';
+import { getNimScenario } from './nim.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
@@ -76,7 +77,7 @@ function makeQaItems(ids) {
   return (ids || []).map(id => QA_DIGEST[id] ? { id, ...QA_DIGEST[id] } : null).filter(Boolean);
 }
 
-export function resolveXraySpec(specKey, D) {
+export function resolveXraySpec(specKey, D, context = {}) {
   if (!specKey || !D) return null;
   const [kind, ...rest] = String(specKey).split(':');
   const id = rest.join(':');
@@ -90,35 +91,40 @@ export function resolveXraySpec(specKey, D) {
     const chain = (D.ib9FirmsCuriosityChain || []).find(x => x.key === id || x.firm === id);
     if (!chain) return null;
     const fRow = D.ib9FirmsFunding202606[chain.fundingIdx];
-    const fisis = D.promNoteFisis202606.find(x => x.firm === chain.firm);
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
-    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
+    const ss = chain.key === 'samsung' && !context.nimScenario ? getSamsungScenario(D) : null;
     const base26 = chain.base26Q2NoteTril + chain.base26Q2ImaTril;
     const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
     const est27 = estNote + chain.est27ModelImaTril;
-    const incBaseNote = ss?.isOverridden ? ss.avgTril : (chain.est27AverageNoteTril ?? chain.est27ModelNoteTril);
-    const nim150Eok = incBaseNote * 150 + chain.est27ModelImaTril * 120;
+    const scenario = context.nimScenario || getNimScenario(D);
+    const nimRow = scenario.rows.find(row => row.key === chain.key);
+    if (!nimRow) return null;
+    const periodLabel = scenario.period === '2026' ? '2026.2Q 제공 잔액' : '2027E';
+    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'scenario-avg' ? '삼성 사용자 시나리오 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.2Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
     const oppAfterCapEok = ss?.isOverridden ? (estNote * 0.2 * 150 * 0.7) : (opp ? opp.oppCostNewAfter30CapEok : 0);
 
     return {
       eyebrow: `COMPANY X-RAY · ${fRow.strategyGroup}`,
       title: `${chain.firm} · 수신·조달원가·기회비용·ROE 통합 검증`,
       badge: `${chain.creditRating} · ${chain.statusBadge}`,
-      formula: `'27E 수익시나리오(${fmt(nim150Eok, 0)}억) vs 모험자본 기회비용(상한활용 ${fmt(oppAfterCapEok, 0)}억)`,
+      formula: `${periodLabel} 수익시나리오(${fmt(nimRow.total, 0)}억) = 어음 ${fmt(nimRow.noteIncomeBase)}조 × ${fmt(nimRow.noteBp, 0)}bp + IMA ${fmt(nimRow.ima)}조 × ${fmt(nimRow.imaBp, 0)}bp · 2027E 기회비용(상한활용 ${fmt(oppAfterCapEok, 0)}억)`,
       rows: [
         ['인가 비히클 현황', `어음(${chain.noteLicense}) / IMA(${chain.imaLicense})`],
         ['별도 자기자본 · 법정한도(200%)', `${fmt(fRow.equity)}조 원 / 어음한도 ${fmt(fRow.equity * 2)}조 원`],
-        ['\'26.2Q 실적 → \'27E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조${ss?.isOverridden ? ' · 삼성 시나리오 반영' : ''})`],
-        ['NIM 수익 계산용 어음 잔액', `${fmt(incBaseNote)}조 원 (${ss?.isOverridden ? '삼성 사용자 시나리오 평잔' : chain.est27AverageNoteTril ? '메리츠 IR 평잔 목표 적용' : '연말 잔액 대용치'})`],
+        ['2026.2Q 실적 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조${ss?.isOverridden ? ' · 삼성 시나리오 반영' : ''})`],
+        ['선택한 NIM 시나리오 기준', `${periodLabel} · 어음 잔액 ${fmt(nimRow.note)}조 / IMA ${fmt(nimRow.ima)}조`],
+        ['NIM 수익 계산용 어음 잔액', `${fmt(nimRow.noteIncomeBase)}조 원 (${incomeBasisLabel})`],
+        ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
+        ['시나리오 수익 기여', `어음 ${fmt(nimRow.noteIncome, 0)}억 + IMA ${fmt(nimRow.imaIncome, 0)}억 = 합계 ${fmt(nimRow.total, 0)}억`],
         ['\'26.1H 실효금리 (어음 / RP / 사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
         ['모험자본 추가 의무 · 기회비용(150bp)', ss?.isOverridden ? `의무 ${fmt(estNote * 0.2)}조 · 전액P-CBO ${fmt(estNote * 0.2 * 150, 0)}억 (30%캡 ${fmt(oppAfterCapEok, 0)}억)` : opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
         ...(chain.key === 'samsung' ? [['언론 보도 전수 확인 (\'26.09~11)', '연말 단일 목표액 미공개 · 9~10월 1·2차 특판 2,100억 완판 · \'28년까지 모험자본 5조 공급 공식 발표']] : []),
         ['전사 영업 수익성 (ROE · 판관비율)', `${p.h126AnnRoePct ? `'26.1H 연환산 ROE ${fmt(p.h126AnnRoePct, 1)}%` : `'25 연결 ROE ${fmt(p.fy25CfsRoePct, 1)}%`}${p.h126CostIncomePct ? ` · 판관비율 ${fmt(p.h126CostIncomePct, 1)}%` : ''}`]
       ],
       source: 'FISIS 202606 (SF304 자본 · SF325 차입부채 · SF321 이자비용 · SF307 손익) 및 DART 연결 사업보고서',
-      caveat: `${chain.growthPremise} NIM 시나리오(${fmt(nim150Eok, 0)}억)는 판관비·충당금 차감 전 상품 단위 추정치이며, 이미 모험자본 저마진을 반영해 NIM을 낮췄다면 기회비용(${fmt(oppAfterCapEok, 0)}억)을 중복 차감하지 않습니다.`,
+      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 함께 표시한 기회비용(${fmt(oppAfterCapEok, 0)}억)은 2027년 말 증가분·150bp 기준의 별도 연환산 시나리오이므로 기간과 분모를 맞춰 비교해야 하며, 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
@@ -179,7 +185,7 @@ export function resolveXraySpec(specKey, D) {
       caveat: '자금순환 통계는 상장주식·펀드의 분기 말 시가평가 변동이 반영되므로, 지분증권 비중 상승에는 신규 자금 유입과 주가 상승 효과가 함께 포함되어 있습니다.',
       qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
       actions: [
-        { label: '5대 부문 → 15개 세부 금융상품 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+        { label: '세부 금융상품·부채 참고 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
         { label: '머니무브 수신금리 사다리(#funding) →', tab: 'funding', scrollTo: 'money-move-safety' }
       ]
     };
@@ -613,7 +619,7 @@ export function resolveXraySpec(specKey, D) {
         caveat: '가계 총자산의 62.7%가 부동산에 묶여 있으나, 금융자산(6,930.2조) 내에서도 정기예금(1,474조)과 연금(1,633조)의 중수익 전환 여력이 막대합니다.',
         qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
         actions: [
-          { label: '실물·금융·15개 세부상품 분해표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+          { label: '세부 금융상품·부채 참고 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
           { label: '한·미·영·일·중 5개국 비교 바로가기 ↓', tab: 'household-wealth', scrollTo: 'hw-intl-5country' }
         ]
       };
@@ -621,19 +627,20 @@ export function resolveXraySpec(specKey, D) {
     'kpi:hw-kr-fin': (() => {
       const hk = hw?.headlineKpis;
       const qLat = hw?.krQuarterlyFinSeries?.at(-1);
+      const categories = hw?.krFinCategories26Q2 || [];
+      const totalFin = hk?.krFinAssets26Q2Tril ?? qLat?.totalFinTril ?? categories.reduce((sum, category) => sum + category.amount26Q2Tril, 0);
+      const bonds = categories.find(category => category.id === 'bonds');
       return {
         eyebrow: 'ECOS 281Y002 · 최신 분기 가계 금융자산',
-        title: `2026.2Q 가계 금융자산 ${hk ? fmt(hk.krFinAssets26Q2Tril, 1) : '6,930.2'}조 원`,
+        title: `2026.2Q 가계 금융자산 ${fmt(totalFin, 2)}조 원`,
         badge: `순금융자산 ${hk ? fmt(hk.krNetFin26Q2Tril, 1) : '4,435.2'}조`,
-        formula: '예금(2,688.1) + 주식·펀드(2,381.1) + 보험·연금(1,633.0) + 채권(182.9) + 기타(45.1)',
+        formula: `${categories.map(category => `${category.label}(${fmt(category.amount26Q2Tril, 2)}조)`).join(' + ')} = ${fmt(totalFin, 2)}조 원`,
         rows: [
-          ['① 현금·예금 (38.8%)', '2,688.1조 원 — 저축성예금 1,923.3조(정기예금 1,474.3조) + 결제성 502.3조'],
-          ['② 지분증권·투자펀드 (34.4%)', '2,381.1조 원 — 국내주식 1,622.5조 + 해외주식 348.2조 + 펀드 327.0조'],
-          ['③ 보험·연금준비금 (23.6%)', '1,633.0조 원 / ④ 채권 직접보유 182.9조 원 (2.6%)'],
-          ['금융부채 및 건전성 배율', hk ? `금융부채 ${fmt(hk.krFinLiab26Q2Tril, 1)}조 원 · 금융자산/부채 배율 ${qLat ? fmt(qLat.assetLiabRatioX, 2) : '2.78'}배` : '금융부채 2,495.1조 원 · 배율 2.78배']
+          ...categories.map(category => [`${category.label} (${fmt(category.share26Q2Pct, 1)}%)`, `${fmt(category.amount26Q2Tril, 2)}조 원`]),
+          ['금융부채 및 건전성 배율', hk ? `금융부채 ${fmt(hk.krFinLiab26Q2Tril, 1)}조 원 · 금융자산/부채 배율 ${qLat ? fmt(qLat.assetLiabRatioX, 2) : '2.78'}배` : '—']
         ],
         source: '한국은행 『2026년 2분기 자금순환(잠정)』(ECOS 281Y002, S14 가계 및 비영리단체)',
-        caveat: '가계의 직접 채권 보유는 2.6%(장기채 126.2조·단기채 7.3조)에 불과해, 발행어음·IMA가 예금과 채권 사이의 핵심 가교 상품으로 작동합니다.',
+        caveat: bonds ? `가계 금융자산 중 ${bonds.label}은 ${fmt(bonds.share26Q2Pct, 1)}%(${fmt(bonds.amount26Q2Tril, 2)}조)입니다. 자산별 위험·만기·원금보호 조건을 구분하고, 발행어음·IMA를 예금과 동일한 보호 구조로 해석하지 않습니다.` : '세부 금융상품의 잔액·위험·만기·원금보호 조건을 함께 확인합니다.',
         qas: makeQaItems(['guide-latest-rate', 'guide-product-difference']),
         actions: [
           { label: '분기별 금융자산 시계열 차트 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-timeseries', primary: true },
@@ -816,6 +823,35 @@ let lastTriggerEl = null;
 let getDataFn = () => null;
 let onActionFn = () => {};
 const drawerStack = [];
+const backgroundInertState = new Map();
+const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function focusableDrawerItems() {
+  return [...drawerEl.querySelectorAll(focusableSelector)].filter(el => !el.hidden && !el.closest('[hidden]') && !el.inert);
+}
+
+function setBackgroundInert(locked) {
+  if (locked) {
+    for (const el of document.body.children) {
+      if (el === drawerEl || el === backdropEl || backgroundInertState.has(el)) continue;
+      backgroundInertState.set(el, { inert: !!el.inert, attribute: el.hasAttribute('inert') });
+      el.inert = true;
+      el.setAttribute('inert', '');
+    }
+  } else {
+    for (const [el, saved] of backgroundInertState) {
+      el.inert = saved.inert;
+      if (saved.attribute) el.setAttribute('inert', '');
+      else el.removeAttribute('inert');
+    }
+    backgroundInertState.clear();
+  }
+}
+
+function focusDrawerStart() {
+  const target = drawerEl.querySelector('#xray-close-btn') || focusableDrawerItems()[0] || drawerEl;
+  target.focus({ preventScroll: true });
+}
 
 function ensureDrawerDom() {
   if (drawerEl) return;
@@ -828,6 +864,11 @@ function ensureDrawerDom() {
   drawerEl.id = 'xray-drawer';
   drawerEl.className = 'xray-drawer';
   drawerEl.setAttribute('aria-hidden', 'true');
+  drawerEl.setAttribute('role', 'dialog');
+  drawerEl.setAttribute('aria-modal', 'true');
+  drawerEl.setAttribute('tabindex', '-1');
+  drawerEl.inert = true;
+  drawerEl.setAttribute('inert', '');
   drawerEl.setAttribute('aria-label', '데이터 근거 및 연관 질문 인스펙터');
 
   document.body.appendChild(backdropEl);
@@ -835,10 +876,24 @@ function ensureDrawerDom() {
 
   backdropEl.addEventListener('click', closeXray);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && drawerEl && drawerEl.classList.contains('open')) {
+    if (!drawerEl || !drawerEl.classList.contains('open')) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
       e.stopPropagation();
       closeXray();
+      return;
     }
+    if (e.key === 'Tab') {
+      const items = focusableDrawerItems();
+      const first = items[0] || drawerEl, last = items.at(-1) || drawerEl;
+      if (!drawerEl.contains(document.activeElement) || !items.length || (e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus({ preventScroll: true });
+      }
+    }
+  });
+  document.addEventListener('focusin', e => {
+    if (drawerEl.classList.contains('open') && !drawerEl.contains(e.target)) focusDrawerStart();
   });
 }
 
@@ -846,6 +901,9 @@ export function closeXray() {
   if (!drawerEl) return;
   drawerEl.classList.remove('open');
   drawerEl.setAttribute('aria-hidden', 'true');
+  drawerEl.inert = true;
+  drawerEl.setAttribute('inert', '');
+  setBackgroundInert(false);
   if (backdropEl) backdropEl.hidden = true;
   drawerStack.length = 0;
   if (lastTriggerEl && typeof lastTriggerEl.focus === 'function') {
@@ -928,11 +986,7 @@ export function openXray(specKey, triggerEl = null, pushStack = false) {
   });
 
   drawerEl.querySelectorAll('[data-xray-dismiss]').forEach(el => {
-    el.addEventListener('click', () => {
-      drawerEl.classList.remove('open');
-      drawerEl.setAttribute('aria-hidden', 'true');
-      if (backdropEl) backdropEl.hidden = true;
-    });
+    el.addEventListener('click', closeXray);
   });
 
   drawerEl.querySelectorAll('[data-xray-act]').forEach(btn => {
@@ -947,6 +1001,10 @@ export function openXray(specKey, triggerEl = null, pushStack = false) {
   backdropEl.hidden = false;
   drawerEl.classList.add('open');
   drawerEl.setAttribute('aria-hidden', 'false');
+  drawerEl.inert = false;
+  drawerEl.removeAttribute('inert');
+  setBackgroundInert(true);
+  focusDrawerStart();
   return true;
 }
 

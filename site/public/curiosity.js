@@ -1378,6 +1378,10 @@ export function renderHouseholdWealthPage(D) {
   if (!hw) return '';
   const k = hw.headlineKpis;
   const nbs25 = hw.krAnnualBalanceSheet.at(-1);
+  const detailItems = hw.krFinCategories26Q2.flatMap(cat => cat.subItems);
+  const assetDetailCount = detailItems.filter(item => item.ecosCode !== 'F00B_L').length;
+  const liabilityReferenceCount = detailItems.length - assetDetailCount;
+  const corpLatest = hw.corpLiquiditySeries.at(-1);
 
   return `
     <div class="grid4-metrics" style="margin-bottom:20px">
@@ -1411,7 +1415,7 @@ export function renderHouseholdWealthPage(D) {
         <div>
           <div class="eyebrow">STAGE 01–03 · 한국 가계자산 3단계 브레이크다운</div>
           <h2>가계 총자산 1경 6,641조 원은 실물·금융·세부 상품으로 어떻게 나뉠까?</h2>
-          <p>1단계(실물 vs 금융 총량)에서 시작해 아래 5대 금융자산 카드를 클릭하면 <b>15개 세부 금융상품 잔액·증감 시계열(ECOS 281Y002)</b>이 펼쳐집니다.</p>
+          <p>1단계(실물 vs 금융 총량)에서 시작해 아래 5대 금융자산 카드를 클릭하면 <b>${assetDetailCount}개 세부 자산 항목의 잔액·증감 시계열(ECOS 281Y002)과 부채 참고 ${liabilityReferenceCount}개</b>이 펼쳐집니다.</p>
         </div>
         <span class="badge green">'25말 총량 · '26.2Q 금융</span>
       </div>
@@ -1508,7 +1512,7 @@ export function renderHouseholdWealthPage(D) {
             </table>
           </div>
           <div class="callout" style="margin:12px 0 0">
-            <b>가계 + 법인 합산 예금성 모수 3,824.0조 원</b> · '26.2Q 가계 현금·예금(2,688.1조)에 비금융법인 현금·예금(1,135.9조)·법인 펀드(274.7조)가 더해져 단기 수신시장의 실제 유동성 저수지를 이룹니다.
+            <b>가계 + 법인 합산 현금·예금 ${fmt(k.combinedDepositsPool26Q2Tril, 1)}조 원</b> = 가계 현금·예금 ${fmt(k.krDeposits26Q2Tril, 1)}조 + 비금융법인 현금·예금 ${fmt(k.corpDeposits26Q2Tril, 1)}조입니다. 법인 투자펀드(MMF 등) ${fmt(corpLatest.fundsTril, 1)}조는 위 합계에 포함하지 않고 별도로 표시합니다.
           </div>
         </div>
 
@@ -1636,6 +1640,8 @@ export function renderHouseholdWealthPage(D) {
 function renderHwCategoryDetail(D) {
   const hw = D.householdWealthAndIntl2026;
   const cat = hw.krFinCategories26Q2.find(x => x.id === explorerState.hwCategory) || hw.krFinCategories26Q2[0];
+  const detailAssetTotal = cat.subItems.filter(item => item.ecosCode !== 'F00B_L').reduce((sum, item) => sum + item.q26_2, 0);
+  const residual = Math.round((cat.amount26Q2Tril - detailAssetTotal) * 100) / 100;
 
   return `<div class="sub-lens-card" style="border-left:4px solid ${cat.color}">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
@@ -1648,6 +1654,7 @@ function renderHwCategoryDetail(D) {
         : `<a class="btn" href="#funding">수신 전망 · 머니무브 금리 사다리 →</a>`}
     </div>
     <p class="drill-prose" style="margin-top:8px">${cat.implication}</p>
+    ${Math.abs(residual) > 0.02 ? `<div class="callout" data-hw-detail-reconciliation style="font-size:11px">선택 부문 총액 <b>${fmt(cat.amount26Q2Tril)}조</b> = 표시된 세부 자산 합계 <b>${fmt(detailAssetTotal)}조</b> ${residual < 0 ? '−' : '+'} <b>세부표 미분류 차이 ${fmt(Math.abs(residual))}조</b>입니다. 원문 부문 총액과 표시된 세부 항목 합계의 차이를 계산한 값이며, 추가 자산으로 분류한 금액은 아닙니다. 부채 참고행은 자산 합계에서 제외합니다.</div>` : ''}
     <div class="table-wrap" style="margin-top:12px">
       <table class="data-table">
         <thead>

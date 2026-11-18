@@ -180,6 +180,28 @@ test('household wealth & 5-country comparison module renders all categories, ser
   }
 });
 
+test('household detail counts, residual reconciliation and corporate cash pool keep assets and reference balances distinct', () => {
+  const previousCategory = explorerState.hwCategory;
+  try {
+    explorerState.hwCategory = 'other';
+    const html = renderHouseholdWealthPage(D);
+    assert(html.includes('17개 세부 자산 항목'));
+    assert(html.includes('부채 참고 1개'));
+    assert(!html.includes('15개 세부 금융상품'));
+    assert(html.includes('세부표 미분류 차이 23.79조'));
+    assert(html.includes('표시된 세부 자산 합계 <b>25.29조'));
+    assert(html.includes('합산 현금·예금 3,824.0조'));
+    assert(html.includes('법인 투자펀드(MMF 등) 274.7조는 위 합계에 포함하지 않고 별도로 표시'));
+    const changed = structuredClone(D);
+    changed.householdWealthAndIntl2026.krFinCategories26Q2.find(cat => cat.id === 'other').amount26Q2Tril += 1;
+    changed.householdWealthAndIntl2026.corpLiquiditySeries.at(-1).fundsTril += 2;
+    const changedHtml = renderHouseholdWealthPage(changed);
+    assert(changedHtml.includes('세부표 미분류 차이 24.79조'));
+    assert(changedHtml.includes('합산 현금·예금 3,824.0조'));
+    assert(changedHtml.includes('법인 투자펀드(MMF 등) 276.7조는 위 합계에 포함하지 않고 별도로 표시'));
+  } finally { explorerState.hwCategory = previousCategory; }
+});
+
 test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly without NaN or undefined', () => {
   const staticKeys = [
     'kpi:actual-5854', 'kpi:forecast-85', 'kpi:growth-452', 'kpi:vc-mandate-20',
