@@ -61,8 +61,8 @@ function getFirmChain(D, key) {
   return list.find(x => x.key === key) || list[0];
 }
 
-function srcBox(text) {
-  return `<div class="source"><b>출처 및 산정방식</b> · ${text} <a href="#sources">원천·검토 사항 ↗</a></div>`;
+function srcBox(text, xrayKey = '') {
+  return `<div class="source"><b>출처 및 산정방식</b> · ${text} ${xrayKey ? `<button type="button" class="source-xray-btn" data-xray="${xrayKey}">산식·근거 열기</button> · ` : ''}<a href="#sources">원천·검토 사항 ↗</a></div>`;
 }
 
 function miniMixBar(fundingRow) {
@@ -109,7 +109,7 @@ export function renderFundingBreakdownPanel(D) {
         </tbody>
       </table>
     </div>
-    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 0.00조는 별도 목표 미확인에 따른 미반영(발표 목표 아님)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.')}
+    ${srcBox('발행어음·IMA 잔액 및 실효금리는 FISIS 202606(SF304·SF325·SF321) 기준. 한국투자·미래에셋·NH 전망에는 IMA가 포함됩니다. 메리츠 연말 4.00조·평잔 2.00조는 2026.11.17 사용자 전달 IR 목표(원문 링크 별도 확인 전)이며, 삼성 0.00조는 별도 목표 미확인에 따른 미반영(발표 목표 아님)입니다. 별도·연결 ROE 및 순영업수익은 전사 재무제표 기준이며 발행어음 단독 손익이 아닙니다.', 'kpi:forecast-85')}
   </section>`;
 }
 
@@ -162,6 +162,7 @@ function renderFundingChainRows(D) {
             <div class="drill-actions">
               <button type="button" class="btn primary" data-jump-ib="${item.key}">9사 조달·수익성 동기화 비교 →</button>
               <button type="button" class="btn" data-jump-invest="${item.key}">이 회사 모험자본 비용 시뮬레이션 →</button>
+              <button type="button" class="btn" data-xray="firm:${item.key}">수익·비용·ROE 통합 요약</button>
             </div>
           </div>
         </div>
@@ -252,7 +253,7 @@ export function renderMoneyMoveSafetyPanel(D) {
     ? `실물 ${fmt(hw.krNonFinAssets25Tril, 1)}조 · 금융('26.2Q) ${fmt(hw.krFinAssets26Q2Tril, 1)}조`
     : '실물 10,433.7조 · 금융(\'26.2Q) 6,930.2조';
 
-  return `<section class="panel" id="money-move-safety">
+  return `<section class="panel" id="money-move-safety" style="scroll-margin-top:95px">
     <div class="panel-head">
       <div>
         <div class="eyebrow">MONEY MOVE &amp; CREDIT BUFFER · 대기자금 이동 경로와 발행사 안전성</div>
@@ -273,12 +274,15 @@ export function renderMoneyMoveSafetyPanel(D) {
         <strong style="font-size:24px;color:var(--teal)">${hhTotalLabel}</strong>
         <p class="muted">${hhSubLabel}</p>
       </a>
-      ${m.macroLiquidity.map(x => `<div class="metric"><small>${x.label}</small><strong style="font-size:24px">${x.amount}</strong><p class="muted">${x.sub}</p></div>`).join('')}
+      ${m.macroLiquidity.map((x, idx) => {
+        const xk = idx === 0 ? 'kpi:mm-m2' : idx === 1 ? 'kpi:mm-pension' : 'kpi:mm-deposits';
+        return `<div class="metric" data-xray="${xk}" tabindex="0" role="button"><small>${x.label}</small><strong style="font-size:24px">${x.amount}</strong><p class="muted">${x.sub}</p></div>`;
+      }).join('')}
     </div>
     <div id="money-move-body" aria-live="polite">
       ${renderMoneyMoveBody(D)}
     </div>
-    ${srcBox('한국은행·국가데이터처 국민대차대조표(2025말 ECOS 291Y505) · 자금순환(2026.2Q ECOS 281Y002) · 통화 및 예금은행 가중평균금리(2026.09) · 통합연금포털(2025말 501.4조) · FISIS(202606 SF324·SF209·SF408) · 국내 신용평가 3사 무보증 선순위 회사채 신용등급(2026년 하반기). 전체 가계자산 카드를 클릭하면 가계·법인 세부 브레이크다운 및 5개국 비교 탭으로 이동합니다.')}
+    ${srcBox('한국은행·국가데이터처 국민대차대조표(2025말 ECOS 291Y505) · 자금순환(2026.2Q ECOS 281Y002) · 통화 및 예금은행 가중평균금리(2026.09) · 통합연금포털(2025말 501.4조) · FISIS(202606 SF324·SF209·SF408) · 국내 신용평가 3사 무보증 선순위 회사채 신용등급(2026년 하반기). 전체 가계자산 카드를 클릭하면 가계·법인 세부 브레이크다운 및 5개국 비교 탭으로 이동합니다.', 'kpi:mm-m2')}
   </section>`;
 }
 
@@ -402,9 +406,9 @@ export function renderIbSynchronizedExplorer(D) {
       <span class="badge blue">전사 기준 · 2026.2Q</span>
     </div>
     <div class="grid3" style="margin-bottom:16px">
-      <div class="metric"><small>9사 차입부채 합계 (SF325)</small><strong>472.75 <small>조 원</small></strong><p class="muted">RP 31.0% · 단기차입 23.9% · ELS 17.7%</p></div>
-      <div class="metric"><small>별도 고객예수금 (SF324)</small><strong>158.50 <small>조 원</small></strong><p class="muted">증권금융 별도예치 · 고유차입과 분리</p></div>
-      <div class="metric"><small>발행어음 잔액 ('26.2Q 확정)</small><strong>55.94 <small>조 원</small></strong><p class="muted">차입부채의 11.8% · '26.09 9사 전원 인가</p></div>
+      <div class="metric" data-xray="kpi:ib-debt-472" tabindex="0" role="button"><small>9사 차입부채 합계 (SF325)</small><strong>472.75 <small>조 원</small></strong><p class="muted">RP 31.0% · 단기차입 23.9% · ELS 17.7%</p></div>
+      <div class="metric" data-xray="kpi:mm-deposits" tabindex="0" role="button"><small>별도 고객예수금 (SF324)</small><strong>158.50 <small>조 원</small></strong><p class="muted">증권금융 별도예치 · 고유차입과 분리</p></div>
+      <div class="metric" data-xray="kpi:actual-5854" tabindex="0" role="button"><small>발행어음 잔액 ('26.2Q 확정)</small><strong>55.94 <small>조 원</small></strong><p class="muted">차입부채의 11.8% · '26.09 9사 전원 인가</p></div>
     </div>
     <div class="chips" id="ib-sync-chips" role="group" aria-label="증권사 선택 렌즈">
       ${chainList.map(c => `<button type="button" class="chip ${c.key === activeChain.key ? 'active' : ''}" data-sync-firm="${c.key}">${c.firm}</button>`).join('')}
@@ -441,12 +445,12 @@ export function renderIbSynchronizedExplorer(D) {
         </tbody>
       </table>
     </div>
-    ${srcBox('FISIS 202606 SF325(차입부채)·SF324(고객예수금)·SF321(수단별 이자비용 기반 상반기 연환산 실효금리). 7개 항목 단순 합계(472.65조)와 총계(472.75조)의 0.10조 차이는 항목별 반올림 누적 단수차입니다.')}
+    ${srcBox('FISIS 202606 SF325(차입부채)·SF324(고객예수금)·SF321(수단별 이자비용 기반 상반기 연환산 실효금리). 7개 항목 단순 합계(472.65조)와 총계(472.75조)의 0.10조 차이는 항목별 반올림 누적 단수차입니다.', 'kpi:ib-debt-472')}
   </section>
   <div id="ib-sync-focus-panel" aria-live="polite" style="scroll-margin-top:95px">
     ${renderIbFirmFocusCard(D, activeChain)}
   </div>
-  <section class="panel" id="ib-profitability-matrix">
+  <section class="panel" id="ib-profitability-matrix" style="scroll-margin-top:95px">
     <div class="panel-head">
       <div>
         <div class="eyebrow">FUNDING MODEL TO ROE · 조달 구조에서 전사 영업 수익성까지</div>
@@ -458,7 +462,7 @@ export function renderIbSynchronizedExplorer(D) {
     <div class="table-wrap" id="ib-sync-profit-table">
       ${renderIbProfitabilityTable(D, activeChain.key)}
     </div>
-    ${srcBox('FISIS 증권사 요약손익계산서(SF307, 별도 기준 2025년 연간 및 2026년 상반기 누적) 및 DART 사업보고서(연결 영업이익·당기순이익 병기). 2026.1H ROE는 반기 별도순이익 단순 연환산 수치이며, 전사 수익성 차이는 리테일·IB·트레이딩·판관비 구조가 결합된 결과로 발행어음 단독 효과를 뜻하지 않습니다.')}
+    ${srcBox('FISIS 증권사 요약손익계산서(SF307, 별도 기준 2025년 연간 및 2026년 상반기 누적) 및 DART 사업보고서(연결 영업이익·당기순이익 병기). 2026.1H ROE는 반기 별도순이익 단순 연환산 수치이며, 전사 수익성 차이는 리테일·IB·트레이딩·판관비 구조가 결합된 결과로 발행어음 단독 효과를 뜻하지 않습니다.', 'kpi:kis-mirae-lev')}
   </section>`;
 }
 
@@ -479,10 +483,10 @@ function renderIbFirmFocusCard(D, c) {
       </div>
     </div>
     <div class="grid4-metrics">
-      <div class="metric"><small>규제 레버리지 (한도 1,100%)</small><strong>${fmt(r.ratios.leverageReg, 1)}%</strong><p class="muted">순수 자산÷자본 ${fmt(r.ratios.leverageRawX, 1)}배</p></div>
-      <div class="metric"><small>연결 순자본 ÷ 총위험액</small><strong>${fmt(r.ratios.consolCapOverRisk, 1)}%</strong><p class="muted">개별 ${fmt(r.ratios.indivCapOverRisk, 1)}% · 유동성 ${fmt(r.ratios.liq3m, 1)}%</p></div>
-      <div class="metric"><small>'25년 순익 / 별도 ROE</small><strong>${p.fy25NetIncEok ? fmt(p.fy25NetIncEok, 0) + '억' : '연결 ' + fmt(p.fy25CfsNetIncEok, 0) + '억'}</strong><p class="muted">${p.fy25RoePct ? '별도 ROE ' + fmt(p.fy25RoePct, 1) + '%' : '연결 ROE ' + fmt(p.fy25CfsRoePct, 1) + '%'}${p.fy25CfsRoePct && p.fy25RoePct ? ' (연결 ' + fmt(p.fy25CfsRoePct, 1) + '%)' : ''}</p></div>
-      <div class="metric"><small>'26.1H 반기 순익 / 판관비율</small><strong style="color:var(--teal)">${p.h126NetIncEok ? fmt(p.h126NetIncEok, 0) + '억' : '어음이자 ' + fmt(p.h126NoteIntEok, 0) + '억'}</strong><p class="muted">${p.h126AnnRoePct ? '연환산 ROE ' + fmt(p.h126AnnRoePct, 1) + '% · 판관비율 ' + fmt(p.h126CostIncomePct, 1) + '%' : p.basis}</p></div>
+      <div class="metric" data-xray="firm:${c.key}" tabindex="0" role="button"><small>규제 레버리지 (한도 1,100%)</small><strong>${fmt(r.ratios.leverageReg, 1)}%</strong><p class="muted">순수 자산÷자본 ${fmt(r.ratios.leverageRawX, 1)}배</p></div>
+      <div class="metric" data-xray="firm:${c.key}" tabindex="0" role="button"><small>연결 순자본 ÷ 총위험액</small><strong>${fmt(r.ratios.consolCapOverRisk, 1)}%</strong><p class="muted">개별 ${fmt(r.ratios.indivCapOverRisk, 1)}% · 유동성 ${fmt(r.ratios.liq3m, 1)}%</p></div>
+      <div class="metric" data-xray="firm:${c.key}" tabindex="0" role="button"><small>'25년 순익 / 별도 ROE</small><strong>${p.fy25NetIncEok ? fmt(p.fy25NetIncEok, 0) + '억' : '연결 ' + fmt(p.fy25CfsNetIncEok, 0) + '억'}</strong><p class="muted">${p.fy25RoePct ? '별도 ROE ' + fmt(p.fy25RoePct, 1) + '%' : '연결 ROE ' + fmt(p.fy25CfsRoePct, 1) + '%'}${p.fy25CfsRoePct && p.fy25RoePct ? ' (연결 ' + fmt(p.fy25CfsRoePct, 1) + '%)' : ''}</p></div>
+      <div class="metric" data-xray="firm:${c.key}" tabindex="0" role="button"><small>'26.1H 반기 순익 / 판관비율</small><strong style="color:var(--teal)">${p.h126NetIncEok ? fmt(p.h126NetIncEok, 0) + '억' : '어음이자 ' + fmt(p.h126NoteIntEok, 0) + '억'}</strong><p class="muted">${p.h126AnnRoePct ? '연환산 ROE ' + fmt(p.h126AnnRoePct, 1) + '% · 판관비율 ' + fmt(p.h126CostIncomePct, 1) + '%' : p.basis}</p></div>
     </div>
     <div class="grid2" style="margin-top:18px">
       <div>
@@ -643,7 +647,7 @@ export function renderVentureDeepDive(D) {
     <div id="vc-lens-content" aria-live="polite">
       ${renderVcLensBody(D)}
     </div>
-    ${srcBox(`KOFIA 채권 시가평가 기준수익률(${vc.observedYieldDate}) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정이며 회사별 내부 허들레이트에 따라 달라집니다.`)}
+    ${srcBox(`KOFIA 채권 시가평가 기준수익률(${vc.observedYieldDate}) · 금융투자업규정 시행세칙 별표 5(신용위험값 AA급 1.6%~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합출자 12~20%) · 별표 10(IMA 위험액 50% 반영). 조달원가 ${fmt(vc.fundingCostBasePct)}% 및 목표 자기자본비용(CoE) ${fmt(vc.targetCoePct, 1)}%는 방법론 비교용 기준 가정이며 회사별 내부 허들레이트에 따라 달라집니다.`, 'kpi:vc-mandate-20')}
   </section>
 
   <section class="panel" id="vc-preemptive-strategy">
@@ -684,7 +688,7 @@ export function renderVentureDeepDive(D) {
       </div>
     </div>
     <div class="grid3" style="margin-bottom:18px">
-      ${vc.addressableMarket.demandSchedule.map((d, i) => `<div class="metric ${i === 1 ? 'metric-highlight' : ''}">
+      ${vc.addressableMarket.demandSchedule.map((d, i) => `<div class="metric ${i === 1 ? 'metric-highlight' : ''}" data-xray="kpi:vc-mandate-20" tabindex="0" role="button">
         <small>${d.period}</small>
         <strong style="font-size:25px">${fmt(d.totalMandateTril, 1)} <small>조 원</small></strong>
         <p class="muted">${d.nonACapNetTril ? `A급 30%캡(${fmt(d.aCapTril)}조) 제외 <b>비A급 순수요 ${fmt(d.nonACapNetTril)}조</b>` : d.note}</p>
@@ -696,7 +700,7 @@ export function renderVentureDeepDive(D) {
     <div class="callout" style="margin-bottom:0">
       <b>잠재 시장규모 종합 결론</b> · ${vc.addressableMarket.verdictSummary}
     </div>
-    ${srcBox('금융위원회 종투사 운용규제 개편안(2025.04.09, 24.09 모험자본 12.8조) · 금융감독원 기업의 직접금융 조달실적(2025년 일반회사채 52.69조 중 A등급 13.46조·BBB이하 2.00조) · 중소벤처기업부 벤처투자·펀드결성 동향(2025년 14.3조) · 한국예탁결제원 메자닌 통계 · FISIS 일반은행 중소기업대출(202606 4대 은행 559.6조). 각 자산군을 클릭하면 세부 병목 해설이 펼쳐집니다.')}
+    ${srcBox('금융위원회 종투사 운용규제 개편안(2025.04.09, 24.09 모험자본 12.8조) · 금융감독원 기업의 직접금융 조달실적(2025년 일반회사채 52.69조 중 A등급 13.46조·BBB이하 2.00조) · 중소벤처기업부 벤처투자·펀드결성 동향(2025년 14.3조) · 한국예탁결제원 메자닌 통계 · FISIS 일반은행 중소기업대출(202606 4대 은행 559.6조). 각 자산군을 클릭하면 세부 병목 해설이 펼쳐집니다.', 'kpi:vc-mandate-20')}
   </section>`;
 }
 
@@ -749,17 +753,17 @@ function renderVcLensBody(D) {
         <button type="button" class="chip ${is28 ? 'active' : ''}" data-vc-pkgyear="2028">2028년 의무 25% (정상 75% + A급캡 7.5% + 비A급 17.5%)</button>
       </div>
       <div class="grid3">
-        <div class="metric">
+        <div class="metric" data-xray="kpi:mrmc-qstar" tabindex="0" role="button">
           <small>시나리오 A · 우량 비A급(BBB·VC 혼합) 선별 시</small>
           <strong style="color:var(--teal)">+${fmt(pkgGood, 1)} <small>bp (연 +${fmt(pkgGood, 1)}억/조)</small></strong>
           <p class="muted">무규제(${evaNorm}bp) 대비 <b>규제 그림자 조세 −${fmt(shadowTaxGood, 1)}bp</b></p>
         </div>
-        <div class="metric">
+        <div class="metric" data-xray="kpi:mrmc-qstar" tabindex="0" role="button">
           <small>시나리오 B · 비A급 전액 무수익 P-CBO 충당 시</small>
           <strong>+${fmt(pkgPcbo, 1)} <small>bp (연 +${fmt(pkgPcbo, 1)}억/조)</small></strong>
           <p class="muted">무규제 대비 <b>규제 그림자 조세 −${fmt(evaNorm - pkgPcbo, 1)}bp</b></p>
         </div>
-        <div class="metric">
+        <div class="metric" data-xray="kpi:mrmc-qstar" tabindex="0" role="button">
           <small>시나리오 C · 비A급 심사 부진(역마진 ${evaStress}bp) 시</small>
           <strong style="color:#c26d27">+${fmt(pkgStress, 1)} <small>bp (연 +${fmt(pkgStress, 1)}억/조)</small></strong>
           <p class="muted">무규제 대비 <b>규제 그림자 조세 −${fmt(shadowTaxStress, 1)}bp</b> · 특판 조달 시 역마진 전환</p>
@@ -801,8 +805,8 @@ function renderVcLensBody(D) {
             const oc = idx === 0 ? 0 : (baseSelected - netSelected);
             const illusion = lens.id === 'nominal' && oc < 0;
 
-            return `<tr class="${idx === 1 ? 'selected' : ''}">
-              <td title="${r.note}"><b>${r.asset}</b><br><small class="muted">${r.note}</small></td>
+            return `<tr class="${idx === 1 ? 'selected' : ''}" data-xray="vc-asset:${idx}" tabindex="0" role="button">
+              <td title="${r.note}"><b class="xray-token">${r.asset}</b><br><small class="muted">${r.note}</small></td>
               <td><span class="badge ${idx === 1 ? 'amber' : idx === 0 ? '' : 'green'}">${r.capTag}</span></td>
               <td>${fmt(r.yieldPct)}%</td>
               <td>+${r.grossSpreadBp}bp</td>
@@ -964,17 +968,17 @@ export function renderHouseholdWealthPage(D) {
 
   return `
     <div class="grid4-metrics" style="margin-bottom:20px">
-      <div class="metric">
+      <div class="metric" data-xray="kpi:hw-kr-total" tabindex="0" role="button">
         <small>한국 전체 가계자산 ('25말 국민대차대조표)</small>
         <strong style="font-size:25px">${fmt(k.krTotalHouseholdAssets25Tril, 1)} <small>조 원</small></strong>
         <p class="muted">명목 GDP(${fmt(k.krNominalGdp25Tril, 1)}조)의 ${fmt(k.krAssetsToGdp25X, 2)}배 · 순자산 ${fmt(k.krNetWorth25Tril, 1)}조</p>
       </div>
-      <div class="metric">
+      <div class="metric" data-xray="kpi:hw-kr-fin" tabindex="0" role="button">
         <small>가계 금융자산 ('26.2Q 자금순환)</small>
         <strong style="font-size:25px;color:var(--teal)">${fmt(k.krFinAssets26Q2Tril, 1)} <small>조 원</small></strong>
         <p class="muted">'25말 ${fmt(k.krFinAssets25Tril, 1)}조 대비 +${fmt(k.krFinAssets26Q2Tril - k.krFinAssets25Tril, 1)}조 · 부채배율 2.78배</p>
       </div>
-      <div class="metric">
+      <div class="metric" data-xray="kpi:hw-corp-s11" tabindex="0" role="button">
         <small>가계 + 법인 현금·예금 합산 ('26.2Q)</small>
         <strong style="font-size:25px">${fmt(k.combinedDepositsPool26Q2Tril, 1)} <small>조 원</small></strong>
         <p class="muted">가계 ${fmt(k.krDeposits26Q2Tril, 1)}조 + 비금융법인 ${fmt(k.corpDeposits26Q2Tril, 1)}조</p>
@@ -989,7 +993,7 @@ export function renderHouseholdWealthPage(D) {
       </a>
     </div>
 
-    <section class="panel" id="hw-korea-tree">
+    <section class="panel" id="hw-korea-tree" style="scroll-margin-top:95px">
       <div class="panel-head">
         <div>
           <div class="eyebrow">STAGE 01–03 · 한국 가계자산 3단계 브레이크다운</div>
@@ -1032,10 +1036,10 @@ export function renderHouseholdWealthPage(D) {
       <div id="hw-cat-detail" aria-live="polite">
         ${renderHwCategoryDetail(D)}
       </div>
-      ${srcBox('한국은행 ECOS 291Y505(제도부문별 대차대조표, SEC04 가계 및 비영리단체) · ECOS 281Y002(금융자산·부채 잔액표, S14 분기말 원천 조회). 2026.2Q 보도자료 속보 요약에서는 일부 잠정 분류차로 예금 비중이 39.5%로 표기되기도 하나 ECOS 확정 코드 합산치는 2,688.07 ÷ 6,930.21 = 38.8%입니다.')}
+      ${srcBox('한국은행 ECOS 291Y505(제도부문별 대차대조표, SEC04 가계 및 비영리단체) · ECOS 281Y002(금융자산·부채 잔액표, S14 분기말 원천 조회). 2026.2Q 보도자료 속보 요약에서는 일부 잠정 분류차로 예금 비중이 39.5%로 표기되기도 하나 ECOS 확정 코드 합산치는 2,688.07 ÷ 6,930.21 = 38.8%입니다.', 'kpi:hw-kr-total')}
     </section>
 
-    <section class="panel" id="hw-timeseries">
+    <section class="panel" id="hw-timeseries" style="scroll-margin-top:95px">
       <div class="panel-head">
         <div>
           <div class="eyebrow">TIME-SERIES EXPLORER · 분기별 금융자산('19.4Q~'26.2Q) &amp; 연간 총자산('20~'25)</div>
@@ -1051,10 +1055,10 @@ export function renderHouseholdWealthPage(D) {
       <div id="hw-timeseries-body" aria-live="polite">
         ${renderHwTimeseriesBody(D)}
       </div>
-      ${srcBox('한국은행 ECOS 281Y002(분기별 금융자산·부채 잔액표, 2019.4Q~2026.2Q) · ECOS 291Y505(연간 국민대차대조표, 2020~2025) · ECOS 200Y113(연간 명목 GDP). 2023년 보험·연금 잔액 감소는 IFRS17 보험부채 시가평가 전환(-127.1조 평가조정) 영향입니다.')}
+      ${srcBox('한국은행 ECOS 281Y002(분기별 금융자산·부채 잔액표, 2019.4Q~2026.2Q) · ECOS 291Y505(연간 국민대차대조표, 2020~2025) · ECOS 200Y113(연간 명목 GDP). 2023년 보험·연금 잔액 감소는 IFRS17 보험부채 시가평가 전환(-127.1조 평가조정) 영향입니다.', 'kpi:hw-kr-fin')}
     </section>
 
-    <section class="panel" id="hw-aux-pools">
+    <section class="panel" id="hw-aux-pools" style="scroll-margin-top:95px">
       <div class="panel-head">
         <div>
           <div class="eyebrow">CORPORATE &amp; WEALTH TIER · 법인 단기유동성(S11) &amp; 가계 순자산 5분위 분포</div>
@@ -1110,8 +1114,8 @@ export function renderHouseholdWealthPage(D) {
                 </tr>
               </thead>
               <tbody>
-                ${hw.shfQuintiles2025.map(q => `<tr class="${q.key === '5분위_상위20%' ? 'selected' : ''}">
-                  <td><b>${q.group}</b></td>
+                ${hw.shfQuintiles2025.map(q => `<tr class="${q.key === '5분위_상위20%' ? 'selected' : ''}" data-xray="kpi:hw-shf-top20" tabindex="0" role="button">
+                  <td><b class="xray-token">${q.group}</b></td>
                   <td>${fmt(q.totalAssetManwon / 10000, 2)}억 <small class="muted">(${fmt(q.realSharePct, 1)}%)</small></td>
                   <td><b>${fmt(q.finAssetManwon, 0)}만</b></td>
                   <td style="color:var(--teal);font-weight:600">${fmt(q.depositSavingsManwon, 0)}만</td>
@@ -1153,10 +1157,10 @@ export function renderHouseholdWealthPage(D) {
           </table>
         </div>
       </details>
-      ${srcBox('한국은행 ECOS 281Y002(S11 비금융법인) · 국가데이터처·금융감독원·한국은행 『2025년 가계금융복지조사』(ECOS 903Y212, 2025년 3월 말 기준 자산·부채). 분기마다 공표되는 가구 표본조사는 자산·부채 항목이 없는 『가계동향조사(소득·지출)』입니다.')}
+      ${srcBox('한국은행 ECOS 281Y002(S11 비금융법인) · 국가데이터처·금융감독원·한국은행 『2025년 가계금융복지조사』(ECOS 903Y212, 2025년 3월 말 기준 자산·부채). 분기마다 공표되는 가구 표본조사는 자산·부채 항목이 없는 『가계동향조사(소득·지출)』입니다.', 'kpi:hw-corp-s11')}
     </section>
 
-    <section class="panel" id="hw-intl-5country">
+    <section class="panel" id="hw-intl-5country" style="scroll-margin-top:95px">
       <div class="panel-head">
         <div>
           <div class="eyebrow">5-COUNTRY COMPARISON · 한국 · 미국 · 영국 · 일본 · 중국 (+유로존 참고)</div>
@@ -1283,7 +1287,7 @@ function renderHwTimeseriesBody(D) {
       const finH = (r.finAssetsTril / maxV) * (bottom - top);
       const yReal = bottom - realH;
       const yFin = yReal - finH;
-      return `<g>
+      return `<g class="xray-svg-pt" data-xray="hw-y:${r.year}" tabindex="0" role="button" aria-label="${r.year}년 가계 총자산 ${fmt(r.totalAssetsTril, 1)}조 원 분해">
         <rect x="${cx - bw / 2}" y="${yReal}" width="${bw}" height="${realH}" fill="#60788c" rx="2"/>
         <rect x="${cx - bw / 2}" y="${yFin}" width="${bw}" height="${finH}" fill="#087f80" rx="2"/>
         <text x="${cx}" y="${yFin - 7}" text-anchor="middle" font-size="10" font-weight="700" fill="#192e3d">${fmt(r.totalAssetsTril, 0)}조 (${fmt(r.totalAssetsToGdpX, 2)}x)</text>
@@ -1319,8 +1323,8 @@ function renderHwTimeseriesBody(D) {
             </tr>
           </thead>
           <tbody>
-            ${rows.map((r, i) => `<tr class="${i === rows.length - 1 ? 'selected' : ''}">
-              <td><b>${r.year}</b></td>
+            ${rows.map((r, i) => `<tr class="${i === rows.length - 1 ? 'selected' : ''}" data-xray="hw-y:${r.year}" tabindex="0" role="button">
+              <td><b class="xray-token">${r.year}</b></td>
               <td>${fmt(r.nominalGdpTril, 1)}조</td>
               <td><b>${fmt(r.totalAssetsTril, 1)}조</b> <small class="muted">(${fmt(r.totalAssetsToGdpX, 2)}배)</small></td>
               <td>${fmt(r.nonFinAssetsTril, 1)}조 <small class="muted">[${fmt(r.landTril, 0)} / ${fmt(r.buildingsTril, 0)}]</small></td>
@@ -1358,9 +1362,9 @@ function renderHwTimeseriesBody(D) {
         <polyline points="${poly('equitiesFunds')}" fill="none" stroke="#087f80" stroke-width="2.5"/>
         <polyline points="${poly('insPension')}" fill="none" stroke="#537cca" stroke-width="2"/>
         <polyline points="${poly('bonds')}" fill="none" stroke="#d09b43" stroke-width="1.8"/>
-        ${qRows.map((r, i) => `<g>
-          <circle cx="${xAt(i)}" cy="${yAt(r.sharesPct.deposits)}" r="3" fill="#295dd8"/>
-          <circle cx="${xAt(i)}" cy="${yAt(r.sharesPct.equitiesFunds)}" r="3" fill="#087f80"/>
+        ${qRows.map((r, i) => `<g class="xray-svg-pt" data-xray="hw-q:${r.period}" tabindex="0" role="button" aria-label="${r.period} 가계 금융자산 구성비 상세">
+          <circle cx="${xAt(i)}" cy="${yAt(r.sharesPct.deposits)}" r="4" fill="#295dd8"/>
+          <circle cx="${xAt(i)}" cy="${yAt(r.sharesPct.equitiesFunds)}" r="4" fill="#087f80"/>
           ${i === 0 || i === 5 || i === 9 || i === qRows.length - 1 ? `<text x="${xAt(i)}" y="${yAt(r.sharesPct.deposits) - 8}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#295dd8">${fmt(r.sharesPct.deposits, 1)}%</text><text x="${xAt(i)}" y="${yAt(r.sharesPct.equitiesFunds) + 14}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#087f80">${fmt(r.sharesPct.equitiesFunds, 1)}%</text>` : ''}
           <text x="${xAt(i)}" y="${bottom + 19}" text-anchor="middle" font-size="9" fill="#65717e">${r.period.slice(2)}</text>
         </g>`).join('')}
@@ -1380,8 +1384,8 @@ function renderHwTimeseriesBody(D) {
             </tr>
           </thead>
           <tbody>
-            ${qRows.map((r, i) => `<tr class="${i === qRows.length - 1 ? 'selected' : ''}">
-              <td><b>${r.period}</b></td>
+            ${qRows.map((r, i) => `<tr class="${i === qRows.length - 1 ? 'selected' : ''}" data-xray="hw-q:${r.period}" tabindex="0" role="button">
+              <td><b class="xray-token">${r.period}</b></td>
               <td>${fmt(r.totalFinTril, 1)}조</td>
               <td style="color:#295dd8;font-weight:700">${fmt(r.sharesPct.deposits, 1)}%</td>
               <td style="color:var(--teal);font-weight:700">${fmt(r.sharesPct.equitiesFunds, 1)}%</td>
@@ -1417,8 +1421,8 @@ function renderHwTimeseriesBody(D) {
       <polyline points="${linePts('depositsTril')}" fill="none" stroke="#295dd8" stroke-width="2.1"/>
       <polyline points="${linePts('equitiesFundsTril')}" fill="none" stroke="#087f80" stroke-width="2.1"/>
       <polyline points="${linePts('insPensionTril')}" fill="none" stroke="#537cca" stroke-width="1.8" stroke-dasharray="4 3"/>
-      ${qRows.map((r, i) => `<g>
-        <circle cx="${xAt(i)}" cy="${yTril(r.totalFinTril)}" r="3" fill="#fff" stroke="#192e3d" stroke-width="1.8"/>
+      ${qRows.map((r, i) => `<g class="xray-svg-pt" data-xray="hw-q:${r.period}" tabindex="0" role="button" aria-label="${r.period} 가계 금융자산 ${fmt(r.totalFinTril, 1)}조 원 분해">
+        <circle cx="${xAt(i)}" cy="${yTril(r.totalFinTril)}" r="4.2" fill="#fff" stroke="#192e3d" stroke-width="2"/>
         ${i === 0 || i === 5 || i === 9 || i === qRows.length - 1 ? `<text x="${xAt(i)}" y="${yTril(r.totalFinTril) - 9}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#192e3d">${fmt(r.totalFinTril, 0)}</text>` : ''}
         <text x="${xAt(i)}" y="${bottom + 19}" text-anchor="middle" font-size="9" fill="#65717e">${r.period.slice(2)}</text>
       </g>`).join('')}
@@ -1438,8 +1442,8 @@ function renderHwTimeseriesBody(D) {
           </tr>
         </thead>
         <tbody>
-          ${qRows.map((r, i) => `<tr class="${i === qRows.length - 1 ? 'selected' : ''}">
-            <td><b>${r.period}</b></td>
+          ${qRows.map((r, i) => `<tr class="${i === qRows.length - 1 ? 'selected' : ''}" data-xray="hw-q:${r.period}" tabindex="0" role="button">
+            <td><b class="xray-token">${r.period}</b></td>
             <td><b>${fmt(r.totalFinTril, 1)}조</b></td>
             <td>${fmt(r.depositsTril, 1)}조 <small class="muted">(${fmt(r.sharesPct.deposits, 1)}%)</small></td>
             <td style="color:var(--teal);font-weight:700">${fmt(r.equitiesFundsTril, 1)}조 <small class="muted">(${fmt(r.sharesPct.equitiesFunds, 1)}%)</small></td>

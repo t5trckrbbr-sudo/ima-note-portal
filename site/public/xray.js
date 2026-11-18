@@ -1,0 +1,938 @@
+const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+const QA_DIGEST = {
+  'guide-2027-funding-outlook-bear-flattening': {
+    title: '2027년 수신환경(3대 악화 vs 3대 강화)과 ‘베어 플랫’ 종합 전망·대응 전략은?',
+    summary: '외형은 85조(수정 전망)로 확장 우위이나, 상반기 금리인상·특판·베어 플랫(3Y−1Y +11.1bp)이 겹쳐 마진은 상박하후 경로가 유력합니다. 고점 1년물 Lock-in을 피하고 단기(≤3M) 조달을 유지하는 ALM이 핵심입니다.'
+  },
+  'guide-yield-curve-short-funding': {
+    title: '발행어음 수익률곡선은 왜 가파르며, 3개월 이하(63.4%)·수시물 비중은 어느 정도인가요?',
+    summary: '발행어음 1Y−수시 기울기(+109bp)는 국고·회사채의 약 1.9배입니다. 3개월 이하 비중(63.4%)을 인위적으로 낮추면 조달단가가 +46~66bp 급등하므로 단기 어음과 중장기 폐쇄형 IMA 투트랙 분업이 필수입니다.'
+  },
+  'guide-demand-note-cash-buffer': {
+    title: '발행어음 수시성 수신 10% 현금성자산 보유 의무, 타사·은행권 대비 낮출 논리가 있을까요?',
+    summary: '수시물 순수 현금 10%는 법정 일률 규제가 아닌 사내 버퍼입니다(법정은 1·3개월 유동성비율 ≥100%). 소매 CMA 차등화(5~7%)와 국공채(HQLA)·커미티드라인 인정 확대로 역마진을 줄일 수 있습니다.'
+  },
+  'guide-real-estate-concentration': {
+    title: '2027년 부동산 운용 한도 10% 축소와 소규모 IMA 회차의 단일 딜 집중위험은?',
+    summary: '부동산 상한 축소(30%→15%→10%)로 기업금융·모험자본 전환 부담이 커지며, 3,000~4,000억 규모 IMA 회차는 단일 딜 부실만으로 5% 고유충당금이 소진될 수 있어 회차당 단일 딜 캡(5~10%)이 필요합니다.'
+  },
+  'guide-funding-rate-spread-risk': {
+    title: '조달금리 경쟁에서 ‘기준금리 +50bp’ 경보 기준과 만기 분산은 왜 중요한가요?',
+    summary: '평시 어음 마진(150~200bp)은 기준금리+30bp 조달을 전제로 합니다. 평균 조달단가가 +50bp를 넘으면 모험자본 20% 의무(그림자 조세 20~30bp)와 겹쳐 한계 RAROC가 손익분기 아래로 훼손됩니다.'
+  },
+  'guide-pension-self-product-ban': {
+    title: '퇴직연금 ‘자사 상품 편입 제한’이란 무엇이며, 왜 501.4조 연금이 핵심 변수인가요?',
+    summary: '퇴직연금감독규정 제9조제3항에 따라 사업자는 자사 원리금보장상품을 편입할 수 없습니다. 원리금보장 378.1조 시장에 어음·IMA 편입이 허용되면 전 업권 교차판매로 대규모 머니무브가 가능합니다.'
+  },
+  'guide-latest-rate': {
+    title: '실제 판매되는 발행어음 금리와 IMA 조건(수익구조·만기·중도해지)은 어떻게 다른가요?',
+    summary: '발행어음은 1년 이내 확정 약정금리(이자소득)이며 중도해지 시 원금은 보전됩니다. IMA는 2년 이상 폐쇄형 실적배당(배당소득·초과수익 성과보수 차감)으로 만기 보유 시에만 원금지급 약정이 작동합니다.'
+  },
+  'guide-pension-eligibility': {
+    title: '발행어음과 IMA의 퇴직연금(DC·IRP) 편입 가능 여부는 어디서 확인하나요?',
+    summary: '현행 퇴직연금감독규정 제9조 열거 목록에는 아직 미포함 상태이며 규정 개정과 전산 탑재를 확인해야 합니다. 저축은행 연금예금 상한은 2025.09.01 예금자보호 상향에 연동해 기관당 1억 원입니다.'
+  },
+  'guide-product-difference': {
+    title: '발행어음과 IMA는 인가 요건·한도·신NCR 위험액에서 어떤 점이 다른가요?',
+    summary: '발행어음은 자본 4조 이상·한도 200%·신NCR 위험액 100% 반영인 반면, IMA는 자본 8조 이상·어음 합산 300%·기업금융 70% 의무·5% 고유충당금 조건 하 위험액 50% 감경이 적용됩니다.'
+  },
+  'guide-principal-protection': {
+    title: 'IMA의 원금지급 약정은 예금자보호(1억 원)와 같은 뜻인가요?',
+    summary: '예금보험공사 공적 보호 대상이 아니며 오직 발행 종투사(AA급) 자체 신용에 의존합니다. 또한 만기 보유 시에만 원금지급 의무가 성립하며 중도해지 시에는 평가손실·수수료로 원금 손실이 가능합니다.'
+  },
+  'guide-nim-income': {
+    title: 'NIM과 순이자수익, 전사 순영업수익은 어떻게 구분해 읽어야 하나요?',
+    summary: 'NIM 시뮬레이션(기본 합산 12,300억)은 판관비·충당금 차감 전 상품 단위 시나리오입니다. 메리츠는 IR 평잔 2조(연말 4조와 구분), 타사는 연말 잔액 대용치를 사용하며 전사 순영업수익과 다릅니다.'
+  },
+  'guide-growth-baseline': {
+    title: '2027년 수신 전망은 왜 83조에서 85조로 바뀌었고, 기준선(58.54 vs 57.26조) 차이는 무엇인가요?',
+    summary: '원문 삼성·메리츠 합산 2조를 메리츠 IR 연말 목표 4조로 대체해 85조(어음 80+IMA 5)가 되었습니다. 58.54조(공시 NH 8.78조)와 57.26조(모형 NH 7.50조)는 NH 기준선 1.28조 차이입니다.'
+  },
+  'guide-pcbo-assumption': {
+    title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
+    summary: '표면금리가 0%라는 뜻이 아니라, 신보 보증 선순위 P-CBO 수익률(3% 초반)에서 발행어음 조달원가·보증비용을 빼면 순운용스프레드가 0bp(손익분기)에 수렴한다는 보수적 기회비용 가정입니다.'
+  },
+  'guide-ima-maturity': {
+    title: '2027.12~2028.04 IMA 만기 집중(2.60조)은 전체 시장을 뜻하나요?',
+    summary: '전체 IMA 시장이 아닌 1호 사업자 한국투자증권의 초기 1~4호(총 2.60조, 1호 1.10조가 2027.12 도래) 설정분입니다. 폐쇄형 만기 일시 상환·차환 구조이므로 기초자산 현금회수 일정 대조가 중요합니다.'
+  },
+  'guide-kis-mirae-comparison': {
+    title: '한국투자와 미래에셋의 순이자 차이(+5,299억 vs −1,405억)가 어음 수익성을 입증하나요?',
+    summary: '단일 상품 마진이 아닌 자산배분 전략 차이입니다. 한투는 IB 기업여신 이자캐리에 집중한 반면, 미래에셋은 차입이자는 SF321에 잡히고 수익은 해외출자·지분·배당(비이자 계정)으로 회수하는 구조입니다.'
+  },
+  'guide-account-separation': {
+    title: '전사 차입부채(472.75조), 발행어음(55.94조), 고객예수금(158.50조)은 왜 분리하나요?',
+    summary: '고객예수금(SF324, 158.50조)은 자본시장법 제74조상 증권금융에 별도 예치되어 기업금융 운용에 전용할 수 없습니다. 472.65조 재합산과 472.75조 총계의 0.10조 차이는 FISIS 원단위 반올림 단수차입니다.'
+  },
+  'guide-sizing-growth': {
+    title: '모험자본 조달 병목과 자본효율: 2027년 수신을 어디까지 늘려야 하나요(Q*)?',
+    summary: '2027년 20% 의무 중 중견·A급 30% 상한(총자산의 6%)을 채워도 나머지 14%는 비A급 적격 모험자본으로 조달해야 합니다. 적격 딜 파이프라인과 한계 RAROC가 조달·자본비용을 상회하는 구간(MR=MC)까지만 확장해야 합니다.'
+  }
+};
+
+function makeQaItems(ids) {
+  return (ids || []).map(id => QA_DIGEST[id] ? { id, ...QA_DIGEST[id] } : null).filter(Boolean);
+}
+
+export function resolveXraySpec(specKey, D) {
+  if (!specKey || !D) return null;
+  const [kind, ...rest] = String(specKey).split(':');
+  const id = rest.join(':');
+  const g = D.globalKpis || {};
+  const hw = D.householdWealthAndIntl2026;
+  const sc = D.shortYieldCurveAndMaturity;
+  const bf = D.fundingOutlook2027BearFlattening;
+  const vc = D.ventureCapitalChain2027;
+
+  if (kind === 'firm' || kind === 'nim-firm') {
+    const chain = (D.ib9FirmsCuriosityChain || []).find(x => x.key === id || x.firm === id);
+    if (!chain) return null;
+    const fRow = D.ib9FirmsFunding202606[chain.fundingIdx];
+    const fisis = D.promNoteFisis202606.find(x => x.firm === chain.firm);
+    const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
+    const p = chain.profitability || {};
+    const er = fRow?.effRates26H1 || {};
+    const base26 = chain.base26Q2NoteTril + chain.base26Q2ImaTril;
+    const est27 = chain.est27ModelNoteTril + chain.est27ModelImaTril;
+    const incBaseNote = chain.est27AverageNoteTril ?? chain.est27ModelNoteTril;
+    const nim150Eok = incBaseNote * 150 + chain.est27ModelImaTril * 120;
+    const oppAfterCapEok = opp ? opp.oppCostNewAfter30CapEok : 0;
+
+    return {
+      eyebrow: `COMPANY X-RAY · ${fRow.strategyGroup}`,
+      title: `${chain.firm} · 수신·조달원가·기회비용·ROE 통합 검증`,
+      badge: `${chain.creditRating} · ${chain.statusBadge}`,
+      formula: `'27E 수익시나리오(${fmt(nim150Eok, 0)}억) vs 모험자본 기회비용(상한활용 ${fmt(oppAfterCapEok, 0)}억)`,
+      rows: [
+        ['인가 비히클 현황', `어음(${chain.noteLicense}) / IMA(${chain.imaLicense})`],
+        ['별도 자기자본 · 법정한도(200%)', `${fmt(fRow.equity)}조 원 / 어음한도 ${fmt(fRow.equity * 2)}조 원`],
+        ['\'26.2Q 실적 → \'27E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 +${fmt(est27 - base26)}조)`],
+        ['NIM 수익 계산용 어음 잔액', `${fmt(incBaseNote)}조 원 (${chain.est27AverageNoteTril ? '메리츠 IR 평잔 목표 적용' : '연말 잔액 대용치'})`],
+        ['\'26.1H 실효금리 (어음 / RP / 사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
+        ['모험자본 추가 의무 · 기회비용(150bp)', opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
+        ['전사 영업 수익성 (ROE · 판관비율)', `${p.h126AnnRoePct ? `'26.1H 연환산 ROE ${fmt(p.h126AnnRoePct, 1)}%` : `'25 연결 ROE ${fmt(p.fy25CfsRoePct, 1)}%`}${p.h126CostIncomePct ? ` · 판관비율 ${fmt(p.h126CostIncomePct, 1)}%` : ''}`]
+      ],
+      source: 'FISIS 202606 (SF304 자본 · SF325 차입부채 · SF321 이자비용 · SF307 손익) 및 DART 연결 사업보고서',
+      caveat: `${chain.growthPremise} NIM 시나리오(${fmt(nim150Eok, 0)}억)는 판관비·충당금 차감 전 상품 단위 추정치이며, 이미 모험자본 저마진을 반영해 NIM을 낮췄다면 기회비용(${fmt(oppAfterCapEok, 0)}억)을 중복 차감하지 않습니다.`,
+      qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
+      actions: [
+        { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
+        { label: `${chain.firm} 모험자본 기회비용 계산기 →`, tab: 'invest', firmKey: chain.key },
+        { label: '수신 전망 9사 분해표 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', firmKey: chain.key }
+      ]
+    };
+  }
+
+  if (kind === 'trend') {
+    const idx = Number(id);
+    const pt = D.promNoteImaTrend?.[idx];
+    if (!pt) return null;
+    const prev = idx > 0 ? D.promNoteImaTrend[idx - 1] : null;
+    const diff = prev ? pt.total - prev.total : null;
+    const pct = prev ? ((pt.total / prev.total) - 1) * 100 : null;
+    return {
+      eyebrow: `MARKET TRAJECTORY · 시계열 포인트 분해`,
+      title: `${pt.period} 합산 수신 ${fmt(pt.total)}조 원`,
+      badge: `인가 ${pt.firms}개사 체제`,
+      formula: `발행어음 ${fmt(pt.promNote)}조 + IMA ${fmt(pt.ima)}조 = 합계 ${fmt(pt.total)}조 원`,
+      rows: [
+        ['시점 · 참여 인가사 수', `${pt.period} · 발행어음 인가 ${pt.firms}개사`],
+        ['발행어음 잔액 / IMA 수탁고', `${fmt(pt.promNote)}조 원 / ${fmt(pt.ima)}조 원`],
+        ['직전 시점 대비 증감', prev ? `+${fmt(diff)}조 원 (+${fmt(pct, 1)}%)` : '시계열 기점 (선발 4사 체제 완성)'],
+        ['핵심 시장 이벤트', pt.note]
+      ],
+      source: '금융감독원 FISIS SF325:A13(발행어음) · 한국투자 IMA 설정액 · 2027E는 원문 전망 + 메리츠 IR 목표 반영',
+      caveat: idx === 6
+        ? '2027E 85.00조 원은 기존 삼성·메리츠 합산 2조 가정을 메리츠 연말 목표 4.00조(수익 계산 평잔은 2.00조)로 대체한 수정 전망이며, 삼성 별도 목표는 미반영(0.00조) 상태입니다.'
+        : '2021~2025년은 연말 잔액이며, 2026.2Q는 반기 말 확정 공시 잔액(58.54조 원)으로 2026년 말 결산값은 아직 없습니다.',
+      qas: makeQaItems(idx >= 5 ? ['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening'] : ['guide-product-difference', 'guide-account-separation']),
+      actions: [
+        { label: '9사별 2027E 성장 분해표 확인 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
+        { label: '7사 발행어음 법정한도 소진율 →', tab: 'pnl' },
+        { label: '초기 IMA 1~4호 만기 타임라인 →', tab: 'ima-maturity' }
+      ]
+    };
+  }
+
+  if (kind === 'hw-q' && hw) {
+    const qRow = hw.krQuarterlyFinSeries.find(x => x.period === id);
+    if (!qRow) return null;
+    const q0 = hw.krQuarterlyFinSeries[0];
+    return {
+      eyebrow: 'ECOS 281Y002 · 분기별 가계 금융자산 X-RAY',
+      title: `${qRow.period} 가계 및 비영리단체(S14) 금융자산 ${fmt(qRow.totalFinTril, 1)}조 원`,
+      badge: `자산/부채 ${fmt(qRow.assetLiabRatioX, 2)}배`,
+      formula: `금융자산 ${fmt(qRow.totalFinTril, 1)}조 − 금융부채 ${fmt(qRow.finLiabTril, 1)}조 = 순금융자산 ${fmt(qRow.netFinTril, 1)}조`,
+      rows: [
+        ['① 현금 및 예금 잔액 (비중)', `${fmt(qRow.depositsTril, 1)}조 원 (${fmt(qRow.sharesPct.deposits, 1)}%)`],
+        ['② 지분증권 및 투자펀드 (비중)', `${fmt(qRow.equitiesFundsTril, 1)}조 원 (${fmt(qRow.sharesPct.equitiesFunds, 1)}%)`],
+        ['③ 보험 및 연금준비금 (비중)', `${fmt(qRow.insPensionTril, 1)}조 원 (${fmt(qRow.sharesPct.insPension, 1)}%)`],
+        ['④ 채권 · 파생결합증권 (비중)', `${fmt(qRow.bondsTril, 1)}조 원 (${fmt(qRow.sharesPct.bonds, 1)}%)`],
+        ['\'19.4Q 대비 금융자산 누적 순증', `+${fmt(qRow.totalFinTril - q0.totalFinTril, 1)}조 원 (예금비중 ${fmt(qRow.sharesPct.deposits - q0.sharesPct.deposits, 1)}%p)`]
+      ],
+      source: '한국은행 경제통계시스템 ECOS 281Y002 (자금순환 금융자산·부채 잔액표, S14 가계 및 비영리단체)',
+      caveat: '자금순환 통계는 상장주식·펀드의 분기 말 시가평가 변동이 반영되므로, 지분증권 비중 상승에는 신규 자금 유입과 주가 상승 효과가 함께 포함되어 있습니다.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
+      actions: [
+        { label: '5대 부문 → 15개 세부 금융상품 표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+        { label: '머니무브 수신금리 사다리(#funding) →', tab: 'funding', scrollTo: 'money-move-safety' }
+      ]
+    };
+  }
+
+  if (kind === 'hw-y' && hw) {
+    const yRow = hw.krAnnualBalanceSheet.find(x => String(x.year) === String(id));
+    if (!yRow) return null;
+    return {
+      eyebrow: 'ECOS 291Y505 · 국민대차대조표 연간 X-RAY',
+      title: `${yRow.year}년 말 한국 가계 총자산 ${fmt(yRow.totalAssetsTril, 1)}조 원`,
+      badge: `명목 GDP의 ${fmt(yRow.totalAssetsToGdpX, 2)}배`,
+      formula: `비금융(실물) ${fmt(yRow.nonFinAssetsTril, 1)}조 + 금융 ${fmt(yRow.finAssetsTril, 1)}조 = 총자산 ${fmt(yRow.totalAssetsTril, 1)}조`,
+      rows: [
+        ['명목 GDP (ECOS 200Y113)', `${fmt(yRow.nominalGdpTril, 1)}조 원`],
+        ['비금융(실물)자산 [토지 / 건물]', `${fmt(yRow.nonFinAssetsTril, 1)}조 (${fmt(yRow.nonFinShareOfGrossPct, 1)}%) · [토지 ${fmt(yRow.landTril, 1)}조 / 건물 ${fmt(yRow.buildingsTril, 1)}조]`],
+        ['금융자산 (총자산 내 비중)', `${fmt(yRow.finAssetsTril, 1)}조 원 (${fmt(yRow.finShareOfGrossPct, 1)}%)`],
+        ['금융부채 차감 순자산 (Net Worth)', `${fmt(yRow.netWorthTril, 1)}조 원 (GDP 대비 ${fmt(yRow.netWorthToGdpX, 2)}배)`]
+      ],
+      source: '한국은행·국가데이터처 국민대차대조표(ECOS 291Y505, 연말 잔액) 및 국민계정 명목 GDP(ECOS 200Y113)',
+      caveat: '토지·주택 등 비금융 실물자산이 포함된 가계 총자산은 연 1회(국민대차대조표) 공표되며, 2026년 중 최신 금융자산 흐름은 분기별 자금순환(ECOS 281Y002)으로 연결해 확인합니다.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-eligibility']),
+      actions: [
+        { label: '한·미·영·일·중 5개국 GDP 배율 대조 ↓', tab: 'household-wealth', scrollTo: 'hw-intl-5country', primary: true },
+        { label: '분기 금융자산 최신 추이 보기 ↑', tab: 'household-wealth', scrollTo: 'hw-timeseries' }
+      ]
+    };
+  }
+
+  if (kind === 'curve' && sc) {
+    const c = sc.curves[Number(id)];
+    if (!c) return null;
+    const noteCurve = sc.curves[0];
+    return {
+      eyebrow: `SHORT YIELD CURVE · ${sc.observedDate} 관측`,
+      title: `${c.label} 단기 수익률곡선 분해`,
+      badge: `1Y−3M +${fmt(c.slope1y3mBp, 1)}bp`,
+      formula: `1D(${fmt(c.d1)}%) → 3M(${fmt(c.m3)}%) → 6M(${fmt(c.m6)}%) → 1Y(${fmt(c.y1)}%)`,
+      rows: [
+        ['수시·콜(1D) 금리', `${fmt(c.d1)}% (한은 기준금리 ${fmt(sc.bokBasePct)}%)`],
+        ['3개월 / 6개월 수익률', `${fmt(c.m3)}% / ${fmt(c.m6)}%`],
+        ['9개월 / 1년 수익률', `${fmt(c.m9)}% / ${fmt(c.y1)}%`],
+        ['1Y − 3M 기간 스프레드', `+${fmt(c.slope1y3mBp, 1)}bp (발행어음 평균 +${fmt(noteCurve.slope1y3mBp, 1)}bp)`],
+        ['후반부(6M → 1Y) 추가 기울기', `+${fmt((c.y1 - c.m6) * 100, 1)}bp`]
+      ],
+      source: '금융투자협회(KOFIA) 채권정보센터 최종호가·민평수익률(2026-11-13) 및 인가 증권사 고시금리 평균',
+      caveat: '시장성 채권(국고·금융채·회사채)은 6개월 이후 기울기가 완만해지지만, 발행어음은 유동성비율(1·3개월 ≥100%) 분모 제외 혜택과 중도해지 페널티 구조로 1년물까지 가파르게 상승합니다.',
+      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-demand-note-cash-buffer']),
+      actions: [
+        { label: 'Q&A · 단기 커브 스티프닝 실증 전문 →', qa: 'guide-yield-curve-short-funding', primary: true },
+        { label: 'IMA 만기 매칭 구조 비교 →', tab: 'ima-maturity' }
+      ]
+    };
+  }
+
+  if (kind === 'vc-asset' && vc) {
+    const r = vc.assetRarocBenchmarks[Number(id)];
+    if (!r) return null;
+    const base = vc.assetRarocBenchmarks[0];
+    return {
+      eyebrow: `RAROC & EVA BREAKDOWN · ${vc.observedYieldDate}`,
+      title: `${r.asset} 단위 수익성·자본비용 해부`,
+      badge: r.capTag,
+      formula: `명목(${fmt(r.yieldPct)}%) − 조달(${fmt(vc.fundingCostBasePct)}%) − EL(${r.elCostBp}bp) − 자본비용(어음 ${r.capCostNoteBp}bp / IMA ${r.capCostImaBp}bp)`,
+      rows: [
+        ['대표 명목 수익률', `${fmt(r.yieldPct)}%`],
+        ['기준 조달원가 차감 명목마진', `+${r.grossSpreadBp}bp (조달원가 ${fmt(vc.fundingCostBasePct)}% 가정)`],
+        ['예상 부도손실(EL) + 심사원가', `−${r.elCostBp}bp`],
+        ['신NCR 신용위험값 (별표 5)', `위험값(RW) ${r.ncrRwPct}% · 목표 CoE ${fmt(vc.targetCoePct, 1)}%`],
+        ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${base.evaNoteBp - r.evaNoteBp}bp)`],
+        ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${base.evaImaBp - r.evaImaBp}bp)`]
+      ],
+      source: 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 별표 10(IMA 50% 반영)',
+      caveat: `${r.note}. 회사별 실제 내부 자본배정 계수와 부도율(PD·LGD)에 따라 개별 딜의 RAROC는 달라질 수 있습니다.`,
+      qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
+      actions: [
+        { label: '7대 인정 자산군 잠재 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-addressable-market', primary: true },
+        { label: '발행어음 vs IMA 규제 비교(#pnl) →', tab: 'pnl' }
+      ]
+    };
+  }
+
+  const staticSpecs = {
+    'kpi:actual-5854': {
+      eyebrow: 'BASELINE VERIFICATION · 2026.2Q 실적 기준선',
+      title: '2026.2Q 어음 + IMA 합산 잔액 58.54조 원',
+      badge: '공시 확정 실적',
+      formula: '발행어음 55.94조(7개 인가사) + IMA 2.60조(한투 1~4호) = 58.54조 원',
+      rows: [
+        ['7개 인가사 발행어음 합계 (SF325:A13)', '55.94조 원 (한투 22.47 · KB 11.00 · 미래 10.58 · NH 8.78 · 후발3사 3.11)'],
+        ['한국투자 초기 IMA 1~4호 설정액', '2.60조 원 (1호 1.10 · 2호 0.80 · 3호 0.40 · 4호 0.30)'],
+        ['원문 시뮬레이션 기준선과의 차이', '57.26조 원 (NH 7.50조 모형 가정 vs 8.78조 확정 공시 → 1.28조 차이)'],
+        ['전사 차입부채(472.75조) 내 비중', '발행어음 단독 11.8% (고객예수금 158.50조 별도)']
+      ],
+      source: '금융감독원 FISIS 202606 (SF325 차입부채 상세 A13) 및 한국투자증권 IMA 상품 설정 내역',
+      caveat: '성장률 계산 시 공시 기준선(58.54조 → 85조, +45.2%)과 시뮬레이션 기준선(57.26조 → 85조, +48.4%)을 혼용하지 않도록 구분 표기합니다.',
+      qas: makeQaItems(['guide-growth-baseline', 'guide-account-separation']),
+      actions: [
+        { label: '9사별 기준선·전망 분해표 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
+        { label: '7사 발행어음 한도 소진율(#pnl) →', tab: 'pnl' }
+      ]
+    },
+    'kpi:forecast-85': {
+      eyebrow: '2027E REVISED OUTLOOK · 수정 전망 산식',
+      title: '2027년 말 수신 시장 전망 85.00조 원',
+      badge: '메리츠 IR 반영',
+      formula: '발행어음 80.00조(기존 78 + 메리츠 4 − 잠재합산 2) + IMA 5.00조 = 85.00조 원',
+      rows: [
+        ['선발 4사 \'27E 합계 (한투·미래·NH·KB)', '61.50조 원 (어음 56.50조 + 한투·미래·NH IMA 5.00조)'],
+        ['2년차 3사 \'27E 합계 (키움·하나·신한)', '19.50조 원 (키움 7.50 · 하나 6.50 · 신한 5.50)'],
+        ['신규 인가 메리츠 · 삼성 반영 기준', '메리츠 연말 4.00조(수익평잔 2.00조) 반영 · 삼성 별도목표 미반영(0.00조)'],
+        ['원문 모형(83.00조) 대비 변화', '+2.00조 원 상향 (공시 기준선 대비 +26.46조 · +45.2% / 18개월 구간)']
+      ],
+      source: '원문 전망 모형(Module B) + 2026-11-17 사용자 전달 메리츠증권 IR 목표(원문 URL 별도 확인 전)',
+      caveat: '연말 시장 규모(85조)에는 메리츠 연말 4조가 들어가지만, 연간 NIM 수익 계산기에는 메리츠 평잔 목표 2조가 적용되어 수익 계산용 어음 분모는 78조 원이 됩니다.',
+      qas: makeQaItems(['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening']),
+      actions: [
+        { label: '회사별 성장 전제 드릴다운 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
+        { label: 'NIM 수익 계산기(#nim-lab) 시뮬레이션 →', tab: 'funding', scrollTo: 'nim-lab' }
+      ]
+    },
+    'kpi:growth-452': {
+      eyebrow: 'GROWTH RATE BASIS · 순증 및 증가율 기준',
+      title: '실적 기준선 대비 +26.46조 원 (+45.2%) 순증',
+      badge: '약 18개월 누적',
+      formula: '(85.00조 ÷ 58.54조 − 1) × 100 = +45.20% (연율화 CAGR 아님)',
+      rows: [
+        ['공시 실적 기준선 (58.54조 출발)', '순증 +26.46조 원 / 누적 증가율 +45.2%'],
+        ['원문 모형 기준선 (57.26조 출발)', '순증 +27.74조 원 / 누적 증가율 +48.4%'],
+        ['신규 모험자본 20% 추가 의무액', '실적 기준 5.29조 원 / 모형 기준 5.55조 원'],
+        ['비교 기간 정의', '2026년 6월 말 ~ 2027년 12월 말 (1.5년 = 18개월 누적 구간)']
+      ],
+      source: 'FISIS 202606 확정 공시 및 대시보드 수정 전망 산식',
+      caveat: '1년 연간 성장률이 아닌 6개 분기(18개월) 누적 성장률이며, 모험자본 기회비용 계산기(#invest)에서는 두 기준선을 직접 전환해 비교할 수 있습니다.',
+      qas: makeQaItems(['guide-growth-baseline', 'guide-sizing-growth']),
+      actions: [
+        { label: '모험자본 기회비용 기준선 비교(#invest) →', tab: 'invest', primary: true },
+        { label: '2027년 수신환경 베어 플랫 전망 ↓', tab: 'funding', scrollTo: 'funding-outlook-2027' }
+      ]
+    },
+    'kpi:vc-mandate-20': {
+      eyebrow: 'CROSS-CUTTING REGULATION · 모험자본 공급 의무',
+      title: '2027년 모험자본 의무비율 20% (중견·A급 상한 30%)',
+      badge: '2028년 25% 상향',
+      formula: '총운용자산의 20% = 중견·A급 최대 6%(20%×30%) + 비A급 순수 모험자본 최소 14%',
+      rows: [
+        ['연도별 의무비율 로드맵', '2026년 10% → 2027년 20% → 2028년 이후 25%'],
+        ['중견기업 · A급 채권 인정 상한', '모험자본 의무액의 최대 30% (2027년 총자산의 6%, 2028년 7.5%)'],
+        ['2027E 85조 기준 업권 총의무액', '총 17.00조 원 (A급 캡 5.10조 제외 비A급 순의무 11.90조 원)'],
+        ['규제 적용 구조', '기업금융(50/70%)·부동산(≤10%)·기타 합계 100% 안에서의 별도 교차 요건']
+      ],
+      source: '금융위원회 『종투사 기업금융 경쟁력 제고방안』(2025.04.09) 및 금융투자업규정 제4-102조의5 개정안',
+      caveat: '자산배분 100%에 추가로 20%를 더하는 것이 아니라 운용자산 내 적격 모험자본 인정분을 별도 집계합니다.',
+      qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
+      actions: [
+        { label: '모험자본 4대 기회비용·잠재시장 심층 분석 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+        { label: '발행어음·IMA 운용규제 상세(#pnl) →', tab: 'pnl' }
+      ]
+    },
+    'kpi:ib-debt-472': {
+      eyebrow: 'FISIS SF325 · 9대 종투사 전사 차입부채',
+      title: '9대 증권사 차입부채 합계 472.75조 원',
+      badge: '고객예수금 158.50조 별도',
+      formula: 'RP(146.32) + 단기차입(112.87) + ELS(83.61) + 어음(55.94) + 사채(38.45) + 기타(31.41) + 후순위(4.05)',
+      rows: [
+        ['1위 조달원 · RP매도', '146.32조 원 (31.0%) — 국공채·크레딧 레버리지 핵심'],
+        ['2·3위 · 단기차입금 / 매도파생결합증권', '112.87조 원 (23.9%) / 83.61조 원 (17.7%)'],
+        ['4위 · 발행어음 (SF325:A13)', '55.94조 원 (11.8%) — 무담보 기업금융 전용 재원'],
+        ['별도 분리 · 고객예수금 (SF324)', '158.50조 원 — 자본시장법 제74조 증금 별도예치 (차입 미포함)'],
+        ['재합산(472.65조)과의 0.10조 차이', '63개 세부 셀 소수점 둘째 자리 반올림에 따른 정상 원장 단수차']
+      ],
+      source: '금융감독원 FISIS 202606 (SF325 차입부채 · SF324 예수부채)',
+      caveat: '전사 차입부채로 조달한 트레이딩·헤지 손익과 발행어음 구분계정의 손익은 직접 합산·치환할 수 없습니다.',
+      qas: makeQaItems(['guide-account-separation', 'guide-kis-mirae-comparison']),
+      actions: [
+        { label: '9대 증권사 조달·실효금리·ROE 동기화 탐색 →', tab: 'ib-funding', primary: true },
+        { label: '한국투자 vs 미래에셋 레버리지 대조 →', tab: 'kis-mirae' }
+      ]
+    },
+    'kpi:margin-150-200': {
+      eyebrow: 'SPREAD BENCHMARK · 수단별 순운용마진 가정',
+      title: '발행어음 추정 순운용마진 150~200bp vs RP 10~30bp',
+      badge: '시뮬레이션 가정 범위',
+      formula: '어음 운용수익률(기업여신·크레딧 4.5~5.2%) − 어음 조달원가(평시 ~3.15%) ≈ 150~200bp',
+      rows: [
+        ['발행어음 추정 순마진', '150~200bp (기업신용위험·모험자본 의무·신NCR 100% 자본비용 수반)'],
+        ['IMA 증권사 귀속 기여율', '120~180bp (기본보수 ~60bp + 기준수익률 초과분 성과보수 40% 구조)'],
+        ['RP(환매조건부채권) 추정 마진', '10~30bp (국공채·우량채 담보 저위험 단기 캐리)'],
+        ['ELS·DLS / CP·전단채 추정 마진', '30~70bp / 30~80bp']
+      ],
+      source: '원문 리서치 모형(Module E-3) 추정 범위 및 대시보드 NIM 시뮬레이터 기본값(150bp / 120bp)',
+      caveat: '감사된 회계상 상품별 확정 마진이 아니며, 신용손실(EL)·판관비·신NCR 자기자본비용 차감 전 기준이므로 무위험 차익처럼 단순 비교하지 않습니다.',
+      qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
+      actions: [
+        { label: '회사별 NIM 시뮬레이터(#nim-lab) 직접 조정 →', tab: 'funding', scrollTo: 'nim-lab', primary: true },
+        { label: '자본비용 반영 RAROC·EVA 비교(#invest) →', tab: 'invest', scrollTo: 'vc-raroc-lab' }
+      ]
+    },
+    'kpi:bear-volume': {
+      eyebrow: '2027 VOLUME VERDICT · 수신 외형 판정',
+      title: '2027년 수신 외형(잔액): 확장 우위 (58.54조 → 85조E)',
+      badge: '3대 강화 > 3대 악화',
+      formula: '강화(9사 체제 완성 + 단기 파킹 머니무브 + 연금·ISA 기대) > 악화(특판 경합 + 금리인상)',
+      rows: [
+        ['핵심 확장 동력 1 · 공급 인가사 확대', '2년차 3사 미소진 한도 35.9조 + 26.09 삼성·메리츠 신규 인가(한도 +33조)'],
+        ['핵심 확장 동력 2 · 베어 플랫 역설', '채권 3년물 금리 메리트 약화 → 3%대 초중반 단기 발행어음·CMA 파킹 집중'],
+        ['공급 측 속도조절(Self-Brake)', '모험자본 20% 의무·부동산 10% 상한이 무분별한 출혈 수신 확대를 자체 제어']
+      ],
+      source: 'KOFIA 민평수익률(2026-11-13) · FISIS(202606) · 통합연금포털 기반 시나리오 분석',
+      caveat: '수신 잔액이 잘 모이는 것(외형 확장)과 순이자마진이 개선되는 것(수익성)은 베어 플랫 국면에서 비대칭적으로 움직입니다.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-growth-baseline']),
+      actions: [
+        { label: 'Q&A · 2027 수신환경·베어 플랫 전문 해설 →', qa: 'guide-2027-funding-outlook-bear-flattening', primary: true },
+        { label: '시중 대기자금 머니무브 금리 사다리 ↓', tab: 'funding', scrollTo: 'money-move-safety' }
+      ]
+    },
+    'kpi:bear-margin': {
+      eyebrow: '2027 MARGIN PATH · 조달원가 및 NIM 경로',
+      title: '2027년 조달원가 · NIM 경로: 상박하후 (上薄下厚)',
+      badge: '1년물 Lock-in 경계',
+      formula: '1H27(금리인상 전가 + 후발사 특판 압박) → 2H27(63.4% 초단기물 하향 리프라이싱)',
+      rows: [
+        ['상반기(1H27) 마진 압박 요인', '기준금리 3.25~3.50% 도달 가정 시 1~3개월 내 조달원가 +35~55bp 즉각 반영'],
+        ['피해야 할 함정 (Cost Lock-in)', '고점 4.3~4.5%대 1년물 특판 과다 조달 시 2028년 상반기까지 역마진 고착(KB 4.53% 사례)'],
+        ['하반기(2H27) 반전 메커니즘', '금리 안정 진입 시 63.4% 초단기 부채가 가장 빠른 원가 하락 수단으로 작동']
+      ],
+      source: '금감원 발행어음 만기분포(2026.1Q) · FISIS SF321 실효금리 · KOFIA 채권 커브 실증',
+      caveat: '상반기 피크 금리 구간에서는 부채는 짧게(≤3M), 우량 기업여신 운용자산은 2~3년 고정금리로 길게 잡는 ALM이 유리합니다.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-funding-rate-spread-risk']),
+      actions: [
+        { label: '리스크점검 · 베어 플랫 체크리스트 →', tab: 'pension-risk', primary: true },
+        { label: '단기 수익률곡선 패널 바로 보기 ↓', tab: 'funding', scrollTo: 'short-curve-panel' }
+      ]
+    },
+    'kpi:bear-spread-11bp': {
+      eyebrow: 'KOFIA OBSERVED SPREAD · 베어 플랫 실증 지표',
+      title: '국고채 3Y − 1Y 기간 스프레드 +11.1bp로 급축소',
+      badge: '2026-11-13 민평 기준',
+      formula: '국고 3년(3.750%) − 국고 1년(3.639%) = +11.1bp (2026.2Q +50.2bp 대비 −39.1bp)',
+      rows: [
+        ['2026.2Q 말 (기준금리 2.50%)', '국고 1Y 3.120% / 3Y 3.622% → 3Y−1Y +50.2bp'],
+        ['2026-11-13 (기준금리 3.00%)', '국고 1Y 3.639% (+51.9bp 급등) / 3Y 3.750% (+12.8bp) → +11.1bp'],
+        ['금융채 AA0 · 회사채 AA- (3Y−1Y)', '금융채 AA0 +22.1bp (4.362%−4.141%) · 회사채 AA- +17.2bp (4.417%−4.245%)'],
+        ['과거 금리 고점기(2023.02~2024.10) 대조', '기준금리 3.50% 당시 국고 3Y−1Y 평균 −0.2bp (장단기 역전)']
+      ],
+      source: '금융투자협회(KOFIA) 채권정보센터 최종호가·시가평가 수익률 일별 원장(2018.01~2026.11.13)',
+      caveat: '단기금리가 중기금리보다 빠르게 올라 무위험 기간 캐리(Term Carry)가 소멸했으므로, 우량 크레딧 스프레드 및 IMA 자본효율로 마진을 방어해야 합니다.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-yield-curve-short-funding']),
+      actions: [
+        { label: '베어 플랫 레짐 대조표 확인 ↑', tab: 'funding', scrollTo: 'funding-outlook-2027', primary: true },
+        { label: 'Q&A · 베어 플랫 역학 상세 읽기 →', qa: 'guide-2027-funding-outlook-bear-flattening' }
+      ]
+    },
+    'kpi:curve-slope-109bp': {
+      eyebrow: 'STEEPENING ASYMMETRY · 발행어음 단기 커브 기울기',
+      title: '발행어음 1Y − 수시(1D) 기울기 +109.0bp',
+      badge: '국고채의 1.9배 경사',
+      formula: '7사 평균 1년물(3.96%) − 수시물(2.87%) = +109.0bp (선발 4사 평균 +120.0bp)',
+      rows: [
+        ['발행어음 7사 평균 커브 (2026-11-13)', '수시 2.87% → 3M 3.17% → 6M 3.55% → 1Y 3.96% (1Y−3M +79.0bp)'],
+        ['동일 만기 국고채 커브', '콜 3.055% → 3M 3.210% → 1Y 3.639% (1Y−콜 +58.4bp · 1Y−3M +42.9bp)'],
+        ['동일 만기 금융채 AA0 · 회사채 AA-', '1Y−3M 각각 +48.5bp / +43.6bp (6M→1Y 구간은 +8~16bp로 평탄화)'],
+        ['급경사 유지의 3대 구조적 원인', '① CMA 결제편의 할인 ② 중도해지 페널티 ③ 6M~1Y물 유동성비율 분모 제외(FTP 우대)']
+      ],
+      source: '7개 인가 증권사 고시약정금리 및 KOFIA 민평수익률(2026-11-13)',
+      caveat: '1년물 발행어음을 과도하게 늘리면 자체 공모 금융채 AA0 발행(1년 4.14%) 대비 조달원가 우위가 사라집니다.',
+      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-funding-rate-spread-risk']),
+      actions: [
+        { label: 'Q&A · 왜 발행어음 커브만 가파를까? →', qa: 'guide-yield-curve-short-funding', primary: true },
+        { label: '9사별 실제 상반기 실효금리 비교 →', tab: 'ib-funding' }
+      ]
+    },
+    'kpi:short-share-634': {
+      eyebrow: 'FSS PARLIAMENTARY DATA · 업권 만기 구조 실증',
+      title: '만기 3개월 이하 초단기 수신 비중 63.4% (34.50조 원)',
+      badge: '2026.1Q · 54.43조 기준',
+      formula: '(1개월 이하 29.25조 + 1~3개월 5.25조) ÷ 전체 54.43조 = 63.38% → 63.4%',
+      rows: [
+        ['만기 1개월 이하 (수시 + 30일 이내)', '29조 2,495억 원 (53.7%) — 대응 1개월 이하 운용자산도 27.75조(50.5%)'],
+        ['만기 1개월 초과 ~ 3개월 이하', '5조 2,490억 원 (9.6%) → 3개월 이하 소계 34조 4,985억 원 (63.4%)'],
+        ['만기 3~6개월 / 6개월~1년 이하', '9조 660억 원 (16.7%) / 10조 8,628억 원 (20.0%)'],
+        ['만기 장기화 시 원가 충격 시산', '3M 이하를 20%로 축소 시 가중평균 조달단가 즉시 +46~66bp(연 +2,580~3,670억) 급등']
+      ],
+      source: '금융감독원 국회 정무위원회 제출 발행어음 만기별 조달·운용 명세(2026.1Q 말, 54조 4,273억 원)',
+      caveat: '초단기 수신 집중은 단순 미스매치가 아니라 급경사 수익률곡선 하에서 NIM 150~200bp를 방어하기 위한 경제적 필연입니다.',
+      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-demand-note-cash-buffer']),
+      actions: [
+        { label: 'Q&A · 63.4% 초단기 수신 실증 해설 →', qa: 'guide-yield-curve-short-funding', primary: true },
+        { label: '중장기 대체 비히클 IMA 비교(#ima-maturity) →', tab: 'ima-maturity' }
+      ]
+    },
+    'kpi:demand-share-4550': {
+      eyebrow: 'KOFIA CMA & DEMAND SWEEP · 실질 수시물 비중',
+      title: '업권 실질 수시입출금형 발행어음 비중 45~50% 추산',
+      badge: '발행어음형 CMA 38~44%',
+      formula: '확정 발행어음형 CMA(21.0~24.5조) + 위탁·법인 일반 수시물(3~5조 추산) ÷ 전체 어음',
+      rows: [
+        ['KOFIA 확정 발행어음형 CMA 잔고', '약 21.0~24.5조 원 (전체 CMA 103~106조 중 · 전체 어음의 38~44%)'],
+        ['일반 위탁계좌·법인 수시물 추산', '약 3.0~5.0조 원 → 합산 실질 수시물 45~50%'],
+        ['선발사 vs 후발사 조달단가 격차 증거', '선발 3사(수시 풍부) 실효금리 2.61~2.75% vs 하나증권(초기 기간형 90%) 3.42%'],
+        ['유동성 관리 기준', '법정 1·3개월 유동성비율 ≥100% + 사내 현금성·HQLA 버퍼(5~15%)']
+      ],
+      source: '금융투자협회(KOFIA) 종합통계포털 CMA 일별·월별 통계 및 FISIS SF321 교차검증',
+      caveat: '법인·일반 수시물 합산치(45~50%)는 확정 공시된 발행어음형 CMA(38~44%)에 기간물 구성을 대조해 도출한 추산 범위입니다.',
+      qas: makeQaItems(['guide-demand-note-cash-buffer', 'guide-yield-curve-short-funding']),
+      actions: [
+        { label: 'Q&A · 수시물 10% 현금버퍼 개선 논리 →', qa: 'guide-demand-note-cash-buffer', primary: true },
+        { label: '9사 유동성비율·실효금리 확인(#ib-funding) →', tab: 'ib-funding' }
+      ]
+    },
+    'kpi:mm-m2': {
+      eyebrow: 'MACRO LIQUIDITY · 한국은행 통화지표',
+      title: '광의통화 M2 평잔 4,278.8조 원',
+      badge: '2026.09 한국은행 ECOS',
+      formula: '현금통화 + 요구불예금 + 수시입출식 저축성예금(M1) + 2년 미만 정기예적금·MMF·CMA·수익증권 등',
+      rows: [
+        ['광의통화 M2 규모 (2026.09)', '4,278.8조 원 — 국내 단기·준결제성 유동성 총량 지표'],
+        ['발행어음+IMA 시장(58.54조 → 85조E) 비중', 'M2 대비 현재 1.37% → 2027E 1.99% (2% 미만의 초기 침투율)'],
+        ['상반기 베어 플랫기 머니무브 경로', '은행 저원가 요구불예금(0.1~0.5%) → 증권 발행어음형 CMA(2.8~3.2%) 스윕 유입']
+      ],
+      source: '한국은행 경제통계시스템(ECOS) 통화 및 유동성 통계(2026.09 평잔 기준)',
+      caveat: 'M2에는 가계뿐 아니라 기업·기타금융기관 보유 단기 통화성 상품이 함께 포함됩니다. 순수 가계 보유분은 가계자산 탭(#household-wealth)에서 확인하세요.',
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-latest-rate']),
+      actions: [
+        { label: '가계·법인 세부 자산 브레이크다운(#household-wealth) →', tab: 'household-wealth', primary: true },
+        { label: '수신금리 매력도 사다리 표 보기 ↓', tab: 'funding', scrollTo: 'money-move-safety' }
+      ]
+    },
+    'kpi:mm-pension': {
+      eyebrow: 'PENSION MONEY MOVE · 금융감독원 통합연금포털',
+      title: '퇴직연금 원리금보장형 대기 자금 378.1조 원',
+      badge: '총적립금 501.4조의 75.4%',
+      formula: '퇴직연금 총적립금 501.4조 × 원리금보장형 비중 75.4% = 378.1조 원',
+      rows: [
+        ['퇴직연금 총적립금 / 원리금보장형', '501.4조 원 / 378.1조 원 (시중은행 저금리 예금 2.60~2.85% 편중)'],
+        ['저축은행 연금예금 편입 상한', '기관당 1억 원 (2025.09.01 예금자보호 한도 상향 연동)'],
+        ['자사상품 편입 금지(감독규정 제9조제3항)', '향후 어음·IMA 허용 시 시중은행·타 증권사 채널 교차판매 가능'],
+        ['유입 민감도 시산', '원리금보장형의 3~5%만 유입되어도 약 11.3~18.9조 원 신규 수신 창출']
+      ],
+      source: '금융감독원 통합연금포털 퇴직연금 적립금 통계 및 퇴직연금감독규정 제9조·제15조의4',
+      caveat: '현행 규정상 DC·IRP에 발행어음·IMA는 아직 직접 편입 전이며, 감독규정 개정 고시 및 사업자 전산 탑재가 선결 조건입니다.',
+      qas: makeQaItems(['guide-pension-self-product-ban', 'guide-pension-eligibility']),
+      actions: [
+        { label: 'Q&A · 자사상품 금지와 501.4조 연금 효과 →', qa: 'guide-pension-self-product-ban', primary: true },
+        { label: 'Q&A · 퇴직연금 편입 조건·확인 경로 →', qa: 'guide-pension-eligibility' }
+      ]
+    },
+    'kpi:mm-deposits': {
+      eyebrow: 'FISIS SF324 · 증권사 대기자금 풀',
+      title: '9대 증권사 별도 고객예수금 158.50조 원',
+      badge: '증금 별도예치 · CMA 전환 풀',
+      formula: '위탁자예수금 등 고객 대기자금 합계 158.50조 원 (한국투자 26.05조 · 키움 25.49조 등)',
+      rows: [
+        ['법적 성격 (자본시장법 제74조)', '한국증권금융 별도 예치·신탁 의무 → 증권사 고유 기업금융 운용 전용 불가'],
+        ['고객 입장에서의 금리 격차', '일반 예탁금 이용료율(연 0.1~1.0%대) vs 수시형 발행어음·CMA(연 2.8~3.2%)'],
+        ['증권사 입장에서의 전환 효과', '고객이 예탁금을 발행어음형 CMA로 스윕(동의 전환)하면 즉시 IB 운용재원으로 편입']
+      ],
+      source: '금융감독원 FISIS 202606 예수부채(SF324) 및 자본시장법 제74조',
+      caveat: '특히 리테일 고객예수금이 25.49조에 달하는 키움증권과 WM 기반이 큰 삼성·미래·한투에서 내부 계좌 스윕 잠재력이 큽니다.',
+      qas: makeQaItems(['guide-account-separation', 'guide-2027-funding-outlook-bear-flattening']),
+      actions: [
+        { label: '9사별 고객예수금·차입 구성 비교(#ib-funding) →', tab: 'ib-funding', primary: true },
+        { label: '가계 금융자산 내 예금·증권 구조(#household-wealth) →', tab: 'household-wealth' }
+      ]
+    },
+    'kpi:hw-kr-total': (() => {
+      const nbs25 = hw?.krAnnualBalanceSheet?.at(-1);
+      const hk = hw?.headlineKpis;
+      return {
+        eyebrow: 'ECOS 291Y505 · 한국 가계 대차대조표 총괄',
+        title: `한국 전체 가계자산 ${nbs25 ? fmt(nbs25.totalAssetsTril, 1) : '16,641.3'}조 원 ('25말 국민대차대조표)`,
+        badge: `명목 GDP의 ${nbs25 ? fmt(nbs25.totalAssetsToGdpX, 2) : '6.22'}배`,
+        formula: nbs25
+          ? `비금융(실물) ${fmt(nbs25.nonFinAssetsTril, 1)}조(${fmt(nbs25.nonFinShareOfGrossPct, 1)}%) + 금융자산 ${fmt(nbs25.finAssetsTril, 1)}조(${fmt(nbs25.finShareOfGrossPct, 1)}%) = ${fmt(nbs25.totalAssetsTril, 1)}조 원`
+          : '비금융(실물) 10,433.7조(62.7%) + 금융자산 6,207.6조(37.3%) = 16,641.3조 원',
+        rows: [
+          ['비금융(실물)자산 세부', nbs25 ? `토지자산 ${fmt(nbs25.landTril, 1)}조 + 건물(주택 등) ${fmt(nbs25.buildingsTril, 1)}조 + 기타 ${fmt(nbs25.otherNonFinTril, 1)}조` : '토지 7,418.6조 + 건물 2,833.0조 + 기타 182.2조'],
+          ['금융자산 (\'25말 → \'26.2Q 자금순환)', hk ? `${fmt(hk.krFinAssets25Tril, 1)}조 원 → '26.2Q ${fmt(hk.krFinAssets26Q2Tril, 1)}조 원으로 반기 만에 +${fmt(hk.krFinAssets26Q2Tril - hk.krFinAssets25Tril, 1)}조 증가` : '6,207.6조 → 6,930.2조 원'],
+          ['금융부채 차감 가계 순자산', nbs25 ? `${fmt(nbs25.netWorthTril, 1)}조 원 (명목 GDP ${fmt(nbs25.nominalGdpTril, 1)}조 원 대비 ${fmt(nbs25.netWorthToGdpX, 2)}배)` : '14,200.5조 원'],
+          ['국제 비교 포지션', '실물자산 편중도(62.7%)가 미(30.9%)·일(38.1%)·영(52.0%) 대비 높으나 금융 비중(37.3%)도 상승 추세']
+        ],
+        source: '한국은행·국가데이터처 『2025년 국민대차대조표(잠정)』(ECOS 291Y505, S14 가계 및 비영리단체)',
+        caveat: '가계 총자산의 62.7%가 부동산에 묶여 있으나, 금융자산(6,930.2조) 내에서도 정기예금(1,474조)과 연금(1,633조)의 중수익 전환 여력이 막대합니다.',
+        qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-pension-self-product-ban']),
+        actions: [
+          { label: '실물·금융·15개 세부상품 분해표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-korea-tree', primary: true },
+          { label: '한·미·영·일·중 5개국 비교 바로가기 ↓', tab: 'household-wealth', scrollTo: 'hw-intl-5country' }
+        ]
+      };
+    })(),
+    'kpi:hw-kr-fin': (() => {
+      const hk = hw?.headlineKpis;
+      const qLat = hw?.krQuarterlyFinSeries?.at(-1);
+      return {
+        eyebrow: 'ECOS 281Y002 · 최신 분기 가계 금융자산',
+        title: `2026.2Q 가계 금융자산 ${hk ? fmt(hk.krFinAssets26Q2Tril, 1) : '6,930.2'}조 원`,
+        badge: `순금융자산 ${hk ? fmt(hk.krNetFin26Q2Tril, 1) : '4,435.2'}조`,
+        formula: '예금(2,688.1) + 주식·펀드(2,381.1) + 보험·연금(1,633.0) + 채권(182.9) + 기타(45.1)',
+        rows: [
+          ['① 현금·예금 (38.8%)', '2,688.1조 원 — 저축성예금 1,923.3조(정기예금 1,474.3조) + 결제성 502.3조'],
+          ['② 지분증권·투자펀드 (34.4%)', '2,381.1조 원 — 국내주식 1,622.5조 + 해외주식 348.2조 + 펀드 327.0조'],
+          ['③ 보험·연금준비금 (23.6%)', '1,633.0조 원 / ④ 채권 직접보유 182.9조 원 (2.6%)'],
+          ['금융부채 및 건전성 배율', hk ? `금융부채 ${fmt(hk.krFinLiab26Q2Tril, 1)}조 원 · 금융자산/부채 배율 ${qLat ? fmt(qLat.assetLiabRatioX, 2) : '2.78'}배` : '금융부채 2,495.1조 원 · 배율 2.78배']
+        ],
+        source: '한국은행 『2026년 2분기 자금순환(잠정)』(ECOS 281Y002, S14 가계 및 비영리단체)',
+        caveat: '가계의 직접 채권 보유는 2.6%(장기채 126.2조·단기채 7.3조)에 불과해, 발행어음·IMA가 예금과 채권 사이의 핵심 가교 상품으로 작동합니다.',
+        qas: makeQaItems(['guide-latest-rate', 'guide-product-difference']),
+        actions: [
+          { label: '분기별 금융자산 시계열 차트 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-timeseries', primary: true },
+          { label: '2027 수신 전망 & NIM 계산기(#funding) →', tab: 'funding' }
+        ]
+      };
+    })(),
+    'kpi:hw-corp-s11': {
+      eyebrow: 'ECOS 281Y002 (S11) · 법인 도매 수신 기반',
+      title: '비금융법인(S11) 현금·예금 1,135.9조 원 (+펀드·채권 396.6조)',
+      badge: '법인 발행어음 원천',
+      formula: '법인 현금·예금 1,135.9조 + 투자펀드(MMF 등) 274.7조 + 채권 121.9조 = 단기·금융운용 1,532.5조',
+      rows: [
+        ['비금융법인 현금 및 예금 (\'26.2Q)', '1,135.9조 원 (\'19.4Q 728.6조 대비 +407.3조 확대)'],
+        ['비금융법인 투자펀드(MMF 포함) · 채권', '펀드 274.7조 원 · 채권(CP·단기사채·장기채) 121.9조 원'],
+        ['발행어음 시장에서의 역할', '기업 자금부의 MMF·정기예금 대체 수시형/3개월물 발행어음 도매 수요 형성'],
+        ['리스크 관리 연결점', '법인 수시물은 분기·연말 결산기 일시 인출 변동성이 있어 소매 CMA와 분산 필수']
+      ],
+      source: '한국은행 자금순환(ECOS 281Y002, S11 비금융법인기업 부문)',
+      caveat: '가계가 발행어음·IMA의 안정적 리테일 코어 부채라면, 비금융법인 유동성은 규모를 빠르게 키우는 도매 자금원입니다.',
+      qas: makeQaItems(['guide-funding-rate-spread-risk', 'guide-demand-note-cash-buffer']),
+      actions: [
+        { label: '법인 유동성 & 가계 5분위 비교 섹션 ↓', tab: 'household-wealth', scrollTo: 'hw-aux-pools', primary: true },
+        { label: 'Q&A · 법인 수시형·기간형 분산 전략 →', qa: 'guide-funding-rate-spread-risk' }
+      ]
+    },
+    'kpi:hw-shf-top20': {
+      eyebrow: 'ECOS 903Y212 · 가계금융복지조사 분위별 집중도',
+      title: '순자산 상위 20%(5분위) 가구 평균 총자산 17.46억 · 금융 3.46억',
+      badge: '전체 순자산의 62% 보유',
+      formula: '5분위 평균 자산 17.46억(실물 14.00억 + 금융 3.46억) − 부채 1.62억 = 순자산 15.84억 원',
+      rows: [
+        ['전체 가구 평균 vs 순자산 5분위 평균', '총자산 5.66억 vs 17.46억 (3.1배) · 금융자산 1.40억 vs 3.46억'],
+        ['5분위 가구 금융자산 세부 구성', '예치식 저축 1.46억 · 적립식·기타 1.49억 · 전월세보증금 0.51억'],
+        ['발행어음 · IMA 타깃 시사점', '예금자보호(1억 원) 한도를 초과하는 거액 예치금을 보유해 AA급 종투사 어음·IMA 핵심 수요층']
+      ],
+      source: '국가데이터처·금융감독원·한국은행 『2025년 가계금융복지조사』(ECOS 903Y212, 2025년 3월 말 기준)',
+      caveat: '표본 가구 설문·행정자료 조사이므로 초고액자산가 꼬리 분포는 거시 자금순환(ECOS 281Y002) 총량보다 과소 포착되는 특성이 있습니다.',
+      qas: makeQaItems(['guide-principal-protection', 'guide-latest-rate']),
+      actions: [
+        { label: '순자산 1~5분위 전체 비교표 보기 ↓', tab: 'household-wealth', scrollTo: 'hw-aux-pools', primary: true },
+        { label: '9사 신용등급·원금보호 구조(#funding) →', tab: 'funding', scrollTo: 'money-move-safety' }
+      ]
+    },
+    'kpi:reg-cap-300': {
+      eyebrow: 'STATUTORY LIMIT · 자본시장법 시행령 제77조의6',
+      title: '발행어음 단독 200% · 발행어음 + IMA 통합 300% 한도',
+      badge: '별도 자기자본 기준',
+      formula: '발행어음 ≤ 별도자본 × 200% / (발행어음 + IMA) ≤ 별도자본 × 300%',
+      rows: [
+        ['4조 원 이상 종투사 (9개사 전원)', '발행어음 단독 별도 자기자본의 200% 이내 발행 가능'],
+        ['8조 원 이상 IMA 인가사 (한투·미래·NH)', '발행어음 + IMA 합산 별도 자기자본의 300% 이내 조달 가능'],
+        ['규제 레버리지(1,100%) 산정 특례', '발행어음·IMA 구분계정 운용자산은 전사 레버리지비율 산정 시 차감 특례 적용']
+      ],
+      source: '자본시장법 제77조의3 · 시행령 제77조의6 · 금융투자업규정 별표 10',
+      caveat: '통합 300% 한도가 있다고 해서 발행어음만으로 300%를 채울 수는 없으며, 200% 초과 구간은 반드시 IMA로 조달해야 합니다.',
+      qas: makeQaItems(['guide-product-difference', 'guide-sizing-growth']),
+      actions: [
+        { label: '7사 발행어음 한도 소진율(#pnl) →', tab: 'pnl', primary: true },
+        { label: '발행어음 vs IMA 제도 비교(#ima-maturity) →', tab: 'ima-maturity' }
+      ]
+    },
+    'kpi:ima-kis-260': {
+      eyebrow: 'MATURITY WALL · 초기 폐쇄형 IMA 만기 구조',
+      title: '한국투자증권 초기 IMA 1~4호 2.60조 원 (5개월 내 만기 집중)',
+      badge: '2027.12 ~ 2028.04',
+      formula: '1호 1.10조(27.12) + 3호 0.40조(28.02) + 4호 0.30조(28.03) + 2호 0.80조(28.04) = 2.60조 원',
+      rows: [
+        ['최대 단일 만기 · 1호 (2027년 12월)', '1.10조 원 (초기 4개 회차의 42.3%) — 연말 북클로징 시기와 중첩'],
+        ['소규모 회차 · 3호(0.40조) / 4호(0.30조)', '단일 대형 기업금융 딜 편입 시 회차 내 집중위험(5% 충당금 소진) 관리 필요'],
+        ['차환(Rollover) 핵심 체크포인트', '편입 기업여신·사모사채 현금 회수일과 만기 원리금 지급일의 1~2분기 선제 매칭']
+      ],
+      source: '저장소 제공 한국투자증권 초기 IMA 1~4호 설정·만기 타임라인(imaTranchesKis)',
+      caveat: '전체 IMA 시장(2027E 5.00조 전망)의 만기 분포가 아니라 공시·파악된 한국투자 초기 4개 회차의 집중도입니다.',
+      qas: makeQaItems(['guide-ima-maturity', 'guide-real-estate-concentration']),
+      actions: [
+        { label: 'Q&A · IMA 만기 집중 리스크 해설 →', qa: 'guide-ima-maturity', primary: true },
+        { label: '리스크점검 체크리스트(#pension-risk) →', tab: 'pension-risk' }
+      ]
+    },
+    'kpi:kis-mirae-lev': {
+      eyebrow: 'LEVERAGE & CAPITAL ACCOUNTING · 한국투자 vs 미래에셋',
+      title: '순수 회계 레버리지(10.5배 / 13.6배) vs 규제 레버리지(902% / 790%)',
+      badge: '2026.2Q 별도·연결 대조',
+      formula: '회계 배수 = 별도 총자산 ÷ 별도 자기자본 / 규제 레버리지 = 조정자산 ÷ 조정자기자본 (한도 1,100%)',
+      rows: [
+        ['한국투자증권 (별도 자산 138.0조 / 자본 13.19조)', '순수 회계 10.46배 · 규제 레버리지 902.2% · 연결 순자본/위험액 286.4%'],
+        ['미래에셋증권 (별도 자산 143.9조 / 자본 10.57조)', '순수 회계 13.61배 · 규제 레버리지 790.1% · 개별 자본차감 5.92조(해외출자 등)'],
+        ['왜 순위가 뒤바뀌는가?', '미래에셋은 RP·종금형·파생 등 규제 레버리지 차감 자산 비중이 크고, 한투는 발행어음 기업여신 익스포저가 크기 때문']
+      ],
+      source: '금융감독원 FISIS 202606 (SF304 재무상태표 · SF331 레버리지비율 · SF408/SF308 NCR)',
+      caveat: '전사 이자손익(한투 +5,299억 vs 미래 −1,405억, 리테일 차감 후) 역시 자산배분(국내 기업여신 vs 해외출자·배당) 차이이며 발행어음 단독 마진이 아닙니다.',
+      qas: makeQaItems(['guide-kis-mirae-comparison', 'guide-account-separation']),
+      actions: [
+        { label: 'Q&A · 한투 vs 미래 이자손익 해석 전문 →', qa: 'guide-kis-mirae-comparison', primary: true },
+        { label: '9대 증권사 전체 수익성 매트릭스(#ib-funding) →', tab: 'ib-funding', scrollTo: 'ib-profitability-matrix' }
+      ]
+    },
+    'kpi:mrmc-qstar': {
+      eyebrow: 'MARGINAL ECONOMICS · 최적 수신 규모 Q*',
+      title: '한계수익(MR) = 한계비용(MC) 균형과 어음·IMA 분업',
+      badge: '경제학적 의사결정 모형',
+      formula: 'MR(한계 운용수익 − EL) = MC(한계 조달금리 + 모험자본 그림자 조세 + 신NCR 자본비용)',
+      rows: [
+        ['한계수익(MR)이 체감하는 이유', '수신 규모가 커질수록 우량 AA~A급 딜을 채운 뒤 비A급 모험자본(14~17.5%) 비중을 늘려야 함'],
+        ['한계비용(MC)이 체증하는 이유', '점유율 확대용 특판 금리(+70~90bp) + 신NCR 위험액 가산(어음 100%) + 유동성 버퍼 비용'],
+        ['Q*를 오른쪽으로 넓히는 두 가지 열쇠', '① 상위 VC·사모신용 오리지네이션(MR 방어) ② 폐쇄형 IMA 위험액 50% 감경 활용(MC 절감)']
+      ],
+      source: '원문 Module C 개념 모형 및 대시보드 패키지 한계이익(규제 그림자 조세) 시뮬레이션',
+      caveat: '회사별 내부 한계 딜 파이프라인과 자본비용 계수가 비공개이므로 단일 정량 Q*(조 원)를 확정하지 않고 패키지 마진 범위로 판단합니다.',
+      qas: makeQaItems(['guide-sizing-growth', 'guide-funding-rate-spread-risk']),
+      actions: [
+        { label: '수신 1조 패키지 한계이익 렌즈 열기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+        { label: 'Q&A · 모험자본 병목과 적정 성장 규모 →', qa: 'guide-sizing-growth' }
+      ]
+    }
+  };
+
+  if (staticSpecs[specKey]) return staticSpecs[specKey];
+
+  return null;
+}
+
+/* ==========================================================================
+   Thought-Trail Breadcrumb Engine (최근 탐색 맥락 보존 및 1클릭 복귀)
+   ========================================================================== */
+const trailHistory = [];
+const MAX_TRAIL = 5;
+
+export function recordTrailStep({ id, label, firmName = '', href = '' }) {
+  if (!id || !label) return;
+  const cleanHref = href || ('#' + id);
+  const last = trailHistory.at(-1);
+  if (last && last.id === id) {
+    last.label = label;
+    last.firmName = firmName;
+    last.href = cleanHref;
+    return;
+  }
+  const existingIdx = trailHistory.findIndex(x => x.id === id);
+  if (existingIdx !== -1 && existingIdx === trailHistory.length - 2) {
+    trailHistory.pop();
+    const cur = trailHistory.at(-1);
+    cur.firmName = firmName;
+    cur.href = cleanHref;
+    return;
+  }
+  trailHistory.push({ id, label, firmName, href: cleanHref });
+  if (trailHistory.length > MAX_TRAIL) trailHistory.shift();
+}
+
+export function getPreviousTrailStep() {
+  return trailHistory.length >= 2 ? trailHistory[trailHistory.length - 2] : null;
+}
+
+export function renderTrailHtml(currentId, currentLabel, firmName = '') {
+  const prevSteps = trailHistory.slice(0, -1).slice(-3);
+  const firmChip = firmName && ['funding', 'ib-funding', 'invest', 'pnl', 'kis-mirae'].includes(currentId)
+    ? `<span class="trail-firm-pill" title="현재 연동된 증권사">${firmName}</span>`
+    : '';
+
+  if (!prevSteps.length) {
+    return `<span class="trail-root">리서치 대시보드</span><span>/</span><b id="crumb">${currentLabel}</b>${firmChip}`;
+  }
+
+  const prevLinks = prevSteps.map(s =>
+    `<a href="${s.href}" class="trail-link" data-trail-jump="${s.href}">${s.label}</a><span class="trail-sep" aria-hidden="true">▸</span>`
+  ).join('');
+
+  const prev = prevSteps.at(-1);
+  return `${prevLinks}<b id="crumb">${currentLabel}</b>${firmChip}<button type="button" class="trail-back-btn" data-trail-back="${prev.href}" title="${prev.label} 화면으로 돌아가기">↩ 이전 맥락</button>`;
+}
+
+/* ==========================================================================
+   DOM Inspector Drawer Mounting & Delegated Event Wiring
+   ========================================================================== */
+let drawerEl = null;
+let backdropEl = null;
+let lastTriggerEl = null;
+let getDataFn = () => null;
+let onActionFn = () => {};
+const drawerStack = [];
+
+function ensureDrawerDom() {
+  if (drawerEl) return;
+  backdropEl = document.createElement('div');
+  backdropEl.id = 'xray-backdrop';
+  backdropEl.className = 'xray-backdrop';
+  backdropEl.hidden = true;
+
+  drawerEl = document.createElement('aside');
+  drawerEl.id = 'xray-drawer';
+  drawerEl.className = 'xray-drawer';
+  drawerEl.setAttribute('aria-hidden', 'true');
+  drawerEl.setAttribute('aria-label', '데이터 근거 및 연관 질문 인스펙터');
+
+  document.body.appendChild(backdropEl);
+  document.body.appendChild(drawerEl);
+
+  backdropEl.addEventListener('click', closeXray);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawerEl && drawerEl.classList.contains('open')) {
+      e.stopPropagation();
+      closeXray();
+    }
+  });
+}
+
+export function closeXray() {
+  if (!drawerEl) return;
+  drawerEl.classList.remove('open');
+  drawerEl.setAttribute('aria-hidden', 'true');
+  if (backdropEl) backdropEl.hidden = true;
+  drawerStack.length = 0;
+  if (lastTriggerEl && typeof lastTriggerEl.focus === 'function') {
+    try { lastTriggerEl.focus({ preventScroll: true }); } catch {}
+  }
+  lastTriggerEl = null;
+}
+
+export function openXray(specKey, triggerEl = null, pushStack = false) {
+  const D = getDataFn();
+  const spec = resolveXraySpec(specKey, D);
+  if (!spec) return false;
+  ensureDrawerDom();
+
+  if (triggerEl) lastTriggerEl = triggerEl;
+  if (pushStack && drawerEl.dataset.currentKey && drawerEl.dataset.currentKey !== specKey) {
+    drawerStack.push(drawerEl.dataset.currentKey);
+  } else if (!pushStack) {
+    drawerStack.length = 0;
+  }
+  drawerEl.dataset.currentKey = specKey;
+
+  drawerEl.innerHTML = `
+    <div class="xray-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:4px">${spec.eyebrow}</div>
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          ${drawerStack.length ? `<button type="button" class="xray-back-chip" id="xray-step-back">← 이전 항목</button>` : ''}
+          ${spec.badge ? `<span class="badge green">${spec.badge}</span>` : ''}
+        </div>
+        <h2 class="xray-title">${spec.title}</h2>
+      </div>
+      <button type="button" class="xray-close" id="xray-close-btn" aria-label="인스펙터 닫기">✕</button>
+    </div>
+    <div class="xray-body">
+      <section class="xray-sec">
+        <div class="xray-sec-label">01 · 산식 및 세부 데이터 분해</div>
+        <code class="formula-pill" style="margin-top:0;margin-bottom:10px">${spec.formula}</code>
+        <div class="xray-kv-list">
+          ${(spec.rows || []).map(([k, v]) => `<div class="drill-kv"><span>${k}</span><b>${v}</b></div>`).join('')}
+        </div>
+      </section>
+
+      <section class="xray-sec">
+        <div class="xray-sec-label">02 · 원천 통계 및 해석 주의점</div>
+        <div class="xray-source-box">
+          <b>원천 기준</b> · ${spec.source}
+          <p>${spec.caveat}</p>
+        </div>
+      </section>
+
+      ${spec.qas && spec.qas.length ? `<section class="xray-sec">
+        <div class="xray-sec-label">03 · 이어지는 핵심 질문 · 검증 요약</div>
+        <div class="xray-qa-list">
+          ${spec.qas.map(qa => `<div class="xray-qa-card">
+            <b>Q. ${qa.title}</b>
+            <p>${qa.summary}</p>
+            <a class="xray-qa-link" href="?q=${qa.id}#questions" data-qa-jump="${qa.id}" data-xray-dismiss>질문·답변 전문 보기 →</a>
+          </div>`).join('')}
+        </div>
+      </section>` : ''}
+
+      <section class="xray-sec">
+        <div class="xray-sec-label">04 · 의식의 흐름 다음 연결</div>
+        <div class="xray-actions">
+          ${(spec.actions || []).map((act, idx) => act.qa
+            ? `<a class="btn ${act.primary ? 'primary' : ''}" href="?q=${act.qa}#questions" data-qa-jump="${act.qa}" data-xray-dismiss>${act.label}</a>`
+            : `<button type="button" class="btn ${act.primary ? 'primary' : ''}" data-xray-act="${idx}">${act.label}</button>`
+          ).join('')}
+          <a class="btn" href="#sources" data-xray-dismiss>전체 출처·통계표 코드 ↗</a>
+        </div>
+      </section>
+    </div>
+  `;
+
+  drawerEl.querySelector('#xray-close-btn')?.addEventListener('click', closeXray);
+  drawerEl.querySelector('#xray-step-back')?.addEventListener('click', () => {
+    const prevKey = drawerStack.pop();
+    if (prevKey) openXray(prevKey, null, false);
+  });
+
+  drawerEl.querySelectorAll('[data-xray-dismiss]').forEach(el => {
+    el.addEventListener('click', () => {
+      drawerEl.classList.remove('open');
+      drawerEl.setAttribute('aria-hidden', 'true');
+      if (backdropEl) backdropEl.hidden = true;
+    });
+  });
+
+  drawerEl.querySelectorAll('[data-xray-act]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const act = spec.actions[Number(btn.dataset.xrayAct)];
+      if (!act) return;
+      closeXray();
+      onActionFn(act);
+    });
+  });
+
+  backdropEl.hidden = false;
+  drawerEl.classList.add('open');
+  drawerEl.setAttribute('aria-hidden', 'false');
+  return true;
+}
+
+export function initXraySystem({ getData, onAction }) {
+  getDataFn = getData;
+  onActionFn = onAction;
+  ensureDrawerDom();
+
+  document.addEventListener('click', e => {
+    const trailBack = e.target.closest('[data-trail-back]');
+    if (trailBack) {
+      e.preventDefault();
+      onActionFn({ href: trailBack.dataset.trailBack });
+      return;
+    }
+    const trailJump = e.target.closest('[data-trail-jump]');
+    if (trailJump && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && e.button === 0) {
+      e.preventDefault();
+      onActionFn({ href: trailJump.dataset.trailJump });
+      return;
+    }
+
+    const trigger = e.target.closest('[data-xray]');
+    if (!trigger) return;
+    // Do not hijack nested form inputs or dedicated navigation buttons/links inside a container
+    if (e.target.closest('input, select, textarea, a[href], button[data-jump-ib], button[data-jump-invest], button[data-focus-jump-invest]')) {
+      if (e.target.closest('[data-xray]') !== e.target && e.target.closest('a[href]')) return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    openXray(trigger.dataset.xray, trigger);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const trigger = e.target.closest('[data-xray]');
+    if (!trigger || ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON', 'A'].includes(trigger.tagName)) return;
+    e.preventDefault();
+    openXray(trigger.dataset.xray, trigger);
+  });
+}

@@ -10,6 +10,12 @@ import {
   renderVentureDeepDive,
   renderHouseholdWealthPage
 } from '../public/curiosity.js';
+import {
+  resolveXraySpec,
+  recordTrailStep,
+  getPreviousTrailStep,
+  renderTrailHtml
+} from '../public/xray.js';
 
 const publicDataUrl = new URL('../public/data.json', import.meta.url);
 const verifiedDataUrl = new URL('../../data/ib_portal_verified_data.json', import.meta.url);
@@ -90,8 +96,8 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
 test('household wealth & 5-country comparison module renders all categories, series modes, corporate S11, SHF quintiles, and 5 countries cleanly', () => {
   const hw = D.householdWealthAndIntl2026;
   assert.ok(hw);
-  assert.equal(hw.headlineKpis.krTotalHouseholdAssets25Tril, 16641.3);
-  assert.equal(hw.headlineKpis.krFinAssets26Q2Tril, 6930.2);
+  assert.equal(hw.headlineKpis.krTotalHouseholdAssets25Tril, 16641.34);
+  assert.equal(hw.headlineKpis.krFinAssets26Q2Tril, 6930.21);
   assert.equal(hw.krFinCategories26Q2.length, 5);
   assert.equal(hw.intl5Countries.length, 6);
 
@@ -127,4 +133,49 @@ test('household wealth & 5-country comparison module renders all categories, ser
       assert(!html.includes('undefined'));
     }
   }
+});
+
+test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly without NaN or undefined', () => {
+  const staticKeys = [
+    'kpi:actual-5854', 'kpi:forecast-85', 'kpi:growth-452', 'kpi:vc-mandate-20',
+    'kpi:ib-debt-472', 'kpi:margin-150-200', 'kpi:bear-volume', 'kpi:bear-margin',
+    'kpi:bear-spread-11bp', 'kpi:curve-slope-109bp', 'kpi:short-share-634',
+    'kpi:demand-share-4550', 'kpi:mm-m2', 'kpi:mm-pension', 'kpi:mm-deposits',
+    'kpi:hw-kr-total', 'kpi:hw-kr-fin', 'kpi:hw-corp-s11', 'kpi:hw-shf-top20',
+    'kpi:reg-cap-300', 'kpi:ima-kis-260', 'kpi:kis-mirae-lev', 'kpi:mrmc-qstar'
+  ];
+  const dynamicKeys = [
+    ...D.ib9FirmsCuriosityChain.flatMap(f => [`firm:${f.key}`, `firm:${f.firm}`, `nim-firm:${f.key}`]),
+    ...D.promNoteImaTrend.map((_, i) => `trend:${i}`),
+    ...D.householdWealthAndIntl2026.krQuarterlyFinSeries.map(r => `hw-q:${r.period}`),
+    ...D.householdWealthAndIntl2026.krAnnualBalanceSheet.map(r => `hw-y:${r.year}`),
+    ...D.shortYieldCurveAndMaturity.curves.map((_, i) => `curve:${i}`),
+    ...D.ventureCapitalChain2027.assetRarocBenchmarks.map((_, i) => `vc-asset:${i}`)
+  ];
+
+  for (const key of [...staticKeys, ...dynamicKeys]) {
+    const spec = resolveXraySpec(key, D);
+    assert.ok(spec, `missing X-Ray spec for ${key}`);
+    assert.ok(spec.title && !spec.title.includes('NaN') && !spec.title.includes('undefined'), `bad title for ${key}`);
+    assert.ok(spec.formula && !spec.formula.includes('NaN') && !spec.formula.includes('undefined'), `bad formula for ${key}`);
+    assert.ok(Array.isArray(spec.rows) && spec.rows.length >= 3, `missing rows for ${key}`);
+    assert.ok(spec.source && spec.caveat, `missing source/caveat for ${key}`);
+    assert.ok(Array.isArray(spec.actions) && spec.actions.length >= 1, `missing actions for ${key}`);
+    const serialized = JSON.stringify(spec);
+    assert(!serialized.includes('NaN'), `NaN in ${key}`);
+    assert(!serialized.includes('undefined'), `undefined in ${key}`);
+  }
+
+  recordTrailStep({ id: 'map', label: '한눈에 보기', href: '#map' });
+  const initialTrail = renderTrailHtml('map', '한눈에 보기', '');
+  assert(initialTrail.includes('id="crumb"'));
+  assert(initialTrail.includes('한눈에 보기'));
+
+  recordTrailStep({ id: 'funding', label: '수신 · NIM · 2027 전망', firmName: '메리츠증권', href: '#funding' });
+  recordTrailStep({ id: 'household-wealth', label: '가계자산 · 5개국 비교', firmName: '메리츠증권', href: '#household-wealth' });
+  assert.equal(getPreviousTrailStep().id, 'funding');
+  const multiTrail = renderTrailHtml('invest', '모험자본 · 비용 계산기', '메리츠증권');
+  assert(multiTrail.includes('id="crumb"'));
+  assert(multiTrail.includes('data-trail-back='));
+  assert(multiTrail.includes('메리츠증권'));
 });
