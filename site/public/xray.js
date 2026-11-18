@@ -94,7 +94,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
-    const ss = chain.key === 'samsung' && !context.nimScenario ? getSamsungScenario(D) : null;
+    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
     const base26 = chain.base26Q2NoteTril + chain.base26Q2ImaTril;
     const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
     const est27 = estNote + chain.est27ModelImaTril;

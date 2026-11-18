@@ -902,8 +902,8 @@ function renderVcThoughtWaterfall(D) {
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
       <div>
         <div class="eyebrow" style="color:#295dd8">STEP 02 · THOUGHT-FLOW WATERFALL · 고금리 비보증 모험자본의 EL · RAROC 사고의 흐름</div>
-        <h3 style="margin-top:3px;font-size:17px">P-CBO 물량 한계로 8~9.5% 고금리 모험자본을 담으면 어떨까? (100억 원 운용 가계부)</h3>
-        <p class="muted" style="margin-top:4px;font-size:12px">겉보기 명목마진(+${s1Gross}bp)에서 <b>② 부도손실(EL=PD×LGD)+심사원가(−${s2El}bp)</b>와 <b>③ 신NCR 자본비용(−${s3Cap}bp)</b>을 차례로 차감하면, 고금리 착시가 걷히며 결국 P-CBO 기회비용 수준으로 수렴하는 이유를 한눈에 보여줍니다.</p>
+        <h3 style="margin-top:3px;font-size:17px">선택한 모험자본의 명목마진과 순EVA는 어떻게 다를까? (100억 원 운용 가계부)</h3>
+        <p class="muted" style="margin-top:4px;font-size:12px">겉보기 명목마진(+${s1Gross}bp)에서 <b>② 부도손실(EL=PD×LGD)+심사원가(−${s2El}bp)</b>와 <b>③ 신NCR 자본비용(−${s3Cap}bp)</b>을 차례로 차감하면, 선택 자산의 최종 순EVA를 정상 IB 기준선과 비교해 실제 기회비용을 확인할 수 있습니다.</p>
       </div>
       <div class="lens-switch" role="group" aria-label="워터폴 분석 대상 자산 선택">
         ${wfChoices.map(ch => `<button type="button" class="lens-btn ${explorerState.vcWaterfallAsset === ch.id ? 'active' : ''}" data-wf-asset="${ch.id}">${ch.label}</button>`).join('')}
@@ -2047,7 +2047,7 @@ export function renderRegulatoryCompliancePanel(D) {
       <div>
         <div class="eyebrow">FULL STATUTORY COMPLIANCE · 금융당국 전수 규제 · 보고 주기 · 복구기한 · 법적 제재</div>
         <h2>발행어음 &amp; IMA 전수 건전성·운용 규제와 금감원 보고 주기 · 위반 복구기간 · 페널티 총람</h2>
-        <p>한도·자산배분뿐 아니라 <b>원화·외화 유동성비율(1·3개월 ≥100%), 규제 레버리지 차감 특례, 신NCR 위험액, 구분관리·자전거래 금지, 동일차주·대주주 신용공여 제한, 금소법 설명의무</b>까지 법적 조항 출처와 함께 정리했습니다. 각 행을 클릭하면 상세 조문·제재 인스펙터가 열립니다.</p>
+        <p>한도·자산배분뿐 아니라 <b>원화 유동성비율(1·3개월 ≥100%) · 외화 유동성비율(≥80%), 규제 레버리지 차감 특례, 신NCR 위험액, 구분관리·자전거래 금지, 동일차주·대주주 신용공여 제한, 금소법 설명의무</b>까지 법적 조항 출처와 함께 정리했습니다. 각 행을 클릭하면 상세 조문·제재 인스펙터가 열립니다.</p>
       </div>
       <span class="badge green">법령 · 규정 조항 명시</span>
     </div>
