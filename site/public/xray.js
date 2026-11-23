@@ -1,5 +1,6 @@
-import { getSamsungScenario } from './curiosity.js';
+import { calcCost, getSamsungScenario } from './curiosity.js';
 import { getNimScenario } from './nim.js';
+import { getImaNcrScenario } from './ima-ncr.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
@@ -53,7 +54,11 @@ const QA_DIGEST = {
   },
   'guide-pcbo-assumption': {
     title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
-    summary: '표면금리가 0%라는 뜻이 아니라, 신보 보증 선순위 P-CBO 수익률(3% 초반)에서 발행어음 조달원가·보증비용을 빼면 순운용스프레드가 0bp(손익분기)에 수렴한다는 보수적 기회비용 가정입니다.'
+    summary: '150bp는 전체 비용 계산기의 독립적인 사용자 가정입니다. 비교 도해는 KIS자산평가의 AAA 은행채 3년 4.113%(2026.11.13)를 사용하며, P-CBO 실측금리 또는 은행채의 모험자본 인정 여부를 뜻하지 않습니다.'
+  },
+  'guide-ima-old-ncr-capital': {
+    title: 'IMA의 5% 충당금 차감을 고려해도 위험액 50% 감경은 구NCR에 유리한가요?',
+    summary: '구NCR에서도 위험액 50% 감경을 반영하고 5% 영업용순자본 감소 부담을 함께 비교합니다. E=8조·R=4조·신규 A=1조의 보수적 예시에서는 위험률 약 5.06%부터 IMA 비율이 더 높습니다. 분기점은 회사의 기존 자본·위험액과 신규 규모에 따라 달라집니다.'
   },
   'guide-ima-maturity': {
     title: '2027.12~2028.04 IMA 만기 집중(2.60조)은 전체 시장을 뜻하나요?',
@@ -86,6 +91,32 @@ export function resolveXraySpec(specKey, D, context = {}) {
   const sc = D.shortYieldCurveAndMaturity;
   const bf = D.fundingOutlook2027BearFlattening;
   const vc = D.ventureCapitalChain2027;
+  const marketCostRow = D.opportunityCost2027?.find(row => row.key === 'all');
+  const marketCost = marketCostRow ? calcCost(marketCostRow) : null;
+
+  if (specKey === 'ima-old-ncr') {
+    const n = context.ncrScenario || getImaNcrScenario();
+    return {
+      eyebrow: 'OLD NCR · 분자와 분모를 함께 비교',
+      title: '5% 영업용순자본 감소와 위험액 50% 감경의 순효과',
+      badge: '보수적 가정 · 조건부 비교',
+      formula: '어음 E/(R+A×r) · IMA (E−0.05×A)/(R+0.5×A×r) · r*=0.05×R/(0.5×E−0.05×A)',
+      rows: n.valid ? [
+        ['현재 입력값 · 설명용', `E ${fmt(n.capital)}조 / R ${fmt(n.existingRisk)}조 / A ${fmt(n.amount)}조 / 취득 자산 위험률 ${fmt(n.riskPct,1)}%`],
+        ['분자 감소 가정', `${fmt(n.reserve*10000,0)}억 원 (신규 운용액의 5% 전액 감소 가정)`],
+        ['위험액 절감 가정', `${fmt(n.riskSaved*10000,0)}억 원 (감경 자격·자기자본 한도 내 신규액 가정)`],
+        ['구NCR 비교 · 위험액 감경 반영', `어음 ${fmt(n.notePct)}% / IMA ${fmt(n.imaPct)}% · 차이 ${fmt(n.differencePp)}%p`],
+        ['두 곡선의 교차 위험률', n.amount===0?'신규 운용액 0 · 두 방식 동일':n.crossingPct===null?'양의 교차점 없음':`${fmt(n.crossingPct,3)}% · 회사의 자본·위험액·신규 규모에 따라 달라짐`]
+      ] : [['입력 확인', n.error]],
+      source: '<a href="https://www.fsc.go.kr/no010101/84322" target="_blank" rel="noopener noreferrer">금융위 2025.04.09 제도 설명 · 영업용순자본비율 산출 시 IMA 운용자산 50% 반영</a> · <a href="https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020" target="_blank" rel="noopener noreferrer">금융투자업규정 제3-6조·제3-24조의4④·제4-99조</a> · <a href="https://www.law.go.kr/LSW/flDownload.do?flSeq=166876081" target="_blank" rel="noopener noreferrer">시행세칙 제3-20조의6, 9쪽</a>',
+      caveat: '구NCR에서도 위험액 50% 감경을 반영하는 비교입니다. 손실충당금과 손실준비금의 회계처리는 다르며 5% 전액 감소는 보수적 가정입니다. 이미 차감한 금액이나 별도 시딩 부담을 중복 차감하지 않습니다. 자기자본 100% 초과 수탁금 원본의 감경 제외와 연결 E/R 150% 초과 등 요건, 폐쇄형 IMA의 유지 예외는 별도로 확인합니다. E는 영업용순자본으로 자기자본과 다릅니다.',
+      qas: makeQaItems(['guide-ima-old-ncr-capital','guide-ima-maturity']),
+      actions: [
+        {label:'위험률별 그래프로 돌아가기 →',tab:'ima-maturity',scrollTo:'ima-old-ncr-panel',primary:true},
+        {label:'관련 질문·답변 전문 →',qa:'guide-ima-old-ncr-capital'}
+      ]
+    };
+  }
 
   if (kind === 'firm' || kind === 'nim-firm') {
     const chain = (D.ib9FirmsCuriosityChain || []).find(x => x.key === id || x.firm === id);
@@ -94,7 +125,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
-    const ss = chain.key === 'samsung' && !context.nimScenario ? getSamsungScenario(D) : null;
+    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
     const base26 = (chain.base26Q3NoteTril ?? chain.base26Q2NoteTril) + (chain.base26Q3ImaTril ?? chain.base26Q2ImaTril);
     const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
     const est27 = estNote + chain.est27ModelImaTril;
@@ -103,7 +134,8 @@ export function resolveXraySpec(specKey, D, context = {}) {
     if (!nimRow) return null;
     const periodLabel = scenario.period === '2026' ? '2026.3Q 확정 잔액' : '2027E';
     const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'scenario-avg' ? '삼성 사용자 시나리오 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.3Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
-    const oppAfterCapEok = ss?.isOverridden ? (estNote * 0.2 * 150 * 0.7) : (opp ? opp.oppCostNewAfter30CapEok : 0);
+    const cost = opp ? calcCost(ss?.isOverridden ? {...opp, q27Est: ss.yearEndTril} : opp) : null;
+    const oppAfterCapEok = cost?.after ?? 0;
     const eqDisplay = chain.equity26Q3Tril ?? fRow.equity;
 
     return {
@@ -120,12 +152,12 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
         ['시나리오 수익 기여', `어음 ${fmt(nimRow.noteIncome, 0)}억 + IMA ${fmt(nimRow.imaIncome, 0)}억 = 합계 ${fmt(nimRow.total, 0)}억`],
         ['\'26.1H 실효금리 (FISIS: 어음/RP/사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
-        ['모험자본 추가 의무 · 기회비용(150bp)', ss?.isOverridden ? `의무 ${fmt(estNote * 0.2)}조 · 전액P-CBO ${fmt(estNote * 0.2 * 150, 0)}억 (30%캡 ${fmt(oppAfterCapEok, 0)}억)` : opp ? `의무 ${fmt(opp.vcNew20Tril)}조 · 전액P-CBO ${fmt(opp.oppCostNew150bpEok, 0)}억 (30%캡 ${fmt(opp.oppCostNewAfter30CapEok, 0)}억)` : '—'],
+        ['모험자본 추가 의무 · 기회비용 (26.3Q 기준, 150bp)', cost ? `신규 ${fmt(cost.delta)}조 × 20% + 기존 ${fmt(cost.base)}조 × 10%p = ${fmt(cost.obligation, 3)}조 · 연 ${fmt(cost.cost, 0)}억 (30% 상한 활용 ${fmt(cost.after, 0)}억)` : '—'],
         ...(chain.key === 'samsung' ? [['26.3Q 첫 발행 & 언론 보도 확인', '26.3Q 0.24조(2,403억) 첫 발행 확정 · 연말 단일 목표 미공개 · \'28년까지 모험자본 5조 공급 발표']] : []),
         ['\'26.3Q 실적 · 연결 NCR (OpenDART)', `${chain.q3_26NetIncEok != null ? `3Q 별도순익 ${fmt(chain.q3_26NetIncEok, 0)}억 · 9M 연결지배 ${fmt(chain.m9_26CfsCtrlNetIncEok, 0)}억` : '—'}${chain.consolNcr26Q3Pct ? ` · 연결 NCR ${fmt(chain.consolNcr26Q3Pct, 1)}%` : ''}`]
       ],
       source: 'OpenDART 2026.3Q 분기보고서(자본·발행어음·IMA·3Q/9M 손익·연결 NCR) 및 FISIS 202606(SF321 실효금리·SF325 전사 조달)',
-      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 함께 표시한 기회비용(${fmt(oppAfterCapEok, 0)}억)은 2027년 말 증가분·150bp 기준의 별도 연환산 시나리오이므로 기간과 분모를 맞춰 비교해야 하며, 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
+      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 기회비용(${fmt(oppAfterCapEok, 0)}억)은 신규 증가분과 기존 잔액 의무비율 상승분을 포함한 150bp 연환산 시나리오입니다. 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
@@ -246,24 +278,28 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const r = vc.assetRarocBenchmarks[Number(id)];
     if (!r) return null;
     const base = vc.assetRarocBenchmarks[0];
+    const isProxy = r.id === 'pcbo_senior';
+    const yieldText = fmt(r.yieldPct, isProxy ? 3 : 2);
     return {
       eyebrow: `RAROC & EVA BREAKDOWN · ${vc.observedYieldDate}`,
       title: `${r.asset} 단위 수익성·자본비용 해부`,
       badge: r.capTag,
-      formula: `명목(${fmt(r.yieldPct)}%) − 조달(${fmt(vc.fundingCostBasePct)}%) − EL(${r.elCostBp}bp) − 자본비용(어음 ${r.capCostNoteBp}bp / IMA ${r.capCostImaBp}bp)`,
+      formula: `명목(${yieldText}%) − 조달(${fmt(vc.fundingCostBasePct)}%) − EL(${r.elCostBp}bp) − 자본비용(어음 ${r.capCostNoteBp}bp / IMA ${r.capCostImaBp}bp)`,
       rows: [
-        ['대표 명목 수익률', `${fmt(r.yieldPct)}%`],
+        ['대표 명목 수익률', `${yieldText}%${isProxy ? ' · AAA 은행채 3년 비교 기준' : ''}`],
         ['기준 조달원가 차감 명목마진', `+${r.grossSpreadBp}bp (조달원가 ${fmt(vc.fundingCostBasePct)}% 가정)`],
         ['PD × LGD + 심사원가 분해', r.pdPct != null ? `PD ${fmt(r.pdPct)}% × LGD ${r.lgdPct}% = 순수EL ${r.pureElBp}bp + 심사원가 ${r.opsCostBp}bp (합계 −${r.elCostBp}bp)` : `−${r.elCostBp}bp`],
         ['신NCR 신용위험값 (별표 5)', `위험값(RW) ${r.ncrRwPct}% · 목표 CoE ${fmt(vc.targetCoePct, 1)}%`],
-        ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${base.evaNoteBp - r.evaNoteBp}bp)`],
-        ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${base.evaImaBp - r.evaImaBp}bp)`]
+        ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${fmt(base.evaNoteBp - r.evaNoteBp, isProxy ? 1 : 0)}bp)`],
+        ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${fmt(base.evaImaBp - r.evaImaBp, isProxy ? 1 : 0)}bp)`]
       ],
-      source: 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 별표 10(IMA 50% 반영)',
+      source: isProxy
+        ? '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13) · AAA 은행채 3년 평가수익률</a> · 위험값과 비용은 기존 P-CBO 모형 가정'
+        : 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 금융투자업규정 제3-24조의4④(IMA 순자본비율 특례)',
       caveat: `${r.elBasisNote || r.note}`,
       qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
       actions: [
-        { label: 'P-CBO 도해 & EL·RAROC 워터폴 보기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+        { label: 'AAA 은행채 도해 & EL·RAROC 워터폴 보기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
         { label: '7대 인정 자산군 잠재 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
       ]
     };
@@ -299,21 +335,21 @@ export function resolveXraySpec(specKey, D, context = {}) {
       const pb = vc?.pcboCleanBenchmark;
       const fsc = pb?.fscEmpirical26Q2;
       return {
-        eyebrow: 'CLEAN BENCHMARK · P-CBO AAA 3Y 명목금리차 기준선',
-        title: '왜 신보 보증 P-CBO AAA 3년물 비교가 가장 깔끔한 기회비용 기준선인가?',
-        badge: fsc ? `종투사 모험자본 비중 1위 (${fmt(fsc.pcboSharePct, 1)}%)` : '부도위험 0% 기준선',
-        formula: '정상 우량 IB(4.85% / 공모 AA- 4.42%) − P-CBO AAA(기발행 실효 3.35% / 신규표면 4.10%) = 포기 명목마진 75~150bp',
+        eyebrow: 'COMPARISON BENCHMARK · AAA 은행채 3년',
+        title: 'AAA 은행채 3년 금리를 비교 기준으로 쓰면?',
+        badge: '시장 평가수익률 · 모형 비교',
+        formula: (() => { const m = pb?.modes?.[0]; return m ? `정상 IB 가정 ${fmt(m.normalYieldPct)}% − AAA 은행채 3년 ${fmt(m.pcboYieldPct, 3)}% = ${fmt((m.normalYieldPct-m.pcboYieldPct)*100, 1)}bp` : 'AAA 은행채 3년 평가수익률과 정상 IB 가정을 비교'; })(),
         rows: [
           ['금융위 종투사 모험자본 실증 (\'26.2Q)', fsc ? `총 ${fmt(fsc.totalVcTril, 1)}조 원 중 P-CBO ${fmt(fsc.pcboTril, 1)}조 원 (${fmt(fsc.pcboSharePct, 1)}%) — 단일 편입 수단 1위` : '11.6조 중 3.4조(29.3%)'],
-          ['중견 · A급 30% 상한 적용 여부', '미적용 (비A급 순수 의무 14% 구간에 한도 없이 100% 전액 인정)'],
-          ['신용위험(PD) 및 신NCR 위험값(RW)', '신보·기보 보증 AAA로 PD ≈ 0%, 신NCR RW ≈ 0~0.4% → 주관적 부도율 논쟁 완전 제거'],
-          ['기발행·실효(3.35%) vs 신규표면(4.10%)', '기발행 실효 기준 포기폭 −150bp(수신 1조당 −21.0억) / 신규발행 표면(국고3Y+35bp) 단순 비교 시 −75bp(−10.5억)']
+          ['금리의 정의와 기준일', `${pb?.observedDate || '2026-11-13'} · KIS자산평가 AAA 은행채 3년 평가수익률 (P-CBO 실제 발행금리 아님)`],
+          ['모험자본 인정과의 구분', 'AAA 은행채 자체를 모험자본 인정자산으로 가정하지 않습니다. P-CBO 편입 비중과 대체 비교금리는 별개입니다.'],
+          ['수신 1조 원 한계 단위의 조건부 계산', (() => { const m=pb?.modes?.[0]; const bp=m?(m.normalYieldPct-m.pcboYieldPct)*100:0; return `의무 20% × 비A급 가정 70% × ${fmt(bp, 1)}bp = 연 ${fmt(bp*.14, 3)}억 원 (전체 비용 계산기의 150bp 가정과 구분)`; })()]
         ],
-        source: '금융위원회 종투사 모험자본 공급실적(2026.2Q) · 신용보증기금 유동화회사보증(P-CBO) 발행조건 · KOFIA 민평(2026-11-13)',
-        caveat: '유통·발행 물량(연간 4~5조) 한계로 P-CBO만으로 업권 비A급 의무(11.9조)를 다 채울 수 없어 8~9.5% 비보증 자산을 병행하게 되며, 이때 EL·자본비용을 차감하면 기회비용은 다시 121~126bp로 수렴합니다.',
+        source: '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13), 13·57쪽</a> · KIS-NET/KIS자산평가. KOFIA 평가사 평균과 구분합니다.',
+        caveat: '정상 IB 4.85%와 조달원가 3.15%는 기존 설명용 모형 가정입니다. 같은 날짜의 은행채 평가수익률을 비교 기준으로 대입한 조건부 시산이며, 투자자별 실현수익이나 P-CBO 기회비용의 실측치가 아닙니다. AAA 등급은 무위험 보장을 뜻하지 않습니다.',
         qas: makeQaItems(['guide-pcbo-assumption', 'guide-sizing-growth']),
         actions: [
-          { label: 'P-CBO 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+          { label: 'AAA 은행채 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
           { label: '7대 인정 자산군 잠재 시장규모 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
         ]
       };
@@ -384,6 +420,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['연도별 의무비율 로드맵', '2026년 10% → 2027년 20% → 2028년 이후 25%'],
         ['중견기업 · A급 채권 인정 상한', '모험자본 의무액의 최대 30% (2027년 총자산의 6%, 2028년 7.5%)'],
         ['2027E 85조 기준 업권 총의무액', '총 17.00조 원 (A급 캡 5.10조 제외 비A급 순의무 11.90조 원)'],
+        ...(marketCost ? [['기본 전망의 추가 의무와 연간 기회비용', `신규 ${fmt(marketCost.delta)}조 × 20% + 기존 ${fmt(marketCost.base)}조 × 10%p = ${fmt(marketCost.obligation, 3)}조. 150bp 적용 ${fmt(marketCost.cost, 0)}억 원, 상한 30% 활용 시 ${fmt(marketCost.after, 0)}억 원`]] : []),
         ['규제 적용 구조', '기업금융(50/70%)·부동산(≤10%)·기타 합계 100% 안에서의 별도 교차 요건']
       ],
       source: '금융위원회 『종투사 기업금융 경쟁력 제고방안』(2025.04.09) 및 금융투자업규정 제4-102조의5 개정안',
@@ -700,7 +737,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       caveat: '통합 300% 한도가 있다고 해서 발행어음만으로 300%를 채울 수는 없으며, 200% 초과 구간은 반드시 IMA로 조달해야 합니다.',
       qas: makeQaItems(['guide-product-difference', 'guide-sizing-growth']),
       actions: [
-        { label: '10대 전수 규제·보고주기·페널티 총람(#pnl) →', tab: 'pnl', scrollTo: 'reg-compliance-matrix', primary: true },
+        { label: '9대 고유 규제·보고주기·페널티 총람(#pnl) →', tab: 'pnl', scrollTo: 'reg-compliance-matrix', primary: true },
         { label: '발행어음 vs IMA 제도 비교(#ima-maturity) →', tab: 'ima-maturity' }
       ]
     },
@@ -719,6 +756,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       qas: makeQaItems(['guide-ima-maturity', 'guide-real-estate-concentration']),
       actions: [
         { label: 'Q&A · IMA 만기 집중 리스크 해설 →', qa: 'guide-ima-maturity', primary: true },
+        { label: '위험률별 구NCR 비교 그래프 →', tab: 'ima-maturity', scrollTo: 'ima-old-ncr-panel' },
         { label: '리스크점검 체크리스트(#pension-risk) →', tab: 'pension-risk' }
       ]
     },

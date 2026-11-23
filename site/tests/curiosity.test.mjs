@@ -89,7 +89,8 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       const vcHtml = renderVentureDeepDive(D);
       assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
       assert(vcHtml.includes('id="vc-waterfall-svg"'));
-      assert(vcHtml.includes('P-CBO AAA 3Y'));
+      assert(vcHtml.includes('AAA 은행채 3년'));
+      assert(!vcHtml.includes('data-pcbo-mode'));
       assert(vcHtml.includes('PD · LGD 산정 근거 공개'));
       assert(vcHtml.includes('모험자본 취득에 따른 기회비용'));
       assert(vcHtml.includes('선제적 확보를 통한 경쟁자 견제 타당성'));
@@ -99,20 +100,12 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
     }
   }
 
-  for (const mode of ['effective', 'new_issue', 'calc_zero']) {
-    explorerState.pcboMode = mode;
-    const vcHtml = renderVentureDeepDive(D);
-    assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
-    assert(!vcHtml.includes('NaN'));
-  }
-
   for (const wf of ['bbb_private', 'vc_mezz', 'a_cap_debt']) {
     explorerState.vcWaterfallAsset = wf;
     const vcHtml = renderVentureDeepDive(D);
     assert(vcHtml.includes('id="vc-waterfall-svg"'));
     assert(!vcHtml.includes('NaN'));
   }
-  explorerState.pcboMode = 'effective';
   explorerState.vcWaterfallAsset = 'bbb_private';
 
   // Samsung scenario presets & reset check

@@ -12,6 +12,8 @@ Keep the `리스크점검` tab focused on selected risks. Pension subjects belon
 
 Run `npm run check`, `npm test`, and `npm run build` in the app directory before publishing. For a research review, also verify the reviewed snapshot against live inputs immediately before deployment. Preserve public access and anonymous community posting.
 
-Samsung 2027 funding uses the same fixed assumption as Meritz: year-end 4 trillion KRW and average 2 trillion KRW. The current total forecast is 89 trillion. Do not restore Samsung presets, custom funding inputs, or an unallocated-zero baseline. This is a user assumption, not Samsung official guidance.
+The November 23 batch uses the 2026.3Q OpenDART funding snapshot (61.33 trillion KRW) and an 85 trillion KRW 2027 base forecast. See AI_HANDOFF.md for the Meritz assumption and the separate Samsung scenario controls.
 
 The opportunity-cost calculator always includes the existing balance mandate increase: new funding × 20% + existing balance × 10 percentage points. Do not restore the existing-balance checkbox or make this inclusion optional.
+
+Keep KIS 2026-11-13 AAA bank 3-year yield (4.113%) as the dated comparison benchmark and keep the old-NCR graph mounted and interactive in `#ima-maturity`. For ZIP updates, compare these features with current `main` when applying unrelated changes.

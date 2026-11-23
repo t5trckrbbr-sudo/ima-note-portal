@@ -214,3 +214,31 @@ tr[data-xray]{cursor:pointer}
 
 @media(max-width:1050px){.map-b1-grid,.map-quick-grid{grid-template-columns:1fr}}
 @media(max-width:700px){.sidebar{top:4px;border-bottom:1px solid #163159}.sidebar .nav-link{border-left:0;border-bottom:2px solid transparent}.sidebar .nav-link.active{border-bottom-color:#f39800}.kis-pos-ribbon{padding:11px 14px}}
+
+/* IMA capital trade-off: old NCR, with explicit conditional risk relief. */
+.ima-ncr-panel{scroll-margin-top:95px}
+.ima-ncr-panel .panel-head h2{margin-top:8px}
+.ima-ncr-subnote{font-size:11.5px;line-height:1.75;color:var(--muted);margin:10px 0}
+.ima-ncr-risk-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:20px;font-weight:600;font-size:13px}
+.ima-ncr-risk-label output{font-size:25px;color:var(--teal);font-variant-numeric:tabular-nums}
+.ima-ncr-panel input[type=range]{display:block;width:100%;accent-color:var(--teal);margin:12px 0;min-height:26px;cursor:pointer}
+.ima-ncr-assumptions{border:1px solid #e0e9ed;border-radius:7px;padding:11px 14px;margin:13px 0;font-size:11.5px;line-height:1.75;background:#fbfcfd}
+.ima-ncr-assumptions summary{cursor:pointer;font-weight:600;color:#405967}
+.ima-ncr-assumptions p{margin-top:10px}
+.ima-ncr-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:13px}
+.ima-ncr-inputs label{display:grid;gap:6px;font-size:11px;color:#4e6472}
+.ima-ncr-inputs input{width:100%;border:1px solid #d5e1e7;border-radius:5px;padding:8px 10px;background:#fff;color:var(--ink);font:inherit}
+.ima-ncr-result{border-left:3px solid var(--teal);border-radius:0 6px 6px 0;background:#edf5ff;padding:13px 16px;margin:18px 0 14px}
+.ima-ncr-result>strong{font-size:17px;color:var(--kis-blue)}
+.ima-ncr-result p{font-size:11.5px;line-height:1.75;margin-top:6px;color:#4d6570}
+.ima-ncr-warning{color:#8a5b20!important;background:#fff8eb;padding:10px 12px;border-radius:5px}
+.ima-ncr-legend{display:flex;flex-wrap:wrap;gap:12px 20px;font-size:11px;color:#4b6170}
+.ima-ncr-legend span{display:inline-flex;align-items:center;gap:7px}
+.ima-ncr-legend i{display:inline-block;width:25px;border-top:3px solid var(--kis-blue)}
+.ima-ncr-legend .ima-line{border-top:3px dashed var(--kis-gold)}
+.ima-ncr-chart{width:100%;overflow-x:auto;margin:10px 0 14px;border:1px solid #e4ecef;border-radius:8px;background:#fff}
+.ima-ncr-chart svg{display:block;width:100%;height:auto;min-width:440px}
+.ima-ncr-table caption{text-align:left;padding:8px 0;color:#526c78;font-size:11px}
+.ima-ncr-table th[scope=row]{text-align:left;font-weight:500;background:#fafcfd}
+.ima-ncr-table small{display:inline-block;font-size:10px;color:#637a86}
+@media(max-width:700px){.ima-ncr-inputs{grid-template-columns:1fr}.ima-ncr-result>strong{font-size:15px}.ima-ncr-risk-label{font-size:12px}.ima-ncr-risk-label output{font-size:23px}.ima-ncr-panel .source{line-height:1.9}.ima-ncr-table th,.ima-ncr-table td{padding:10px 8px}}

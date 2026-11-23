@@ -55,11 +55,11 @@ function chart(state) {
       <path d="M62 ${y(150)}H658" stroke="#af8454" stroke-dasharray="5 5"/>
       <text x="658" y="${y(150)-7}" text-anchor="end" fill="#906c42" font-size="11">150% 요건 참고선</text>
       ${crossover?`<path d="M${x(crossingPct)} 48V270" stroke="#9aadb6" stroke-dasharray="3 4"/><text x="${Math.min(568,x(crossingPct)+7)}" y="43" fill="#546c78" font-size="11">분기점 ${f(crossingPct,2)}%</text>`:''}
-      <path d="${line('notePct')}" fill="none" stroke="#496bba" stroke-width="3"/>
-      <path d="${line('imaPct')}" fill="none" stroke="#087f80" stroke-width="3" stroke-dasharray="8 4"/>
+      <path d="${line('notePct')}" fill="none" stroke="#004ea2" stroke-width="3"/>
+      <path d="${line('imaPct')}" fill="none" stroke="#e88300" stroke-width="3" stroke-dasharray="8 4"/>
       <path d="M${selectedX} 48V270" stroke="#bcc9ce"/>
-      <circle cx="${selectedX}" cy="${y(selected.notePct)}" r="4.5" fill="#496bba" stroke="#fff" stroke-width="2"/>
-      <circle cx="${selectedX}" cy="${y(selected.imaPct)}" r="4.5" fill="#087f80" stroke="#fff" stroke-width="2"/>
+      <circle cx="${selectedX}" cy="${y(selected.notePct)}" r="4.5" fill="#004ea2" stroke="#fff" stroke-width="2"/>
+      <circle cx="${selectedX}" cy="${y(selected.imaPct)}" r="4.5" fill="#e88300" stroke="#fff" stroke-width="2"/>
       <path d="M62 270H658" stroke="#a5b5be"/>
       ${[0,10,20,30,40,50].map(value=>`<text x="${x(value)}" y="289" text-anchor="middle" fill="#637682" font-size="11">${value}%</text>`).join('')}
       <text x="360" y="316" text-anchor="middle" fill="#425a68" font-size="12">취득 자산 위험률 r = NCR 총위험액 ÷ 취득액</text>
