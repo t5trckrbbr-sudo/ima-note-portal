@@ -319,7 +319,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         qas: makeQaItems(['guide-pcbo-assumption', 'guide-sizing-growth']),
         actions: [
           { label: 'AAA 은행채 비교 도해 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
-          { label: '모험자본 수요·공급과 인정 대상 확대 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
+          { label: '인정자산별 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-market-sizes' }
         ]
       };
     })(),

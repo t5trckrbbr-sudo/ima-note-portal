@@ -227,7 +227,7 @@ tr[data-xray]{cursor:pointer}
 @media(max-width:700px){.ima-ncr-inputs{grid-template-columns:1fr}.ima-ncr-result>strong{font-size:15px}.ima-ncr-risk-label{font-size:12px}.ima-ncr-risk-label output{font-size:23px}.ima-ncr-panel .source{line-height:1.9}.ima-ncr-table th,.ima-ncr-table td{padding:10px 8px}}
 
 /* Bear flattening and venture capital supply */
-#funding-bear-strategy, #vc-addressable-market {
+#funding-bear-strategy, #vc-addressable-market, #vc-market-sizes {
   scroll-margin-top: 95px;
 }
 
@@ -488,6 +488,55 @@ tr[data-xray]{cursor:pointer}
   padding: 6px 0;
 }
 
+.vc-market-sizes {
+  margin: 18px 0;
+}
+
+.vc-market-sizes > p {
+  margin: 4px 0 10px;
+  font-size: 12px;
+}
+
+.vc-market-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.vc-market-table th, .vc-market-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.vc-market-table thead, .vc-market-table tbody tr:nth-child(even) {
+  background: #f4f8ff;
+}
+
+.vc-market-table td {
+  width: 36%;
+}
+
+.vc-market-table td strong, .vc-market-table a {
+  color: var(--kis-blue);
+}
+
+.vc-market-table small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.vc-market-mobile-label {
+  display: none;
+}
+
 .vc-policy {
   margin-top: 12px;
   padding: 14px;
@@ -513,4 +562,32 @@ tr[data-xray]{cursor:pointer}
 
 @media (max-width: 700px) {
   .bf-evidence-grid, .vc-market-grid, .vc-policy-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .vc-market-table, .vc-market-table tbody { display: block; }
+  .vc-market-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .vc-market-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 6px;
+  }
+  .vc-market-table tbody th {
+    grid-column: 1 / -1;
+    background: #edf4ff;
+  }
+  .vc-market-table td { width: auto; border-bottom: 0; }
+  .vc-market-mobile-label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+  }
 }

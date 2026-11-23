@@ -1881,6 +1881,59 @@
         "growthPct": 28.4,
         "sourceUrl": "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1072576&cbIdx=86"
       },
+      "assetMarketSizes": [
+        {
+          "name": "A등급 회사채 · 중견기업 채권",
+          "recent": "공모 A등급 연 발행 13.46조 원",
+          "recentBasis": "2025년 기존 집계 · 사모 중견채 제외",
+          "outlook": "연 발행 14~16조 원",
+          "outlookBasis": "A등급 회사채 시장 기준 · 중견·A급 인정 상한은 의무액의 30%"
+        },
+        {
+          "name": "공모 무보증 BBB등급 이하 회사채",
+          "recent": "연 발행 2.00조 원",
+          "recentBasis": "2025년 기존 집계 · BBB 1.67조 원, BB 이하 0.33조 원",
+          "outlook": "연 발행 2.5~3.5조 원",
+          "outlookBasis": "공모 BBB등급 이하 시장 기준"
+        },
+        {
+          "name": "보증 P-CBO",
+          "recent": "연 신규 발행 4~5조 원",
+          "recentBasis": "기존 추정 · 발행 잔액 12~15조 원",
+          "outlook": "연 신규 발행 4~6조 원",
+          "outlookBasis": "정책보증 한도·예산에 따라 변동"
+        },
+        {
+          "name": "코스닥 · 중소·벤처 메자닌",
+          "recent": "2025년 연 발행 10.82조 원",
+          "recentBasis": "예탁결제원 전체 메자닌 전자등록 발행 · 잔액 20~25조 원은 기존 추정",
+          "sourceUrl": "https://tvm.edaily.co.kr/News/NewsRead?Kind=&NewsId=03083206645317720",
+          "outlook": "연 발행 12~15조 원",
+          "outlookBasis": "시장 활성화 시나리오 · 이 중 적격 후보 4~6조 원 추정"
+        },
+        {
+          "name": "벤처투자조합 · 신기술사업투자조합",
+          "recent": "연 펀드 결성 14.3조 원",
+          "recentBasis": "2025년 중기부 통계 · 신규 벤처투자 13.6조 원",
+          "sourceUrl": "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1065645&cbIdx=86&parentSeq=1065645",
+          "outlook": "연 펀드 결성 16~20조 원",
+          "outlookBasis": "정책금융 확대 시나리오 · 전체 결성 규모"
+        },
+        {
+          "name": "코스닥벤처·하이일드펀드 · 상생결제 유동화",
+          "recent": "펀드 잔액 약 1.8조 원",
+          "recentBasis": "기존 추정 · 코스닥벤처 0.6조 원, 공모주 하이일드 1.2조 원",
+          "outlook": "2.5~4.5조 원",
+          "outlookBasis": "펀드·유동화 시장 추정 · 세제혜택·공모주 우선배정 연장 가정"
+        },
+        {
+          "name": "중소·벤처 직접여신 · 사모신용",
+          "recent": "4대 은행 중기대출 559.6조 원",
+          "recentBasis": "2026.6 기존 FISIS 집계 · 은행권 대출 모수",
+          "outlook": "잠재시장 30~50조 원 이상",
+          "outlookBasis": "은행 담보여신 밖 수요에 대한 기존 추정 · 실제 시장 잔액과 집행 가능액은 미확인"
+        }
+      ],
       "verdictSummary": "의무비율이 오를수록 투자할 수 있는 인정자산을 확보하는 부담이 커집니다. VC·신기사 소싱을 강화하면서, 정부에 성장기업으로 실제 신규 자금이 들어가는 자산의 인정 범위를 넓혀 달라고 건의할 필요가 있습니다."
     },
     "pcboCleanBenchmark": {

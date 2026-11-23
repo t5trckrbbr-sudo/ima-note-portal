@@ -825,7 +825,7 @@ export function renderVentureDeepDive(D) {
 }
 
 function renderVentureCapitalSupply(market) {
-  const {demandSchedule, recognizedSupply, ventureInvestment, verdictSummary} = market;
+  const {demandSchedule, recognizedSupply, ventureInvestment, assetMarketSizes, verdictSummary} = market;
   const scenarios = demandSchedule.filter(row => typeof row.mandatePct === 'number');
   const maxDemand = Math.max(...scenarios.map(row => row.totalMandateTril));
   return `<section class="panel" id="vc-addressable-market">
@@ -863,6 +863,7 @@ function renderVentureCapitalSupply(market) {
       </div>
     </div>
     <p class="vc-market-basis">종투사 인정액은 분기말 잔액이고, 벤처시장 투자액은 여러 투자자가 9개월 동안 집행한 누적액입니다. 공개 통계로 확인할 수 있는 것은 공급이 늘었다는 점까지입니다. 종투사가 추가로 확보할 수 있는 물량은 적격성, 배정, 만기, 가격을 확인해야 합니다.</p>
+    ${renderVentureAssetMarketSizes(assetMarketSizes)}
     <div class="vc-policy">
       <h3>소싱을 늘리면서 인정 대상도 넓혀야 합니다</h3>
       <div class="vc-policy-grid">
@@ -872,6 +873,36 @@ function renderVentureCapitalSupply(market) {
       <p class="muted">적격 투자 잔액이 조달 증가 속도를 따라가고 가격과 집행 조건도 유지되는지 분기별로 확인합니다.</p>
       <a class="btn" href="?q=guide-sizing-growth#questions" data-qa-jump="guide-sizing-growth">관련 질문과 근거</a>
     </div>
+  </section>`;
+}
+
+function renderVentureAssetMarketSizes(assets) {
+  if (!assets?.length) return '';
+  return `<section id="vc-market-sizes" class="vc-market-sizes" aria-labelledby="vc-market-sizes-title">
+    <h3 id="vc-market-sizes-title">인정자산별 시장규모</h3>
+    <p id="vc-market-sizes-note" class="muted">발행액·펀드 결성액·잔액의 기준이 달라 합산하면 시장을 과대평가할 수 있습니다. 옆의 전망은 기존 시나리오 추정치입니다. 실제 인정과 배정은 자산별 요건 및 거래 조건을 확인해야 합니다.</p>
+    <table class="vc-market-table" role="table" aria-labelledby="vc-market-sizes-title" aria-describedby="vc-market-sizes-note">
+      <thead role="rowgroup"><tr role="row">
+        <th scope="col" role="columnheader">주요 자산군</th>
+        <th scope="col" role="columnheader">최근 시장 지표</th>
+        <th scope="col" role="columnheader">2027~28년 추정</th>
+      </tr></thead>
+      <tbody role="rowgroup">
+        ${assets.map(asset => `<tr role="row">
+          <th scope="row" role="rowheader">${asset.name}</th>
+          <td role="cell">
+            <span class="vc-market-mobile-label" aria-hidden="true">최근 시장 지표</span>
+            <strong>${asset.recent}</strong>
+            <small>${asset.recentBasis}${asset.sourceUrl ? ` · <a href="${asset.sourceUrl}" target="_blank" rel="noopener noreferrer">자료</a>` : ''}</small>
+          </td>
+          <td role="cell">
+            <span class="vc-market-mobile-label" aria-hidden="true">2027~28년 추정</span>
+            <strong>${asset.outlook}</strong>
+            <small>${asset.outlookBasis}</small>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
   </section>`;
 }
 

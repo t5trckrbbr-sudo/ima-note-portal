@@ -41,6 +41,8 @@ test('venture supply combines labeled observations and scenario demand without p
     assert(!Object.hasOwn(vc, field), field);
   }
   assert(!Object.hasOwn(vc.addressableMarket, 'pools'));
+  assert.equal(vc.addressableMarket.assetMarketSizes.length, 7);
+  assert(resolveXraySpec('kpi:pcbo-clean-bench', D).actions.some(action => action.scrollTo === 'vc-market-sizes'));
   assert.equal(resolveXraySpec('vc-asset:2', D), null);
   const html = compact(renderVentureDeepDive(D));
   for (const part of ['의무가 늘수록', '17.0조 원', '나머지 11.90조', '24.5조 원', '나머지 17.15조',
@@ -48,6 +50,14 @@ test('venture supply combines labeled observations and scenario demand without p
     'https://www.fsc.go.kr/no010101/87831', 'bcIdx=1072576']) {
     assert(html.includes(part), part);
   }
+  const table = html.split('<table class="vc-market-table"')[1].split('</table>')[0];
+  assert.equal((table.match(/scope="row"/g) || []).length, 7);
+  for (const asset of vc.addressableMarket.assetMarketSizes) {
+    for (const field of ['name', 'recent', 'recentBasis', 'outlook', 'outlookBasis']) {
+      assert(table.includes(asset[field]), asset.name + ' ' + field);
+    }
+  }
+  assert(html.includes('2027~28년 추정'));
   assert(!/신NCR|워터폴|LGD|RAROC|NaN|undefined/.test(html));
   const archivedPath = new URL('../../data/venture_capital_model_inputs.json', import.meta.url);
   if (fs.existsSync(archivedPath)) {
