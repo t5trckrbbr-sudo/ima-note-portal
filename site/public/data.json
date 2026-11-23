@@ -3417,5 +3417,2846 @@
     "existingIncreasePctPoints": 10,
     "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다. 기본 150bp는 독립적인 사용자 시뮬레이션 가정이며 AAA 은행채 3년 비교 도해의 관측·가정 금리차 73.7bp와 구분합니다.",
     "nominalGapAssumptionBp": 150
+  },
+  "fundingRate10YrDataset2016_2026": {
+    "status": "DATA_STAGED_INTERPRETATION_PENDING",
+    "statusNote": "9대 증권사 10.5년(2016.1Q~2026.2Q, 42분기) 조달금리 원천 및 동일 신용등급 회사채 대비 스프레드 데이터만 선행 적재. 해석·결론(실력 vs 믹스·통화·만기 효과)은 추후 심화 검토 과제(Homework)로 보류.",
+    "periodRange": {
+      "startBaseMonth": "201603",
+      "endBaseMonth": "202606",
+      "quarters": 42
+    },
+    "sources": [
+      "금감원 FISIS OpenAPI SF321 (분기 단독 이자비용: 차입금 A20 · RP A23 · 콜 A25 · 사채 A26 · 발행어음 A27)",
+      "금감원 FISIS OpenAPI SF325 (기말 차입부채 잔액: 콜 A1 · 차입금 A2+A10 · RP A3 · 사채 A6~A9 · 발행어음 A13+A11; ELS A5·매도증권 A4·고객예수금 제외)",
+      "금융투자협회(KOFIA) 채권시가평가기준수익률(민평) 일별 원장 15,492건 (공모 무보증 회사채 AA+ 7010121 · AA0 7010122 · AA- 7010123, 1Y·3Y 분기평균)"
+    ],
+    "methodologyNote": "분기 연환산 실효금리 = 분기 이자비용 ÷ 전·기말 평균잔액 × 400. 통계 검정은 분기 시계열 자기상관을 보정한 Newey-West HAC t-통계량(lag=4). 통화(원화/외화) 및 세부 만기(단기/장기) 혼재 효과는 해석 시 별도 분리 검토 필요.",
+    "firmSummary10Yr": [
+      {
+        "key": "kis",
+        "financeCd": "0010129",
+        "firm": "한국투자증권",
+        "ratingCurrent": "AA0",
+        "ratingNote": "AA0",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 53.5,
+          "bondOfIb5": 8.9,
+          "shortCpA60OfBond": 26.7,
+          "subDebtA8OfBond": 14.1
+        },
+        "ib5VsPeerBp": {
+          "mean": 8.8,
+          "std": 8.9,
+          "winRatePct": 19.0,
+          "tNw": 3.67,
+          "pNw": 0.0002
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -26.8,
+          "std": 47.1,
+          "ratingAdjAlphaBp": 8.4,
+          "tNwAlpha": 3.61,
+          "pNwAlpha": 0.0003,
+          "reg16_21": -26.2,
+          "reg22_23": -76.1,
+          "reg24_26": 11.3
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": 13.2,
+          "std": 13.8,
+          "winRatePct": 11.9,
+          "tNw": 3.4,
+          "pNw": 0.0007
+        },
+        "bondVsMatched3YBp": {
+          "n": 42,
+          "mean": -51.5,
+          "ratingAdjAlphaBp": -50.3,
+          "tNwAlpha": -4.83,
+          "pNwAlpha": 0.0
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 33,
+          "mean": -22.5,
+          "reg22_23": -63.1,
+          "reg24_26": -11.7
+        }
+      },
+      {
+        "key": "mirae",
+        "financeCd": "0010094",
+        "firm": "미래에셋증권",
+        "ratingCurrent": "AA0",
+        "ratingNote": "AA0",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 57.3,
+          "bondOfIb5": 16.5,
+          "shortCpA60OfBond": 13.2,
+          "subDebtA8OfBond": 29.6
+        },
+        "ib5VsPeerBp": {
+          "mean": 6.5,
+          "std": 13.2,
+          "winRatePct": 7.1,
+          "tNw": 2.59,
+          "pNw": 0.0096
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -29.1,
+          "std": 49.2,
+          "ratingAdjAlphaBp": 6.0,
+          "tNwAlpha": 2.4,
+          "pNwAlpha": 0.0163,
+          "reg16_21": -22.7,
+          "reg22_23": -86.8,
+          "reg24_26": 1.7
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": -7.6,
+          "std": 17.5,
+          "winRatePct": 76.2,
+          "tNw": -3.31,
+          "pNw": 0.0009
+        },
+        "bondVsMatched3YBp": {
+          "n": 42,
+          "mean": 53.8,
+          "ratingAdjAlphaBp": 55.0,
+          "tNwAlpha": 5.96,
+          "pNwAlpha": 0.0
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 18,
+          "mean": -34.1,
+          "reg22_23": -62.7,
+          "reg24_26": -11.1
+        }
+      },
+      {
+        "key": "nh",
+        "financeCd": "0010101",
+        "firm": "NH투자증권",
+        "ratingCurrent": "AA+",
+        "ratingNote": "AA+",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 48.2,
+          "bondOfIb5": 14.5,
+          "shortCpA60OfBond": 20.1,
+          "subDebtA8OfBond": 0.0
+        },
+        "ib5VsPeerBp": {
+          "mean": -8.6,
+          "std": 15.3,
+          "winRatePct": 85.7,
+          "tNw": -3.61,
+          "pNw": 0.0003
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -40.6,
+          "std": 43.1,
+          "ratingAdjAlphaBp": -5.4,
+          "tNwAlpha": -2.33,
+          "pNwAlpha": 0.0198,
+          "reg16_21": -35.4,
+          "reg22_23": -95.1,
+          "reg24_26": -9.7
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": -10.1,
+          "std": 10.7,
+          "winRatePct": 88.1,
+          "tNw": -3.81,
+          "pNw": 0.0001
+        },
+        "bondVsMatched3YBp": {
+          "n": 42,
+          "mean": -18.1,
+          "ratingAdjAlphaBp": -17.0,
+          "tNwAlpha": -2.48,
+          "pNwAlpha": 0.0131
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 32,
+          "mean": -22.1,
+          "reg22_23": -89.4,
+          "reg24_26": -0.6
+        }
+      },
+      {
+        "key": "kb",
+        "financeCd": "0010106",
+        "firm": "KB증권",
+        "ratingCurrent": "AA+",
+        "ratingNote": "AA+",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 54.3,
+          "bondOfIb5": 12.4,
+          "shortCpA60OfBond": 27.4,
+          "subDebtA8OfBond": 0.0
+        },
+        "ib5VsPeerBp": {
+          "mean": -8.0,
+          "std": 11.6,
+          "winRatePct": 69.0,
+          "tNw": -3.04,
+          "pNw": 0.0024
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -40.0,
+          "std": 51.8,
+          "ratingAdjAlphaBp": -4.9,
+          "tNwAlpha": -1.79,
+          "pNwAlpha": 0.0727,
+          "reg16_21": -31.4,
+          "reg22_23": -102.9,
+          "reg24_26": -10.4
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": 1.8,
+          "std": 12.3,
+          "winRatePct": 38.1,
+          "tNw": 0.72,
+          "pNw": 0.4729
+        },
+        "bondVsMatched3YBp": {
+          "n": 42,
+          "mean": -60.4,
+          "ratingAdjAlphaBp": -59.2,
+          "tNwAlpha": -4.07,
+          "pNwAlpha": 0.0
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 28,
+          "mean": 58.8,
+          "reg22_23": 15.2,
+          "reg24_26": 147.6
+        }
+      },
+      {
+        "key": "samsung",
+        "financeCd": "0010119",
+        "firm": "삼성증권",
+        "ratingCurrent": "AA+",
+        "ratingNote": "AA+",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 77.8,
+          "bondOfIb5": 9.6,
+          "shortCpA60OfBond": 15.4,
+          "subDebtA8OfBond": 0.0
+        },
+        "ib5VsPeerBp": {
+          "mean": -21.5,
+          "std": 11.8,
+          "winRatePct": 95.2,
+          "tNw": -6.23,
+          "pNw": 0.0
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -53.5,
+          "std": 46.1,
+          "ratingAdjAlphaBp": -18.3,
+          "tNwAlpha": -5.1,
+          "pNwAlpha": 0.0,
+          "reg16_21": -41.3,
+          "reg22_23": -116.8,
+          "reg24_26": -32.0
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": -10.5,
+          "std": 10.2,
+          "winRatePct": 90.5,
+          "tNw": -3.73,
+          "pNw": 0.0002
+        },
+        "bondVsMatched3YBp": {
+          "n": 42,
+          "mean": -19.3,
+          "ratingAdjAlphaBp": -18.1,
+          "tNwAlpha": -1.85,
+          "pNwAlpha": 0.0641
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 0,
+          "mean": null,
+          "reg22_23": null,
+          "reg24_26": null
+        }
+      },
+      {
+        "key": "meritz",
+        "financeCd": "0010099",
+        "firm": "메리츠증권",
+        "ratingCurrent": "AA-",
+        "ratingNote": "AA-",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 68.3,
+          "bondOfIb5": 12.7,
+          "shortCpA60OfBond": 25.9,
+          "subDebtA8OfBond": 24.5
+        },
+        "ib5VsPeerBp": {
+          "mean": 8.3,
+          "std": 12.7,
+          "winRatePct": 14.3,
+          "tNw": 3.86,
+          "pNw": 0.0001
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -31.3,
+          "std": 43.5,
+          "ratingAdjAlphaBp": 3.8,
+          "tNwAlpha": 1.81,
+          "pNwAlpha": 0.0707,
+          "reg16_21": -24.8,
+          "reg22_23": -77.7,
+          "reg24_26": -10.0
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": 8.9,
+          "std": 15.6,
+          "winRatePct": 19.0,
+          "tNw": 3.28,
+          "pNw": 0.001
+        },
+        "bondVsMatched3YBp": {
+          "n": 35,
+          "mean": 44.3,
+          "ratingAdjAlphaBp": 58.6,
+          "tNwAlpha": 3.8,
+          "pNwAlpha": 0.0001
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 0,
+          "mean": null,
+          "reg22_23": null,
+          "reg24_26": null
+        }
+      },
+      {
+        "key": "kiwoom",
+        "financeCd": "0010136",
+        "firm": "키움증권",
+        "ratingCurrent": "AA0",
+        "ratingNote": "2016~2022 AA- → 2023~2026 AA0 동태 적용",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 56.8,
+          "bondOfIb5": 16.3,
+          "shortCpA60OfBond": 48.9,
+          "subDebtA8OfBond": 3.9
+        },
+        "ib5VsPeerBp": {
+          "mean": 6.2,
+          "std": 17.5,
+          "winRatePct": 45.2,
+          "tNw": 1.22,
+          "pNw": 0.2227
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -32.3,
+          "std": 45.8,
+          "ratingAdjAlphaBp": 2.9,
+          "tNwAlpha": 0.62,
+          "pNwAlpha": 0.5341,
+          "reg16_21": -18.0,
+          "reg22_23": -92.4,
+          "reg24_26": -18.6
+        },
+        "rpVsPeerBp": {
+          "n": 41,
+          "mean": 2.0,
+          "std": 17.4,
+          "winRatePct": 41.5,
+          "tNw": 0.53,
+          "pNw": 0.5965
+        },
+        "bondVsMatched3YBp": {
+          "n": 35,
+          "mean": -6.5,
+          "ratingAdjAlphaBp": 7.8,
+          "tNwAlpha": 0.59,
+          "pNwAlpha": 0.5544
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 2,
+          "mean": null,
+          "reg22_23": null,
+          "reg24_26": null
+        }
+      },
+      {
+        "key": "hana",
+        "financeCd": "0010130",
+        "firm": "하나증권",
+        "ratingCurrent": "AA0",
+        "ratingNote": "AA0",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 70.9,
+          "bondOfIb5": 12.8,
+          "shortCpA60OfBond": 10.9,
+          "subDebtA8OfBond": 28.3
+        },
+        "ib5VsPeerBp": {
+          "mean": 11.6,
+          "std": 13.9,
+          "winRatePct": 21.4,
+          "tNw": 3.11,
+          "pNw": 0.0019
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -23.9,
+          "std": 51.1,
+          "ratingAdjAlphaBp": 11.2,
+          "tNwAlpha": 3.04,
+          "pNwAlpha": 0.0024,
+          "reg16_21": -24.5,
+          "reg22_23": -76.6,
+          "reg24_26": 19.7
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": 10.7,
+          "std": 17.1,
+          "winRatePct": 33.3,
+          "tNw": 2.14,
+          "pNw": 0.0324
+        },
+        "bondVsMatched3YBp": {
+          "n": 33,
+          "mean": 4.6,
+          "ratingAdjAlphaBp": 15.6,
+          "tNwAlpha": 2.92,
+          "pNwAlpha": 0.0035
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 1,
+          "mean": null,
+          "reg22_23": null,
+          "reg24_26": null
+        }
+      },
+      {
+        "key": "shinhan",
+        "financeCd": "0010091",
+        "firm": "신한투자증권",
+        "ratingCurrent": "AA0",
+        "ratingNote": "AA0",
+        "quartersObserved": 42,
+        "mix10YrPct": {
+          "rpOfIb5": 66.4,
+          "bondOfIb5": 11.3,
+          "shortCpA60OfBond": 26.3,
+          "subDebtA8OfBond": 23.4
+        },
+        "ib5VsPeerBp": {
+          "mean": -3.3,
+          "std": 11.3,
+          "winRatePct": 57.1,
+          "tNw": -1.07,
+          "pNw": 0.2866
+        },
+        "ib5VsMatched1YBp": {
+          "mean": -38.9,
+          "std": 50.8,
+          "ratingAdjAlphaBp": -3.7,
+          "tNwAlpha": -1.2,
+          "pNwAlpha": 0.2283,
+          "reg16_21": -36.8,
+          "reg22_23": -98.6,
+          "reg24_26": 3.8
+        },
+        "rpVsPeerBp": {
+          "n": 42,
+          "mean": -8.4,
+          "std": 9.2,
+          "winRatePct": 88.1,
+          "tNw": -4.02,
+          "pNw": 0.0001
+        },
+        "bondVsMatched3YBp": {
+          "n": 37,
+          "mean": 13.8,
+          "ratingAdjAlphaBp": 25.0,
+          "tNwAlpha": 4.96,
+          "pNwAlpha": 0.0
+        },
+        "promNoteVsMatched1YBp": {
+          "n": 0,
+          "mean": null,
+          "reg22_23": null,
+          "reg24_26": null
+        }
+      }
+    ],
+    "quarterlyBenchmarksKofia": [
+      {
+        "baseMonth": "201603",
+        "aaPlus1Y": 1.76,
+        "aaPlus3Y": 1.921,
+        "aa01Y": 1.812,
+        "aa03Y": 1.979,
+        "aaMinus1Y": 1.868,
+        "aaMinus3Y": 2.039
+      },
+      {
+        "baseMonth": "201606",
+        "aaPlus1Y": 1.607,
+        "aaPlus3Y": 1.738,
+        "aa01Y": 1.658,
+        "aa03Y": 1.796,
+        "aaMinus1Y": 1.716,
+        "aaMinus3Y": 1.852
+      },
+      {
+        "baseMonth": "201609",
+        "aaPlus1Y": 1.407,
+        "aaPlus3Y": 1.519,
+        "aa01Y": 1.455,
+        "aa03Y": 1.574,
+        "aaMinus1Y": 1.518,
+        "aaMinus3Y": 1.633
+      },
+      {
+        "baseMonth": "201612",
+        "aaPlus1Y": 1.738,
+        "aaPlus3Y": 1.935,
+        "aa01Y": 1.786,
+        "aa03Y": 1.989,
+        "aaMinus1Y": 1.849,
+        "aaMinus3Y": 2.05
+      },
+      {
+        "baseMonth": "201703",
+        "aaPlus1Y": 1.671,
+        "aaPlus3Y": 1.971,
+        "aa01Y": 1.719,
+        "aa03Y": 2.024,
+        "aaMinus1Y": 1.782,
+        "aaMinus3Y": 2.087
+      },
+      {
+        "baseMonth": "201706",
+        "aaPlus1Y": 1.647,
+        "aaPlus3Y": 2.016,
+        "aa01Y": 1.692,
+        "aa03Y": 2.064,
+        "aaMinus1Y": 1.752,
+        "aaMinus3Y": 2.124
+      },
+      {
+        "baseMonth": "201709",
+        "aaPlus1Y": 1.712,
+        "aaPlus3Y": 2.122,
+        "aa01Y": 1.754,
+        "aa03Y": 2.169,
+        "aaMinus1Y": 1.803,
+        "aaMinus3Y": 2.221
+      },
+      {
+        "baseMonth": "201712",
+        "aaPlus1Y": 2.09,
+        "aaPlus3Y": 2.476,
+        "aa01Y": 2.129,
+        "aa03Y": 2.524,
+        "aaMinus1Y": 2.175,
+        "aaMinus3Y": 2.573
+      },
+      {
+        "baseMonth": "201803",
+        "aaPlus1Y": 2.096,
+        "aaPlus3Y": 2.564,
+        "aa01Y": 2.131,
+        "aa03Y": 2.611,
+        "aaMinus1Y": 2.174,
+        "aaMinus3Y": 2.656
+      },
+      {
+        "baseMonth": "201806",
+        "aaPlus1Y": 2.091,
+        "aaPlus3Y": 2.578,
+        "aa01Y": 2.123,
+        "aa03Y": 2.62,
+        "aaMinus1Y": 2.162,
+        "aaMinus3Y": 2.665
+      },
+      {
+        "baseMonth": "201809",
+        "aaPlus1Y": 2.039,
+        "aaPlus3Y": 2.38,
+        "aa01Y": 2.071,
+        "aa03Y": 2.416,
+        "aaMinus1Y": 2.106,
+        "aaMinus3Y": 2.458
+      },
+      {
+        "baseMonth": "201812",
+        "aaPlus1Y": 2.108,
+        "aaPlus3Y": 2.31,
+        "aa01Y": 2.139,
+        "aa03Y": 2.347,
+        "aaMinus1Y": 2.175,
+        "aaMinus3Y": 2.385
+      },
+      {
+        "baseMonth": "201903",
+        "aaPlus1Y": 1.994,
+        "aaPlus3Y": 2.117,
+        "aa01Y": 2.025,
+        "aa03Y": 2.153,
+        "aaMinus1Y": 2.06,
+        "aaMinus3Y": 2.187
+      },
+      {
+        "baseMonth": "201906",
+        "aaPlus1Y": 1.828,
+        "aaPlus3Y": 1.894,
+        "aa01Y": 1.862,
+        "aa03Y": 1.928,
+        "aaMinus1Y": 1.893,
+        "aaMinus3Y": 1.954
+      },
+      {
+        "baseMonth": "201909",
+        "aaPlus1Y": 1.537,
+        "aaPlus3Y": 1.581,
+        "aa01Y": 1.574,
+        "aa03Y": 1.616,
+        "aaMinus1Y": 1.602,
+        "aaMinus3Y": 1.641
+      },
+      {
+        "baseMonth": "201912",
+        "aaPlus1Y": 1.651,
+        "aaPlus3Y": 1.764,
+        "aa01Y": 1.687,
+        "aa03Y": 1.8,
+        "aaMinus1Y": 1.718,
+        "aaMinus3Y": 1.826
+      },
+      {
+        "baseMonth": "202003",
+        "aaPlus1Y": 1.493,
+        "aaPlus3Y": 1.608,
+        "aa01Y": 1.529,
+        "aa03Y": 1.644,
+        "aaMinus1Y": 1.562,
+        "aaMinus3Y": 1.671
+      },
+      {
+        "baseMonth": "202006",
+        "aaPlus1Y": 1.453,
+        "aaPlus3Y": 1.565,
+        "aa01Y": 1.494,
+        "aa03Y": 1.607,
+        "aaMinus1Y": 1.554,
+        "aaMinus3Y": 1.656
+      },
+      {
+        "baseMonth": "202009",
+        "aaPlus1Y": 1.075,
+        "aaPlus3Y": 1.383,
+        "aa01Y": 1.116,
+        "aa03Y": 1.427,
+        "aaMinus1Y": 1.197,
+        "aaMinus3Y": 1.499
+      },
+      {
+        "baseMonth": "202012",
+        "aaPlus1Y": 1.017,
+        "aaPlus3Y": 1.352,
+        "aa01Y": 1.056,
+        "aa03Y": 1.397,
+        "aaMinus1Y": 1.136,
+        "aaMinus3Y": 1.468
+      },
+      {
+        "baseMonth": "202103",
+        "aaPlus1Y": 0.938,
+        "aaPlus3Y": 1.296,
+        "aa01Y": 0.975,
+        "aa03Y": 1.336,
+        "aaMinus1Y": 1.034,
+        "aaMinus3Y": 1.391
+      },
+      {
+        "baseMonth": "202106",
+        "aaPlus1Y": 0.987,
+        "aaPlus3Y": 1.506,
+        "aa01Y": 1.011,
+        "aa03Y": 1.533,
+        "aaMinus1Y": 1.039,
+        "aaMinus3Y": 1.567
+      },
+      {
+        "baseMonth": "202109",
+        "aaPlus1Y": 1.309,
+        "aaPlus3Y": 1.799,
+        "aa01Y": 1.339,
+        "aa03Y": 1.83,
+        "aaMinus1Y": 1.363,
+        "aaMinus3Y": 1.86
+      },
+      {
+        "baseMonth": "202112",
+        "aaPlus1Y": 1.743,
+        "aaPlus3Y": 2.345,
+        "aa01Y": 1.773,
+        "aa03Y": 2.377,
+        "aaMinus1Y": 1.797,
+        "aaMinus3Y": 2.408
+      },
+      {
+        "baseMonth": "202203",
+        "aaPlus1Y": 2.069,
+        "aaPlus3Y": 2.78,
+        "aa01Y": 2.099,
+        "aa03Y": 2.813,
+        "aaMinus1Y": 2.124,
+        "aaMinus3Y": 2.848
+      },
+      {
+        "baseMonth": "202206",
+        "aaPlus1Y": 2.86,
+        "aaPlus3Y": 3.798,
+        "aa01Y": 2.891,
+        "aa03Y": 3.833,
+        "aaMinus1Y": 2.917,
+        "aaMinus3Y": 3.873
+      },
+      {
+        "baseMonth": "202209",
+        "aaPlus1Y": 4.012,
+        "aaPlus3Y": 4.328,
+        "aa01Y": 4.043,
+        "aa03Y": 4.37,
+        "aaMinus1Y": 4.071,
+        "aaMinus3Y": 4.416
+      },
+      {
+        "baseMonth": "202212",
+        "aaPlus1Y": 5.172,
+        "aaPlus3Y": 5.324,
+        "aa01Y": 5.204,
+        "aa03Y": 5.364,
+        "aaMinus1Y": 5.238,
+        "aaMinus3Y": 5.416
+      },
+      {
+        "baseMonth": "202303",
+        "aaPlus1Y": 4.072,
+        "aaPlus3Y": 4.256,
+        "aa01Y": 4.109,
+        "aa03Y": 4.293,
+        "aaMinus1Y": 4.146,
+        "aaMinus3Y": 4.358
+      },
+      {
+        "baseMonth": "202306",
+        "aaPlus1Y": 3.909,
+        "aaPlus3Y": 4.088,
+        "aa01Y": 3.948,
+        "aa03Y": 4.128,
+        "aaMinus1Y": 3.988,
+        "aaMinus3Y": 4.192
+      },
+      {
+        "baseMonth": "202309",
+        "aaPlus1Y": 4.106,
+        "aaPlus3Y": 4.407,
+        "aa01Y": 4.146,
+        "aa03Y": 4.444,
+        "aaMinus1Y": 4.183,
+        "aaMinus3Y": 4.507
+      },
+      {
+        "baseMonth": "202312",
+        "aaPlus1Y": 4.178,
+        "aaPlus3Y": 4.385,
+        "aa01Y": 4.218,
+        "aa03Y": 4.423,
+        "aaMinus1Y": 4.255,
+        "aaMinus3Y": 4.489
+      },
+      {
+        "baseMonth": "202403",
+        "aaPlus1Y": 3.784,
+        "aaPlus3Y": 3.892,
+        "aa01Y": 3.824,
+        "aa03Y": 3.933,
+        "aaMinus1Y": 3.862,
+        "aaMinus3Y": 3.995
+      },
+      {
+        "baseMonth": "202406",
+        "aaPlus1Y": 3.67,
+        "aaPlus3Y": 3.755,
+        "aa01Y": 3.7,
+        "aa03Y": 3.798,
+        "aaMinus1Y": 3.733,
+        "aaMinus3Y": 3.849
+      },
+      {
+        "baseMonth": "202409",
+        "aaPlus1Y": 3.368,
+        "aaPlus3Y": 3.389,
+        "aa01Y": 3.391,
+        "aa03Y": 3.428,
+        "aaMinus1Y": 3.419,
+        "aaMinus3Y": 3.473
+      },
+      {
+        "baseMonth": "202412",
+        "aaPlus1Y": 3.224,
+        "aaPlus3Y": 3.305,
+        "aa01Y": 3.249,
+        "aa03Y": 3.335,
+        "aaMinus1Y": 3.278,
+        "aaMinus3Y": 3.382
+      },
+      {
+        "baseMonth": "202503",
+        "aaPlus1Y": 2.983,
+        "aaPlus3Y": 3.113,
+        "aa01Y": 3.012,
+        "aa03Y": 3.141,
+        "aaMinus1Y": 3.042,
+        "aaMinus3Y": 3.186
+      },
+      {
+        "baseMonth": "202506",
+        "aaPlus1Y": 2.709,
+        "aaPlus3Y": 2.865,
+        "aa01Y": 2.737,
+        "aa03Y": 2.895,
+        "aaMinus1Y": 2.769,
+        "aaMinus3Y": 2.942
+      },
+      {
+        "baseMonth": "202509",
+        "aaPlus1Y": 2.572,
+        "aaPlus3Y": 2.843,
+        "aa01Y": 2.6,
+        "aa03Y": 2.873,
+        "aaMinus1Y": 2.634,
+        "aaMinus3Y": 2.923
+      },
+      {
+        "baseMonth": "202512",
+        "aaPlus1Y": 2.899,
+        "aaPlus3Y": 3.214,
+        "aa01Y": 2.933,
+        "aa03Y": 3.244,
+        "aaMinus1Y": 2.966,
+        "aaMinus3Y": 3.295
+      },
+      {
+        "baseMonth": "202603",
+        "aaPlus1Y": 3.176,
+        "aaPlus3Y": 3.663,
+        "aa01Y": 3.211,
+        "aa03Y": 3.697,
+        "aaMinus1Y": 3.244,
+        "aaMinus3Y": 3.747
+      },
+      {
+        "baseMonth": "202606",
+        "aaPlus1Y": 3.523,
+        "aaPlus3Y": 4.173,
+        "aa01Y": 3.558,
+        "aa03Y": 4.21,
+        "aaMinus1Y": 3.591,
+        "aaMinus3Y": 4.263
+      }
+    ],
+    "quarterlyFirmRates": [
+      {
+        "baseMonth": "201603",
+        "ib5Pct": {
+          "kis": 1.53,
+          "mirae": 1.66,
+          "nh": 1.32,
+          "kb": 1.62,
+          "samsung": 1.46,
+          "meritz": 1.61,
+          "kiwoom": 1.81,
+          "hana": 1.67,
+          "shinhan": 1.45
+        },
+        "rpPct": {
+          "kis": 1.45,
+          "mirae": 1.51,
+          "nh": 1.43,
+          "kb": 1.53,
+          "samsung": 1.43,
+          "meritz": 1.47,
+          "kiwoom": null,
+          "hana": 1.58,
+          "shinhan": 1.34
+        },
+        "bondPct": {
+          "kis": 2.26,
+          "mirae": 5.67,
+          "nh": 2.62,
+          "kb": 3.02,
+          "samsung": 2.23,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.6,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201606",
+        "ib5Pct": {
+          "kis": 1.53,
+          "mirae": 1.65,
+          "nh": 1.36,
+          "kb": 1.52,
+          "samsung": 1.42,
+          "meritz": 1.58,
+          "kiwoom": 1.99,
+          "hana": 1.55,
+          "shinhan": 1.34
+        },
+        "rpPct": {
+          "kis": 1.46,
+          "mirae": 1.55,
+          "nh": 1.39,
+          "kb": 1.45,
+          "samsung": 1.39,
+          "meritz": 1.42,
+          "kiwoom": 1.63,
+          "hana": 1.45,
+          "shinhan": 1.24
+        },
+        "bondPct": {
+          "kis": 2.37,
+          "mirae": 4.59,
+          "nh": 2.77,
+          "kb": 2.63,
+          "samsung": 2.23,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.52,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201609",
+        "ib5Pct": {
+          "kis": 1.37,
+          "mirae": 1.43,
+          "nh": 1.2,
+          "kb": 1.35,
+          "samsung": 1.28,
+          "meritz": 1.41,
+          "kiwoom": 1.76,
+          "hana": 1.38,
+          "shinhan": 1.18
+        },
+        "rpPct": {
+          "kis": 1.29,
+          "mirae": 1.37,
+          "nh": 1.12,
+          "kb": 1.24,
+          "samsung": 1.22,
+          "meritz": 1.24,
+          "kiwoom": 1.46,
+          "hana": 1.29,
+          "shinhan": 1.1
+        },
+        "bondPct": {
+          "kis": 2.27,
+          "mirae": 3.24,
+          "nh": 2.41,
+          "kb": 2.61,
+          "samsung": 2.25,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.4,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201612",
+        "ib5Pct": {
+          "kis": 1.39,
+          "mirae": 0.61,
+          "nh": 1.21,
+          "kb": 1.29,
+          "samsung": 1.28,
+          "meritz": 1.46,
+          "kiwoom": 1.51,
+          "hana": 1.24,
+          "shinhan": 1.15
+        },
+        "rpPct": {
+          "kis": 1.31,
+          "mirae": 0.07,
+          "nh": 1.13,
+          "kb": 1.21,
+          "samsung": 1.22,
+          "meritz": 1.32,
+          "kiwoom": 1.28,
+          "hana": 1.2,
+          "shinhan": 1.13
+        },
+        "bondPct": {
+          "kis": 2.26,
+          "mirae": 0.15,
+          "nh": 2.4,
+          "kb": 2.63,
+          "samsung": 2.25,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": 1.71,
+          "shinhan": null
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.37,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201703",
+        "ib5Pct": {
+          "kis": 1.33,
+          "mirae": 1.35,
+          "nh": 1.24,
+          "kb": 1.24,
+          "samsung": 1.26,
+          "meritz": 1.41,
+          "kiwoom": 1.47,
+          "hana": 1.25,
+          "shinhan": 1.09
+        },
+        "rpPct": {
+          "kis": 1.23,
+          "mirae": 1.11,
+          "nh": 1.14,
+          "kb": 1.16,
+          "samsung": 1.21,
+          "meritz": 1.28,
+          "kiwoom": 1.34,
+          "hana": 1.22,
+          "shinhan": 1.08
+        },
+        "bondPct": {
+          "kis": 2.22,
+          "mirae": 2.8,
+          "nh": 2.4,
+          "kb": 2.59,
+          "samsung": 2.2,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": 1.67,
+          "shinhan": null
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.3,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201706",
+        "ib5Pct": {
+          "kis": 1.38,
+          "mirae": 1.37,
+          "nh": 1.21,
+          "kb": 1.15,
+          "samsung": 1.26,
+          "meritz": 1.42,
+          "kiwoom": 1.37,
+          "hana": 1.39,
+          "shinhan": 1.17
+        },
+        "rpPct": {
+          "kis": 1.31,
+          "mirae": 1.18,
+          "nh": 1.12,
+          "kb": 1.2,
+          "samsung": 1.2,
+          "meritz": 1.26,
+          "kiwoom": 1.29,
+          "hana": 1.3,
+          "shinhan": 1.12
+        },
+        "bondPct": {
+          "kis": 2.26,
+          "mirae": 2.94,
+          "nh": 2.4,
+          "kb": 2.62,
+          "samsung": 2.23,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": 2.52
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.28,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201709",
+        "ib5Pct": {
+          "kis": 1.4,
+          "mirae": 1.39,
+          "nh": 1.24,
+          "kb": 1.22,
+          "samsung": 1.29,
+          "meritz": 1.48,
+          "kiwoom": 1.54,
+          "hana": 1.58,
+          "shinhan": 1.19
+        },
+        "rpPct": {
+          "kis": 1.34,
+          "mirae": 1.22,
+          "nh": 1.16,
+          "kb": 1.24,
+          "samsung": 1.23,
+          "meritz": 1.37,
+          "kiwoom": 1.33,
+          "hana": 1.44,
+          "shinhan": 1.07
+        },
+        "bondPct": {
+          "kis": 2.27,
+          "mirae": 2.83,
+          "nh": 2.31,
+          "kb": 2.61,
+          "samsung": 2.33,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": 3.23
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.33,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201712",
+        "ib5Pct": {
+          "kis": 1.47,
+          "mirae": 1.43,
+          "nh": 1.27,
+          "kb": 1.26,
+          "samsung": 1.4,
+          "meritz": 1.5,
+          "kiwoom": 1.52,
+          "hana": 1.43,
+          "shinhan": 1.19
+        },
+        "rpPct": {
+          "kis": 1.43,
+          "mirae": 1.2,
+          "nh": 1.19,
+          "kb": 1.28,
+          "samsung": 1.3,
+          "meritz": 1.37,
+          "kiwoom": 1.35,
+          "hana": 1.23,
+          "shinhan": 1.1
+        },
+        "bondPct": {
+          "kis": 1.42,
+          "mirae": 2.8,
+          "nh": 1.87,
+          "kb": 1.12,
+          "samsung": 3.07,
+          "meritz": 5.86,
+          "kiwoom": 1.99,
+          "hana": null,
+          "shinhan": 1.87
+        },
+        "notePct": {
+          "kis": null,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.36,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201803",
+        "ib5Pct": {
+          "kis": 1.55,
+          "mirae": 1.53,
+          "nh": 1.53,
+          "kb": 1.36,
+          "samsung": 1.44,
+          "meritz": 1.59,
+          "kiwoom": 1.66,
+          "hana": 1.54,
+          "shinhan": 1.45
+        },
+        "rpPct": {
+          "kis": 1.52,
+          "mirae": 1.33,
+          "nh": 1.39,
+          "kb": 1.43,
+          "samsung": 1.32,
+          "meritz": 1.48,
+          "kiwoom": 1.44,
+          "hana": 1.41,
+          "shinhan": 1.33
+        },
+        "bondPct": {
+          "kis": 1.13,
+          "mirae": 2.53,
+          "nh": 1.97,
+          "kb": 0.72,
+          "samsung": 2.91,
+          "meritz": 2.45,
+          "kiwoom": 2.14,
+          "hana": null,
+          "shinhan": 1.83
+        },
+        "notePct": {
+          "kis": 1.74,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.45,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201806",
+        "ib5Pct": {
+          "kis": 1.59,
+          "mirae": 1.6,
+          "nh": 1.63,
+          "kb": 1.33,
+          "samsung": 1.5,
+          "meritz": 1.63,
+          "kiwoom": 1.79,
+          "hana": 1.53,
+          "shinhan": 1.47
+        },
+        "rpPct": {
+          "kis": 1.51,
+          "mirae": 1.5,
+          "nh": 1.48,
+          "kb": 1.38,
+          "samsung": 1.38,
+          "meritz": 1.5,
+          "kiwoom": 1.54,
+          "hana": 1.43,
+          "shinhan": 1.35
+        },
+        "bondPct": {
+          "kis": 1.44,
+          "mirae": 2.62,
+          "nh": 2.1,
+          "kb": 0.81,
+          "samsung": 2.64,
+          "meritz": 2.83,
+          "kiwoom": 2.5,
+          "hana": null,
+          "shinhan": 1.81
+        },
+        "notePct": {
+          "kis": 1.86,
+          "mirae": null,
+          "nh": null,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.51,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201809",
+        "ib5Pct": {
+          "kis": 1.64,
+          "mirae": 1.67,
+          "nh": 1.67,
+          "kb": 1.52,
+          "samsung": 1.52,
+          "meritz": 1.88,
+          "kiwoom": 1.85,
+          "hana": 1.61,
+          "shinhan": 1.5
+        },
+        "rpPct": {
+          "kis": 1.5,
+          "mirae": 1.53,
+          "nh": 1.43,
+          "kb": 1.59,
+          "samsung": 1.44,
+          "meritz": 1.77,
+          "kiwoom": 1.51,
+          "hana": 1.41,
+          "shinhan": 1.3
+        },
+        "bondPct": {
+          "kis": 1.55,
+          "mirae": 2.78,
+          "nh": 2.27,
+          "kb": 0.97,
+          "samsung": 2.38,
+          "meritz": 3.41,
+          "kiwoom": 2.46,
+          "hana": 3.32,
+          "shinhan": 2.65
+        },
+        "notePct": {
+          "kis": 2.05,
+          "mirae": null,
+          "nh": 2.81,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.51,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201812",
+        "ib5Pct": {
+          "kis": 1.74,
+          "mirae": 1.83,
+          "nh": 1.78,
+          "kb": 1.54,
+          "samsung": 1.62,
+          "meritz": 1.94,
+          "kiwoom": 2.18,
+          "hana": 1.77,
+          "shinhan": 1.67
+        },
+        "rpPct": {
+          "kis": 1.61,
+          "mirae": 1.6,
+          "nh": 1.64,
+          "kb": 1.63,
+          "samsung": 1.55,
+          "meritz": 1.83,
+          "kiwoom": 2.03,
+          "hana": 1.56,
+          "shinhan": 1.37
+        },
+        "bondPct": {
+          "kis": 1.44,
+          "mirae": 3.29,
+          "nh": 2.34,
+          "kb": 0.97,
+          "samsung": 2.69,
+          "meritz": 2.91,
+          "kiwoom": 2.96,
+          "hana": 3.68,
+          "shinhan": 3.25
+        },
+        "notePct": {
+          "kis": 2.05,
+          "mirae": null,
+          "nh": 1.94,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.54,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201903",
+        "ib5Pct": {
+          "kis": 1.9,
+          "mirae": 1.93,
+          "nh": 1.89,
+          "kb": 1.52,
+          "samsung": 1.69,
+          "meritz": 1.9,
+          "kiwoom": 2.18,
+          "hana": 1.77,
+          "shinhan": 1.73
+        },
+        "rpPct": {
+          "kis": 1.85,
+          "mirae": 1.71,
+          "nh": 1.85,
+          "kb": 1.52,
+          "samsung": 1.62,
+          "meritz": 1.89,
+          "kiwoom": 2.05,
+          "hana": 1.59,
+          "shinhan": 1.5
+        },
+        "bondPct": {
+          "kis": 1.24,
+          "mirae": 2.9,
+          "nh": 2.15,
+          "kb": 1.18,
+          "samsung": 2.55,
+          "meritz": 2.15,
+          "kiwoom": 2.64,
+          "hana": null,
+          "shinhan": 2.9
+        },
+        "notePct": {
+          "kis": 2.14,
+          "mirae": null,
+          "nh": 2.12,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.55,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201906",
+        "ib5Pct": {
+          "kis": 2.01,
+          "mirae": 2.14,
+          "nh": 1.88,
+          "kb": 1.82,
+          "samsung": 1.74,
+          "meritz": 2.02,
+          "kiwoom": 2.1,
+          "hana": 1.79,
+          "shinhan": 1.86
+        },
+        "rpPct": {
+          "kis": 1.89,
+          "mirae": 1.94,
+          "nh": 1.78,
+          "kb": 1.77,
+          "samsung": 1.66,
+          "meritz": 1.98,
+          "kiwoom": 1.81,
+          "hana": 1.68,
+          "shinhan": 1.68
+        },
+        "bondPct": {
+          "kis": 1.36,
+          "mirae": 3.17,
+          "nh": 2.18,
+          "kb": 2.04,
+          "samsung": 2.57,
+          "meritz": 2.64,
+          "kiwoom": 2.39,
+          "hana": 2.88,
+          "shinhan": 2.77
+        },
+        "notePct": {
+          "kis": 2.18,
+          "mirae": null,
+          "nh": 2.33,
+          "kb": null,
+          "samsung": null,
+          "meritz": 1.63,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201909",
+        "ib5Pct": {
+          "kis": 1.81,
+          "mirae": 1.82,
+          "nh": 1.76,
+          "kb": 1.87,
+          "samsung": 1.58,
+          "meritz": 1.9,
+          "kiwoom": 2.01,
+          "hana": 1.65,
+          "shinhan": 1.71
+        },
+        "rpPct": {
+          "kis": 1.71,
+          "mirae": 1.58,
+          "nh": 1.63,
+          "kb": 1.75,
+          "samsung": 1.51,
+          "meritz": 1.75,
+          "kiwoom": 1.6,
+          "hana": 1.58,
+          "shinhan": 1.54
+        },
+        "bondPct": {
+          "kis": 1.29,
+          "mirae": 3.01,
+          "nh": 2.0,
+          "kb": 2.24,
+          "samsung": 2.6,
+          "meritz": 2.95,
+          "kiwoom": 2.81,
+          "hana": 2.22,
+          "shinhan": 2.6
+        },
+        "notePct": {
+          "kis": 2.02,
+          "mirae": null,
+          "nh": 2.23,
+          "kb": 2.05,
+          "samsung": null,
+          "meritz": 1.54,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "201912",
+        "ib5Pct": {
+          "kis": 1.72,
+          "mirae": 1.64,
+          "nh": 1.56,
+          "kb": 1.66,
+          "samsung": 1.39,
+          "meritz": 1.64,
+          "kiwoom": 1.7,
+          "hana": 1.75,
+          "shinhan": 1.6
+        },
+        "rpPct": {
+          "kis": 1.51,
+          "mirae": 1.28,
+          "nh": 1.3,
+          "kb": 1.47,
+          "samsung": 1.31,
+          "meritz": 1.39,
+          "kiwoom": 1.14,
+          "hana": 1.48,
+          "shinhan": 1.31
+        },
+        "bondPct": {
+          "kis": 1.19,
+          "mirae": 2.94,
+          "nh": 2.23,
+          "kb": 2.24,
+          "samsung": 2.66,
+          "meritz": 2.82,
+          "kiwoom": 2.83,
+          "hana": 2.54,
+          "shinhan": 2.7
+        },
+        "notePct": {
+          "kis": 1.87,
+          "mirae": null,
+          "nh": 1.98,
+          "kb": 1.83,
+          "samsung": null,
+          "meritz": 1.41,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202003",
+        "ib5Pct": {
+          "kis": 1.45,
+          "mirae": 1.56,
+          "nh": 1.47,
+          "kb": 1.58,
+          "samsung": 1.23,
+          "meritz": 1.55,
+          "kiwoom": 1.67,
+          "hana": 1.51,
+          "shinhan": 1.46
+        },
+        "rpPct": {
+          "kis": 1.33,
+          "mirae": 1.17,
+          "nh": 1.23,
+          "kb": 1.46,
+          "samsung": 1.16,
+          "meritz": 1.31,
+          "kiwoom": 1.13,
+          "hana": 1.3,
+          "shinhan": 1.22
+        },
+        "bondPct": {
+          "kis": 1.3,
+          "mirae": 2.93,
+          "nh": 2.36,
+          "kb": 1.88,
+          "samsung": 2.4,
+          "meritz": 2.51,
+          "kiwoom": 2.73,
+          "hana": 2.32,
+          "shinhan": 2.74
+        },
+        "notePct": {
+          "kis": 1.73,
+          "mirae": null,
+          "nh": 1.73,
+          "kb": 1.66,
+          "samsung": null,
+          "meritz": 1.33,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202006",
+        "ib5Pct": {
+          "kis": 1.29,
+          "mirae": 1.29,
+          "nh": 1.04,
+          "kb": 1.13,
+          "samsung": 0.83,
+          "meritz": 1.21,
+          "kiwoom": 1.34,
+          "hana": 1.39,
+          "shinhan": 1.23
+        },
+        "rpPct": {
+          "kis": 0.82,
+          "mirae": 0.65,
+          "nh": 0.64,
+          "kb": 0.84,
+          "samsung": 0.66,
+          "meritz": 0.76,
+          "kiwoom": 0.74,
+          "hana": 0.81,
+          "shinhan": 0.65
+        },
+        "bondPct": {
+          "kis": 1.9,
+          "mirae": 2.76,
+          "nh": 2.09,
+          "kb": 1.66,
+          "samsung": 2.23,
+          "meritz": 2.98,
+          "kiwoom": 2.63,
+          "hana": 2.53,
+          "shinhan": 2.93
+        },
+        "notePct": {
+          "kis": 1.47,
+          "mirae": null,
+          "nh": 1.4,
+          "kb": 1.72,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202009",
+        "ib5Pct": {
+          "kis": 1.04,
+          "mirae": 1.11,
+          "nh": 0.76,
+          "kb": 0.93,
+          "samsung": 0.61,
+          "meritz": 1.04,
+          "kiwoom": 0.91,
+          "hana": 1.1,
+          "shinhan": 1.0
+        },
+        "rpPct": {
+          "kis": 0.59,
+          "mirae": 0.48,
+          "nh": 0.44,
+          "kb": 0.68,
+          "samsung": 0.46,
+          "meritz": 0.55,
+          "kiwoom": 0.45,
+          "hana": 0.53,
+          "shinhan": 0.42
+        },
+        "bondPct": {
+          "kis": 3.09,
+          "mirae": 2.66,
+          "nh": 1.72,
+          "kb": 1.79,
+          "samsung": 1.8,
+          "meritz": 2.83,
+          "kiwoom": 1.82,
+          "hana": 2.11,
+          "shinhan": 2.93
+        },
+        "notePct": {
+          "kis": 0.99,
+          "mirae": null,
+          "nh": 1.01,
+          "kb": 1.28,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202012",
+        "ib5Pct": {
+          "kis": 0.91,
+          "mirae": 1.06,
+          "nh": 0.68,
+          "kb": 0.92,
+          "samsung": 0.59,
+          "meritz": 1.0,
+          "kiwoom": 0.87,
+          "hana": 0.99,
+          "shinhan": 0.98
+        },
+        "rpPct": {
+          "kis": 0.54,
+          "mirae": 0.5,
+          "nh": 0.41,
+          "kb": 0.72,
+          "samsung": 0.45,
+          "meritz": 0.58,
+          "kiwoom": 0.52,
+          "hana": 0.5,
+          "shinhan": 0.45
+        },
+        "bondPct": {
+          "kis": 2.63,
+          "mirae": 2.54,
+          "nh": 1.69,
+          "kb": 1.85,
+          "samsung": 1.68,
+          "meritz": 2.92,
+          "kiwoom": 1.69,
+          "hana": 2.35,
+          "shinhan": 2.77
+        },
+        "notePct": {
+          "kis": 0.75,
+          "mirae": null,
+          "nh": 0.85,
+          "kb": 1.11,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202103",
+        "ib5Pct": {
+          "kis": 0.86,
+          "mirae": 1.02,
+          "nh": 0.63,
+          "kb": 0.84,
+          "samsung": 0.58,
+          "meritz": 0.95,
+          "kiwoom": 0.79,
+          "hana": 0.97,
+          "shinhan": 0.86
+        },
+        "rpPct": {
+          "kis": 0.49,
+          "mirae": 0.49,
+          "nh": 0.37,
+          "kb": 0.64,
+          "samsung": 0.44,
+          "meritz": 0.59,
+          "kiwoom": 0.46,
+          "hana": 0.47,
+          "shinhan": 0.43
+        },
+        "bondPct": {
+          "kis": 2.29,
+          "mirae": 2.62,
+          "nh": 1.92,
+          "kb": 1.79,
+          "samsung": 1.45,
+          "meritz": 2.77,
+          "kiwoom": 1.43,
+          "hana": 2.28,
+          "shinhan": 2.24
+        },
+        "notePct": {
+          "kis": 0.81,
+          "mirae": null,
+          "nh": 0.77,
+          "kb": 0.95,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202106",
+        "ib5Pct": {
+          "kis": 0.81,
+          "mirae": 1.03,
+          "nh": 0.6,
+          "kb": 0.82,
+          "samsung": 0.56,
+          "meritz": 0.92,
+          "kiwoom": 0.79,
+          "hana": 0.93,
+          "shinhan": 0.84
+        },
+        "rpPct": {
+          "kis": 0.55,
+          "mirae": 0.49,
+          "nh": 0.37,
+          "kb": 0.6,
+          "samsung": 0.43,
+          "meritz": 0.56,
+          "kiwoom": 0.49,
+          "hana": 0.44,
+          "shinhan": 0.46
+        },
+        "bondPct": {
+          "kis": 1.58,
+          "mirae": 2.68,
+          "nh": 1.91,
+          "kb": 1.79,
+          "samsung": 1.45,
+          "meritz": 2.48,
+          "kiwoom": 1.55,
+          "hana": 2.35,
+          "shinhan": 2.16
+        },
+        "notePct": {
+          "kis": 0.77,
+          "mirae": null,
+          "nh": 0.67,
+          "kb": 0.9,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202109",
+        "ib5Pct": {
+          "kis": 0.83,
+          "mirae": 1.1,
+          "nh": 0.67,
+          "kb": 0.89,
+          "samsung": 0.66,
+          "meritz": 0.98,
+          "kiwoom": 0.83,
+          "hana": 1.04,
+          "shinhan": 0.9
+        },
+        "rpPct": {
+          "kis": 0.58,
+          "mirae": 0.54,
+          "nh": 0.46,
+          "kb": 0.66,
+          "samsung": 0.52,
+          "meritz": 0.68,
+          "kiwoom": 0.59,
+          "hana": 0.55,
+          "shinhan": 0.53
+        },
+        "bondPct": {
+          "kis": 1.32,
+          "mirae": 2.68,
+          "nh": 1.99,
+          "kb": 1.49,
+          "samsung": 1.69,
+          "meritz": 2.26,
+          "kiwoom": 1.42,
+          "hana": 2.31,
+          "shinhan": 2.0
+        },
+        "notePct": {
+          "kis": 0.76,
+          "mirae": null,
+          "nh": 0.63,
+          "kb": 0.95,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202112",
+        "ib5Pct": {
+          "kis": 1.07,
+          "mirae": 1.22,
+          "nh": 0.91,
+          "kb": 1.06,
+          "samsung": 0.91,
+          "meritz": 1.06,
+          "kiwoom": 1.05,
+          "hana": 1.18,
+          "shinhan": 1.06
+        },
+        "rpPct": {
+          "kis": 0.76,
+          "mirae": 0.71,
+          "nh": 0.67,
+          "kb": 0.84,
+          "samsung": 0.73,
+          "meritz": 0.78,
+          "kiwoom": 0.8,
+          "hana": 0.75,
+          "shinhan": 0.71
+        },
+        "bondPct": {
+          "kis": 1.59,
+          "mirae": 2.6,
+          "nh": 2.19,
+          "kb": 1.55,
+          "samsung": 1.69,
+          "meritz": 2.36,
+          "kiwoom": 1.84,
+          "hana": 2.23,
+          "shinhan": 1.98
+        },
+        "notePct": {
+          "kis": 1.14,
+          "mirae": null,
+          "nh": 0.86,
+          "kb": 1.22,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202203",
+        "ib5Pct": {
+          "kis": 1.48,
+          "mirae": 1.53,
+          "nh": 1.2,
+          "kb": 1.34,
+          "samsung": 1.24,
+          "meritz": 1.35,
+          "kiwoom": 1.34,
+          "hana": 1.39,
+          "shinhan": 1.45
+        },
+        "rpPct": {
+          "kis": 1.03,
+          "mirae": 1.03,
+          "nh": 1.02,
+          "kb": 1.13,
+          "samsung": 1.04,
+          "meritz": 1.14,
+          "kiwoom": 1.17,
+          "hana": 1.05,
+          "shinhan": 1.04
+        },
+        "bondPct": {
+          "kis": 1.57,
+          "mirae": 2.69,
+          "nh": 2.3,
+          "kb": 1.26,
+          "samsung": 1.82,
+          "meritz": 2.54,
+          "kiwoom": 1.84,
+          "hana": 2.19,
+          "shinhan": 2.57
+        },
+        "notePct": {
+          "kis": 1.68,
+          "mirae": 1.35,
+          "nh": 1.12,
+          "kb": 1.62,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202206",
+        "ib5Pct": {
+          "kis": 1.76,
+          "mirae": 1.85,
+          "nh": 1.45,
+          "kb": 1.56,
+          "samsung": 1.56,
+          "meritz": 1.72,
+          "kiwoom": 1.71,
+          "hana": 1.63,
+          "shinhan": 1.66
+        },
+        "rpPct": {
+          "kis": 1.41,
+          "mirae": 1.4,
+          "nh": 1.37,
+          "kb": 1.57,
+          "samsung": 1.42,
+          "meritz": 1.6,
+          "kiwoom": 1.43,
+          "hana": 1.38,
+          "shinhan": 1.39
+        },
+        "bondPct": {
+          "kis": 1.57,
+          "mirae": 2.66,
+          "nh": 2.27,
+          "kb": 1.01,
+          "samsung": 1.8,
+          "meritz": 2.5,
+          "kiwoom": 2.17,
+          "hana": 2.24,
+          "shinhan": 2.14
+        },
+        "notePct": {
+          "kis": 1.86,
+          "mirae": 1.94,
+          "nh": 1.54,
+          "kb": 1.89,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202209",
+        "ib5Pct": {
+          "kis": 2.41,
+          "mirae": 2.41,
+          "nh": 2.1,
+          "kb": 2.21,
+          "samsung": 2.14,
+          "meritz": 2.44,
+          "kiwoom": 2.44,
+          "hana": 2.49,
+          "shinhan": 2.28
+        },
+        "rpPct": {
+          "kis": 2.14,
+          "mirae": 2.0,
+          "nh": 2.09,
+          "kb": 2.04,
+          "samsung": 2.1,
+          "meritz": 2.25,
+          "kiwoom": 2.34,
+          "hana": 2.34,
+          "shinhan": 2.11
+        },
+        "bondPct": {
+          "kis": 1.93,
+          "mirae": 2.75,
+          "nh": 2.43,
+          "kb": 1.24,
+          "samsung": 1.91,
+          "meritz": 2.96,
+          "kiwoom": 2.5,
+          "hana": 2.5,
+          "shinhan": 2.18
+        },
+        "notePct": {
+          "kis": 2.49,
+          "mirae": 2.87,
+          "nh": 2.62,
+          "kb": 2.88,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202212",
+        "ib5Pct": {
+          "kis": 3.36,
+          "mirae": 3.23,
+          "nh": 3.99,
+          "kb": 2.97,
+          "samsung": 2.87,
+          "meritz": 3.67,
+          "kiwoom": 3.38,
+          "hana": 3.23,
+          "shinhan": 3.05
+        },
+        "rpPct": {
+          "kis": 3.13,
+          "mirae": 2.81,
+          "nh": 2.95,
+          "kb": 2.91,
+          "samsung": 2.8,
+          "meritz": 3.63,
+          "kiwoom": 3.07,
+          "hana": 3.04,
+          "shinhan": 2.91
+        },
+        "bondPct": {
+          "kis": 1.98,
+          "mirae": 3.17,
+          "nh": 3.12,
+          "kb": 1.41,
+          "samsung": 2.48,
+          "meritz": 3.88,
+          "kiwoom": 4.25,
+          "hana": 2.79,
+          "shinhan": 3.26
+        },
+        "notePct": {
+          "kis": 3.46,
+          "mirae": 3.85,
+          "nh": 3.44,
+          "kb": 3.97,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202303",
+        "ib5Pct": {
+          "kis": 3.8,
+          "mirae": 3.6,
+          "nh": 3.57,
+          "kb": 3.32,
+          "samsung": 3.17,
+          "meritz": 3.75,
+          "kiwoom": 3.56,
+          "hana": 3.85,
+          "shinhan": 3.48
+        },
+        "rpPct": {
+          "kis": 3.61,
+          "mirae": 3.21,
+          "nh": 3.33,
+          "kb": 3.5,
+          "samsung": 3.14,
+          "meritz": 3.6,
+          "kiwoom": 3.33,
+          "hana": 3.59,
+          "shinhan": 3.22
+        },
+        "bondPct": {
+          "kis": 1.94,
+          "mirae": 3.21,
+          "nh": 2.88,
+          "kb": 1.31,
+          "samsung": 2.45,
+          "meritz": 4.4,
+          "kiwoom": 3.98,
+          "hana": 2.88,
+          "shinhan": 3.15
+        },
+        "notePct": {
+          "kis": 4.29,
+          "mirae": 4.12,
+          "nh": 3.83,
+          "kb": 4.96,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202306",
+        "ib5Pct": {
+          "kis": 3.91,
+          "mirae": 3.6,
+          "nh": 3.46,
+          "kb": 3.36,
+          "samsung": 3.35,
+          "meritz": 3.95,
+          "kiwoom": 3.55,
+          "hana": 4.03,
+          "shinhan": 3.68
+        },
+        "rpPct": {
+          "kis": 3.74,
+          "mirae": 3.37,
+          "nh": 3.3,
+          "kb": 3.79,
+          "samsung": 3.48,
+          "meritz": 3.86,
+          "kiwoom": 3.44,
+          "hana": 3.79,
+          "shinhan": 3.52
+        },
+        "bondPct": {
+          "kis": 2.54,
+          "mirae": 2.95,
+          "nh": 2.51,
+          "kb": 1.3,
+          "samsung": 2.46,
+          "meritz": 4.35,
+          "kiwoom": 3.55,
+          "hana": 3.08,
+          "shinhan": 3.23
+        },
+        "notePct": {
+          "kis": 4.09,
+          "mirae": 4.03,
+          "nh": 3.6,
+          "kb": 4.85,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202309",
+        "ib5Pct": {
+          "kis": 3.86,
+          "mirae": 3.68,
+          "nh": 3.4,
+          "kb": 3.55,
+          "samsung": 3.22,
+          "meritz": 3.75,
+          "kiwoom": 3.55,
+          "hana": 3.92,
+          "shinhan": 3.55
+        },
+        "rpPct": {
+          "kis": 3.68,
+          "mirae": 3.39,
+          "nh": 3.2,
+          "kb": 3.57,
+          "samsung": 3.32,
+          "meritz": 3.57,
+          "kiwoom": 3.35,
+          "hana": 3.76,
+          "shinhan": 3.41
+        },
+        "bondPct": {
+          "kis": 2.76,
+          "mirae": 3.31,
+          "nh": 2.5,
+          "kb": 2.03,
+          "samsung": 2.36,
+          "meritz": 4.53,
+          "kiwoom": 3.75,
+          "hana": 3.36,
+          "shinhan": 3.26
+        },
+        "notePct": {
+          "kis": 3.87,
+          "mirae": 3.67,
+          "nh": 3.52,
+          "kb": 5.53,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202312",
+        "ib5Pct": {
+          "kis": 3.97,
+          "mirae": 3.81,
+          "nh": 3.6,
+          "kb": 3.82,
+          "samsung": 3.49,
+          "meritz": 4.07,
+          "kiwoom": 3.85,
+          "hana": 3.99,
+          "shinhan": 3.62
+        },
+        "rpPct": {
+          "kis": 3.88,
+          "mirae": 3.52,
+          "nh": 3.22,
+          "kb": 3.49,
+          "samsung": 3.37,
+          "meritz": 3.82,
+          "kiwoom": 3.55,
+          "hana": 3.74,
+          "shinhan": 3.35
+        },
+        "bondPct": {
+          "kis": 3.16,
+          "mirae": 3.54,
+          "nh": 2.97,
+          "kb": 2.47,
+          "samsung": 3.23,
+          "meritz": 5.32,
+          "kiwoom": 4.3,
+          "hana": 3.42,
+          "shinhan": 3.85
+        },
+        "notePct": {
+          "kis": 3.87,
+          "mirae": 3.82,
+          "nh": 3.56,
+          "kb": 5.9,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202403",
+        "ib5Pct": {
+          "kis": 3.87,
+          "mirae": 3.67,
+          "nh": 3.57,
+          "kb": 3.56,
+          "samsung": 3.36,
+          "meritz": 3.7,
+          "kiwoom": 3.47,
+          "hana": 3.92,
+          "shinhan": 3.62
+        },
+        "rpPct": {
+          "kis": 3.84,
+          "mirae": 3.3,
+          "nh": 3.03,
+          "kb": 3.43,
+          "samsung": 3.33,
+          "meritz": 3.56,
+          "kiwoom": 3.28,
+          "hana": 3.77,
+          "shinhan": 3.25
+        },
+        "bondPct": {
+          "kis": 3.32,
+          "mirae": 4.11,
+          "nh": 2.92,
+          "kb": 3.02,
+          "samsung": 3.1,
+          "meritz": 4.35,
+          "kiwoom": 3.61,
+          "hana": 3.39,
+          "shinhan": 3.79
+        },
+        "notePct": {
+          "kis": 3.7,
+          "mirae": 3.58,
+          "nh": 3.68,
+          "kb": 5.22,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202406",
+        "ib5Pct": {
+          "kis": 3.81,
+          "mirae": 3.6,
+          "nh": 3.48,
+          "kb": 3.63,
+          "samsung": 3.33,
+          "meritz": 3.14,
+          "kiwoom": 3.48,
+          "hana": 3.88,
+          "shinhan": 3.59
+        },
+        "rpPct": {
+          "kis": 3.83,
+          "mirae": 3.35,
+          "nh": 3.07,
+          "kb": 2.98,
+          "samsung": 3.3,
+          "meritz": 2.85,
+          "kiwoom": 3.31,
+          "hana": 3.82,
+          "shinhan": 3.22
+        },
+        "bondPct": {
+          "kis": 3.25,
+          "mirae": 4.02,
+          "nh": 2.91,
+          "kb": 3.22,
+          "samsung": 3.18,
+          "meritz": 4.31,
+          "kiwoom": 3.97,
+          "hana": 3.47,
+          "shinhan": 3.97
+        },
+        "notePct": {
+          "kis": 3.5,
+          "mirae": 3.45,
+          "nh": 3.62,
+          "kb": 5.2,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202409",
+        "ib5Pct": {
+          "kis": 3.67,
+          "mirae": 3.66,
+          "nh": 3.43,
+          "kb": 3.51,
+          "samsung": 3.38,
+          "meritz": 3.9,
+          "kiwoom": 3.37,
+          "hana": 3.87,
+          "shinhan": 3.65
+        },
+        "rpPct": {
+          "kis": 3.81,
+          "mirae": 3.31,
+          "nh": 3.44,
+          "kb": 3.58,
+          "samsung": 3.35,
+          "meritz": 3.87,
+          "kiwoom": 3.13,
+          "hana": 3.82,
+          "shinhan": 3.46
+        },
+        "bondPct": {
+          "kis": 3.11,
+          "mirae": 4.19,
+          "nh": 3.13,
+          "kb": 3.11,
+          "samsung": 3.09,
+          "meritz": 4.1,
+          "kiwoom": 3.73,
+          "hana": 3.76,
+          "shinhan": 4.2
+        },
+        "notePct": {
+          "kis": 3.37,
+          "mirae": 3.47,
+          "nh": 3.5,
+          "kb": 4.79,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202412",
+        "ib5Pct": {
+          "kis": 3.68,
+          "mirae": 3.47,
+          "nh": 3.54,
+          "kb": 3.42,
+          "samsung": 3.16,
+          "meritz": 3.41,
+          "kiwoom": 3.21,
+          "hana": 3.8,
+          "shinhan": 3.54
+        },
+        "rpPct": {
+          "kis": 3.58,
+          "mirae": 3.24,
+          "nh": 3.25,
+          "kb": 3.31,
+          "samsung": 3.06,
+          "meritz": 3.24,
+          "kiwoom": 2.98,
+          "hana": 3.75,
+          "shinhan": 3.34
+        },
+        "bondPct": {
+          "kis": 3.58,
+          "mirae": 4.33,
+          "nh": 3.53,
+          "kb": 3.27,
+          "samsung": 3.32,
+          "meritz": 4.04,
+          "kiwoom": 3.85,
+          "hana": 4.08,
+          "shinhan": 4.05
+        },
+        "notePct": {
+          "kis": 3.48,
+          "mirae": 3.39,
+          "nh": 3.94,
+          "kb": 4.97,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202503",
+        "ib5Pct": {
+          "kis": 3.32,
+          "mirae": 3.25,
+          "nh": 3.05,
+          "kb": 3.18,
+          "samsung": 2.87,
+          "meritz": 3.28,
+          "kiwoom": 2.99,
+          "hana": 3.43,
+          "shinhan": 3.39
+        },
+        "rpPct": {
+          "kis": 3.13,
+          "mirae": 2.82,
+          "nh": 2.71,
+          "kb": 2.95,
+          "samsung": 2.7,
+          "meritz": 3.11,
+          "kiwoom": 2.84,
+          "hana": 3.29,
+          "shinhan": 3.26
+        },
+        "bondPct": {
+          "kis": 3.74,
+          "mirae": 4.78,
+          "nh": 3.15,
+          "kb": 3.22,
+          "samsung": 3.43,
+          "meritz": 3.94,
+          "kiwoom": 3.48,
+          "hana": 3.89,
+          "shinhan": 4.01
+        },
+        "notePct": {
+          "kis": 3.12,
+          "mirae": 3.21,
+          "nh": 3.29,
+          "kb": 4.77,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202506",
+        "ib5Pct": {
+          "kis": 3.15,
+          "mirae": 3.08,
+          "nh": 2.81,
+          "kb": 3.04,
+          "samsung": 2.66,
+          "meritz": 3.0,
+          "kiwoom": 2.83,
+          "hana": 3.25,
+          "shinhan": 3.05
+        },
+        "rpPct": {
+          "kis": 3.09,
+          "mirae": 2.7,
+          "nh": 2.47,
+          "kb": 2.78,
+          "samsung": 2.46,
+          "meritz": 2.73,
+          "kiwoom": 2.7,
+          "hana": 3.0,
+          "shinhan": 2.72
+        },
+        "bondPct": {
+          "kis": 3.73,
+          "mirae": 4.55,
+          "nh": 3.1,
+          "kb": 3.52,
+          "samsung": 3.21,
+          "meritz": 3.94,
+          "kiwoom": 3.49,
+          "hana": 4.06,
+          "shinhan": 4.05
+        },
+        "notePct": {
+          "kis": 2.93,
+          "mirae": 3.05,
+          "nh": 3.03,
+          "kb": 4.53,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202509",
+        "ib5Pct": {
+          "kis": 2.98,
+          "mirae": 2.92,
+          "nh": 2.81,
+          "kb": 2.78,
+          "samsung": 2.53,
+          "meritz": 2.75,
+          "kiwoom": 2.72,
+          "hana": 3.03,
+          "shinhan": 3.01
+        },
+        "rpPct": {
+          "kis": 2.97,
+          "mirae": 2.62,
+          "nh": 2.34,
+          "kb": 2.32,
+          "samsung": 2.35,
+          "meritz": 2.5,
+          "kiwoom": 2.55,
+          "hana": 2.89,
+          "shinhan": 2.59
+        },
+        "bondPct": {
+          "kis": 3.26,
+          "mirae": 4.52,
+          "nh": 3.69,
+          "kb": 3.22,
+          "samsung": 3.36,
+          "meritz": 3.58,
+          "kiwoom": 3.33,
+          "hana": 4.05,
+          "shinhan": 3.98
+        },
+        "notePct": {
+          "kis": 2.83,
+          "mirae": 2.84,
+          "nh": 2.84,
+          "kb": 4.23,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202512",
+        "ib5Pct": {
+          "kis": 2.98,
+          "mirae": 3.02,
+          "nh": 2.81,
+          "kb": 2.62,
+          "samsung": 2.49,
+          "meritz": 2.75,
+          "kiwoom": 2.61,
+          "hana": 3.09,
+          "shinhan": 2.89
+        },
+        "rpPct": {
+          "kis": 2.93,
+          "mirae": 2.61,
+          "nh": 2.67,
+          "kb": 2.45,
+          "samsung": 2.27,
+          "meritz": 2.51,
+          "kiwoom": 2.38,
+          "hana": 3.01,
+          "shinhan": 2.56
+        },
+        "bondPct": {
+          "kis": 2.9,
+          "mirae": 4.67,
+          "nh": 3.29,
+          "kb": 3.04,
+          "samsung": 3.57,
+          "meritz": 3.65,
+          "kiwoom": 3.42,
+          "hana": 4.06,
+          "shinhan": 3.54
+        },
+        "notePct": {
+          "kis": 2.79,
+          "mirae": 2.63,
+          "nh": 2.73,
+          "kb": 3.97,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": null,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202603",
+        "ib5Pct": {
+          "kis": 2.94,
+          "mirae": 2.85,
+          "nh": 2.65,
+          "kb": 2.49,
+          "samsung": 2.46,
+          "meritz": 2.68,
+          "kiwoom": 2.9,
+          "hana": 3.08,
+          "shinhan": 2.91
+        },
+        "rpPct": {
+          "kis": 2.77,
+          "mirae": 2.44,
+          "nh": 2.37,
+          "kb": 2.35,
+          "samsung": 2.24,
+          "meritz": 2.38,
+          "kiwoom": 2.75,
+          "hana": 2.98,
+          "shinhan": 2.53
+        },
+        "bondPct": {
+          "kis": 2.75,
+          "mirae": 4.34,
+          "nh": 3.31,
+          "kb": 2.84,
+          "samsung": 3.19,
+          "meritz": 3.63,
+          "kiwoom": 3.55,
+          "hana": 3.98,
+          "shinhan": 3.55
+        },
+        "notePct": {
+          "kis": 2.66,
+          "mirae": 2.74,
+          "nh": 2.62,
+          "kb": 3.94,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": 3.14,
+          "hana": null,
+          "shinhan": null
+        }
+      },
+      {
+        "baseMonth": "202606",
+        "ib5Pct": {
+          "kis": 2.94,
+          "mirae": 2.85,
+          "nh": 2.79,
+          "kb": 2.63,
+          "samsung": 2.48,
+          "meritz": 2.93,
+          "kiwoom": 2.77,
+          "hana": 2.83,
+          "shinhan": 2.95
+        },
+        "rpPct": {
+          "kis": 2.69,
+          "mirae": 2.31,
+          "nh": 2.42,
+          "kb": 2.59,
+          "samsung": 2.28,
+          "meritz": 2.71,
+          "kiwoom": 3.09,
+          "hana": 2.58,
+          "shinhan": 2.48
+        },
+        "bondPct": {
+          "kis": 2.65,
+          "mirae": 4.08,
+          "nh": 3.38,
+          "kb": 2.7,
+          "samsung": 3.1,
+          "meritz": 3.36,
+          "kiwoom": 3.38,
+          "hana": 3.32,
+          "shinhan": 4.11
+        },
+        "notePct": {
+          "kis": 2.66,
+          "mirae": 2.74,
+          "nh": 2.59,
+          "kb": 5.05,
+          "samsung": null,
+          "meritz": null,
+          "kiwoom": 3.29,
+          "hana": 3.05,
+          "shinhan": null
+        }
+      }
+    ]
   }
 }

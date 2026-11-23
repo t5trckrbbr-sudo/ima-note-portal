@@ -40,6 +40,7 @@ export const explorerState = {
   samsungCustomNoteTril: 3.0,
   samsungCustomAvgTril: 1.8,
   regCategory: 'all',
+  funding10YrLens: 'ib5_1y',
   hwCategory: 'deposits',
   hwSeriesMode: 'quarterly_fin',
   hwCountryLens: 'composition',
@@ -574,6 +575,7 @@ export function renderIbSynchronizedExplorer(D) {
     </div>
     ${srcBox('FISIS 202606 SF325(차입부채)·SF324(고객예수금)·SF321(수단별 이자비용 기반 상반기 연환산 실효금리). 7개 항목 단순 합계(472.65조)와 총계(472.75조)의 0.10조 차이는 항목별 반올림 누적 단수차입니다.', 'kpi:ib-debt-472')}
   </section>
+  ${renderIb10YrFundingDataPanel(D, activeChain.key)}
   <div id="ib-sync-focus-panel" aria-live="polite" style="scroll-margin-top:95px">
     ${renderIbFirmFocusCard(D, activeChain)}
   </div>
@@ -590,6 +592,140 @@ export function renderIbSynchronizedExplorer(D) {
       ${renderIbProfitabilityTable(D, activeChain.key)}
     </div>
     ${srcBox('FISIS 증권사 요약손익계산서(SF307, 별도 기준 2025년 연간 및 2026년 상반기 누적) 및 DART 사업보고서(연결 영업이익·당기순이익 병기). 2026.1H ROE는 반기 별도순이익 단순 연환산 수치이며, 전사 수익성 차이는 리테일·IB·트레이딩·판관비 구조가 결합된 결과로 발행어음 단독 효과를 뜻하지 않습니다.', 'kpi:kis-mirae-lev')}
+  </section>`;
+}
+
+function fmtBp(v) {
+  if (v === null || v === undefined || Number.isNaN(Number(v))) return '—';
+  const n = Number(v);
+  return `${n > 0 ? '+' : ''}${fmt(n, 1)}bp`;
+}
+
+function fmtSig(t, p) {
+  if (t === null || t === undefined) return '—';
+  const star = p != null && p < 0.01 ? '***' : (p != null && p < 0.05 ? '**' : (p != null && p < 0.1 ? '*' : ''));
+  return `${t > 0 ? '+' : ''}${fmt(t, 2)}${star}`;
+}
+
+function renderIb10YrFundingTable(D, activeKey) {
+  const ds = D.fundingRate10YrDataset2016_2026;
+  if (!ds || !Array.isArray(ds.firmSummary10Yr)) return '';
+  const lens = explorerState.funding10YrLens || 'ib5_1y';
+  const rows = [...ds.firmSummary10Yr];
+
+  if (lens === 'bond_3y') {
+    rows.sort((a, b) => (a.bondVsMatched3YBp?.mean ?? 999) - (b.bondVsMatched3YBp?.mean ?? 999));
+    return `<table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">증권사 (등급)</th>
+          <th scope="col">관측 분기</th>
+          <th scope="col">사채 − 동일등급 3Y</th>
+          <th scope="col">등급보정 알파</th>
+          <th scope="col">Newey-West t</th>
+          <th scope="col">사채 내 전단채(A60)</th>
+          <th scope="col">사채 내 후순위(A8)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `<tr class="${r.key === activeKey ? 'selected' : ''}" data-10yr-firm="${r.key}" style="cursor:pointer">
+          <td><button type="button" data-sync-firm="${r.key}"><b>${r.firm}</b></button> <small class="muted">(${r.ratingCurrent})</small></td>
+          <td>${r.bondVsMatched3YBp?.n ?? 0}분기</td>
+          <td style="font-weight:700;color:${(r.bondVsMatched3YBp?.mean ?? 0) < 0 ? '#004ea2' : '#c4362e'}">${fmtBp(r.bondVsMatched3YBp?.mean)}</td>
+          <td>${fmtBp(r.bondVsMatched3YBp?.ratingAdjAlphaBp)}</td>
+          <td>${fmtSig(r.bondVsMatched3YBp?.tNwAlpha, r.bondVsMatched3YBp?.pNwAlpha)}</td>
+          <td>${fmt(r.mix10YrPct?.shortCpA60OfBond, 1)}%</td>
+          <td>${fmt(r.mix10YrPct?.subDebtA8OfBond, 1)}%</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  if (lens === 'rp_note') {
+    rows.sort((a, b) => (a.rpVsPeerBp?.mean ?? 999) - (b.rpVsPeerBp?.mean ?? 999));
+    return `<table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">증권사 (등급)</th>
+          <th scope="col">RP − 9사 평균</th>
+          <th scope="col">RP 승률</th>
+          <th scope="col">RP t_NW</th>
+          <th scope="col">10년 RP 비중</th>
+          <th scope="col">발행어음 − 동일등급 1Y</th>
+          <th scope="col">어음 '22~'23 / '24~'26</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `<tr class="${r.key === activeKey ? 'selected' : ''}" data-10yr-firm="${r.key}" style="cursor:pointer">
+          <td><button type="button" data-sync-firm="${r.key}"><b>${r.firm}</b></button> <small class="muted">(${r.ratingCurrent})</small></td>
+          <td style="font-weight:700;color:${(r.rpVsPeerBp?.mean ?? 0) < 0 ? '#004ea2' : '#c4362e'}">${fmtBp(r.rpVsPeerBp?.mean)}</td>
+          <td>${fmt(r.rpVsPeerBp?.winRatePct, 1)}%</td>
+          <td>${fmtSig(r.rpVsPeerBp?.tNw, r.rpVsPeerBp?.pNw)}</td>
+          <td>${fmt(r.mix10YrPct?.rpOfIb5, 1)}%</td>
+          <td><b>${fmtBp(r.promNoteVsMatched1YBp?.mean)}</b>${r.promNoteVsMatched1YBp?.n ? ` <small class="muted">(n=${r.promNoteVsMatched1YBp.n})</small>` : ''}</td>
+          <td>${r.promNoteVsMatched1YBp?.mean != null ? `${fmtBp(r.promNoteVsMatched1YBp?.reg22_23)} / ${fmtBp(r.promNoteVsMatched1YBp?.reg24_26)}` : '—'}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  rows.sort((a, b) => (a.ib5VsMatched1YBp?.mean ?? 999) - (b.ib5VsMatched1YBp?.mean ?? 999));
+  return `<table class="data-table">
+    <thead>
+      <tr>
+        <th scope="col">증권사 (등급)</th>
+        <th scope="col">종합 − 동일등급 1Y</th>
+        <th scope="col">등급보정 알파</th>
+        <th scope="col">Newey-West t</th>
+        <th scope="col">'16~'21 (저금리)</th>
+        <th scope="col">'22~'23 (급등기)</th>
+        <th scope="col">'24~'26 (최근)</th>
+        <th scope="col">RP / 사채 비중</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows.map(r => `<tr class="${r.key === activeKey ? 'selected' : ''}" data-10yr-firm="${r.key}" style="cursor:pointer">
+        <td><button type="button" data-sync-firm="${r.key}"><b>${r.firm}</b></button> <small class="muted">(${r.ratingCurrent})</small></td>
+        <td style="font-weight:700;color:${(r.ib5VsMatched1YBp?.mean ?? 0) < 0 ? '#004ea2' : '#c4362e'}">${fmtBp(r.ib5VsMatched1YBp?.mean)}</td>
+        <td>${fmtBp(r.ib5VsMatched1YBp?.ratingAdjAlphaBp)}</td>
+        <td>${fmtSig(r.ib5VsMatched1YBp?.tNwAlpha, r.ib5VsMatched1YBp?.pNwAlpha)}</td>
+        <td>${fmtBp(r.ib5VsMatched1YBp?.reg16_21)}</td>
+        <td>${fmtBp(r.ib5VsMatched1YBp?.reg22_23)}</td>
+        <td>${fmtBp(r.ib5VsMatched1YBp?.reg24_26)}</td>
+        <td>${fmt(r.mix10YrPct?.rpOfIb5, 1)}% / ${fmt(r.mix10YrPct?.bondOfIb5, 1)}%</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function renderIb10YrFundingDataPanel(D, activeKey) {
+  const ds = D.fundingRate10YrDataset2016_2026;
+  if (!ds) return '';
+  const lens = explorerState.funding10YrLens || 'ib5_1y';
+  return `<section class="panel" id="ib-10yr-funding-panel" style="scroll-margin-top:95px">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">10-YEAR FUNDING RATE BENCHMARK · 원천 정량 데이터 (2016.1Q ~ 2026.2Q · 42분기)</div>
+        <h2>9대 증권사 10년 실효조달금리 · 동일 신용등급 회사채 대비 스프레드 원천표</h2>
+        <p>순수 5대 이자부 차입수단(RP·발행어음·사채·차입금·콜; ELS·매도증권·예수금 제외)의 분기 연환산 실효금리와 각 사 신용등급에 맞춘 KOFIA 회사채 민평 대비 스프레드(음수 <code>−</code>가 저렴)입니다.</p>
+      </div>
+      <span class="badge amber">데이터 선행 공개 · 해석 검토중</span>
+    </div>
+    <div class="lens-toolbar" style="margin-bottom:12px">
+      <div class="lens-switch" id="ib-10yr-lens-switch" role="group" aria-label="10년 조달금리 비교 기준 선택">
+        <button type="button" class="lens-btn ${lens === 'ib5_1y' ? 'active' : ''}" data-10yr-lens="ib5_1y">① 종합 차입금리 vs 동일등급 1Y</button>
+        <button type="button" class="lens-btn ${lens === 'bond_3y' ? 'active' : ''}" data-10yr-lens="bond_3y">② 무담보 사채 vs 동일등급 3Y</button>
+        <button type="button" class="lens-btn ${lens === 'rp_note' ? 'active' : ''}" data-10yr-lens="rp_note">③ RP vs 9사 평균 · 발행어음 vs 1Y</button>
+      </div>
+      <span class="muted" style="font-size:11px">음수(−) = 벤치마크 대비 저렴 · *** p&lt;0.01, ** p&lt;0.05</span>
+    </div>
+    <div class="table-wrap" id="ib-10yr-funding-table">
+      ${renderIb10YrFundingTable(D, activeKey)}
+    </div>
+    <div class="callout amber" style="margin-bottom:0">
+      <b>데이터 선행 적재 안내 (해석 보류)</b> · ${ds.statusNote} 원화·외화 조달 비중, 세부 만기(초단기 vs 장기), 담보 구성(국공채 vs 크레딧)에 따른 원인 분해는 추후 심화 검토 과제입니다.
+    </div>
+    ${srcBox('금감원 FISIS OpenAPI SF321(분기 단독 이자비용)·SF325(기말 차입부채 잔액, 2015.4Q~2026.2Q) 및 금융투자협회(KOFIA) 공모 무보증 회사채 AA+·AA0·AA-(1Y·3Y) 일별 민평 15,492건 분기평균(키움증권은 2016~2022 AA- → 2023~2026 AA0 동태 매핑). Newey-West HAC t-통계량(lag=4).', 'kpi:ib-debt-472')}
   </section>`;
 }
 
@@ -701,6 +837,7 @@ function renderIbProfitabilityTable(D, activeKey) {
 export function bindIbSynchronizedExplorer(D, onNavigate) {
   const focusEl = document.getElementById('ib-sync-focus-panel');
   const profitWrap = document.getElementById('ib-sync-profit-table');
+  const tenYrWrap = document.getElementById('ib-10yr-funding-table');
   if (!focusEl || !profitWrap) return;
 
   const updateFirm = (key, scrollFocus = false) => {
@@ -717,6 +854,7 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
 
     focusEl.innerHTML = renderIbFirmFocusCard(D, activeChain);
     profitWrap.innerHTML = renderIbProfitabilityTable(D, key);
+    if (tenYrWrap) tenYrWrap.innerHTML = renderIb10YrFundingTable(D, key);
     bindDynamic();
     if (scrollFocus) focusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
@@ -735,6 +873,20 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
       row.addEventListener('click', () => updateFirm(row.dataset.profitFirm, true));
     });
   };
+
+  tenYrWrap?.addEventListener('click', event => {
+    const row = event.target.closest('[data-10yr-firm]');
+    if (row) updateFirm(row.dataset['10yrFirm'], true);
+  });
+  document.querySelectorAll('#ib-10yr-lens-switch [data-10yr-lens]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      explorerState.funding10YrLens = btn.dataset['10yrLens'];
+      document.querySelectorAll('#ib-10yr-lens-switch [data-10yr-lens]').forEach(el => el.classList.toggle('active', el === btn));
+      if (tenYrWrap) {
+        tenYrWrap.innerHTML = renderIb10YrFundingTable(D, explorerState.firmKey);
+      }
+    });
+  });
 
   document.querySelectorAll('#ib-sync-chips [data-sync-firm]').forEach(btn => {
     btn.addEventListener('click', () => updateFirm(btn.dataset.syncFirm, false));
