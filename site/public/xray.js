@@ -64,6 +64,10 @@ const QA_DIGEST = {
     title: '2027.12~2028.04 IMA 만기 집중(2.60조)은 전체 시장을 뜻하나요?',
     summary: '전체 IMA 시장이 아닌 1호 사업자 한국투자증권의 초기 1~4호(총 2.60조, 1호 1.10조가 2027.12 도래) 설정분입니다. 폐쇄형 만기 일시 상환·차환 구조이므로 기초자산 현금회수 일정 대조가 중요합니다.'
   },
+  'guide-mirae-note-growth': {
+    title: '미래에셋증권은 왜 발행어음 확대에 상대적으로 신중한가요?',
+    summary: '2025년 말 대비 어음 잔액이 27.3% 늘었고, 2026년 3분기 말 한도 사용률은 48.9%입니다. 안전자산 중심의 운용과 RP·회사채를 활용한 조달 구조를 함께 보면 점진적인 확대가 설명됩니다.'
+  },
   'guide-kis-mirae-comparison': {
     title: '한국투자와 미래에셋의 순이자 차이(+5,299억 vs −1,405억)가 어음 수익성을 입증하나요?',
     summary: '단일 상품 마진이 아닌 자산배분 전략 차이입니다. 한투는 IB 기업여신 이자캐리에 집중한 반면, 미래에셋은 차입이자는 SF321에 잡히고 수익은 해외출자·지분·배당(비이자 계정)으로 회수하는 구조입니다.'
@@ -741,7 +745,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '금융감독원 FISIS 202606 (SF304 재무상태표 · SF331 레버리지비율 · SF408/SF308 NCR)',
       caveat: '전사 이자손익(한투 +5,299억 vs 미래 −1,405억, 리테일 차감 후) 역시 자산배분(국내 기업여신 vs 해외출자·배당) 차이이며 발행어음 단독 마진이 아닙니다.',
-      qas: makeQaItems(['guide-kis-mirae-comparison', 'guide-account-separation']),
+      qas: makeQaItems(['guide-kis-mirae-comparison', 'guide-mirae-note-growth', 'guide-account-separation']),
       actions: [
         { label: 'Q&A · 한투 vs 미래 이자손익 해석 전문 →', qa: 'guide-kis-mirae-comparison', primary: true },
         { label: '9대 증권사 전체 수익성 매트릭스(#ib-funding) →', tab: 'ib-funding', scrollTo: 'ib-profitability-matrix' }

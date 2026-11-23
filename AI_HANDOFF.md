@@ -5,7 +5,7 @@
 - 운영 사이트: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 - 질문·답변: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions
 - GitHub 실행 코드: `site/`. Sites 소스 저장소에서는 앱 파일이 루트에 있습니다.
-- 기본 가이드 Q&A 18건: `site/worker/seeds.js`, 마스터 문서 `QA_VERIFIED_ANSWERS.md`.
+- 기본 가이드 Q&A 19건: `site/worker/seeds.js`, 마스터 문서 `QA_VERIFIED_ANSWERS.md`.
 - 금융 데이터 배포 사본: `site/public/data.json`. GitHub의 `data/ib_portal_verified_data.json`과 일치시킵니다.
 - GitHub와 Sites는 자동 동기화되지 않습니다. 검사·테스트·빌드 후 같은 프로젝트의 새 버전을 배포해야 합니다.
 
@@ -70,7 +70,9 @@
 
 ## 기본 질문과 리스크 연결
 
-기본 질문은 **18건**, 페이지네이션 기본 2페이지, 미답변 기본 0건입니다. 사용자 글이 있으면 운영 합계는 달라집니다. 삭제된 **`guide-venture-cross-rule`을 복원하지 마세요.** 모험자본 병목·자본효율은 `guide-sizing-growth`에 통합되어 있습니다.
+기본 질문은 **19건**, 페이지네이션 기본 2페이지, 미답변 기본 0건입니다. 사용자 글이 있으면 운영 합계는 달라집니다. 삭제된 **`guide-venture-cross-rule`을 복원하지 마세요.** 모험자본 병목·자본효율은 `guide-sizing-growth`에 통합되어 있습니다.
+
+미래에셋의 발행어음 확대 속도는 `guide-mirae-note-growth`(Q20)에서 다룹니다. 2026년 3분기 별도 잔액·한도 사용률과 회사의 점진적 확대 발언을 대조하며, 자금조달과 운용의 한계 조건을 설명합니다.
 
 | 리스크 | Q&A ID |
 | --- | --- |
