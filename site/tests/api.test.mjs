@@ -20,6 +20,9 @@ test('Mirae Asset funding strategy has a searchable guide with the evidence link
  const guide=detail.body.answers.find(a=>a.kind==='guide');
  assert.match(guide.body,/10\.36조.+48\.9%/);
  assert(guide.body.includes('26.99조')&&guide.body.includes('4.37%'));
+ assert(guide.body.includes('0.44조 → 2022년 6.15조 → 2023년 6.45조 → 2024년 7.47조'));
+ assert(guide.body.includes('2024년 말 RP 26.48조 원'));
+ assert.match(guide.body,/\[4\] 2025년 말 이후 확대 판단에 추가된 요인\n• 모험자본 의무는 2025년 11월 신설됐습니다/);
  assert(guide.sourceUrl.includes('QA_VERIFIED_ANSWERS.md#q20-'));
  assert.equal(guide.observedAt,'2026-11-23');
 });
