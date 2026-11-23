@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   explorerState,
+  getSamsungScenario,
+  setSamsungScenario,
   setExplorerFirmByName,
   renderFundingBreakdownPanel,
   renderMoneyMoveSafetyPanel,
@@ -22,7 +24,7 @@ const publicDataUrl = new URL('../public/data.json', import.meta.url);
 const verifiedDataUrl = new URL('../../data/ib_portal_verified_data.json', import.meta.url);
 const D = JSON.parse(fs.readFileSync(publicDataUrl, 'utf8'));
 
-test('public/data.json reconciles 89T revised outlook (Samsung and Meritz each 4T year-end / 2T avg) and matches root verified dataset when present', () => {
+test('public/data.json reconciles 85T revised outlook (Meritz IR 4T year-end / 2T avg) and matches root verified dataset when present', () => {
   if (fs.existsSync(verifiedDataUrl)) {
     assert.deepEqual(D, JSON.parse(fs.readFileSync(verifiedDataUrl, 'utf8')));
   }
@@ -33,9 +35,9 @@ test('public/data.json reconciles 89T revised outlook (Samsung and Meritz each 4
   const estImaSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.est27ModelImaTril, 0);
   const estSum = estNoteSum + estImaSum;
   assert.equal(baseSum.toFixed(2), '58.54');
-  assert.equal(estNoteSum.toFixed(2), '84.00');
+  assert.equal(estNoteSum.toFixed(2), '80.00');
   assert.equal(estImaSum.toFixed(2), '5.00');
-  assert.equal(estSum.toFixed(2), '89.00');
+  assert.equal(estSum.toFixed(2), '85.00');
 
   const samsung = D.ib9FirmsCuriosityChain.find(x => x.key === 'samsung');
   const meritz = D.ib9FirmsCuriosityChain.find(x => x.key === 'meritz');
@@ -43,8 +45,7 @@ test('public/data.json reconciles 89T revised outlook (Samsung and Meritz each 4
   assert(meritz.noteLicense.includes('2026.09'));
   assert.equal(samsung.costKey, 'samsung');
   assert.equal(meritz.costKey, 'meritz');
-  assert.equal(samsung.est27ModelNoteTril, 4);
-  assert.equal(samsung.est27AverageNoteTril, 2);
+  assert.equal(samsung.est27ModelNoteTril, 0);
   assert.equal(meritz.est27ModelNoteTril, 4);
   assert.equal(meritz.est27AverageNoteTril, 2);
   assert.equal(samsung.profitability.h126NoteIntEok, 0);
@@ -58,10 +59,7 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
 
     const fundingHtml = renderFundingBreakdownPanel(D);
     assert(fundingHtml.includes(item.firm));
-    assert(fundingHtml.includes('89조'));
-    assert(!fundingHtml.includes('data-ss-preset'));
-    assert(!fundingHtml.includes('ss-custom'));
-    assert(!fundingHtml.includes('samsung-media-sim-box'));
+    assert(fundingHtml.includes('85조'));
     assert(!fundingHtml.includes('NaN'));
     assert(!fundingHtml.includes('undefined'));
 
@@ -91,9 +89,7 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
       const vcHtml = renderVentureDeepDive(D);
       assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
       assert(vcHtml.includes('id="vc-waterfall-svg"'));
-      assert(vcHtml.includes('AAA 은행채 3년'));
-      assert(!vcHtml.includes('data-pcbo-mode'));
-      assert(!vcHtml.includes('무위험 명목금리차'));
+      assert(vcHtml.includes('P-CBO AAA 3Y'));
       assert(vcHtml.includes('PD · LGD 산정 근거 공개'));
       assert(vcHtml.includes('모험자본 취득에 따른 기회비용'));
       assert(vcHtml.includes('선제적 확보를 통한 경쟁자 견제 타당성'));
@@ -119,18 +115,21 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
   explorerState.pcboMode = 'effective';
   explorerState.vcWaterfallAsset = 'bbb_private';
 
-  // A fixed user assumption replaces Samsung presets and direct input.
-  const fixedSamsungHtml = renderFundingBreakdownPanel(D);
-  assert(fixedSamsungHtml.includes('id="samsung-assumption-note"'));
-  assert(fixedSamsungHtml.includes('연말 각 4.00조'));
-  assert(fixedSamsungHtml.includes('평잔 각 2.00조'));
-  assert(fixedSamsungHtml.includes('89.00조 원'));
-  assert(fixedSamsungHtml.includes('공식 발표 목표를 뜻하지 않습니다'));
-  assert(!fixedSamsungHtml.includes('data-ss-preset'));
-  assert(!fixedSamsungHtml.includes('ss-custom'));
+  // Samsung scenario presets & reset check
+  setSamsungScenario('wm3');
+  assert.equal(getSamsungScenario(D).yearEndTril, 3);
+  assert.equal(getSamsungScenario(D).avgTril, 1.8);
+  const ssHtml = renderFundingBreakdownPanel(D);
+  assert(ssHtml.includes('88.00조 원'));
+  setSamsungScenario('base0');
+  assert.equal(getSamsungScenario(D).yearEndTril, 0);
+  assert.equal(getSamsungScenario(D).isOverridden, false);
 
-  // Full statutory regulatory matrix check
-  assert.equal(D.regulatoryComplianceMatrix2027.rules.length, 10);
+  // Refined 9 core statutory regulatory matrix check
+  assert.equal(D.regulatoryComplianceMatrix2027.rules.length, 9);
+  assert.equal(D.promNoteDart202609.length, 9);
+  assert.equal(D.globalKpis.promNoteIma26Q3ExactTril, 61.33);
+  assert.equal(D.globalKpis.ib9Equity26Q3ExactTril, 80.7);
   for (const cat of ['all', 'limit_alloc', 'liquidity_capital', 'credit_conduct']) {
     explorerState.regCategory = cat;
     const regHtml = renderRegulatoryCompliancePanel(D);
@@ -251,40 +250,4 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
   assert(multiTrail.includes('id="crumb"'));
   assert(multiTrail.includes('data-trail-back='));
   assert(multiTrail.includes('메리츠증권'));
-});
-
-
-test('AAA bank 3Y proxy uses a dated primary valuation source and recalculates its conditional nominal gap', () => {
-  const pb = D.ventureCapitalChain2027.pcboCleanBenchmark;
-  assert.equal(pb.benchmarkType, 'aaa_bank_3y_proxy');
-  assert.equal(pb.sourceDate, '2026-11-13');
-  assert.equal(pb.sourceUrl, 'https://www.bond.co.kr/post/dawn/37184');
-  assert.equal(pb.modes.length, 1);
-  const mode = pb.modes[0];
-  assert.equal(mode.pcboYieldPct, 4.113);
-  assert(Math.abs((mode.pcboYieldPct-mode.ktb3yPct)*100-36.3) < 1e-9);
-  assert(Math.abs((mode.normalYieldPct-mode.pcboYieldPct)*100-73.7) < 1e-9);
-  assert.equal(mode.shadowTax27EokPerTril, 10.318);
-  const html = renderVentureDeepDive(D);
-  assert(html.includes('4.113%'));
-  assert(html.includes('73.7bp'));
-  assert(html.includes('10.318억 / 년'));
-  assert(html.includes('은행채 자체가 모험자본 인정자산이라는 뜻도 아닙니다'));
-  assert(!html.includes('기발행·실효수익률 기준'));
-  assert(!html.includes('신규발행 표면금리 기준'));
-  assert(!html.includes('PD≈0% · RW≈0%'));
-
-  const changed = structuredClone(D);
-  changed.ventureCapitalChain2027.pcboCleanBenchmark.modes[0].normalYieldPct = 5.0;
-  const changedHtml = renderVentureDeepDive(changed);
-  assert(changedHtml.includes('88.7bp'));
-  assert(changedHtml.includes('12.418억 / 년'));
-
-  const row = D.ventureCapitalChain2027.assetRarocBenchmarks.find(row => row.id === 'pcbo_senior');
-  assert.equal(row.yieldPct, 4.113);
-  assert.equal(row.grossSpreadBp, 96.3);
-  assert(Math.abs(row.grossSpreadBp-row.elCostBp-row.capCostNoteBp-row.evaNoteBp)<1e-9);
-  assert(Math.abs(row.grossSpreadBp-row.elCostBp-row.capCostImaBp-row.evaImaBp)<1e-9);
-  assert(row.note.includes('은행채 실측치가 아닙니다'));
-  assert.equal(D.opportunityCostAssumptions.nominalGapAssumptionBp,150);
 });

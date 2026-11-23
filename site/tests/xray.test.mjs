@@ -3,35 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {computeNim} from '../public/nim.js';
 import {resolveXraySpec} from '../public/xray.js';
-import {computeImaOldNcr} from '../public/ima-ncr.js';
 const D = JSON.parse(fs.readFileSync(new URL('../public/data.json', import.meta.url), 'utf8'));
 const rowsText = spec => spec.rows.map(row => row.join(' ')).join('\n');
-
-test('AAA bank benchmark X-Ray uses the same dated comparison and recomputes changed inputs', () => {
-  const spec=resolveXraySpec('kpi:pcbo-clean-bench',D);
-  assert(spec.formula.includes('4.113%'));
-  assert(spec.formula.includes('73.7bp'));
-  assert(rowsText(spec).includes('10.318억'));
-  assert(spec.caveat.includes('P-CBO 기회비용의 실측치가 아닙니다'));
-  assert(!spec.formula.includes('3.35%'));
-  const changed=structuredClone(D);
-  changed.ventureCapitalChain2027.pcboCleanBenchmark.modes[0].pcboYieldPct=4.30;
-  const live=resolveXraySpec('kpi:pcbo-clean-bench',changed);
-  assert(live.formula.includes('55.0bp'));
-  assert(rowsText(live).includes('7.700억'));
-});
-
-test('IMA X-Ray follows the active asset risk and assumption inputs without treating them as eligibility approval', () => {
-  const active=computeImaOldNcr({capital:8,existingRisk:4,amount:1,riskPct:20});
-  const spec=resolveXraySpec('ima-old-ncr',D,{ncrScenario:active});
-  assert(rowsText(spec).includes('20.0%'));
-  assert(rowsText(spec).includes('193.90%'));
-  assert(rowsText(spec).includes('5.063%'));
-  assert(rowsText(spec).includes('1,000억'));
-  assert(spec.caveat.includes('5% 전액 감소는 보수적 가정'));
-  assert(spec.caveat.includes('150%'));
-  assert(spec.qas.some(q=>q.id==='guide-ima-old-ncr-capital'));
-});
 
 test('company X-Ray uses the selected NIM scenario and distinguishes its income basis from the 2027 cost basis', () => {
   const scenario = computeNim(D, {period:'2027', companyBp:{meritz:250}, imaBp:180});
@@ -40,16 +13,16 @@ test('company X-Ray uses the selected NIM scenario and distinguishes its income 
   assert(spec.formula.includes('2.00조 × 250bp'));
   assert(rowsText(spec).includes('메리츠 IR 평잔 목표 적용'));
   assert(rowsText(spec).includes('어음 잔액 4.00조'));
-  assert(spec.caveat.includes('기존 잔액×10%p를 항상 포함'));
+  assert(spec.caveat.includes('2027년 말 증가분·150bp'));
   assert(spec.caveat.includes('중복 차감하지 않습니다'));
 });
 
-test('2026 company X-Ray follows the actual snapshot and does not carry the later Meritz average target into income', () => {
+test('2026 company X-Ray follows the actual 26.3Q snapshot and does not carry the later Meritz average target into income', () => {
   const scenario = computeNim(D, {period:'2026', companyBp:{meritz:250}});
   const spec = resolveXraySpec('nim-firm:meritz', D, {nimScenario:scenario});
-  assert(spec.formula.includes('2026.2Q 제공 잔액 수익시나리오(0억)'));
+  assert(spec.formula.includes('2026.3Q 확정 잔액 수익시나리오(0억)'));
   assert(spec.formula.includes('0.00조 × 250bp'));
-  assert(rowsText(spec).includes('2026.2Q 잔액의 평잔 대용치'));
+  assert(rowsText(spec).includes('2026.3Q 잔액의 평잔 대용치'));
   assert(!rowsText(spec).includes('메리츠 IR 평잔 목표 적용'));
   assert(rowsText(spec).includes('2027E 연말 전망'));
 });
@@ -93,21 +66,4 @@ test('household financial X-Ray derives all category values and shares from the 
   assert(text.includes('39.08조') && text.includes('(0.6%)'));
   assert(!spec.formula.includes('182.9') && !spec.formula.includes('45.1'));
   assert(Math.abs(categories.reduce((sum, category) => sum + category.amount26Q2Tril, 0) - 6930.21) < 1e-8);
-});
-
-
-test('fixed Samsung assumption and mandatory existing-balance step-up are visible in company and market X-Rays', () => {
-  const samsung = resolveXraySpec('nim-firm:samsung', D);
-  assert(samsung.formula.includes('수익시나리오(300억)'));
-  assert(rowsText(samsung).includes('삼성 사용자 가정 평잔 적용'));
-  assert(rowsText(samsung).includes('어음 잔액 4.00조'));
-  const kisRow = D.opportunityCost2027.find(row => row.key === 'kis');
-  const obligation = (kisRow.q27Est-kisRow.q26Base)*0.2+kisRow.q26Base*0.1;
-  const kis = resolveXraySpec('firm:kis', D);
-  assert(rowsText(kis).includes('기존 잔액 '+kisRow.q26Base.toFixed(2)+'조 × 10%p'));
-  assert(rowsText(kis).includes('전액P-CBO '+Math.round(obligation*150).toLocaleString('ko-KR')+'억'));
-  const market = resolveXraySpec('kpi:forecast-85', D);
-  assert(market.title.includes('89.00조'));
-  assert(market.caveat.includes('12,600억'));
-  assert(market.rows.some(row=>row.join(' ').includes('공식 발표 목표가 아님')));
 });

@@ -1,18 +1,19 @@
 {
   "meta": {
     "title": "초대형 IB 발행어음 · IMA 및 9대 증권사 조달전략 검증 데이터셋",
-    "sourceBasis": "FSS_FISIS_202606_BOK_ECOS_KOFIA_202610",
+    "sourceBasis": "OPENDART_2026Q3_FSS_FISIS_202606_BOK_ECOS_KOFIA_202611",
     "fisisBaseMonth": "202606",
-    "kofiaLatestDate": "2026-10-20",
-    "unitNote": "조달·자본 잔액은 조 원(tril), 이자손익·기회비용은 억 원(eok), 비율·금리는 %(pct)"
+    "kofiaLatestDate": "2026-11-13",
+    "unitNote": "조달·자본 잔액은 조 원(tril), 이자손익·기회비용은 억 원(eok), 비율·금리는 %(pct)",
+    "dartBaseQuarter": "2026Q3"
   },
   "globalKpis": {
     "promNoteIma26Q2ExactTril": 58.54,
     "promNote26Q2ExactTril": 55.94,
     "ima26Q2ExactTril": 2.6,
     "promNoteIma26Q2SimBaseTril": 57.26,
-    "promNoteIma27EstTril": 89,
-    "promNote27EstTril": 84,
+    "promNoteIma27EstTril": 85,
+    "promNote27EstTril": 80,
     "ima27EstTril": 5.0,
     "ib9BorrowingsTotal26Q2Tril": 472.75,
     "ib9InvestorDeposits26Q2Tril": 158.5,
@@ -26,7 +27,17 @@
       "2025": 30,
       "2026": 15,
       "2027": 10
-    }
+    },
+    "promNoteIma26Q3ExactTril": 61.33,
+    "promNote26Q3ExactTril": 57.24,
+    "ima26Q3ExactTril": 4.09,
+    "imaAssets26Q3ExactTril": 4.34,
+    "imaLossReserve26Q3Eok": 2104.8,
+    "ib9Equity26Q3ExactTril": 80.7,
+    "ib8ActiveEquity26Q3ExactTril": 72.23,
+    "ib9LegalCap200_26Q3Tril": 161.39,
+    "promNoteIma26Q2DartExactTril": 59.43,
+    "ima26Q2DartExactTril": 3.5
   },
   "promNoteImaTrend": [
     {
@@ -70,20 +81,28 @@
       "note": "한투 IMA 1호(1.1조) 출시"
     },
     {
-      "period": "2026.2Q(FISIS확정)",
+      "period": "2026.2Q(FISIS·DART)",
       "firms": 7,
       "promNote": 55.94,
-      "ima": 2.6,
-      "total": 58.54,
-      "note": "키움·하나·신한 신규 진입 반영"
+      "ima": 3.5,
+      "total": 59.44,
+      "note": "키움·하나·신한 진입 · 3사 IMA 별도부채 확정치(한투 2.70+NH 0.52+미래 0.28) 반영"
+    },
+    {
+      "period": "2026.3Q(DART확정)",
+      "firms": 8,
+      "promNote": 57.24,
+      "ima": 4.09,
+      "total": 61.33,
+      "note": "삼성증권 0.24조 첫 발행(8사) · 3사 IMA 부채 4.09조(손실준비금 2,105억) 확정"
     },
     {
       "period": "2027E(전망)",
       "firms": 9,
-      "promNote": 84,
+      "promNote": 80,
       "ima": 5,
-      "total": 89,
-      "note": "메리츠 IR 전달 목표와 동일한 연말 4조·평잔 2조를 삼성에도 고정 적용한 사용자 가정 · 합산 89조"
+      "total": 85,
+      "note": "메리츠 연말 4조 IR 목표 반영 · IMA 5조 유지(한투 최근 1.5개월당 2,000억 페이스 및 내년도 상환분 감안 순증 제약) · 삼성 별도 목표 미반영"
     }
   ],
   "promNoteFisis202606": [
@@ -103,7 +122,7 @@
       "effRate26H1Pct": 2.66
     },
     {
-      "financeCd": "0010119",
+      "financeCd": "0010106",
       "firm": "KB증권",
       "licensedAt": "2019-05",
       "equityTril": 7.98,
@@ -145,7 +164,7 @@
       "effRate26H1Pct": 2.61
     },
     {
-      "financeCd": "0010128",
+      "financeCd": "0010136",
       "firm": "키움증권",
       "licensedAt": "2025-4Q",
       "equityTril": 6.89,
@@ -159,7 +178,7 @@
       "effRate26H1Pct": 3.29
     },
     {
-      "financeCd": "0010122",
+      "financeCd": "0010130",
       "firm": "하나증권",
       "licensedAt": "2026-1Q",
       "equityTril": 6.72,
@@ -173,7 +192,7 @@
       "effRate26H1Pct": 3.42
     },
     {
-      "financeCd": "0010108",
+      "financeCd": "0010091",
       "firm": "신한투자증권",
       "licensedAt": "2026-1Q",
       "equityTril": 5.88,
@@ -191,86 +210,86 @@
     {
       "key": "kis",
       "name": "한국투자증권",
-      "q26Base": 25.07,
+      "q26Base": 27.55,
       "q27Est": 30.9,
-      "delta": 5.83,
-      "vcNew20Tril": 1.166,
-      "vcTotalAddTril": 3.673,
-      "oppCostNew150bpEok": 174.9,
-      "oppCostNewAfter30CapEok": 122.43,
+      "delta": 3.35,
+      "vcNew20Tril": 0.67,
+      "vcTotalAddTril": 3.43,
+      "oppCostNew150bpEok": 100.5,
+      "oppCostNewAfter30CapEok": 70.3,
       "fisis2606Exact": 25.07,
-      "oppCostTotalAdd150bpEok": 550.95,
-      "oppCostTotalAddAfter30CapEok": 385.665
+      "model26Q2Legacy": 25.07,
+      "dart26Q3Exact": 27.55
     },
     {
       "key": "kiwoom",
       "name": "키움증권",
-      "q26Base": 1.82,
+      "q26Base": 2.18,
       "q27Est": 6.0,
-      "delta": 4.18,
-      "vcNew20Tril": 0.836,
-      "vcTotalAddTril": 1.018,
-      "oppCostNew150bpEok": 125.4,
-      "oppCostNewAfter30CapEok": 87.78,
+      "delta": 3.82,
+      "vcNew20Tril": 0.76,
+      "vcTotalAddTril": 0.98,
+      "oppCostNew150bpEok": 114.6,
+      "oppCostNewAfter30CapEok": 80.2,
       "fisis2606Exact": 1.82,
-      "oppCostTotalAdd150bpEok": 152.7,
-      "oppCostTotalAddAfter30CapEok": 106.89
+      "model26Q2Legacy": 1.82,
+      "dart26Q3Exact": 2.18
     },
     {
       "key": "hana",
       "name": "하나증권",
-      "q26Base": 1.0,
+      "q26Base": 1.19,
       "q27Est": 4.5,
-      "delta": 3.5,
-      "vcNew20Tril": 0.7,
-      "vcTotalAddTril": 0.8,
-      "oppCostNew150bpEok": 105.0,
-      "oppCostNewAfter30CapEok": 73.5,
+      "delta": 3.31,
+      "vcNew20Tril": 0.66,
+      "vcTotalAddTril": 0.78,
+      "oppCostNew150bpEok": 99.3,
+      "oppCostNewAfter30CapEok": 69.5,
       "fisis2606Exact": 1.0,
-      "oppCostTotalAdd150bpEok": 120.0,
-      "oppCostTotalAddAfter30CapEok": 84.0
+      "model26Q2Legacy": 1.0,
+      "dart26Q3Exact": 1.19
     },
     {
       "key": "shinhan",
       "name": "신한투자증권",
-      "q26Base": 0.29,
+      "q26Base": 0.45,
       "q27Est": 3.3,
-      "delta": 3.01,
-      "vcNew20Tril": 0.602,
-      "vcTotalAddTril": 0.631,
-      "oppCostNew150bpEok": 90.3,
-      "oppCostNewAfter30CapEok": 63.21,
+      "delta": 2.85,
+      "vcNew20Tril": 0.57,
+      "vcTotalAddTril": 0.61,
+      "oppCostNew150bpEok": 85.5,
+      "oppCostNewAfter30CapEok": 59.8,
       "fisis2606Exact": 0.29,
-      "oppCostTotalAdd150bpEok": 94.65,
-      "oppCostTotalAddAfter30CapEok": 66.255
+      "model26Q2Legacy": 0.29,
+      "dart26Q3Exact": 0.45
     },
     {
       "key": "nh",
       "name": "NH투자증권",
-      "q26Base": 7.5,
+      "q26Base": 8.39,
       "q27Est": 10.5,
-      "delta": 3.0,
-      "vcNew20Tril": 0.6,
-      "vcTotalAddTril": 1.35,
-      "oppCostNew150bpEok": 90.0,
-      "oppCostNewAfter30CapEok": 63.0,
+      "delta": 2.11,
+      "vcNew20Tril": 0.42,
+      "vcTotalAddTril": 1.26,
+      "oppCostNew150bpEok": 63.3,
+      "oppCostNewAfter30CapEok": 44.3,
       "fisis2606Exact": 8.78,
-      "oppCostTotalAdd150bpEok": 202.5,
-      "oppCostTotalAddAfter30CapEok": 141.75
+      "model26Q2Legacy": 7.5,
+      "dart26Q3Exact": 8.39
     },
     {
       "key": "mirae",
       "name": "미래에셋증권",
-      "q26Base": 10.58,
+      "q26Base": 10.74,
       "q27Est": 13.0,
-      "delta": 2.42,
-      "vcNew20Tril": 0.484,
-      "vcTotalAddTril": 1.542,
-      "oppCostNew150bpEok": 72.6,
-      "oppCostNewAfter30CapEok": 50.82,
+      "delta": 2.26,
+      "vcNew20Tril": 0.45,
+      "vcTotalAddTril": 1.52,
+      "oppCostNew150bpEok": 67.8,
+      "oppCostNewAfter30CapEok": 47.5,
       "fisis2606Exact": 10.58,
-      "oppCostTotalAdd150bpEok": 231.3,
-      "oppCostTotalAddAfter30CapEok": 161.91
+      "model26Q2Legacy": 10.58,
+      "dart26Q3Exact": 10.74
     },
     {
       "key": "meritz",
@@ -285,52 +304,51 @@
       "fisis2606Exact": 0.0,
       "q27AveragePromNoteTril": 2.0,
       "assumptionNote": "사용자 전달 IR 목표: 평잔 2조·연말 4조. 이 계산기의 잔액·추가 의무액은 연말 4조 기준.",
-      "oppCostTotalAdd150bpEok": 120.0,
-      "oppCostTotalAddAfter30CapEok": 84.0
+      "model26Q2Legacy": 0.0,
+      "dart26Q3Exact": 0.0
     },
     {
       "key": "samsung",
-      "name": "삼성증권",
-      "q26Base": 0.0,
-      "q27Est": 4,
-      "delta": 4.0,
-      "vcNew20Tril": 0.8,
-      "vcTotalAddTril": 0.8,
-      "oppCostNew150bpEok": 120.0,
-      "oppCostNewAfter30CapEok": 84.0,
+      "name": "삼성증권(별도 목표 미반영)",
+      "q26Base": 0.24,
+      "q27Est": 0.0,
+      "delta": 0.0,
+      "vcNew20Tril": 0.0,
+      "vcTotalAddTril": 0.02,
+      "oppCostNew150bpEok": 0.0,
+      "oppCostNewAfter30CapEok": 0.0,
       "fisis2606Exact": 0.0,
-      "assumptionNote": "사용자 고정 가정: 연말 4조·평잔 2조. 삼성 공식 목표가 아님. 기회비용은 연말 잔액 기준.",
-      "q27AveragePromNoteTril": 2,
-      "oppCostTotalAdd150bpEok": 120.0,
-      "oppCostTotalAddAfter30CapEok": 84.0
+      "assumptionNote": "26.3Q 첫 발행 0.24조 원 확정. 단, 2027년 말 별도 목표 미공개로 기본선 추가 순증(delta)은 0.00조로 두며 상단 시나리오 버튼으로 +2~4조 가산 가능.",
+      "model26Q2Legacy": 0.0,
+      "dart26Q3Exact": 0.24
     },
     {
       "key": "kb",
       "name": "KB증권",
-      "q26Base": 11.0,
+      "q26Base": 10.59,
       "q27Est": 12.8,
-      "delta": 1.8,
-      "vcNew20Tril": 0.36,
-      "vcTotalAddTril": 1.46,
-      "oppCostNew150bpEok": 54.0,
-      "oppCostNewAfter30CapEok": 37.8,
+      "delta": 2.21,
+      "vcNew20Tril": 0.44,
+      "vcTotalAddTril": 1.5,
+      "oppCostNew150bpEok": 66.3,
+      "oppCostNewAfter30CapEok": 46.4,
       "fisis2606Exact": 11.0,
-      "oppCostTotalAdd150bpEok": 219.0,
-      "oppCostTotalAddAfter30CapEok": 153.3
+      "model26Q2Legacy": 11.0,
+      "dart26Q3Exact": 10.59
     },
     {
       "key": "all",
       "name": "전 증권사 합계",
-      "q26Base": 57.26,
-      "q27Est": 89,
-      "delta": 31.74,
-      "vcNew20Tril": 6.348,
-      "vcTotalAddTril": 12.074,
-      "oppCostNew150bpEok": 952.2,
-      "oppCostNewAfter30CapEok": 666.54,
+      "q26Base": 61.33,
+      "q27Est": 85.0,
+      "delta": 23.67,
+      "vcNew20Tril": 4.734,
+      "vcTotalAddTril": 10.867,
+      "oppCostNew150bpEok": 710.1,
+      "oppCostNewAfter30CapEok": 497.07,
       "fisis2606Exact": 58.54,
-      "oppCostTotalAdd150bpEok": 1811.1,
-      "oppCostTotalAddAfter30CapEok": 1267.77
+      "model26Q2Legacy": 57.26,
+      "dart26Q3Exact": 61.33
     }
   ],
   "imaTranchesKis": [
@@ -1100,7 +1118,7 @@
       3.25,
       3.5
     ],
-    "volumeVerdict": "확장 우위 (발행어음 84조 · IMA 포함 89조, 삼성·메리츠 연말 각 4조 가정 반영; 원문 합산 83조)",
+    "volumeVerdict": "확장 우위 (발행어음 80조 · IMA 포함 85조, 메리츠 목표 반영; 원문 합산 83조)",
     "marginVerdict": "상박하후 (1H 원가·마진 압박 → 2H 완화)",
     "headwinds": [
       {
@@ -1186,14 +1204,14 @@
     }
   },
   "fundingForecast2027": {
-    "updatedAt": "2026-11-18",
+    "updatedAt": "2026-11-17",
     "originalModel": {
       "promNoteTril": 78,
       "imaTril": 5,
       "totalTril": 83,
       "potentialCombinedTril": 2
     },
-    "assumptionNote": "삼성증권에도 메리츠와 동일한 연말 4조 원·수익 계산 평잔 2조 원을 고정 적용합니다. 삼성의 수치는 사용자가 지정한 비교 가정이며 회사가 발표한 목표가 아닙니다. 다른 회사 가정은 유지해 연말 합계는 발행어음 84조 원 + IMA 5조 원 = 89조 원입니다.",
+    "assumptionNote": "기존 삼성·메리츠 합산 2조 원 가정을 메리츠 연말 4조 원 목표로 대체합니다. 삼성은 별도 목표 자료가 없어 추가 물량을 반영하지 않습니다. 기존 다른 회사 가정은 유지해 연말 합계는 발행어음 80조 원 + IMA 5조 원 = 85조 원입니다.",
     "source": {
       "kind": "user-provided-ir-target",
       "receivedAt": "2026-11-17",
@@ -1276,12 +1294,12 @@
       },
       {
         "key": "samsung",
-        "name": "삼성증권",
-        "promNoteYearEndTril": 4,
+        "name": "삼성증권(별도 목표 미반영)",
+        "promNoteYearEndTril": 0,
         "imaYearEndTril": 0,
-        "promNoteAverageTril": 2,
-        "noteIncomeBasis": "average-assumption",
-        "assumptionNote": "사용자 지정: 메리츠와 같은 연말 4조·평잔 2조를 고정 적용. 삼성의 공식 발표 목표가 아닙니다."
+        "promNoteAverageTril": null,
+        "noteIncomeBasis": "year-end-proxy",
+        "assumptionNote": "별도 목표 미확인으로 추가 물량 미반영(0은 회사 목표가 아님)."
       }
     ],
     "samsungMediaCheck2026": {
@@ -1292,17 +1310,39 @@
         "2026.09.21 첫 출시 및 1차 특판 1,100억 원: 1년물 연 4.3%(1,000억 한도, 출시 2.5일 만에 완판) + 신규·소액 2~90일물 연 5.5%(100억 한도)",
         "2026.10.12 2차 1년물 특판 1,000억 원(연 4.3%) 추가 출시 및 발행어음형 CMA(수시 연 2.55%, 상시 1년물 3.95%, 적립형 4.60%) 라인업 가동",
         "공식 발표 중장기 목표: 『2028년까지 중소·벤처·신기사 등 모험자본 누적 5조 원 공급 계획』 천명 (단, 메리츠와 달리 2026~2027년 말 발행어음 총잔액 목표 액수는 보수적 운용 기조 하 대외 미공개)"
+      ],
+      "scenarioPresets": [
+        {
+          "id": "base0",
+          "label": "기본 미반영 (+0.0조)",
+          "yearEndTril": 0.0,
+          "avgTril": 0.0,
+          "desc": "공식 잔액 목표 미발표에 따른 기본선 유지 (업권 합계 85.00조 원)"
+        },
+        {
+          "id": "cons2",
+          "label": "보수 안착 (+2.0조 · 평잔 1.2조)",
+          "yearEndTril": 2.0,
+          "avgTril": 1.2,
+          "desc": "초기 보수적 딜 소싱 속도 반영 (업권 합계 87.00조 원)"
+        },
+        {
+          "id": "wm3",
+          "label": "WM 컨센서스 (+3.0조 · 평잔 1.8조)",
+          "yearEndTril": 3.0,
+          "avgTril": 1.8,
+          "desc": "업계 최대 고액자산가(HNWI)·예탁금 전환 감안 증권가 중위 추정 (업권 합계 88.00조 원)"
+        },
+        {
+          "id": "peer4",
+          "label": "메리츠 동등·5조 경로 (+4.0조 · 평잔 2.2조)",
+          "yearEndTril": 4.0,
+          "avgTril": 2.2,
+          "desc": "동기 인가 메리츠(연말 4조) 동등 및 '28년 모험자본 5조 공급 목표 경로 (업권 합계 89.00조 원)"
+        }
       ]
     },
-    "samsungAssumption": {
-      "kind": "user-specified-peer-assumption",
-      "appliedAt": "2026-11-18",
-      "referenceFirm": "meritz",
-      "yearEndTril": 4,
-      "averageTril": 2,
-      "companyPublishedTarget": false,
-      "note": "선택 메뉴 없이 메리츠와 같은 숫자를 사용하는 고정 가정입니다."
-    }
+    "ima27RationaleNote": "2026.3Q 말 3사 IMA 부채가 4.09조 원(한투 3.08조·NH 0.64조·미래에셋 0.38조)에 도달했으나, 가장 적극적으로 익스포저를 늘려온 한국투자증권조차 최근 1.5개월당 약 2,000억 원(연환산 약 1.6조 원) 페이스에 머물러 있고 내년도(2027.12 1호 1.10조 등) 상환·차환 도래 물량을 감안할 때 순증 확대가 쉽지 않아 2027E IMA 전망은 5.0조 원을 유지합니다."
   },
   "ib9FirmsCuriosityChain": [
     {
@@ -1321,7 +1361,7 @@
       "est27ModelNoteTril": 26.9,
       "est27ModelImaTril": 4.0,
       "est27UpdatedRangeTril": "30.5~32.0조 (IMA 중심 확대)",
-      "growthPremise": "발행어음 법정한도(85.2% 소진) 근접으로 어음 순증은 완만해지나, 초기 IMA 1~4호(2.60조) 안착 및 위험액 50% 감경 특례를 활용해 중장기 기업금융을 IMA로 본격 이관",
+      "growthPremise": "26.3Q 별도자본 13.55조 · 발행어음 24.47조(한도소진 90.3%) · IMA 부채 3.08조(손실준비금 1,579.5억)로 압도적 1위. 다만 IMA 최근 설정 페이스(1.5개월당 약 2,000억)와 2027년 말 1호(1.10조) 상환분을 고려해 '27E IMA 업권 총량은 5.0조를 유지합니다.",
       "capRatioWhy": "2017년 단독 1호 인가 이후 국내 기업여신·인수금융 북 확장을 핵심 성장축으로 삼아 자본 대비 어음 비율(170.3%)이 업권 최고 수준",
       "altFundingNote": "차입부채 80.85조 중 발행어음(27.8%)과 RP(26.0%) 양대 축 운용 · 어음 실효금리(2.66%)가 RP(2.76%)·차입금(4.40%)보다 낮아 조달원가 우위 확보",
       "profitability": {
@@ -1343,7 +1383,19 @@
         "h126AnnRoePct": 19.3,
         "takeaway": "연간 어음 이자 5,364억 원을 지불하고도 기업여신·IB 딜 스프레드로 업계 최대 별도 순영업수익(3.31조)과 고ROE(19.3%) 시현"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 24.47,
+      "base26Q3ImaTril": 3.08,
+      "equity26Q3Tril": 13.55,
+      "capRatio26Q3Pct": 180.6,
+      "limitUsage26Q3Pct": 90.3,
+      "imaLossReserve26Q3Eok": 1579.5,
+      "consolNcr26Q3Pct": 3974.1,
+      "rceptNo26Q3": "20261113001340",
+      "q3_26OpIncEok": 4045.7,
+      "q3_26NetIncEok": 3040.2,
+      "q3_26CfsCtrlNetIncEok": 2824.2,
+      "m9_26CfsCtrlNetIncEok": 20097.9
     },
     {
       "key": "kb",
@@ -1361,7 +1413,7 @@
       "est27ModelNoteTril": 12.8,
       "est27ModelImaTril": 0.0,
       "est27UpdatedRangeTril": "12.5~13.5조 (은행 복합점포 캡티브 유지)",
-      "growthPremise": "별도자본 7.98조로 IMA 요건(8조) 직전 단계이며 어음 한도 소진율(69.0%)이 높아, 무리한 외형 순증(+1.80조)보다 기존 고금리 약정물 차환을 통한 마진 개선에 주력",
+      "growthPremise": "26.3Q 별도자본 8.86조(8조 돌파) · 발행어음 10.59조(한도소진 59.8%). 3Q 별도 영업이익은 +3,814억 흑자이나 영업외 요인으로 3Q 분기순손실 −839억 기록(9M 누적 연결 지배순이익 +7,394억 견조).",
       "capRatioWhy": "은행지주 CIB 협업 딜 소싱을 바탕으로 자본 대비 137.9%까지 적극 활용했으나 자본 8조 캡 직전이라 한도 여유분 관리 병행",
       "altFundingNote": "차입부채 53.29조 중 단기차입(32.3%)과 발행어음(20.6%) 중심 · 상반기 어음 실효금리(4.53%)는 과거 고금리 기간물 만기정산 이월 영향(신규 고시는 3%대 초반)",
       "profitability": {
@@ -1383,7 +1435,19 @@
         "h126AnnRoePct": 22.9,
         "takeaway": "과거 약정물 이자정산 부담에도 2026년 상반기 IB·트레이딩 반등으로 반기 영업이익 1.02조 원·연환산 ROE 22.9%로 수익성 급개선"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 10.59,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 8.86,
+      "capRatio26Q3Pct": 119.5,
+      "limitUsage26Q3Pct": 59.7,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 3108.1,
+      "rceptNo26Q3": "20261116001123",
+      "q3_26OpIncEok": 3814.2,
+      "q3_26NetIncEok": -838.6,
+      "q3_26CfsCtrlNetIncEok": -596.0,
+      "m9_26CfsCtrlNetIncEok": 7393.9
     },
     {
       "key": "mirae",
@@ -1401,7 +1465,7 @@
       "est27ModelNoteTril": 12.5,
       "est27ModelImaTril": 0.5,
       "est27UpdatedRangeTril": "13.0~14.5조 (IMA 상품 본격화 시)",
-      "growthPremise": "어음 미소진 한도(10.55조)가 충분하나 개별 신NCR 버퍼(영업용순자본/총위험액 127.5%) 관리를 위해 보수적 증액을 유지하고, IMA는 외형보다 모험자본·실적배당 수익률 위주 선별 출시",
+      "growthPremise": "26.3Q 별도자본 10.59조 · 발행어음 10.36조(자본대비 97.9%) · IMA 부채 0.38조(손실준비금 194.8억). 3Q 별도 순이익은 +1,007억 흑자이나 연결 기준 −4,056억(지배 −3,941억) 일시 손실 반영(9M 누적 연결 지배순이익은 +2.50조로 업계 최상위).",
       "capRatioWhy": "글로벌 해외법인 출자금(개별 차감자본 5.92조) 비중이 높은 사업 구조상 기업금융 50% 강제 계정이 아닌 RP(34.3%)·단기차입(26.5%)·회사채(11.0%) 조달을 선호해 어음/자본을 100.1%로 통제",
       "altFundingNote": "차입부채 71.97조 중 RP(24.70조, 실효 2.42%) 최대 활용 · 회사채 실효금리(4.06%) 대비 발행어음(2.75%)의 비용 절감 여력이 존재",
       "profitability": {
@@ -1423,7 +1487,19 @@
         "h126AnnRoePct": 16.3,
         "takeaway": "해외법인·PI 이익 비중으로 별도보다 연결 순이익(1.57조)이 훨씬 크며, 2026년 상반기 트레이딩·WM 호조로 별도 순영업수익(2.43조) 1위 기록"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 10.36,
+      "base26Q3ImaTril": 0.38,
+      "equity26Q3Tril": 10.59,
+      "capRatio26Q3Pct": 97.9,
+      "limitUsage26Q3Pct": 48.9,
+      "imaLossReserve26Q3Eok": 194.8,
+      "consolNcr26Q3Pct": 3661.5,
+      "rceptNo26Q3": "20261116002051",
+      "q3_26OpIncEok": 1788.4,
+      "q3_26NetIncEok": 1006.9,
+      "q3_26CfsCtrlNetIncEok": -3940.7,
+      "m9_26CfsCtrlNetIncEok": 24981.2
     },
     {
       "key": "nh",
@@ -1441,7 +1517,7 @@
       "est27ModelNoteTril": 10.0,
       "est27ModelImaTril": 0.5,
       "est27UpdatedRangeTril": "10.5~12.0조 (26.03 IMA 3호 인가 반영)",
-      "growthPremise": "6,500억 유상증자로 자본 8조 요건 충족 후 2026.03 제3호 IMA 인가 획득(초기 회차 연속 완판, 성과보수 허들 4.0→4.5% 상향) · 어음 완만 증액과 IMA 기업금융 북 동시 가동",
+      "growthPremise": "26.3Q 별도자본 10.10조 · 발행어음 7.76조(자본대비 76.8%) · IMA 부채 0.64조(손실준비금 330.5억)로 3사 중 2위 IMA 잔액 확보. 3Q 별도 영업이익 4,843억(9사 1위) · 9M 연결 지배순이익 1.35조 달성.",
       "capRatioWhy": "전통 ECM·DCM 주선(수수료 기반 Underwriting) 비중이 높고 특판 금리 경쟁을 자제해 어음/자본 비율(89.4%, 실효금리 2.61%)을 안정권으로 유지",
       "altFundingNote": "차입부채 53.13조가 단기차입(26.6%)·RP(24.1%)·ELS(17.4%)·어음(16.5%)·선순위채(11.3%)로 가장 고르게 분산된 균형 포트폴리오",
       "profitability": {
@@ -1464,7 +1540,19 @@
         "h126AnnRoePct": null,
         "takeaway": "저원가 발행어음 관리(26.1H 실효 2.61%)와 IB 주선·인수금융 경쟁력을 결합해 2025년 연결 영업이익 1.42조 원·순이익 1.03조 원 달성"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 7.76,
+      "base26Q3ImaTril": 0.64,
+      "equity26Q3Tril": 10.1,
+      "capRatio26Q3Pct": 76.8,
+      "limitUsage26Q3Pct": 38.4,
+      "imaLossReserve26Q3Eok": 330.5,
+      "consolNcr26Q3Pct": 3060.0,
+      "rceptNo26Q3": "20261113000872",
+      "q3_26OpIncEok": 4843.4,
+      "q3_26NetIncEok": 3407.8,
+      "q3_26CfsCtrlNetIncEok": 3836.2,
+      "m9_26CfsCtrlNetIncEok": 13488.7
     },
     {
       "key": "kiwoom",
@@ -1482,7 +1570,7 @@
       "est27ModelNoteTril": 6.0,
       "est27ModelImaTril": 0.0,
       "est27UpdatedRangeTril": "5.5~7.0조 (리테일 비대면 수신 탄력)",
-      "growthPremise": "단일 MTS 앱 트래픽과 무지점 비용구조를 활용해 인가 2년차(2027년) 후발 3사 중 가장 큰 폭의 순증(+4.18조) 및 규제 레버리지(964.4%) 병목 해소 추진",
+      "growthPremise": "26.3Q 별도자본 7.62조 · 발행어음 2.18조(한도소진 14.3%)로 후발 3사 중 가장 빠른 확대 지속. 3Q 별도 영업이익 4,536억 · 9M 누적 연결 지배순이익 1.33조 기록.",
       "capRatioWhy": "2025년 말 신규 인가로 2026.2Q 소진율은 26.4%(1.82조) 초기 단계이며, 별도 고객예수금이 25.49조(실효 이용료 0.69%)에 달해 기존 리테일 신용공여 재원은 이미 풍부",
       "altFundingNote": "차입부채 47.62조 중 RP(34.1%)·단기차입(30.1%) 비중이 높아 규제 레버리지비율이 964.4%에 육박 → 레버리지 산정에서 차감되는 발행어음으로의 전환 유인이 가장 강력",
       "profitability": {
@@ -1504,7 +1592,19 @@
         "h126AnnRoePct": 35.5,
         "takeaway": "판관비율 28.5%(업권 최저)와 저원가 예수금 기반 위에 발행어음 기업금융 엔진이 더해지며 반기 순이익 1.12조 원·자본효율 최상위 기록"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 2.18,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 7.62,
+      "capRatio26Q3Pct": 28.6,
+      "limitUsage26Q3Pct": 14.3,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 2267.5,
+      "rceptNo26Q3": "20261113001559",
+      "q3_26OpIncEok": 4536.4,
+      "q3_26NetIncEok": 2149.4,
+      "q3_26CfsCtrlNetIncEok": 1778.5,
+      "m9_26CfsCtrlNetIncEok": 13342.9
     },
     {
       "key": "hana",
@@ -1522,7 +1622,7 @@
       "est27ModelNoteTril": 4.5,
       "est27ModelImaTril": 0.0,
       "est27UpdatedRangeTril": "3.5~4.5조 (모험자본 소싱 속도 연동)",
-      "growthPremise": "인가 2년차를 맞아 그룹 CIB 연계 기업여신 확대 및 ELS·DLS 편중 조달(33.2%)의 발행어음 차환(+3.50조)을 추진하나, 본체 수익성 및 모험자본 20% 의무가 속도조절 변수",
+      "growthPremise": "26.3Q 별도자본 7.11조 · 발행어음 1.19조(한도소진 8.4%)로 1조 원대 안착. 3Q 별도 순이익 931억 · 9M 누적 연결 지배순이익 2,834억으로 점진 회복.",
       "capRatioWhy": "2026년 1분기 본격 발행 개시로 초기 자본 대비 비율은 14.9%(1.00조)이며, 과거 파생결합증권(ELS·DLS 14.37조) 중심 조달 구조에서 전환하는 과도기",
       "altFundingNote": "ELS·DLS 비중(33.2%)이 9사 중 가장 높아 규제 레버리지(907.0%) 부담 존재 · 초기 기간약정 위주 조달로 상반기 어음 실효금리는 3.42% 기록",
       "profitability": {
@@ -1544,7 +1644,19 @@
         "h126AnnRoePct": 7.3,
         "takeaway": "대체투자·PF 정리에 따른 낮은 ROE(25년 3.6% → 26.1H 7.3%) 회복 구간으로, 어음 외형 확대 시 우량 기업금융 선별력이 마진 방어의 핵심"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 1.19,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 7.11,
+      "capRatio26Q3Pct": 16.7,
+      "limitUsage26Q3Pct": 8.3,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 1745.3,
+      "rceptNo26Q3": "20261113001337",
+      "q3_26OpIncEok": 1440.6,
+      "q3_26NetIncEok": 930.8,
+      "q3_26CfsCtrlNetIncEok": 103.1,
+      "m9_26CfsCtrlNetIncEok": 2833.9
     },
     {
       "key": "shinhan",
@@ -1562,7 +1674,7 @@
       "est27ModelNoteTril": 3.3,
       "est27ModelImaTril": 0.0,
       "est27UpdatedRangeTril": "3.3~4.2조 (PWM 채널 기반 점진 확대)",
-      "growthPremise": "2026.2Q 잔액 0.29조에서 은행 복합점포(PWM) 수신과 높은 자본완충력(영업용순자본/총위험액 221.8%, 9사 1위)을 바탕으로 2027년 3.30조(+3.01조) 안착 전망",
+      "growthPremise": "26.3Q 별도자본 5.93조 · 발행어음 0.45조(한도소진 3.8%)로 초기 확장 구간. 3Q 별도 순이익 536억 · 9M 누적 연결 지배순이익 6,430억 기록.",
       "capRatioWhy": "출시 초기 단계로 자본 대비 5.0%에 불과하며, 그동안 RP(41.4%)·단기차입(28.0%)·ELS(20.1%) 위주로 보수적 조달 운용",
       "altFundingNote": "선순위·후순위 사채 실효금리(3.78%) 및 차입금(3.30%) 대비 발행어음(3.14%, 수시물 혼합 시 2%대 후반 가능) 확대 시 조달비용 절감 여력 보유",
       "profitability": {
@@ -1584,7 +1696,19 @@
         "h126AnnRoePct": 19.7,
         "takeaway": "2026년 상반기 판관비율 하락(60.7%→41.0%)과 운용수익 정상화로 반기 순이익 5,571억 원(연환산 ROE 19.7%)을 기록하며 어음 확장 기반 확보"
       },
-      "est27AverageNoteTril": null
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 0.45,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 5.93,
+      "capRatio26Q3Pct": 7.5,
+      "limitUsage26Q3Pct": 3.8,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 2189.2,
+      "rceptNo26Q3": "20261116000557",
+      "q3_26OpIncEok": 767.7,
+      "q3_26NetIncEok": 536.4,
+      "q3_26CfsCtrlNetIncEok": 652.9,
+      "m9_26CfsCtrlNetIncEok": 6429.5
     },
     {
       "key": "samsung",
@@ -1595,14 +1719,14 @@
       "creditTier": "최상위 민간 그룹 핵심 금융사 (별도자본 8.16조)",
       "noteLicense": "2026.09.09 (8호 인가 · 09.21 출시)",
       "imaLicense": "미인가 (자본 8조 요건은 기충족)",
-      "statusBadge": "26.09 8호 인가 · HNWI 수신강자",
+      "statusBadge": "26.3Q 첫발행 0.24조 · 8호",
       "statusTone": "blue",
       "base26Q2NoteTril": 0.0,
       "base26Q2ImaTril": 0.0,
-      "est27ModelNoteTril": 4,
+      "est27ModelNoteTril": 0.0,
       "est27ModelImaTril": 0.0,
-      "est27UpdatedRangeTril": "연말 4.00조·평잔 2.00조 고정 가정 (메리츠와 동일 · 삼성 공식 목표 아님)",
-      "growthPremise": "2026.09.09 제8호 인가(법정한도 약 16.32조) 후 09.21 출시. 언론 기사 전수 확인 결과 메리츠(연말 4조·평잔 2조 IR 제시)와 달리 '2027년 말 발행어음 단일 목표액'은 대외 미공개(운용처 확보 연동 점진 확대 기조)이나, ① 9/21 1차 특판 1,100억(1년물 4.3% 1,000억 2.5일 완판 + 단기 5.5% 100억) 및 10/12 2차 특판 1,000억·발행어음형 CMA(2.55%) 출시, ② '2028년까지 모험자본 누적 5조 원 공급 계획'을 공식 발표했습니다. 사용자 요청으로 메리츠와 동일한 연말 4.00조·수익 계산 평잔 2.00조를 고정 적용합니다. 삼성의 회사 발표 목표가 아니며, 시나리오 선택 메뉴 없이 수정 전망 89조에 포함합니다.",
+      "est27UpdatedRangeTril": "연말 잔고 목표 미공개 (9~10월 1·2차 특판 2,100억 · '28년까지 모험자본 5조 공급 발표 · WM 잠재 2.0~4.0조)",
+      "growthPremise": "2026.09.09 제8호 인가 후 26.3Q 발행어음 0.24조 원(2,403억 원, 금리밴드 1.33~5.50%) 첫 발행 개시. 별도자본 8.47조(200% 한도 16.94조) · 3Q 별도 영업이익 4,141억 · 9M 연결 지배순이익 1.29조. 연말 단일 목표 미공개로 기본선 추가 순증 미반영.",
       "capRatioWhy": "2026년 9월 이전까지 단기금융업 미인가 상태였기 때문에 자본 8.16조에도 어음 잔액이 0원이었으며, 대고객·기관 RP매도(49.2%, 실효 2.26%) 중심의 저위험 담보조달 유지",
       "altFundingNote": "차입부채(35.24조)가 자본 규모 대비 가장 적고 RP 비중(49.2%)이 절대적 · 발행어음 가세로 기존 저마진 RP 외 기업금융 스프레드 자산 편입 여력 신설",
       "profitability": {
@@ -1624,7 +1748,19 @@
         "h126AnnRoePct": 22.4,
         "takeaway": "발행어음 없이도 초고액 WM·운용 경쟁력으로 '25년 순익 9,713억·'26.1H 연환산 ROE 22.4%를 달성했으며, 어음 장착으로 IB 이자수익원 추가"
       },
-      "est27AverageNoteTril": 2
+      "est27AverageNoteTril": null,
+      "base26Q3NoteTril": 0.24,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 8.47,
+      "capRatio26Q3Pct": 2.8,
+      "limitUsage26Q3Pct": 1.4,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 2598.7,
+      "rceptNo26Q3": "20261116001244",
+      "q3_26OpIncEok": 4140.9,
+      "q3_26NetIncEok": 3224.4,
+      "q3_26CfsCtrlNetIncEok": 3527.7,
+      "m9_26CfsCtrlNetIncEok": 12918.5
     },
     {
       "key": "meritz",
@@ -1642,7 +1778,7 @@
       "est27ModelNoteTril": 4.0,
       "est27ModelImaTril": 0.0,
       "est27UpdatedRangeTril": "연말 4.00조 · 수익평잔 2.00조 (사용자 전달 IR 목표 · 원문 잠재2사 2.0조 대체)",
-      "growthPremise": "2026.09.23 제9호 발행어음 인가(법정한도 약 16.70조, 9대 종투사 전원 인가 완성). 사용자가 전달한 2027년 IR 목표(연말 잔액 4.00조·수익 계산용 평잔 2.00조, IR 원문 링크 별도 확인 전)를 반영해 기존 잠재 2사 합산 2.00조 가정을 대체했습니다. 고원가 회사채(실효 3.47%)·매도증권(25.5%) 차환 및 규제 레버리지(908.0%) 완화 유인이 뚜렷합니다.",
+      "growthPremise": "2026.09.23 제9호 인가 완료로 26.3Q 말 잔액은 0.00조(10월 출시). 별도자본 8.47조(200% 한도 16.94조) · 3Q 연결 지배순이익 2,031억(9M 7,128억). 사용자 전달 2027 IR 목표(연말 4조·평잔 2조) 반영.",
       "capRatioWhy": "2026.2Q 기준 미인가로 어음 0원이었으며, 리테일 예수금(9.86조) 기반이 얇아 RP(34.1%)·매도증권 등 대체조달(25.5%)·ELS(18.7%)·사채(10.0%)로 기업금융 재원을 조달해 옴",
       "altFundingNote": "규제 레버리지비율(908.0%)이 경보선 부근이었던 만큼, 레버리지 산정에서 전액 차감되는 발행어음은 자본비율 완화와 조달단가 절감을 동시에 해결하는 핵심 수단",
       "profitability": {
@@ -1664,7 +1800,19 @@
         "h126AnnRoePct": 13.5,
         "takeaway": "높은 시장성 차입 원가에도 고수익 구조화 기업금융 역량으로 두 자릿수 ROE(10.1%→13.5%)를 유지해 왔으며, 어음 조달로 순이자마진 개선 기대"
       },
-      "est27AverageNoteTril": 2.0
+      "est27AverageNoteTril": 2.0,
+      "base26Q3NoteTril": 0.0,
+      "base26Q3ImaTril": 0.0,
+      "equity26Q3Tril": 8.47,
+      "capRatio26Q3Pct": 0.0,
+      "limitUsage26Q3Pct": 0.0,
+      "imaLossReserve26Q3Eok": 0.0,
+      "consolNcr26Q3Pct": 1604.8,
+      "rceptNo26Q3": "20261116001503",
+      "q3_26OpIncEok": 2136.3,
+      "q3_26NetIncEok": 1725.6,
+      "q3_26CfsCtrlNetIncEok": 2031.0,
+      "m9_26CfsCtrlNetIncEok": 7128.0
     }
   ],
   "ventureCapitalChain2027": {
@@ -1677,9 +1825,9 @@
         "id": "nominal",
         "badge": "방식 ① · 현행 기본식",
         "title": "명목 스프레드 단순 차감법",
-        "formula": "OC = 정상 IB 가정수익률 − 비교 자산수익률 (AAA 은행채 3년 대용: 4.85% − 4.113% = 73.7bp)",
-        "bestFor": "금리 수준이 확인되는 비교 기준을 사용한 명목 차이의 조건부 시산. 상단 계산기 150bp는 별도의 사용자 가정이며 관측 금리차가 아님",
-        "distortion": "위험·유동성·비용이 서로 다른 자산의 명목금리 차이로 실제 기회비용을 확정할 수 없음. 은행채는 모험자본 인정자산의 수익률 대용값일 뿐 인정 여부나 P-CBO 실측치를 뜻하지 않음",
+        "formula": "OC = s_정상IB − s_모험명목 (예: 150bp − P-CBO 0bp = 150bp)",
+        "bestFor": "무수익·저마진 정책보증채(P-CBO 선순위 등) 강제 편입 시 직관적 손실 시산",
+        "distortion": "BBB- 회사채(민평 9.37%)나 고금리 사모채를 대입하면 명목금리가 AA-(4.42%)보다 높아 기회비용이 음수(초과이익)로 잘못 산출되는 착시 발생",
         "verdict": "단순 보완재 한정 보조지표"
       },
       {
@@ -1751,22 +1899,22 @@
       },
       {
         "id": "pcbo_senior",
-        "asset": "모험 ② P-CBO 수익률 대용 · AAA 은행채 3년",
+        "asset": "모험 ② 유동화회사보증 P-CBO 선순위채",
         "capTag": "무제한 인정",
-        "yieldPct": 4.113,
-        "grossSpreadBp": 96.3,
+        "yieldPct": 3.35,
+        "grossSpreadBp": 20,
         "elCostBp": 5,
         "ncrRwPct": 0.4,
         "capCostNoteBp": 5,
         "capCostImaBp": 3,
-        "evaNoteBp": 86.3,
-        "evaImaBp": 88.3,
-        "note": "수익률만 KIS AAA 은행채 3년 4.113%(2026.11.13)를 비교 대용값으로 적용합니다. 은행채 자체의 모험자본 인정을 뜻하지 않습니다. EL·원가·위험률·자본비용은 기존 P-CBO 설명용 가정이며 은행채 실측치가 아닙니다. 정상 IB 대비 어음 순EVA 차이 49.7bp·IMA 58.7bp로 조건부 계산합니다.",
+        "evaNoteBp": 10,
+        "evaImaBp": 12,
+        "note": "신보 보증 AAA로 신용위험은 거의 없으나 조달원가(3.15%) 차감 시 마진이 전무해 순수 비율 충족용 보완재(기회비용 126bp)",
         "pdPct": 0.01,
         "lgdPct": 20,
         "pureElBp": 0,
         "opsCostBp": 5,
-        "elBasisNote": "P-CBO 설명용 기존 가정: PD 0.01% × LGD 20% ≈ 0bp(반올림) + 관리원가 5bp. 보증이 위험을 완전히 제거한다는 뜻이 아니며, AAA 은행채의 확인된 손실률·원가 자료가 아닙니다."
+        "elBasisNote": "신보·기보 보증 AAA로 신용 부도손실 0bp 수렴 · 유동화 사무·관리 실비 5bp만 반영"
       },
       {
         "id": "bbb_private",
@@ -1843,13 +1991,13 @@
           "note": "종투사 총자산 대비 2.23%"
         },
         {
-          "period": "2027E 의무 (수정전망 89조 기준)",
-          "totalFundingTril": 89,
+          "period": "2027E 의무 (수정전망 85조 기준)",
+          "totalFundingTril": 85.0,
           "mandatePct": 20,
-          "totalMandateTril": 17.8,
-          "aCapTril": 5.34,
-          "nonACapNetTril": 12.46,
-          "note": "비A급 70% 순의무 12.46조 (원문 83조 기준 시 16.60/11.62조)"
+          "totalMandateTril": 17.0,
+          "aCapTril": 5.1,
+          "nonACapNetTril": 11.9,
+          "note": "비A급 70% 순의무 11.90조 (원문 83조 기준 시 16.60/11.62조)"
         },
         {
           "period": "2028E 의무 (수신 98조 가정)",
@@ -1872,7 +2020,7 @@
           "potential2728": "연 발행 14.0~16.0조 안정 유지",
           "status": "캡 제한",
           "statusTone": "blue",
-          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.34조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
+          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.10조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
         },
         {
           "id": "bbb_public",
@@ -1957,29 +2105,54 @@
         "pcboSharePct": 29.3,
         "rankLabel": "종투사 모험자본 편입 부동의 1위 (29.3% · 중견·A급 30% 상한 미적용 무제한 인정)"
       },
-      "whyCleanestSummary": "사용자 지정에 따라 출처가 확인되는 AAA 금융채의 대표 기준으로 KIS자산평가 AAA 은행채 3년 평가수익률을 사용합니다. 2026.11.13 4.113%는 같은 날 국고 3년 3.750%보다 36.3bp 높습니다. P-CBO 실측금리나 무위험 수익률이 아니며, 은행채 자체가 모험자본 인정자산이라는 뜻도 아닙니다.",
+      "whyCleanestSummary": "신용보증기금·기술보증기금이 원리금을 보증하는 P-CBO 선순위(AAA 3년물)는 부도확률(PD ≈ 0%)과 신NCR 신용위험값(RW ≈ 0~0.4%)이 모두 사실상 0입니다. 따라서 연구자마다 가정이 달라지는 부도율(PD)·회수율(LGD)·자본비용 논쟁 없이, 오직 ‘정상 우량 기업금융 금리 − P-CBO AAA 금리’라는 객관적 명목금리 차이만으로 규제 기회비용의 기준선(Clean Benchmark)을 가장 명쾌하게 보여줍니다.",
       "modes": [
         {
           "id": "effective",
-          "label": "AAA 은행채 3년 · 4.113% (2026.11.13, KIS자산평가)",
+          "label": "기발행·실효수익률 기준 (3.35%)",
           "normalLabel": "정상 우량 IB (AA- 인수금융·사모 3Y)",
           "normalYieldPct": 4.85,
           "publicAamPct": 4.42,
-          "pcboLabel": "AAA 은행채 3년 평가수익률 · P-CBO 비교 대용값",
-          "pcboYieldPct": 4.113,
+          "pcboLabel": "신보 보증 P-CBO AAA 3Y (기발행·제비용 차감 실효)",
+          "pcboYieldPct": 3.35,
           "fundingBasePct": 3.15,
           "ktb3yPct": 3.75,
-          "forgoneSpreadBp": 73.7,
-          "shadowTax27Bp": 10.318,
-          "shadowTax27EokPerTril": 10.318,
-          "note": "정상 IB 4.85%·조달원가 3.15%는 기존 모형 가정입니다. AAA 은행채 3년 관측치 4.113%를 인정자산 수익률의 비교 대용값으로 두면 명목 금리차는 73.7bp입니다. 신규 수신의 14%(의무 20% × 비A급 70%)를 이 수익률로 운용한다는 조건에서 연 10.318억 원/수신 1조의 차이가 납니다. 실제 P-CBO 거래수익률·위험·비용을 검증한 결과가 아닙니다."
+          "forgoneSpreadBp": 150,
+          "shadowTax27Bp": 21.0,
+          "shadowTax27EokPerTril": 21.0,
+          "note": "조달원가(3.15%) 위 정상 IB 순마진(+170bp) vs P-CBO 실효 순마진(+20bp) → 포기하는 명목 스프레드 150bp (공모 AA- 4.42% 대비 시 107bp)"
+        },
+        {
+          "id": "new_issue",
+          "label": "신규발행 표면금리 기준 (4.10%)",
+          "normalLabel": "정상 우량 IB (AA- 인수금융·사모 3Y)",
+          "normalYieldPct": 4.85,
+          "publicAamPct": 4.42,
+          "pcboLabel": "신보 보증 P-CBO AAA 3Y (국고3Y 3.75% + 가산 35bp)",
+          "pcboYieldPct": 4.1,
+          "fundingBasePct": 3.15,
+          "ktb3yPct": 3.75,
+          "forgoneSpreadBp": 75,
+          "shadowTax27Bp": 10.5,
+          "shadowTax27EokPerTril": 10.5,
+          "note": "유동화·후순위 의무인수 비용 차감 전 순수 선순위 표면금리(4.10%) 단순 비교 시 포기 스프레드 75bp (주관사 후순위 일부 인수·보증수수료 반영 시 실효 포기폭은 약 115~130bp로 확대)"
+        },
+        {
+          "id": "calc_zero",
+          "label": "상단 계산기 기본식 (순마진 0bp)",
+          "normalLabel": "정상 기업금융 기준 (순마진 +150bp)",
+          "normalYieldPct": 4.65,
+          "publicAamPct": 4.42,
+          "pcboLabel": "P-CBO 손익분기 가정 (순마진 0bp)",
+          "pcboYieldPct": 3.15,
+          "fundingBasePct": 3.15,
+          "ktb3yPct": 3.75,
+          "forgoneSpreadBp": 150,
+          "shadowTax27Bp": 21.0,
+          "shadowTax27EokPerTril": 21.0,
+          "note": "상단 기회비용 계산기(정상 150bp − P-CBO 0bp = 150bp)와 정확히 일치하는 보수적 시뮬레이션 기준선 → 수신 1조당 비A급 14% 구간 기회비용 연 21.0억 원(−21bp)"
         }
-      ],
-      "benchmarkType": "aaa_bank_3y_proxy",
-      "sourceTitle": "KIS자산평가 KIS WEEKLY 1212호 · Appendix 1(57쪽), 은행채 시황(13쪽)",
-      "sourceUrl": "https://www.bond.co.kr/post/dawn/37184",
-      "sourceDate": "2026-11-13",
-      "crossCheckUrl": "https://www.newspim.com/news/view/20261116000108"
+      ]
     }
   },
   "moneyMoveAndSafety2026Q4": {
@@ -2058,8 +2231,8 @@
       "krDeposits26Q2Tril": 2688.07,
       "corpDeposits26Q2Tril": 1135.92,
       "combinedDepositsPool26Q2Tril": 3823.99,
-      "promNoteIma27ShareOfFinPct": 1.28,
-      "promNoteIma27ShareOfHhDepPct": 3.31
+      "promNoteIma27ShareOfFinPct": 1.23,
+      "promNoteIma27ShareOfHhDepPct": 3.16
     },
     "surveyComparison": [
       {
@@ -3005,7 +3178,7 @@
     ]
   },
   "regulatoryComplianceMatrix2027": {
-    "updatedAsOf": "2026-11-18 현행 법령 및 금융위 종투사 제도개편안(2025.04 · 2025.11) 기준",
+    "updatedAsOf": "2026-11-23 현행 법령 및 발행어음·IMA 고유 규제 9대 항목 정제 기준",
     "overviewCards": [
       {
         "label": "금감원 정기 업무보고서 주기",
@@ -3021,9 +3194,9 @@
       },
       {
         "label": "비율 미달 · 한도 초과 복구기한",
-        "value": "자동유예 없음 / 1년",
-        "sub": "유동성·NCR 미달은 즉시 시정계획 · 비자발적 신용공여 초과만 1년 유예",
-        "xrayKey": "reg-rule:8"
+        "value": "자동유예 없음",
+        "sub": "단계적 경과조치(부동산·모험자본) 외 미달 시 즉시 보고·시정명령",
+        "xrayKey": "reg-rule:4"
       },
       {
         "label": "핵심 법정 제재 · 페널티",
@@ -3035,7 +3208,7 @@
     "categories": [
       {
         "id": "all",
-        "label": "전체 핵심 규제 (10)"
+        "label": "전체 고유 규제 (9)"
       },
       {
         "id": "limit_alloc",
@@ -3047,17 +3220,17 @@
       },
       {
         "id": "credit_conduct",
-        "label": "신용공여 · 구분관리 · 판매통제 (3)"
+        "label": "구분관리 · 판매통제 (2)"
       }
     ],
     "rules": [
       {
         "idx": 0,
         "category": "limit_alloc",
-        "categoryBadge": "인가 · 총량한도",
-        "title": "인가 자기자본 요건 · 조달 한도 및 만기 제한",
-        "promNoteRule": "별도 자기자본 4조 원 이상 + 단기금융업 인가 · 만기 1년 이내 · 발행한도 별도 자기자본의 200% 이내",
-        "imaRule": "별도 자기자본 8조 원 이상(종투사 2년 경과 등) · 만기 제한 없음(실무 1~3년+ 폐쇄형 중심) · 발행어음 합산 자기자본의 300% 통합 한도",
+        "categoryBadge": "총량한도 · 만기",
+        "title": "조달 한도 및 만기 구조",
+        "promNoteRule": "만기 1년 이내 · 발행한도 별도 자기자본의 200% 이내 (9대 인가 종투사 적용)",
+        "imaRule": "만기 제한 없음(중장기·폐쇄형 중심, 1년 초과 70%↑ 유도) · 발행어음 합산 별도 자기자본의 300% 통합 한도",
         "statute": "자본시장법 제77조의3제1항·제3항·제4항 · 동법 시행령 제77조의6제1항·제2항 · 금융투자업규정 제4-102조의8·제4-102조의9",
         "reportingCycle": "월보(익월 말일) · 분기보(분기 후 45일 이내, 법 제33조·시행령 제36조 · FISIS SF325)",
         "curePeriod": "신규 발행에 의한 한도 초과는 사전 유예 없음(즉시 위법). 자기자본 감소 등 비자발적 초과 시 신규 발행 중단 후 시정계획 승인 기한(통상 6개월~1년) 내 해소",
@@ -3133,10 +3306,10 @@
         "idx": 6,
         "category": "liquidity_capital",
         "categoryBadge": "신NCR · 손실충당금",
-        "title": "순자본비율(신NCR ≥ 100%) · IMA 감경 조건과 손실흡수 적립",
+        "title": "영업용순자본비율(신NCR ≥ 100%) 위험액 반영 & IMA 5% 고유충당금",
         "promNoteRule": "발행어음 운용자산의 시장·신용위험액을 종투사 신NCR 총위험액에 100% 전액 반영 (별표 5 신용위험값: AA급 1.6~2.4%, A급 4.0%, BBB급 8~12%, 비상장·조합 12~20%)",
-        "imaRule": "손실충당금·손실준비금 합계를 매 결산 원본 결손액+원본 5% 이상 유지하고 연결 영업용순자본/총위험액이 150%를 초과하는 등 요건을 충족하면 IMA 운용자산 50%를 반영하는 특례. 자기자본 100% 초과 수탁금 원본은 제외. 적격 납입한 만기 전 해지 불가 IMA에는 이후 150% 유지 예외. IMA 만기 화면에서는 구NCR에도 위험액 감경을 반영해 5% 자본 감소 부담과 함께 비교하며, 5% 전액 감소는 보수적 계산 가정으로 구분.",
-        "statute": "자본시장법 제30조 · 금융투자업규정 제3-6조·제3-10조·제3-24조의4제4항·제4-99조 · 금융투자업규정 시행세칙 제3-20조의6 (2026.07.08 시행) · https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020 · 금융위원회 2025.04.09 제도 설명 https://www.fsc.go.kr/no010101/84322",
+        "imaRule": "수탁금의 5% 이상을 고유재산으로 손실충당금(초기 손실흡수 버퍼)으로 우선 적립 시 IMA 운용자산 위험액의 50%만 신NCR 총위험액에 반영 (초과 손실 발생 시 추가 반영)",
+        "statute": "자본시장법 제30조(재무건전성 유지) · 금융투자업규정 제3-6조~제3-24조·제3-24조의4·제4-102조의9 · 시행세칙 [별표 5]·[별표 10]",
         "reportingCycle": "월보(익월 말일) · 분기보(분기 후 45일, FISIS SF408 연결 / SF308 개별) + 비율 급변 시 수시 보고",
         "curePeriod": "유예기간 없음 (즉시 적기시정조치 발동): 신NCR 100% 미만 경영개선권고, 50% 미만 경영개선요구, 0% 미만 경영개선명령 → 1~2개월 내 계획서 제출, 6개월~1년 내 이행(규정 제3-28조~제3-32조)",
         "penalty": "배당 제한·신규업무 금지·임원 직무정지·영업정지·계약이전·인가취소(금산법 제10조~제14조, 자본시장법 제420조)",
@@ -3158,19 +3331,6 @@
       {
         "idx": 8,
         "category": "credit_conduct",
-        "categoryBadge": "신용공여 · 대주주제한",
-        "title": "기업신용공여 한도(200%), 동일차주 한도(25%) 및 대주주·계열사 금지",
-        "promNoteRule": "종투사 총 신용공여 자기자본 200% 이내(기본 100% + 기업금융·중기 추가 100%) · 동일차주(기업집단) 신용공여 자기자본 25% 이내 · 대주주·특수관계인 신용공여 및 발행어음 재원 계열사 부당편입 금지",
-        "imaRule": "동일차주 집중한도 및 대주주·특수관계인 발행증권 편입·신용공여 제한 동일 적용 · 소규모 IMA 회차의 단일 딜 편중 내부통제 병행",
-        "statute": "자본시장법 제34조(대주주 거래 제한)·제77조의3제2항·제6항·제7항 · 동법 시행령 제39조·제77조의6 · 금융투자업규정 제4-102조의5",
-        "reportingCycle": "월보(익월 말일) · 분기보(분기 후 45일) · 대주주 관련 거래 시 분기별 금융위 보고 및 홈페이지 공시(법 제34조제3항)",
-        "curePeriod": "추가 공여 없이 자기자본 감소·차주 합병 등 부득이한 사유로 동일차주·총한도 초과 시 초과일부터 '1년 이내' 해소 유예 부여(금감원장 승인 시 연장 가능, 법 제77조의3제7항). 단, 대주주 불법 신용공여는 유예 없음",
-        "penalty": "대주주 신용공여 위반 시 위반금액 100% 이하 과징금(법 제428조제1항) + 5년 이하 징역/2억 이하 벌금(제444조) + 신규 인가 결격 직결 · 일반 한도 위반 시 초과액 10% 이하 과징금(제428조제2항) 및 영업정지(제420조)",
-        "severity": "red"
-      },
-      {
-        "idx": 9,
-        "category": "credit_conduct",
         "categoryBadge": "판매 · 소비자보호",
         "title": "예금오인 방지 · 만기 원금약정 설명의무 및 중도환매 고지 규제",
         "promNoteRule": "예금자보호법 비대상 명시 의무 · 약정금리 및 중도해지 차감이율 사전 고지 (중도해지 시에도 원금은 보전되나 약정이율 축소)",
@@ -3183,11 +3343,258 @@
       }
     ]
   },
-  "opportunityCostAssumptions": {
-    "includeExistingBalanceStepUp": true,
-    "newFundingMandatePct": 20,
-    "existingIncreasePctPoints": 10,
-    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다. 기본 150bp는 독립적인 사용자 시뮬레이션 가정이며 AAA 은행채 3년 비교 도해의 관측·가정 금리차 73.7bp와 구분합니다.",
-    "nominalGapAssumptionBp": 150
-  }
+  "promNoteDart202609": [
+    {
+      "key": "kis",
+      "financeCd": "0010129",
+      "corpCode": "00160144",
+      "firm": "한국투자증권",
+      "licensedAt": "2017-11",
+      "rceptNo": "20261113001340",
+      "assetsTril": 124.49,
+      "equityTril": 13.55,
+      "legalCap200Tril": 27.1,
+      "promNoteTril": 24.47,
+      "imaLiabTril": 3.08,
+      "imaAssetsTril": 3.25,
+      "imaLossReserveEok": 1579.5,
+      "rpSoldTril": 20.61,
+      "capRatioPct": 180.6,
+      "limitUsagePct": 90.3,
+      "opInc3QEok": 4045.7,
+      "netInc3QEok": 3040.2,
+      "opInc9MEok": 19887.3,
+      "netInc9MEok": 14774.8,
+      "cfsNetInc3QEok": 2817.7,
+      "cfsCtrlNetInc3QEok": 2824.2,
+      "cfsCtrlNetInc9MEok": 20097.9,
+      "consolNcrPct": 3974.1,
+      "intExp26H1FisisEok": 2904,
+      "effRate26H1FisisPct": 2.66
+    },
+    {
+      "key": "kb",
+      "financeCd": "0010106",
+      "corpCode": "00164876",
+      "firm": "KB증권",
+      "licensedAt": "2019-05",
+      "rceptNo": "20261116001123",
+      "assetsTril": 85.01,
+      "equityTril": 8.86,
+      "legalCap200Tril": 17.73,
+      "promNoteTril": 10.59,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 8.78,
+      "capRatioPct": 119.5,
+      "limitUsagePct": 59.7,
+      "opInc3QEok": 3814.2,
+      "netInc3QEok": -838.6,
+      "opInc9MEok": 14058.8,
+      "netInc9MEok": 7060.7,
+      "cfsNetInc3QEok": -591.4,
+      "cfsCtrlNetInc3QEok": -596.0,
+      "cfsCtrlNetInc9MEok": 7393.9,
+      "consolNcrPct": 3108.1,
+      "intExp26H1FisisEok": 2461,
+      "effRate26H1FisisPct": 4.53
+    },
+    {
+      "key": "mirae",
+      "financeCd": "0010094",
+      "corpCode": "00111722",
+      "firm": "미래에셋증권",
+      "licensedAt": "2021-05",
+      "rceptNo": "20261116002051",
+      "assetsTril": 121.24,
+      "equityTril": 10.59,
+      "legalCap200Tril": 21.17,
+      "promNoteTril": 10.36,
+      "imaLiabTril": 0.38,
+      "imaAssetsTril": 0.42,
+      "imaLossReserveEok": 194.8,
+      "rpSoldTril": 26.99,
+      "capRatioPct": 97.9,
+      "limitUsagePct": 48.9,
+      "opInc3QEok": 1788.4,
+      "netInc3QEok": 1006.9,
+      "opInc9MEok": 14369.8,
+      "netInc9MEok": 9550.1,
+      "cfsNetInc3QEok": -4055.9,
+      "cfsCtrlNetInc3QEok": -3940.7,
+      "cfsCtrlNetInc9MEok": 24981.2,
+      "consolNcrPct": 3661.5,
+      "intExp26H1FisisEok": 1366,
+      "effRate26H1FisisPct": 2.75
+    },
+    {
+      "key": "nh",
+      "financeCd": "0010101",
+      "corpCode": "00120182",
+      "firm": "NH투자증권",
+      "licensedAt": "2018-05",
+      "rceptNo": "20261113000872",
+      "assetsTril": 90.62,
+      "equityTril": 10.1,
+      "legalCap200Tril": 20.2,
+      "promNoteTril": 7.76,
+      "imaLiabTril": 0.64,
+      "imaAssetsTril": 0.67,
+      "imaLossReserveEok": 330.5,
+      "rpSoldTril": 13.34,
+      "capRatioPct": 76.8,
+      "limitUsagePct": 38.4,
+      "opInc3QEok": 4843.4,
+      "netInc3QEok": 3407.8,
+      "opInc9MEok": 16651.7,
+      "netInc9MEok": 11852.0,
+      "cfsNetInc3QEok": 3836.4,
+      "cfsCtrlNetInc3QEok": 3836.2,
+      "cfsCtrlNetInc9MEok": 13488.7,
+      "consolNcrPct": 3060.0,
+      "intExp26H1FisisEok": 1105,
+      "effRate26H1FisisPct": 2.61
+    },
+    {
+      "key": "kiwoom",
+      "financeCd": "0010136",
+      "corpCode": "00296290",
+      "firm": "키움증권",
+      "licensedAt": "2025-11",
+      "rceptNo": "20261113001559",
+      "assetsTril": 84.21,
+      "equityTril": 7.62,
+      "legalCap200Tril": 15.24,
+      "promNoteTril": 2.18,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 16.95,
+      "capRatioPct": 28.6,
+      "limitUsagePct": 14.3,
+      "opInc3QEok": 4536.4,
+      "netInc3QEok": 2149.4,
+      "opInc9MEok": 16793.9,
+      "netInc9MEok": 13364.1,
+      "cfsNetInc3QEok": 1778.1,
+      "cfsCtrlNetInc3QEok": 1778.5,
+      "cfsCtrlNetInc9MEok": 13342.9,
+      "consolNcrPct": 2267.5,
+      "intExp26H1FisisEok": 150,
+      "effRate26H1FisisPct": 3.29
+    },
+    {
+      "key": "hana",
+      "financeCd": "0010130",
+      "corpCode": "00113465",
+      "firm": "하나증권",
+      "licensedAt": "2025-12",
+      "rceptNo": "20261113001337",
+      "assetsTril": 69.42,
+      "equityTril": 7.11,
+      "legalCap200Tril": 14.22,
+      "promNoteTril": 1.19,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 14.48,
+      "capRatioPct": 16.7,
+      "limitUsagePct": 8.3,
+      "opInc3QEok": 1440.6,
+      "netInc3QEok": 930.8,
+      "opInc9MEok": 4653.8,
+      "netInc9MEok": 3163.4,
+      "cfsNetInc3QEok": 100.6,
+      "cfsCtrlNetInc3QEok": 103.1,
+      "cfsCtrlNetInc9MEok": 2833.9,
+      "consolNcrPct": 1745.3,
+      "intExp26H1FisisEok": 94,
+      "effRate26H1FisisPct": 3.42
+    },
+    {
+      "key": "shinhan",
+      "financeCd": "0010091",
+      "corpCode": "00138321",
+      "firm": "신한투자증권",
+      "licensedAt": "2025-12",
+      "rceptNo": "20261116000557",
+      "assetsTril": 56.32,
+      "equityTril": 5.93,
+      "legalCap200Tril": 11.85,
+      "promNoteTril": 0.45,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 12.15,
+      "capRatioPct": 7.5,
+      "limitUsagePct": 3.8,
+      "opInc3QEok": 767.7,
+      "netInc3QEok": 536.4,
+      "opInc9MEok": 8503.7,
+      "netInc9MEok": 6107.6,
+      "cfsNetInc3QEok": 652.9,
+      "cfsCtrlNetInc3QEok": 652.9,
+      "cfsCtrlNetInc9MEok": 6429.5,
+      "consolNcrPct": 2189.2,
+      "intExp26H1FisisEok": 11,
+      "effRate26H1FisisPct": 3.14
+    },
+    {
+      "key": "samsung",
+      "financeCd": "0010119",
+      "corpCode": "00104856",
+      "firm": "삼성증권",
+      "licensedAt": "2026-09",
+      "rceptNo": "20261116001244",
+      "assetsTril": 77.26,
+      "equityTril": 8.47,
+      "legalCap200Tril": 16.94,
+      "promNoteTril": 0.24,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 17.03,
+      "capRatioPct": 2.8,
+      "limitUsagePct": 1.4,
+      "opInc3QEok": 4140.9,
+      "netInc3QEok": 3224.4,
+      "opInc9MEok": 16199.9,
+      "netInc9MEok": 12022.3,
+      "cfsNetInc3QEok": 3527.7,
+      "cfsCtrlNetInc3QEok": 3527.7,
+      "cfsCtrlNetInc9MEok": 12918.5,
+      "consolNcrPct": 2598.7,
+      "intExp26H1FisisEok": null,
+      "effRate26H1FisisPct": null
+    },
+    {
+      "key": "meritz",
+      "financeCd": "0010099",
+      "corpCode": "00163682",
+      "firm": "메리츠증권",
+      "licensedAt": "2026-09",
+      "rceptNo": "20261116001503",
+      "assetsTril": 80.97,
+      "equityTril": 8.47,
+      "legalCap200Tril": 16.93,
+      "promNoteTril": 0.0,
+      "imaLiabTril": 0.0,
+      "imaAssetsTril": 0.0,
+      "imaLossReserveEok": 0.0,
+      "rpSoldTril": 19.05,
+      "capRatioPct": 0.0,
+      "limitUsagePct": 0.0,
+      "opInc3QEok": 2136.3,
+      "netInc3QEok": 1725.6,
+      "opInc9MEok": 8623.8,
+      "netInc9MEok": 6945.5,
+      "cfsNetInc3QEok": 2064.2,
+      "cfsCtrlNetInc3QEok": 2031.0,
+      "cfsCtrlNetInc9MEok": 7128.0,
+      "consolNcrPct": 1604.8,
+      "intExp26H1FisisEok": null,
+      "effRate26H1FisisPct": null
+    }
+  ]
 }

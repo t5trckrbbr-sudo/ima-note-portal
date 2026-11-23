@@ -83,11 +83,14 @@ test('invalid inputs and an exhausted numerator return a clear error without inf
   }
 });
 
-test('maturity view places the two old-NCR curves after the timeline with source and question links', () => {
+test('maturity view shows the OpenDART balance and first four maturities; the separate NCR module retains its sources', () => {
   const data = JSON.parse(fs.readFileSync(new URL('../public/data.json',import.meta.url),'utf8'));
-  const html = renderDetail('ima-maturity',data);
-  assert(html.indexOf('초기 IMA 4개 회차 · 만기 타임라인')<html.indexOf('id="ima-old-ncr-panel"'));
-  assert(html.indexOf('id="ima-old-ncr-panel"')<html.indexOf('발행어음과 IMA, 어떤 점이 다를까?'));
+  const maturity = renderDetail('ima-maturity', data);
+  assert(maturity.includes('초기 IMA 4개 회차 · 만기 타임라인 (2027.12 ~ 2028.04)'));
+  assert(maturity.includes('4.09조 원'));
+  assert(maturity.includes('2.60조 원'));
+  const html = renderImaOldNcr();
+  assert(html.includes('id="ima-old-ncr-panel"'));
   assert(html.includes('?q=guide-ima-old-ncr-capital#questions'));
   assert(html.includes('data-xray="ima-old-ncr"'));
   assert(html.includes('aria-labelledby="ima-ncr-chart-title ima-ncr-chart-desc"'));
