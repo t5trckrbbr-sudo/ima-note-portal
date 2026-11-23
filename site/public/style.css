@@ -15,7 +15,7 @@
 @media(min-width:701px) and (max-width:1000px){.brand-name{font-size:14px;letter-spacing:-1px}.brand-name small{font-size:4.6px;letter-spacing:.5px}.brand{gap:3px}.brand-mark{width:33px;padding:8px;gap:3px;flex-shrink:0}}
 @media(max-width:700px){.brand-name{font-size:21px}.brand-name small{font-size:6.5px}}
 
-/* Curiosity-driven hybrid UX: inline drilldowns, synchronized entity lens, RAROC switcher */
+/* Curiosity-driven hybrid UX: inline drilldowns, synchronized company views */
 [role="button"]:focus-visible{outline:2px solid #3b8eea;outline-offset:-2px}
 .drill-table .drill-summary-row{cursor:pointer;transition:background .15s}
 .drill-table .drill-summary-row:hover{background:#f0f6fe}
@@ -44,17 +44,7 @@
 .lens-btn:hover{color:var(--ink)}
 .lens-btn.active{background:#fff;color:var(--teal);font-weight:700;box-shadow:0 1px 3px #152e3c14}
 .sub-lens-card{background:#f7fafe;border:1px solid #d9e5f5;border-radius:8px;padding:15px 16px}
-.sub-lens-card.warn{background:#fdf9f3;border-color:#efe1c9}
 .formula-pill{display:block;margin-top:8px;padding:7px 10px;background:#fff;border:1px solid #d2e2f7;border-radius:5px;font-size:11px;color:#193d48;font-family:'DM Sans','Noto Sans KR',monospace;word-break:break-word;white-space:normal}
-#vc-raroc-lab .data-table td:first-child{white-space:normal;min-width:220px;max-width:320px}
-.strategy-card{border:1px solid var(--border);border-radius:9px;padding:18px 20px;background:#fafcfd;cursor:pointer;transition:border-color .18s,box-shadow .18s,background .18s}
-.strategy-card.valid{background:#f5f8fe;border-color:#c5dbf8}
-.strategy-card.invalid{background:#fdf8f7;border-color:#efd7d3}
-.strategy-card.focused{box-shadow:0 4px 16px #004ea216}
-.strategy-card.valid.focused{border-color:var(--teal)}
-.strategy-card.invalid.focused{border-color:var(--red)}
-.mech-list{margin:0;padding-left:18px;display:grid;gap:8px;font-size:11.5px;line-height:1.78;color:#2f4350}
-.metric.metric-highlight{background:#f0f6fe;border-color:#bdd5f7}
 .pool-detail-box{font-size:12px;line-height:1.8;color:#2d424f;background:#fff;border-left:3px solid var(--teal);padding:11px 14px;border-radius:0 6px 6px 0}
 .sync-highlight-panel{border-color:#a8c7f5;box-shadow:0 4px 18px #004ea20d}
 .grid4-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
@@ -127,15 +117,10 @@ tr[data-xray]{cursor:pointer}
 @media(max-width:1000px){.trail-link{max-width:105px}}
 @media(max-width:700px){.xray-drawer{inset:auto 0 0 0;width:100%;max-height:85vh;border-left:0;border-top:1px solid var(--border);border-radius:14px 14px 0 0;transform:translateY(104%)}.xray-drawer.open{transform:translateY(0)}}
 
-/* P-CBO Clean Benchmark, EL/RAROC Thought-Flow Waterfall, Samsung Media Sim & Regulatory Matrix */
+/* AAA bank yield benchmark, Samsung scenarios and regulatory matrix */
 .vc-diagram-box{border:1px solid #d2e2f7;border-radius:10px;padding:16px 18px;background:linear-gradient(180deg,#fafcff 0%,#f5f8fe 100%);margin:14px 0 18px}
-.vc-diagram-box.waterfall-theme{border-color:#dde5ef;background:linear-gradient(180deg,#fcfdff 0%,#f6f9fc 100%)}
 .vc-svg-frame{width:100%;overflow-x:auto;margin-top:10px;border:1px solid #e5edf0;border-radius:8px;background:#fff;padding:10px 8px}
 .vc-svg-frame svg{display:block;width:100%;min-width:740px;height:auto}
-.pd-breakdown-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
-.pd-formula-chip{background:#fff;border:1px solid #e2ebf0;border-radius:7px;padding:10px 12px;font-size:11.5px;line-height:1.55}
-.pd-formula-chip small{display:block;font-size:10px;color:var(--muted);margin-bottom:3px}
-.pd-formula-chip strong{font-size:16px;color:var(--ink)}
 .samsung-sim-box{border:1px solid #cddff7;background:#f4f8fe;border-radius:9px;padding:14px 16px;margin:14px 0 16px}
 .samsung-fact-list{margin:8px 0 10px;padding-left:18px;display:grid;gap:4px;font-size:11.5px;line-height:1.62;color:#2b3f4c}
 .samsung-sim-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px;border-top:1px dashed #bdd5f7}
@@ -144,8 +129,6 @@ tr[data-xray]{cursor:pointer}
 .reg-matrix-table td{vertical-align:top;text-align:left!important;font-size:11.5px;line-height:1.62;padding:12px 11px}
 .reg-matrix-table th{text-align:left!important;white-space:nowrap}
 .reg-statute-tag{display:inline-block;margin-top:5px;padding:2px 7px;border-radius:4px;background:#eef3f8;color:#23496d;font-size:10.5px;font-weight:600}
-@media(max-width:960px){.pd-breakdown-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.pd-breakdown-strip{grid-template-columns:1fr}}
 /* ==========================================================================
    KIS CI Option A (Deep Navy Sidebar #0A1E3C + Royal Blue #004EA2 + Gold #E88300)
    & Redesigned #map (Top-Down Money Flow + B-1 3-Card Pure SVG Infographic)
@@ -242,3 +225,292 @@ tr[data-xray]{cursor:pointer}
 .ima-ncr-table th[scope=row]{text-align:left;font-weight:500;background:#fafcfd}
 .ima-ncr-table small{display:inline-block;font-size:10px;color:#637a86}
 @media(max-width:700px){.ima-ncr-inputs{grid-template-columns:1fr}.ima-ncr-result>strong{font-size:15px}.ima-ncr-risk-label{font-size:12px}.ima-ncr-risk-label output{font-size:23px}.ima-ncr-panel .source{line-height:1.9}.ima-ncr-table th,.ima-ncr-table td{padding:10px 8px}}
+
+/* Bear flattening and venture capital supply */
+#funding-bear-strategy, #vc-addressable-market {
+  scroll-margin-top: 95px;
+}
+
+.bf-strategy {
+  margin-top: 24px;
+  padding: clamp(14px, 2.4vw, 24px);
+  border: 1px solid #c9d9ed;
+  border-radius: 12px;
+  background: #f4f8ff;
+}
+
+.bf-heading h3 {
+  font-size: clamp(18px, 2.2vw, 23px);
+  line-height: 1.4;
+  color: var(--kis-navy);
+}
+
+.bf-heading p, .bf-choice p, .vc-policy p, .vc-market-basis {
+  margin-top: 8px;
+  line-height: 1.65;
+}
+
+.bf-evidence-grid, .vc-market-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.bf-spread-chart, .bf-operating-context, .bf-choice, .vc-evidence {
+  margin: 0;
+  padding: clamp(12px, 1.7vw, 18px);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+  min-width: 0;
+}
+
+.bf-spread-chart figcaption, .vc-demand figcaption {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bf-spread-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.bf-spread-result strong {
+  color: var(--kis-crimson);
+  font-size: 31px;
+  letter-spacing: -.04em;
+}
+
+.bf-bar-row {
+  margin-top: 8px;
+}
+
+.bf-bar-row > div:first-child, .vc-demand-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.bf-bar-row b, .vc-demand-label strong, .vc-supply strong {
+  color: var(--kis-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.bf-track, .vc-demand-track {
+  display: flex;
+  height: 10px;
+  background: #eaf0f8;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.bf-track span, .vc-demand-other, .vc-demand-legend span:last-child::before {
+  background: var(--kis-blue);
+}
+
+.bf-bar-row:nth-of-type(2) .bf-track span, .vc-demand-cap, .vc-demand-legend span:first-child::before {
+  background: #94afd2;
+}
+
+.bf-spread-chart p, .bf-operating-context p, .vc-demand-row p, .vc-supply p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.bf-operating-context {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.bf-operating-context > div {
+  display: grid;
+  grid-template-columns: minmax(72px, 24%) 1fr;
+  align-items: start;
+  gap: 8px;
+}
+
+.bf-operating-context > div + div, .vc-supply > div + div {
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.bf-operating-context strong {
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.2;
+  color: var(--kis-blue);
+  letter-spacing: -.04em;
+}
+
+.bf-operating-context p {
+  margin-top: 2px;
+}
+
+.bf-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.bf-choice {
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid var(--kis-blue);
+}
+
+.bf-choice:nth-child(3) {
+  border-top-color: var(--kis-gold);
+}
+
+.bf-choice > span {
+  color: var(--kis-blue);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.bf-choice h4, .bf-decision h4 {
+  font-size: 15px;
+  margin: 0;
+  color: var(--kis-navy);
+}
+
+.bf-choice p {
+  font-size: 13px;
+}
+
+.bf-choice .bf-check {
+  padding-top: 10px;
+  margin-top: auto;
+}
+
+.bf-check b {
+  display: block;
+  color: var(--kis-blue);
+}
+
+.bf-decision {
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 9px;
+  background: #e7f0fd;
+}
+
+.bf-decision > div, .vc-demand-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 8px 0;
+}
+
+.bf-decision span {
+  padding: 3px 8px;
+  background: #fff;
+  border: 1px solid #bacde7;
+  border-radius: 5px;
+  color: var(--kis-navy);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bf-sources {
+  margin: 14px 0;
+  font-size: 13px;
+}
+
+.bf-sources summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--kis-blue);
+}
+
+.bf-sources ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+
+.bf-sources li + li {
+  margin-top: 5px;
+}
+
+.bf-sources a, .vc-supply a {
+  color: var(--kis-blue);
+  text-decoration: underline;
+}
+
+.vc-demand-row, .vc-supply > div + div {
+  margin-top: 12px;
+}
+
+.vc-demand-track {
+  height: 14px;
+}
+
+.vc-demand-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.vc-demand-legend span::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.vc-supply h3, .vc-policy h3 {
+  font-size: 15px;
+}
+
+.vc-supply strong {
+  font-size: 25px;
+}
+
+.vc-supply a {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.vc-market-basis {
+  padding: 6px 0;
+}
+
+.vc-policy {
+  margin-top: 12px;
+  padding: 14px;
+  background: #edf4ff;
+  border-left: 3px solid var(--kis-blue);
+  border-radius: 6px;
+}
+
+.vc-policy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.vc-policy .btn {
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .bf-choices { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .bf-evidence-grid, .vc-market-grid, .vc-policy-grid { grid-template-columns: 1fr; }
+}

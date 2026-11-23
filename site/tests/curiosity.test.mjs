@@ -81,32 +81,12 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
     assert(!mmHtml.includes('undefined'));
   }
 
-  for (const lens of ['nominal', 'el_adjusted', 'raroc_eva', 'bundled_pkg']) {
-    for (const vehicle of ['note', 'ima']) {
-      explorerState.vcLens = lens;
-      explorerState.vcVehicle = vehicle;
-      explorerState.vcPkgYear = '2028';
-      const vcHtml = renderVentureDeepDive(D);
-      assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
-      assert(vcHtml.includes('id="vc-waterfall-svg"'));
-      assert(vcHtml.includes('AAA 은행채 3년'));
-      assert(!vcHtml.includes('data-pcbo-mode'));
-      assert(vcHtml.includes('PD · LGD 산정 근거 공개'));
-      assert(vcHtml.includes('모험자본 취득에 따른 기회비용'));
-      assert(vcHtml.includes('선제적 확보를 통한 경쟁자 견제 타당성'));
-      assert(vcHtml.includes('인정 자산군별 현재 규모 vs 잠재 시장규모'));
-      assert(!vcHtml.includes('NaN'));
-      assert(!vcHtml.includes('undefined'));
-    }
-  }
-
-  for (const wf of ['bbb_private', 'vc_mezz', 'a_cap_debt']) {
-    explorerState.vcWaterfallAsset = wf;
-    const vcHtml = renderVentureDeepDive(D);
-    assert(vcHtml.includes('id="vc-waterfall-svg"'));
-    assert(!vcHtml.includes('NaN'));
-  }
-  explorerState.vcWaterfallAsset = 'bbb_private';
+  const vcHtml = renderVentureDeepDive(D);
+  assert(vcHtml.includes('id="pcbo-benchmark-svg"'));
+  assert(vcHtml.includes('AAA 은행채 3년'));
+  assert(vcHtml.includes('id="vc-addressable-market"'));
+  assert(vcHtml.includes('data-qa-jump="guide-sizing-growth"'));
+  assert(!/vc-waterfall|data-pcbo-mode|vc-asset:|NaN|undefined/.test(vcHtml));
 
   // Samsung scenario presets & reset check
   setSamsungScenario('wm3');
@@ -214,7 +194,6 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
     ...D.householdWealthAndIntl2026.krQuarterlyFinSeries.map(r => `hw-q:${r.period}`),
     ...D.householdWealthAndIntl2026.krAnnualBalanceSheet.map(r => `hw-y:${r.year}`),
     ...D.shortYieldCurveAndMaturity.curves.map((_, i) => `curve:${i}`),
-    ...D.ventureCapitalChain2027.assetRarocBenchmarks.map((_, i) => `vc-asset:${i}`),
     ...D.regulatoryComplianceMatrix2027.rules.map(r => `reg-rule:${r.idx}`)
   ];
 

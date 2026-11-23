@@ -6,7 +6,7 @@ const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDig
 const QA_DIGEST = {
   'guide-2027-funding-outlook-bear-flattening': {
     title: '2027년 수신환경(3대 악화 vs 3대 강화)과 ‘베어 플랫’ 종합 전망·대응 전략은?',
-    summary: '외형은 85조(수정 전망)로 확장 우위이나, 상반기 금리인상·특판·베어 플랫(3Y−1Y +11.1bp)이 겹쳐 마진은 상박하후 경로가 유력합니다. 고점 1년물 Lock-in을 피하고 단기(≤3M) 조달을 유지하는 ALM이 핵심입니다.'
+    summary: '85조 원은 2027년 기본 전망입니다. 한국투자증권은 조달 비용과 자산 만기를 맞추고, 단기 조달비용·고객 잔액·적격 투자처가 확인될 때 수신 확대를 검토합니다.'
   },
   'guide-yield-curve-short-funding': {
     title: '발행어음 수익률곡선은 왜 가파르며, 3개월 이하(63.4%)·수시물 비중은 어느 정도인가요?',
@@ -22,7 +22,7 @@ const QA_DIGEST = {
   },
   'guide-funding-rate-spread-risk': {
     title: '조달금리 경쟁에서 ‘기준금리 +50bp’ 경보 기준과 만기 분산은 왜 중요한가요?',
-    summary: '평시 어음 마진(150~200bp)은 기준금리+30bp 조달을 전제로 합니다. 평균 조달단가가 +50bp를 넘으면 모험자본 20% 의무(그림자 조세 20~30bp)와 겹쳐 한계 RAROC가 손익분기 아래로 훼손됩니다.'
+    summary: '평시 어음 마진 150~200bp는 기준금리 대비 조달비용 +30bp 내외를 전제한 모형입니다. 조달금리 상승과 모험자본 의무가 겹치면 신규 수신의 이익이 줄어듭니다.'
   },
   'guide-pension-self-product-ban': {
     title: '퇴직연금 ‘자사 상품 편입 제한’이란 무엇이며, 왜 501.4조 연금이 핵심 변수인가요?',
@@ -74,7 +74,7 @@ const QA_DIGEST = {
   },
   'guide-sizing-growth': {
     title: '모험자본 조달 병목과 자본효율: 2027년 수신을 어디까지 늘려야 하나요(Q*)?',
-    summary: '2027년 20% 의무 중 중견·A급 30% 상한(총자산의 6%)을 채워도 나머지 14%는 비A급 적격 모험자본으로 조달해야 합니다. 적격 딜 파이프라인과 한계 RAROC가 조달·자본비용을 상회하는 구간(MR=MC)까지만 확장해야 합니다.'
+    summary: '2027년 수신 85조 가정의 모험자본 의무는 17조 원입니다. 중견·A급을 상한까지 채워도 다른 인정자산이 11.9조 원 필요합니다. VC·신기사 소싱과 함께 성장기업에 신규 자금을 공급하는 인정자산의 확대를 건의할 필요가 있습니다.'
   }
 };
 
@@ -274,37 +274,6 @@ export function resolveXraySpec(specKey, D, context = {}) {
     };
   }
 
-  if (kind === 'vc-asset' && vc) {
-    const r = vc.assetRarocBenchmarks[Number(id)];
-    if (!r) return null;
-    const base = vc.assetRarocBenchmarks[0];
-    const isProxy = r.id === 'pcbo_senior';
-    const yieldText = fmt(r.yieldPct, isProxy ? 3 : 2);
-    return {
-      eyebrow: `RAROC & EVA BREAKDOWN · ${vc.observedYieldDate}`,
-      title: `${r.asset} 단위 수익성·자본비용 해부`,
-      badge: r.capTag,
-      formula: `명목(${yieldText}%) − 조달(${fmt(vc.fundingCostBasePct)}%) − EL(${r.elCostBp}bp) − 자본비용(어음 ${r.capCostNoteBp}bp / IMA ${r.capCostImaBp}bp)`,
-      rows: [
-        ['대표 명목 수익률', `${yieldText}%${isProxy ? ' · AAA 은행채 3년 비교 기준' : ''}`],
-        ['기준 조달원가 차감 명목마진', `+${r.grossSpreadBp}bp (조달원가 ${fmt(vc.fundingCostBasePct)}% 가정)`],
-        ['PD × LGD + 심사원가 분해', r.pdPct != null ? `PD ${fmt(r.pdPct)}% × LGD ${r.lgdPct}% = 순수EL ${r.pureElBp}bp + 심사원가 ${r.opsCostBp}bp (합계 −${r.elCostBp}bp)` : `−${r.elCostBp}bp`],
-        ['신NCR 신용위험값 (별표 5)', `위험값(RW) ${r.ncrRwPct}% · 목표 CoE ${fmt(vc.targetCoePct, 1)}%`],
-        ['어음 계정 순EVA (RW 100% 반영)', `${r.evaNoteBp >= 0 ? '+' : ''}${r.evaNoteBp}bp (정상 IB 대비 기회비용 ${fmt(base.evaNoteBp - r.evaNoteBp, isProxy ? 1 : 0)}bp)`],
-        ['IMA 계정 순EVA (RW 50% 감경)', `${r.evaImaBp >= 0 ? '+' : ''}${r.evaImaBp}bp (정상 IB 대비 기회비용 ${fmt(base.evaImaBp - r.evaImaBp, isProxy ? 1 : 0)}bp)`]
-      ],
-      source: isProxy
-        ? '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13) · AAA 은행채 3년 평가수익률</a> · 위험값과 비용은 기존 P-CBO 모형 가정'
-        : 'KOFIA 시가평가 수익률(2026-11-13) · 금융투자업규정 시행세칙 별표 5(신용위험값) · 금융투자업규정 제3-24조의4④(IMA 순자본비율 특례)',
-      caveat: `${r.elBasisNote || r.note}`,
-      qas: makeQaItems(['guide-sizing-growth', 'guide-pcbo-assumption']),
-      actions: [
-        { label: 'AAA 은행채 도해 & EL·RAROC 워터폴 보기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
-        { label: '7대 인정 자산군 잠재 시장규모 보기 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
-      ]
-    };
-  }
-
   if (kind === 'reg-rule' && D.regulatoryComplianceMatrix2027) {
     const r = D.regulatoryComplianceMatrix2027.rules.find(x => String(x.idx) === String(id));
     if (!r) return null;
@@ -349,8 +318,8 @@ export function resolveXraySpec(specKey, D, context = {}) {
         caveat: '정상 IB 4.85%와 조달원가 3.15%는 기존 설명용 모형 가정입니다. 같은 날짜의 은행채 평가수익률을 비교 기준으로 대입한 조건부 시산이며, 투자자별 실현수익이나 P-CBO 기회비용의 실측치가 아닙니다. AAA 등급은 무위험 보장을 뜻하지 않습니다.',
         qas: makeQaItems(['guide-pcbo-assumption', 'guide-sizing-growth']),
         actions: [
-          { label: 'AAA 은행채 비교 도해 & EL 워터폴 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
-          { label: '7대 인정 자산군 잠재 시장규모 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
+          { label: 'AAA 은행채 비교 도해 보기 →', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
+          { label: '모험자본 수요·공급과 인정 대상 확대 ↓', tab: 'invest', scrollTo: 'vc-addressable-market' }
         ]
       };
     })(),
@@ -467,7 +436,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: '회사별 NIM 시뮬레이터(#nim-lab) 직접 조정 →', tab: 'funding', scrollTo: 'nim-lab', primary: true },
-        { label: '자본비용 반영 RAROC·EVA 비교(#invest) →', tab: 'invest', scrollTo: 'vc-raroc-lab' }
+        { label: '모험자본 기회비용 비교(#invest) →', tab: 'invest', scrollTo: 'vc-raroc-lab' }
       ]
     },
     'kpi:bear-volume': {
@@ -490,19 +459,19 @@ export function resolveXraySpec(specKey, D, context = {}) {
     },
     'kpi:bear-margin': {
       eyebrow: '2027 MARGIN PATH · 조달원가 및 NIM 경로',
-      title: '2027년 조달원가 · NIM 경로: 상박하후 (上薄下厚)',
+      title: '단기 조달원가와 NIM은 어떤 조건에서 완화될까?',
       badge: '1년물 Lock-in 경계',
-      formula: '1H27(금리인상 전가 + 후발사 특판 압박) → 2H27(63.4% 초단기물 하향 리프라이싱)',
+      formula: '업권 발행어음의 63.4%가 3개월 이하 → 단기금리 상승과 하락이 조달원가에 빠르게 반영될 수 있음',
       rows: [
         ['상반기(1H27) 마진 압박 요인', '기준금리 3.25~3.50% 도달 가정 시 1~3개월 내 조달원가 +35~55bp 즉각 반영'],
         ['피해야 할 함정 (Cost Lock-in)', '고점 4.3~4.5%대 1년물 특판 과다 조달 시 2028년 상반기까지 역마진 고착(KB 4.53% 사례)'],
         ['하반기(2H27) 반전 메커니즘', '금리 안정 진입 시 63.4% 초단기 부채가 가장 빠른 원가 하락 수단으로 작동']
       ],
       source: '금감원 발행어음 만기분포(2026.1Q) · FISIS SF321 실효금리 · KOFIA 채권 커브 실증',
-      caveat: '상반기 피크 금리 구간에서는 부채는 짧게(≤3M), 우량 기업여신 운용자산은 2~3년 고정금리로 길게 잡는 ALM이 유리합니다.',
+      caveat: '1년물 조달의 필요액을 먼저 정하고, 긴 자산에는 만기를 맞춘 조달비용·회수 일정·유동성 여력을 대조합니다. 하반기 완화는 단기금리 하락을 전제로 합니다.',
       qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-funding-rate-spread-risk']),
       actions: [
-        { label: '리스크점검 · 베어 플랫 체크리스트 →', tab: 'pension-risk', primary: true },
+        { label: '한국투자증권의 조달·운용·만기 전략 →', tab: 'funding', scrollTo: 'funding-bear-strategy', primary: true },
         { label: '단기 수익률곡선 패널 바로 보기 ↓', tab: 'funding', scrollTo: 'short-curve-panel' }
       ]
     },
@@ -512,16 +481,16 @@ export function resolveXraySpec(specKey, D, context = {}) {
       badge: '2026-11-13 민평 기준',
       formula: '국고 3년(3.750%) − 국고 1년(3.639%) = +11.1bp (2026.2Q +50.2bp 대비 −39.1bp)',
       rows: [
-        ['2026.2Q 말 (기준금리 2.50%)', '국고 1Y 3.120% / 3Y 3.622% → 3Y−1Y +50.2bp'],
+        ['2026.2Q 평균 (기준금리 2.50%)', '국고 1Y 3.120% / 3Y 3.622% → 3Y−1Y +50.2bp'],
         ['2026-11-13 (기준금리 3.00%)', '국고 1Y 3.639% (+51.9bp 급등) / 3Y 3.750% (+12.8bp) → +11.1bp'],
         ['금융채 AA0 · 회사채 AA- (3Y−1Y)', '금융채 AA0 +22.1bp (4.362%−4.141%) · 회사채 AA- +17.2bp (4.417%−4.245%)'],
         ['과거 금리 고점기(2023.02~2024.10) 대조', '기준금리 3.50% 당시 국고 3Y−1Y 평균 −0.2bp (장단기 역전)']
       ],
       source: '금융투자협회(KOFIA) 채권정보센터 최종호가·시가평가 수익률 일별 원장(2018.01~2026.11.13)',
-      caveat: '단기금리가 중기금리보다 빠르게 올라 무위험 기간 캐리(Term Carry)가 소멸했으므로, 우량 크레딧 스프레드 및 IMA 자본효율로 마진을 방어해야 합니다.',
+      caveat: '단기금리가 더 빠르게 오르며 만기 연장에서 얻는 추가 금리가 줄었습니다. 회사의 마진은 실제 조달비용과 운용수익률을 비교해 판단합니다.',
       qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-yield-curve-short-funding']),
       actions: [
-        { label: '베어 플랫 레짐 대조표 확인 ↑', tab: 'funding', scrollTo: 'funding-outlook-2027', primary: true },
+        { label: '기간스프레드와 당사 대응 전략 →', tab: 'funding', scrollTo: 'funding-bear-strategy', primary: true },
         { label: 'Q&A · 베어 플랫 역학 상세 읽기 →', qa: 'guide-2027-funding-outlook-bear-flattening' }
       ]
     },
@@ -782,14 +751,14 @@ export function resolveXraySpec(specKey, D, context = {}) {
       eyebrow: 'MARGINAL ECONOMICS · 최적 수신 규모 Q*',
       title: '한계수익(MR) = 한계비용(MC) 균형과 어음·IMA 분업',
       badge: '경제학적 의사결정 모형',
-      formula: 'MR(한계 운용수익 − EL) = MC(한계 조달금리 + 모험자본 그림자 조세 + 신NCR 자본비용)',
+      formula: '추가 운용수익과 추가 조달·운용 비용을 비교',
       rows: [
-        ['한계수익(MR)이 체감하는 이유', '수신 규모가 커질수록 우량 AA~A급 딜을 채운 뒤 비A급 모험자본(14~17.5%) 비중을 늘려야 함'],
-        ['한계비용(MC)이 체증하는 이유', '점유율 확대용 특판 금리(+70~90bp) + 신NCR 위험액 가산(어음 100%) + 유동성 버퍼 비용'],
-        ['Q*를 오른쪽으로 넓히는 두 가지 열쇠', '① 상위 VC·사모신용 오리지네이션(MR 방어) ② 폐쇄형 IMA 위험액 50% 감경 활용(MC 절감)']
+        ['운용', '추가 수신을 집행할 수 있는 적격 딜과 해당 딜의 수익·회수 일정 확인'],
+        ['조달', '특판 등 추가 조달의 실효금리와 만기, 유동성 여력 점검'],
+        ['규모', '추가 운용수익이 조달·운용 비용을 보상하는 범위에서 수신 규모 결정']
       ],
-      source: '원문 Module C 개념 모형 및 대시보드 패키지 한계이익(규제 그림자 조세) 시뮬레이션',
-      caveat: '회사별 내부 한계 딜 파이프라인과 자본비용 계수가 비공개이므로 단일 정량 Q*(조 원)를 확정하지 않고 패키지 마진 범위로 판단합니다.',
+      source: '원문 Module C 한계수익과 한계비용 개념 모형',
+      caveat: '그래프 좌표는 설명용입니다. 회사별 딜 조건과 조달원가를 확인한 뒤 실제 수신 규모를 판단합니다.',
       qas: makeQaItems(['guide-sizing-growth', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: '수신 1조 패키지 한계이익 렌즈 열기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },

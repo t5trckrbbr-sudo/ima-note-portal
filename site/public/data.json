@@ -1139,7 +1139,7 @@
       3.5
     ],
     "volumeVerdict": "확장 우위 (발행어음 80조 · IMA 포함 85조, 메리츠 목표 반영; 원문 합산 83조)",
-    "marginVerdict": "상박하후 (1H 원가·마진 압박 → 2H 완화)",
+    "marginVerdict": "상반기 원가 압박 시나리오 · 단기 조달금리 안정 시 하반기 완화 가능",
     "headwinds": [
       {
         "title": "사업자 증가 및 키움·하나·신한 2년차 본격 확대",
@@ -1174,7 +1174,7 @@
         "detail": "최종금리 확인 후 단기 시장금리 상단이 닫히고 초기 특판전이 진정되면서, 63.4% 초단기 만기 구조가 하반기에는 가장 빠른 조달단가 하향 리프라이싱 수단으로 반전됨."
       }
     ],
-    "selfBrakeNote": "2027년 모험자본 의무 상향(10%→20%) 및 부동산 한도 축소(15%→10%)로 인해 기업금융 딜 소싱 역량이 부족한 증권사는 역마진을 피하기 위해 무분별한 고금리 수신 확대를 자체 제어(Self-Brake)하게 됩니다.",
+    "selfBrakeNote": "적격 자산 확보와 회수 일정이 확인된 범위에서 수신을 늘립니다. 모험자본 의무비율이 오를수록 운용처 확보가 수신 확대의 전제가 됩니다.",
     "bearFlatteningRegimes": [
       {
         "regime": "2026.1Q 평균 (기준 2.50% 안정기)",
@@ -1190,7 +1190,8 @@
         "ktb3m1y3y": "2.66 / 3.12 / 3.62%",
         "ktb3y1yBp": "+50.2bp",
         "finAa01y3y": "3.56 / 4.23% (+67.1bp)",
-        "corpAam1y3y": "3.59 / 4.26% (+67.2bp)"
+        "corpAam1y3y": "3.59 / 4.26% (+67.2bp)",
+        "ktbSpreadBp": 50.2
       },
       {
         "regime": "2026-11-13 최신 (기준 3.00%)",
@@ -1198,7 +1199,8 @@
         "ktb3m1y3y": "3.21 / 3.64 / 3.75%",
         "ktb3y1yBp": "+11.1bp (3Y−2Y +1.0bp)",
         "finAa01y3y": "4.14 / 4.36% (+22.1bp)",
-        "corpAam1y3y": "4.25 / 4.42% (+17.2bp)"
+        "corpAam1y3y": "4.25 / 4.42% (+17.2bp)",
+        "ktbSpreadBp": 11.1
       },
       {
         "regime": "과거 고점기 23.02~24.10 (기준 3.50%)",
@@ -1216,12 +1218,7 @@
         "finAa01y3y": "4.25~4.45 / 4.40~4.60%",
         "corpAam1y3y": "4.35~4.55 / 4.50~4.70%"
       }
-    ],
-    "almStrategySummary": {
-      "h1Liability": "금리 피크(2Q) 구간 1년물 고금리 특판 Lock-in 엄격 자제 · 수시형 CMA 및 3개월 이하(60%+) 유지로 하반기 원가 하락 탄력성 보존(장기 조달은 공모 금융채 AA0 2~3Y 또는 IMA 활용)",
-      "h1Asset": "글로벌 불확실성·금리 고점으로 크레딧 스프레드가 확대된 우량 기업여신·회사채(AA-~A+, 2~3년 고정금리) 선제 편입(Peak Yield Fix)",
-      "h2Focus": "초단기 부채 리프라이싱을 통한 NIM 회복 · 퇴직연금(규정 개정 시)·ISA 코어 수신 확대 및 2027.12 한국투자 IMA 1호(1.10조) 만기 차환 관리"
-    }
+    ]
   },
   "fundingForecast2027": {
     "updatedAt": "2026-11-17",
@@ -1838,167 +1835,7 @@
   "ventureCapitalChain2027": {
     "observedYieldDate": "2026-11-13",
     "fundingCostBasePct": 3.15,
-    "targetCoePct": 11.0,
     "fscBaselineNote": "금융위 공식 진단(2025.04.09): 2024.09 말 종투사 총자산 대비 모험자본 비중은 2.23%(12.8조 원)에 그친 반면 부동산 PF 채무보증 수익 비중은 48.4%에 편중. 이에 따라 2027년 20%·2028년 25% 의무화 및 중견·A등급 채권 30% 인정 상한을 신설.",
-    "opportunityCostLenses": [
-      {
-        "id": "nominal",
-        "badge": "방식 ① · 현행 기본식",
-        "title": "명목 스프레드 단순 차감법",
-        "formula": "OC = 정상 IB 가정수익률 − 비교 자산수익률 (AAA 은행채 3년 대용: 4.85% − 4.113% = 73.7bp)",
-        "bestFor": "금리 수준이 확인되는 비교 기준을 사용한 명목 차이의 조건부 시산. 상단 계산기 150bp는 별도의 사용자 가정이며 관측 금리차가 아님",
-        "distortion": "위험·유동성·비용이 서로 다른 자산의 명목금리 차이로 실제 기회비용을 확정할 수 없음. 은행채는 모험자본 인정자산의 수익률 대용값일 뿐 인정 여부나 P-CBO 실측치를 뜻하지 않음",
-        "verdict": "단순 보완재 한정 보조지표"
-      },
-      {
-        "id": "el_adjusted",
-        "badge": "방식 ② · 여신심사 기준",
-        "title": "신용손실(EL) · 실사원가 조정법",
-        "formula": "OC = (s_정상 − EL_정상) − (s_모험 − PD×LGD − c_심사·사후관리)",
-        "bestFor": "고금리 비우량 크레딧의 장기 부도손실(EL)과 딜 실사·모니터링 원가(30~50bp) 현실화",
-        "distortion": "증권사 핵심 한계자원인 신NCR 영업용순자본 구속 비용(위험값 급등)과 발행어음(100%) vs IMA(50%) 간 자본효율 차이를 포착하지 못함",
-        "verdict": "부도위험 조정 중간단계"
-      },
-      {
-        "id": "raroc_eva",
-        "badge": "★ 방식 ③ · 개별자산 최적 표준",
-        "title": "위험 · 자본비용 조정 경제적 부가가치법 (RAROC / EVA)",
-        "formula": "EVA_i = s_i − EL_i − c_i − (RW_i × CoE),  OC_RAROC = EVA_정상IB − EVA_모험",
-        "bestFor": "부도손실(EL) + 운용원가(c) + 금투업규정 별표5 위험값(RW 1.6%~20%)에 묶이는 자기자본 기회비용(CoE 11%)을 단일 잣대로 통합 비교",
-        "distortion": "개별 자산 단위의 진정한 기회비용을 정확히 보여주나, 수신 1조 증액 시 함께 따라오는 80% 정상자산 수익과의 상쇄 판단에는 방식 ④ 결합 필요",
-        "verdict": "자산군·비히클(어음 vs IMA) 비교 최적 표준"
-      },
-      {
-        "id": "bundled_pkg",
-        "badge": "★ 방식 ④ · 수신증액 최적 표준",
-        "title": "수신 1조 패키지 한계기여이익법 (규제 그림자 조세 모형)",
-        "formula": "Π_1조(27E) = 0.80×EVA_정상 + 0.06×EVA_A급캡 + 0.14×EVA_비A급 (28E: 0.75+0.075+0.175)",
-        "bestFor": "모험자본 의무를 수신 1단위당 부과되는 '규제 그림자 조세(18~41bp)'로 정식화하여 수신 확대 지속 여부와 최적 한도(Q*)를 판별",
-        "distortion": "입력값으로 방식 ③의 자산군별 EVA 추정이 선행되어야 함 (비A급 풀이 고갈되어 EVA가 급락하는 순간 패키지 한계이익도 빠르게 둔화)",
-        "verdict": "수신 비즈니스 외형 확장 의사결정 최적 표준"
-      }
-    ],
-    "assetRarocBenchmarks": [
-      {
-        "id": "normal_ib",
-        "asset": "[비교기준] 정상 IB 기업금융 (AA- 인수금융·우량사모 2~3Y)",
-        "capTag": "비모험 기준점",
-        "yieldPct": 4.85,
-        "grossSpreadBp": 170,
-        "elCostBp": 12,
-        "ncrRwPct": 2.0,
-        "capCostNoteBp": 22,
-        "capCostImaBp": 11,
-        "evaNoteBp": 136,
-        "evaImaBp": 147,
-        "note": "공모 AA- 3Y 민평(4.42%) + 구조화 가산금리 · 부도율 극소 및 낮은 신용위험값(1.6~2.4%)",
-        "pdPct": 0.08,
-        "lgdPct": 45,
-        "pureElBp": 4,
-        "opsCostBp": 8,
-        "elBasisNote": "국내 신평사 AA- 평균 부도율(0.03~0.08%) × 선순위 인수금융·담보 LGD 45% ≈ 4bp + 여신관리원가 8bp = 12bp"
-      },
-      {
-        "id": "a_cap_debt",
-        "asset": "모험 ① A0~A- 회사채 · 중견기업 여신",
-        "capTag": "30% 캡 (총수신 6%)",
-        "yieldPct": 5.2,
-        "grossSpreadBp": 205,
-        "elCostBp": 35,
-        "ncrRwPct": 4.0,
-        "capCostNoteBp": 44,
-        "capCostImaBp": 22,
-        "evaNoteBp": 126,
-        "evaImaBp": 148,
-        "note": "공모 A-(5.20%)·사모 A-(5.96%) 수준으로 자본비용 차감 후에도 정상 IB와 대등(기회비용 ~10bp) → 전 증권사 최우선 소진 구간",
-        "pdPct": 0.35,
-        "lgdPct": 48,
-        "pureElBp": 17,
-        "opsCostBp": 18,
-        "elBasisNote": "국내 A등급 부도율(0.20~0.35%) × 무보증 LGD 48% ≈ 17bp + 중견기업 심사·모니터링 18bp = 35bp"
-      },
-      {
-        "id": "pcbo_senior",
-        "asset": "모험 ② P-CBO 수익률 대용 · AAA 은행채 3년",
-        "capTag": "무제한 인정",
-        "yieldPct": 4.113,
-        "grossSpreadBp": 96.3,
-        "elCostBp": 5,
-        "ncrRwPct": 0.4,
-        "capCostNoteBp": 5,
-        "capCostImaBp": 3,
-        "evaNoteBp": 86.3,
-        "evaImaBp": 88.3,
-        "note": "수익률만 KIS AAA 은행채 3년 4.113%(2026.11.13)를 비교 대용값으로 적용합니다. 은행채 자체의 모험자본 인정을 뜻하지 않습니다. EL·원가·위험률·자본비용은 기존 P-CBO 설명용 가정이며 은행채 실측치가 아닙니다. 정상 IB 대비 어음 순EVA 차이 49.7bp·IMA 58.7bp로 조건부 계산합니다.",
-        "pdPct": 0.01,
-        "lgdPct": 20,
-        "pureElBp": 0,
-        "opsCostBp": 5,
-        "elBasisNote": "P-CBO 설명용 기존 가정: PD 0.01% × LGD 20% ≈ 0bp(반올림) + 관리원가 5bp. 보증이 위험을 완전히 제거한다는 뜻이 아니며, AAA 은행채의 확인된 손실률·원가 자료가 아닙니다."
-      },
-      {
-        "id": "bbb_private",
-        "asset": "모험 ③ BBB+~BBB- 회사채 · 중소 사모신용",
-        "capTag": "무제한 인정",
-        "yieldPct": 8.0,
-        "grossSpreadBp": 485,
-        "elCostBp": 360,
-        "ncrRwPct": 10.0,
-        "capCostNoteBp": 110,
-        "capCostImaBp": 55,
-        "evaNoteBp": 15,
-        "evaImaBp": 70,
-        "note": "BBB+(7.24%)~BBB-(9.37%) 명목 고금리이나 장기 부도손실·실사원가(-360bp)와 위험값(8~12%) 반영 시 어음 기회비용 121bp (IMA는 66bp로 반감)",
-        "pdPct": 5.5,
-        "lgdPct": 55,
-        "pureElBp": 303,
-        "opsCostBp": 57,
-        "elBasisNote": "공모 BBB 발행(연 2.0조) 고갈로 무등급·BB급 중소 사모신용 혼합 가정: 사이클 평균 PD 5.5% × 무담보 LGD 55% = 303bp + 직접심사·사후관리 57bp = 360bp (※ 순수 공모 BBB만 보면 신평사 통계 EL은 36~99bp)"
-      },
-      {
-        "id": "vc_mezz",
-        "asset": "모험 ④ 우량 VC · 신기사 조합 출자 및 메자닌",
-        "capTag": "무제한 인정",
-        "yieldPct": 9.5,
-        "grossSpreadBp": 635,
-        "elCostBp": 410,
-        "ncrRwPct": 16.0,
-        "capCostNoteBp": 176,
-        "capCostImaBp": 88,
-        "evaNoteBp": 49,
-        "evaImaBp": 137,
-        "note": "비상장·조합 출자 위험값(12~20%)이 커 발행어음 계정에서는 자본비용(-176bp)이 무겁지만, IMA 50% 감경 계정과 상위 GP 결합 시 기회비용 극소화",
-        "pdPct": 5.8,
-        "lgdPct": 60,
-        "pureElBp": 348,
-        "opsCostBp": 62,
-        "elBasisNote": "비상장 벤처·메자닌 포트폴리오 손실·감액률(유효 PD 5.8% × LGD 60% ≈ 348bp) + 조합 관리보수·실사원가 62bp = 410bp"
-      }
-    ],
-    "preemptiveStrategies": [
-      {
-        "type": "유통시장 단순 물량 매점 (Secondary Hoarding)",
-        "valid": false,
-        "verdictBadge": "부적절 · 역효과",
-        "summary": "시장에 풀린 A급·BBB급 유통채권이나 P-CBO를 경쟁사 견제 목적으로 필요 이상 선매집하는 방식",
-        "mechanisms": [
-          "30% 캡 무력화: 유동성이 풍부한 A급·중견 채권은 각 사 의무액의 30%(총수신의 6%)까지만 인정되어 초과 매집분이 비A급 70% 의무 해소에 무용지물",
-          "승자의 저주와 공공재 누수: 부도위험이 큰 비A급 채권을 웃돈(금리 인하·커버넌트 완화) 주고 매집하면 부실·NCR 비용은 매수사가 100% 독박 쓰는 반면 경쟁 저지 반사이익은 나머지 8개사에 분산",
-          "짧은 만기(1.5~3년) 및 감독 역풍: 회사채·메자닌은 만기 상환이 계속 도래해 영구 독점(Cornering)이 불가능하며, 당국의 '신규 생산적 자금공급' 취지와 정면 배치"
-        ]
-      },
-      {
-        "type": "최상위 VC·신기사 GP 쿼터 선점 & 주거래 IB 파이프라인 내재화",
-        "valid": true,
-        "verdictBadge": "타당 · 유효한 진입장벽",
-        "summary": "유통 물건이 아닌 '검증된 상위 GP 운용역량'과 '성장기업 발행 원천(Primary Origination)'을 선제 잠금(Lock-in)하는 방식",
-        "mechanisms": [
-          "경쟁자 한계비용 인상(Raising Rivals' Costs): 연 10%+ IRR을 검증한 상위 10~20% VC·신기사 GP는 단기 복제가 불가능한 희소자원. Anchor LP 선출자·계열 Co-GP 결성 시 후발사를 하위 GP·고위험 여신으로 밀어내 경쟁사 소싱비용을 구조적으로 인상",
-          "생애주기 주선권 내재화: 유망 혁신·중견기업의 Pre-IPO 메자닌(CB·RCPS) → 사모신용 → IPO → M&A 인수금융을 패키지로 주선해 후속 물량을 경쟁 입찰 없이 내부 북으로 확보",
-          "IMA 3사(한투·미래·NH)의 비대칭 자본우위: 고위험값(12~20%) 장기 모험자본 편입 시 어음 단독 6개사 대비 NCR 자본비용이 절반(50% 감경)이므로 가격 경쟁력에서 구조적 우위 확보"
-        ]
-      }
-    ],
     "addressableMarket": {
       "demandSchedule": [
         {
@@ -2029,93 +1866,22 @@
           "note": "비A급 70% 순의무 17.15조"
         }
       ],
-      "pools": [
-        {
-          "id": "a_corp",
-          "group": "market",
-          "name": "① A등급 회사채 · 중견기업 채권",
-          "capRule": "의무액의 최대 30% 캡",
-          "currentScale": "공모 A등급 연 발행 13.46조 ('25년 금감원, 비중 25.5%) + 사모 중견채",
-          "ibAbsorbable": "연 6.0~8.0조 (대기업집단 계열 제외)",
-          "potential2728": "연 발행 14.0~16.0조 안정 유지",
-          "status": "캡 제한",
-          "statusTone": "blue",
-          "detail": "시장 공급 물량 자체는 30% 인정 상한(27E 5.10조 · 28E 7.35조, 원문 83조 기준 4.98조)을 채우기에 충분하나, 규정상 상한 때문에 비A급 70% 의무 대체는 불가능합니다."
-        },
-        {
-          "id": "bbb_public",
-          "group": "market",
-          "name": "② 공모 무보증 BBB등급 이하 회사채",
-          "capRule": "무제한 (100% 인정)",
-          "currentScale": "연간 발행 2.00조 ('25년 BBB 1.67조 + BB이하 0.33조, 전체 일반채의 3.8%)",
-          "ibAbsorbable": "연 1.0~1.5조 미만 (하이일드·리테일 경합)",
-          "potential2728": "연 발행 2.5~3.5조 내외 (잔액 비중 3% 미만 협소)",
-          "status": "만성 고갈",
-          "statusTone": "red",
-          "detail": "월간 발행이 0원인 달도 빈번할 만큼 국내 공모 하이일드 회사채 시장은 구조적으로 협소하여, 유통·공모채 매수만으로는 의무 달성이 절대 불가능합니다."
-        },
-        {
-          "id": "pcbo",
-          "group": "market",
-          "name": "③ 유동화회사보증 P-CBO (신보·기보)",
-          "capRule": "무제한 (100% 인정)",
-          "currentScale": "연간 신규 발행 4.0~5.0조 · 추정 잔액 12~15조",
-          "ibAbsorbable": "연 1.5~2.5조",
-          "potential2728": "정부 출연·보증예산 연동 연 4.0~6.0조 박스권",
-          "status": "물량·마진 한계",
-          "statusTone": "amber",
-          "detail": "정책보증 예산에 묶여 급격한 시장 팽창이 어렵고, 선순위 AAA 보증채는 조달원가 대비 순마진이 거의 없어 수익성을 희생하는 비율 방어용 보완재입니다."
-        },
-        {
-          "id": "mezzanine",
-          "group": "origination",
-          "name": "④ 코스닥 · 중소 · 벤처 메자닌 (CB·BW·EB)",
-          "capRule": "무제한 (대기업 계열 제외)",
-          "currentScale": "연간 발행 9.5~10.5조 ('24년 8조대 → '25년 10조+, 예탁원) · 잔액 20~25조",
-          "ibAbsorbable": "우량 적격 선별 시 연 3.0~4.5조",
-          "potential2728": "자본시장 활성화 시 연 발행 12~15조 (적격 풀 4~6조)",
-          "status": "심사 선별형",
-          "statusTone": "blue",
-          "detail": "사모 CB·EB 발행 외형은 10조 원을 웃돌지만 한계기업 리파이낸싱 물량이 혼재해 있어, 리픽싱·풋옵션·담보 구조화 심사를 거친 우량 딜 선별 역량이 핵심입니다."
-        },
-        {
-          "id": "vc_ntfc",
-          "group": "origination",
-          "name": "⑤ 벤처투자조합 · 신기술사업투자조합 (VC·신기사)",
-          "capRule": "무제한 (100% 인정)",
-          "currentScale": "연간 신규 결성 14.3조 ('25년 중기부, +34.1%) · 신규 투자 13.6조 · 누적 AUM 60조+",
-          "ibAbsorbable": "민간 출자(80%+) 중 종투사 LP/Co-GP 연 3.5~6.0조+",
-          "potential2728": "AI·딥테크 정책금융 확대로 연 신규 결성 16.0~20.0조 성장",
-          "status": "핵심 확장풀",
-          "statusTone": "green",
-          "detail": "정책 정합성과 시장 성장성이 가장 뛰어난 핵심 공급원입니다. 특히 IMA(위험액 50% 감경, 폐쇄형 중장기 만기)와 만기·자본구조 궁합이 가장 잘 맞습니다."
-        },
-        {
-          "id": "kosdaq_hy",
-          "group": "market",
-          "name": "⑥ 코스닥벤처펀드 · 하이일드펀드 · 상생결제 유동화",
-          "capRule": "무제한 (100% 인정)",
-          "currentScale": "코스닥벤처(~0.6조) + 공모주 하이일드(~1.2조) 잔액 ~1.8조 · 상생결제 연 지급 160조+",
-          "ibAbsorbable": "펀드·유동화 편입 합산 2.0~3.5조",
-          "potential2728": "공모주 우선배정·세제혜택 연장에 따라 2.5~4.5조",
-          "status": "보조 버퍼",
-          "statusTone": "blue",
-          "detail": "IPO 장세와 세제 인센티브에 민감해 단독 주력 수단보다는 단기 비율 완충 버퍼로 활용됩니다."
-        },
-        {
-          "id": "private_credit",
-          "group": "origination",
-          "name": "⑦ 중소 · 벤처 직접 기업여신 및 사모신용 (Private Credit)",
-          "capRule": "무제한 (100% 인정)",
-          "currentScale": "[참고 모수] 4대 시중은행 중기대출 559.6조 ('26.06 FISIS) · 전 은행권 ~1,040조",
-          "ibAbsorbable": "종투사 직접 심사·구조화 역량에 비례",
-          "potential2728": "은행 담보여신 바깥 중위험·중수익(6~9%) 잠재 시장 30~50조+",
-          "status": "최종 승부처",
-          "statusTone": "green",
-          "detail": "시중은행은 평균 대출금리 4.57%·NPL 0.28~0.48%의 담보·보증 위주로만 취급합니다. 담보 부족으로 은행 문턱을 넘지 못하는 성장 중소·벤처 사모신용 시장을 개척하는 종투사에게는 모험자본이 병목이 아닌 고마진 블루오션이 됩니다."
-        }
-      ],
-      "verdictSummary": "공모 BBB 회사채(연 2.0조)·P-CBO(4~5조) 등 '유통시장에서 쉽게 사서 채우는 증권'만 보면 앞으로도 만성 부족이 확정적입니다. 그러나 'VC·신기사 조합(연 결성 14.3→20조)'과 '중소·성장기업 직접 사모신용(잠재 30~50조+)'까지 시야를 넓히면 절대 잠재 시장은 충분하며, 결국 물량의 유무가 아니라 '유통 매수에서 직접 심사·오리지네이션으로의 역량 양극화'가 본질입니다."
+      "recognizedSupply": {
+        "period": "2026.2Q 말",
+        "participants": 7,
+        "amountTril": 11.61837,
+        "ratioPct": 19.5,
+        "pcboTril": 3.4,
+        "ventureTril": 2.3,
+        "sourceUrl": "https://www.fsc.go.kr/no010101/87831"
+      },
+      "ventureInvestment": {
+        "period": "2026년 1~3분기",
+        "amountTril": 12.6248,
+        "growthPct": 28.4,
+        "sourceUrl": "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1072576&cbIdx=86"
+      },
+      "verdictSummary": "의무비율이 오를수록 투자할 수 있는 인정자산을 확보하는 부담이 커집니다. VC·신기사 소싱을 강화하면서, 정부에 성장기업으로 실제 신규 자금이 들어가는 자산의 인정 범위를 넓혀 달라고 건의할 필요가 있습니다."
     },
     "pcboCleanBenchmark": {
       "observedDate": "2026-11-13",

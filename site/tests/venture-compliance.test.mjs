@@ -2,6 +2,7 @@ import test, {afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {calcCost, explorerState, renderVentureDeepDive, renderRegulatoryCompliancePanel} from '../public/curiosity.js';
+import {renderBearFlatStrategy} from '../public/funding-strategy.js';
 import {resolveXraySpec} from '../public/xray.js';
 
 const D = JSON.parse(fs.readFileSync(new URL('../public/data.json', import.meta.url), 'utf8'));
@@ -34,25 +35,40 @@ test('single AAA bank 3Y benchmark reconciles the nominal gap with the condition
   assert(!/NaN|undefined/.test(html));
 });
 
-test('waterfall preserves loss, screening cost and vehicle-specific capital arithmetic for each selected asset', () => {
+test('venture supply combines labeled observations and scenario demand without publishing model inputs', () => {
   const vc = D.ventureCapitalChain2027;
-  const base = vc.assetRarocBenchmarks[0];
-  for (const row of vc.assetRarocBenchmarks.filter(r => ['bbb_private', 'vc_mezz', 'a_cap_debt'].includes(r.id))) {
+  for (const field of ['assetRarocBenchmarks', 'targetCoePct', 'opportunityCostLenses', 'preemptiveStrategies']) {
+    assert(!Object.hasOwn(vc, field), field);
+  }
+  assert(!Object.hasOwn(vc.addressableMarket, 'pools'));
+  assert.equal(resolveXraySpec('vc-asset:2', D), null);
+  const html = compact(renderVentureDeepDive(D));
+  for (const part of ['의무가 늘수록', '17.0조 원', '나머지 11.90조', '24.5조 원', '나머지 17.15조',
+    '11.6조 원', '신기사·VC 2.3조', '12.62조 원', '분기말 잔액', '누적액', '인정 대상도 넓혀야',
+    'https://www.fsc.go.kr/no010101/87831', 'bcIdx=1072576']) {
+    assert(html.includes(part), part);
+  }
+  assert(!/신NCR|워터폴|LGD|RAROC|NaN|undefined/.test(html));
+  const archivedPath = new URL('../../data/venture_capital_model_inputs.json', import.meta.url);
+  if (fs.existsSync(archivedPath)) {
+    const archived = JSON.parse(fs.readFileSync(archivedPath, 'utf8'));
+    const row = archived.assetRarocBenchmarks.find(asset => asset.id === 'bbb_private');
     assert.equal(Math.round(row.pdPct * row.lgdPct), row.pureElBp);
     assert.equal(row.pureElBp + row.opsCostBp, row.elCostBp);
-    for (const vehicle of ['note', 'ima']) {
-      const capital = vehicle === 'ima' ? row.capCostImaBp : row.capCostNoteBp;
-      const eva = vehicle === 'ima' ? row.evaImaBp : row.evaNoteBp;
-      const baseEva = vehicle === 'ima' ? base.evaImaBp : base.evaNoteBp;
-      assert.equal(row.grossSpreadBp - row.elCostBp - capital, eva);
-      explorerState.vcWaterfallAsset = row.id;
-      explorerState.vcVehicle = vehicle;
-      const html = renderVentureDeepDive(D);
-      assert(html.includes(`명목마진 +${row.grossSpreadBp}bp에서 EL·원가 −${row.elCostBp}bp, 자본비용 −${capital}bp 차감 후 순EVA +${eva}bp`), row.id + '/' + vehicle);
-      assert(html.includes(`실질 기회비용 ${baseEva - eva}bp`), row.id + '/' + vehicle);
-      assert(html.includes(`순수EL ${row.pureElBp} + 원가 ${row.opsCostBp}`));
-    }
   }
+});
+
+test('bear flattening strategy shows dated spread compression, KIS constraints and conditional choices', () => {
+  const html = compact(renderBearFlatStrategy(D));
+  for (const part of ['id="funding-bear-strategy"', '+50.2bp', '+11.1bp', '−39.1bp', '2026.2Q 평균',
+    '2026-11-13', '업권 발행어음 3개월 이하 비중', '63.4%', '90.3%', '1.10조', '2027.12',
+    '단기 조달비용 하락', '고객 잔액 유지', '집행 가능한 적격 자산 확보', '근거 자료와 해석',
+    'data-qa-jump="guide-2027-funding-outlook-bear-flattening"']) {
+    assert(html.includes(part), part);
+  }
+  assert.equal(html.match(/class="bf-choice"/g)?.length, 3);
+  assert(!/NaN|undefined/.test(html));
+  assert(resolveXraySpec('kpi:bear-spread-11bp', D).actions.some(action => action.scrollTo === 'funding-bear-strategy'));
 });
 
 test('nominal comparison recalculates fractional bp and annual cost from changed rates rather than stored default labels', () => {
