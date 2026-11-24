@@ -20,6 +20,38 @@
 .qa-answer-body p strong{font-weight:750;color:var(--ink)}
 #qa-board .qa-history-item .qa-prose{font-size:.875rem;color:#5e6e85}
 #qa-board .qa-source-link{font-size:.8125rem}
+
+.qa-answer-lead {
+  margin-bottom: 20px;
+  padding: 14px 17px 15px;
+  border: 1px solid #cddff7;
+  border-inline-start: 3px solid var(--blue);
+  border-radius: 7px;
+  background: #f1f7ff;
+}
+.qa-answer-lead-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 7px;
+}
+.qa-answer-lead-heading h3 { font-size: .875rem; color: var(--blue); }
+.qa-answer-lead-source, .qa-answer-lead .qa-review-tag { margin: 0; font-size: .75rem; }
+.qa-answer-lead-source { color: #52657d; }
+.qa-answer-lead p {
+  max-width: 66ch;
+  font-size: 1rem;
+  font-weight: 550;
+  line-height: 1.7;
+  color: #173254;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.qa-context-label { display: block; margin-bottom: 5px; color: #52657d; font-size: .8125rem; }
+
 .qa-visual{margin:0 0 18px;padding:15px;border:1px solid #d5e3f3;border-radius:9px;background:#f7faff;min-width:0}
 .qa-visual figcaption{display:grid;gap:3px;margin-bottom:10px}
 .qa-visual figcaption strong{font-size:1rem;line-height:1.45;color:var(--ink)}
