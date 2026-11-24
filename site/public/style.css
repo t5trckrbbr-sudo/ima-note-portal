@@ -635,7 +635,7 @@ tr[data-xray]{cursor:pointer}
 .ima-funding-axis span{position:absolute;top:4px;transform:translateX(-50%)}
 .ima-funding-axis span:first-child{transform:none}
 .ima-funding-selection{min-height:1.5em;margin:4px 0 0;color:var(--ink);font-size:.9rem}
-.ima-compare-details{margin-top:16px;padding-top:12px;border-top:1px solid #d9e2ef}
+.ima-compare-details{margin-top:16px;scroll-margin-top:95px;padding-top:12px;border-top:1px solid #d9e2ef}
 .ima-compare-details summary{width:fit-content;cursor:pointer;color:var(--blue);font-weight:750}
 .ima-compare-lenses{margin:14px 0}
 .ima-table{margin-top:12px}

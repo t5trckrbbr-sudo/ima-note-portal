@@ -2092,6 +2092,10 @@ export function bindIma3FirmsComparisonPanel(D) {
       details.open = true;
     }
     renderSelection();
-    body.querySelector('[data-ima-firm][aria-pressed="true"]')?.focus();
+    body.querySelector('[data-ima-firm][aria-pressed="true"]')?.focus({ preventScroll: Boolean(imaCardFilter) });
+    if (imaCardFilter) {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      details.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
   });
 }
