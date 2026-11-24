@@ -46,3 +46,40 @@
 .qa-visual-link{display:inline-block;margin-top:8px;color:var(--blue);font-size:.8125rem;font-weight:650;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:1000px){#qa-board .qa-workbench{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.qa-visual{padding:12px}.qa-visual-bars li{gap:4px 7px}}
+
+@media screen and (min-width: 1001px) {
+  #qa-board .qa-workbench {
+    height: max(22rem, calc(100vh - 110px));
+    height: max(22rem, calc(100dvh - 110px));
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .qa-workbench > .panel {
+    min-width: 0;
+    min-height: 0;
+    margin-bottom: 0;
+  }
+  .qa-list-panel {
+    display: flex;
+    flex-direction: column;
+  }
+  .qa-list-panel > :not(.qa-list) {
+    flex-shrink: 0;
+  }
+  .qa-list {
+    min-height: 0;
+  }
+  .qa-list, .qa-detail-panel {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+  }
+  .qa-detail-panel {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    height: max(14rem, calc(100% - 168px));
+    overflow-anchor: none;
+    scroll-padding-block: 12px;
+  }
+}

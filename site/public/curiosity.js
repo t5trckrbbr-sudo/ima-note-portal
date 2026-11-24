@@ -44,6 +44,12 @@ export const explorerState = {
   hwSelectedCountry: 'KR'
 };
 
+export function getOpportunityCostDefaults(D) {
+  const benchmark = D?.ventureCapitalChain2027?.pcboCleanBenchmark?.modes?.[0];
+  const pcbo = benchmark ? Math.round((benchmark.pcboYieldPct - benchmark.fundingBasePct) * 1000) / 10 : 0;
+  return {basis: 'dart26q3', spread: D?.opportunityCostAssumptions?.normalNetSpreadBp ?? 150, pcbo, cap: 30};
+}
+
 export function calcCost(row, {basis = 'dart26q3', spread = 150, pcbo = 0, cap = 30} = {}) {
   const reference = {
     dart26q3: row.dart26Q3Exact,
@@ -805,7 +811,7 @@ function renderPcboCleanDiagram(D) {
   // Legacy key retained for existing deep links; there is one fixed comparison.
   const m = pb.modes[0];
   const gapBp = Math.round((m.normalYieldPct - m.pcboYieldPct) * 1000) / 10;
-  const proxyNetBp = (m.pcboYieldPct - m.fundingBasePct) * 100;
+  const {pcbo: proxyNetBp} = getOpportunityCostDefaults(D);
   const shadowBp = gapBp * 0.20 * 0.70;
   const yBottom = 240;
   const yAtPct = pct => yBottom - pct * 31;

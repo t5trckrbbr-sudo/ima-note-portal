@@ -12,6 +12,7 @@ test('AAA bank benchmark X-Ray uses the same dated comparison and recomputes cha
   assert(spec.formula.includes('4.113%'));
   assert(spec.formula.includes('73.7bp'));
   assert(rowsText(spec).includes('10.318억'));
+  assert.match(rowsText(spec), /96\.3bp.*53\.7bp/);
   assert(spec.caveat.includes('P-CBO 기회비용의 실측치가 아닙니다'));
   assert(!spec.formula.includes('3.35%'));
   const changed=structuredClone(D);
@@ -19,6 +20,8 @@ test('AAA bank benchmark X-Ray uses the same dated comparison and recomputes cha
   const live=resolveXraySpec('kpi:pcbo-clean-bench',changed);
   assert(live.formula.includes('55.0bp'));
   assert(rowsText(live).includes('7.700억'));
+  assert.match(rowsText(live), /115\.0bp.*35\.0bp/);
+  assert.match(rowsText(resolveXraySpec('kpi:vc-mandate-20', D)), /53\.7bp 적용 627억 원, 상한 30% 활용 시 439억 원/);
 });
 
 test('IMA X-Ray follows the active asset risk and assumption inputs without treating them as eligibility approval', () => {

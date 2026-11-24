@@ -3386,8 +3386,9 @@
     "includeExistingBalanceStepUp": true,
     "newFundingMandatePct": 20,
     "existingIncreasePctPoints": 10,
-    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다. 기본 150bp는 독립적인 사용자 시뮬레이션 가정이며 AAA 은행채 3년 비교 도해의 관측·가정 금리차 73.7bp와 구분합니다.",
-    "nominalGapAssumptionBp": 150
+    "note": "추가 의무액 = 신규수신 증가분 × 20% + 기존 기준 잔액 × 10%p. 기존 잔액 상승분은 항상 포함합니다. NIM에 자동 중복 차감하지 않습니다. 상단 계산기는 정상 기업금융 150bp와 AAA 은행채 3년 수익률에서 조달원가를 뺀 96.3bp의 차이(53.7bp)를 적용합니다. 하단 도해는 정상 IB 수익률 4.85%를 기준으로 금리차 73.7bp를 계산합니다.",
+    "normalNetSpreadBp": 150,
+    "nominalGapAssumptionBp": 53.7
   },
   "fundingRate10YrDataset2016_2026": {
     "status": "DATA_STAGED_INTERPRETATION_PENDING",

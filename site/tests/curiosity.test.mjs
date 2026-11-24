@@ -274,6 +274,10 @@ test('the KIS–Mirae detail page compares note capacity and funding changes on 
     assert(row?.includes(amount) && row.includes(rate) && row.includes(balances), series);
   }
   assert(!comparison.includes('2022년'));
+  const takeaway = comparison.slice(comparison.indexOf('class="note-expansion-takeaway"'));
+  assert.match(takeaway, /공개 자료 기반 추정/);
+  assert.match(takeaway, /미래에셋은 RP 2\.42%·어음 2\.75%, 한투는 RP 2\.76%·어음 2\.66%/);
+  assert.match(takeaway, /회사채.*장기 운용자산.*차환 부담/);
   assert(comparison.includes('?q=guide-mirae-note-growth#questions'));
   assert.doesNotMatch(comparison, /\b(?:undefined|NaN)\b/);
 });

@@ -1,4 +1,4 @@
-import { calcCost } from './curiosity.js';
+import { calcCost, getOpportunityCostDefaults } from './curiosity.js';
 import { computeNim, getNimScenario } from './nim.js';
 import { getImaNcrScenario } from './ima-ncr.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -53,8 +53,8 @@ const QA_DIGEST = {
     summary: '삼성·메리츠 각사에 연말 4조 원을 적용해 합산 89조 원으로 전망합니다. 기본 기준선은 2026.3Q OpenDART 61.33조 원입니다.'
   },
   'guide-pcbo-assumption': {
-    title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
-    summary: '150bp는 전체 비용 계산기의 독립적인 사용자 가정입니다. 비교 도해는 KIS자산평가의 AAA 은행채 3년 4.113%(2026.11.13)를 사용하며, P-CBO 실측금리 또는 은행채의 모험자본 인정 여부를 뜻하지 않습니다.'
+    title: '기회비용 계산기의 비교 스프레드 96.3bp는 어떻게 산출하나요?',
+    summary: 'AAA 은행채 3년 4.113%(2026.11.13)에서 조달원가 3.15%를 뺀 96.3bp를 비교용으로 씁니다. 정상 기업금융 가정 150bp와의 차이는 53.7bp입니다.'
   },
   'guide-ima-old-ncr-capital': {
     title: 'IMA의 5% 충당금 차감을 고려해도 위험액 50% 감경은 구NCR에 유리한가요?',
@@ -96,7 +96,9 @@ export function resolveXraySpec(specKey, D, context = {}) {
   const bf = D.fundingOutlook2027BearFlattening;
   const vc = D.ventureCapitalChain2027;
   const marketCostRow = D.opportunityCost2027?.find(row => row.key === 'all');
-  const marketCost = marketCostRow ? calcCost(marketCostRow) : null;
+  const costDefaults = getOpportunityCostDefaults(D);
+  const baseGapBp = fmt(costDefaults.spread - costDefaults.pcbo, 1);
+  const marketCost = marketCostRow ? calcCost(marketCostRow, costDefaults) : null;
 
   if (specKey === 'ima-old-ncr') {
     const n = context.ncrScenario || getImaNcrScenario();
@@ -138,7 +140,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
     if (!nimRow) return null;
     const periodLabel = scenario.period === '2026' ? '2026.3Q 확정 잔액' : '2027E';
     const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'average-assumption' ? '삼성 대시보드 가정 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.3Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
-    const cost = opp ? calcCost(opp) : null;
+    const cost = opp ? calcCost(opp, costDefaults) : null;
     const oppAfterCapEok = cost?.after ?? 0;
     const eqDisplay = chain.equity26Q3Tril ?? fRow.equity;
 
@@ -156,12 +158,12 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
         ['시나리오 수익 기여', `어음 ${fmt(nimRow.noteIncome, 0)}억 + IMA ${fmt(nimRow.imaIncome, 0)}억 = 합계 ${fmt(nimRow.total, 0)}억`],
         ['\'26.1H 실효금리 (FISIS: 어음/RP/사채)', `${er.promNote != null ? fmt(er.promNote) + '%' : '26.09 인가'} / ${fmt(er.rp)}% / ${fmt(er.bonds)}%`],
-        ['모험자본 추가 의무 · 기회비용 (26.3Q 기준, 150bp)', cost ? `신규 ${fmt(cost.delta)}조 × 20% + 기존 ${fmt(cost.base)}조 × 10%p = ${fmt(cost.obligation, 3)}조 · 연 ${fmt(cost.cost, 0)}억 (30% 상한 활용 ${fmt(cost.after, 0)}억)` : '—'],
+        [`모험자본 추가 의무 · 기회비용 (26.3Q 기본, ${baseGapBp}bp)`, cost ? `신규 ${fmt(cost.delta)}조 × 20% + 기존 ${fmt(cost.base)}조 × 10%p = ${fmt(cost.obligation, 3)}조 · 연 ${fmt(cost.cost, 0)}억 (30% 상한 활용 ${fmt(cost.after, 0)}억)` : '—'],
         ...(chain.key === 'samsung' ? [['26.3Q 첫 발행 & 언론 보도 확인', '26.3Q 0.24조(2,403억) 첫 발행 확정 · 연말 단일 목표 미공개 · \'28년까지 모험자본 5조 공급 발표']] : []),
         ['\'26.3Q 실적 · 연결 NCR (OpenDART)', `${chain.q3_26NetIncEok != null ? `3Q 별도순익 ${fmt(chain.q3_26NetIncEok, 0)}억 · 9M 연결지배 ${fmt(chain.m9_26CfsCtrlNetIncEok, 0)}억` : '—'}${chain.consolNcr26Q3Pct ? ` · 연결 NCR ${fmt(chain.consolNcr26Q3Pct, 1)}%` : ''}`]
       ],
       source: 'OpenDART 2026.3Q 분기보고서(자본·발행어음·IMA·3Q/9M 손익·연결 NCR) 및 FISIS 202606(SF321 실효금리·SF325 전사 조달)',
-      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 기회비용(${fmt(oppAfterCapEok, 0)}억)은 신규 증가분과 기존 잔액 의무비율 상승분을 포함한 150bp 연환산 시나리오입니다. 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
+      caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 기회비용(${fmt(oppAfterCapEok, 0)}억)은 신규 증가분과 기존 잔액 의무비율 상승분을 포함한 ${baseGapBp}bp 연환산 시나리오입니다. 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
       qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
@@ -325,8 +327,9 @@ export function resolveXraySpec(specKey, D, context = {}) {
         rows: [
           ['금융위 종투사 모험자본 실증 (\'26.2Q)', fsc ? `총 ${fmt(fsc.totalVcTril, 1)}조 원 중 P-CBO ${fmt(fsc.pcboTril, 1)}조 원 (${fmt(fsc.pcboSharePct, 1)}%) — 단일 편입 수단 1위` : '11.6조 중 3.4조(29.3%)'],
           ['금리의 정의와 기준일', `${pb?.observedDate || '2026-11-13'} · KIS자산평가 AAA 은행채 3년 평가수익률 (P-CBO 실제 발행금리 아님)`],
+          ['상단 계산기의 기본 순스프레드', `AAA 은행채 금리 − 조달원가 = ${fmt(costDefaults.pcbo, 1)}bp. 정상 기업금융 ${fmt(costDefaults.spread, 0)}bp 적용 시 차이는 ${baseGapBp}bp입니다.`],
           ['모험자본 인정과의 구분', 'AAA 은행채 자체를 모험자본 인정자산으로 가정하지 않습니다. P-CBO 편입 비중과 대체 비교금리는 별개입니다.'],
-          ['수신 1조 원 한계 단위의 조건부 계산', (() => { const m=pb?.modes?.[0]; const bp=m?(m.normalYieldPct-m.pcboYieldPct)*100:0; return `의무 20% × 비A급 가정 70% × ${fmt(bp, 1)}bp = 연 ${fmt(bp*.14, 3)}억 원 (전체 비용 계산기의 150bp 가정과 구분)`; })()]
+          ['수신 1조 원 한계 단위의 조건부 계산', (() => { const m=pb?.modes?.[0]; const bp=m?(m.normalYieldPct-m.pcboYieldPct)*100:0; return `의무 20% × 비A급 가정 70% × ${fmt(bp, 1)}bp = 연 ${fmt(bp*.14, 3)}억 원`; })()]
         ],
         source: '<a href="https://www.bond.co.kr/post/dawn/37184" target="_blank" rel="noopener noreferrer">KIS WEEKLY 1212호 (2026.11.13), 13·57쪽</a> · KIS-NET/KIS자산평가. KOFIA 평가사 평균과 구분합니다.',
         caveat: '정상 IB 4.85%와 조달원가 3.15%는 기존 설명용 모형 가정입니다. 같은 날짜의 은행채 평가수익률을 비교 기준으로 대입한 조건부 시산이며, 투자자별 실현수익이나 P-CBO 기회비용의 실측치가 아닙니다. AAA 등급은 무위험 보장을 뜻하지 않습니다.',
@@ -401,7 +404,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['연도별 의무비율 로드맵', '2026년 10% → 2027년 20% → 2028년 이후 25%'],
         ['중견기업 · A급 채권 인정 상한', '모험자본 의무액의 최대 30% (2027년 총자산의 6%, 2028년 7.5%)'],
         ['2027년 업권 총의무액', `${fmt(forecast * .2)}조 원 · 중견·A급 최대 ${fmt(forecast * .06)}조 원 · 기타 인정자산 최소 ${fmt(forecast * .14)}조 원`],
-        ...(marketCost ? [['기본 전망의 추가 의무와 연간 기회비용', `신규 ${fmt(marketCost.delta)}조 × 20% + 기존 ${fmt(marketCost.base)}조 × 10%p = ${fmt(marketCost.obligation, 3)}조. 150bp 적용 ${fmt(marketCost.cost, 0)}억 원, 상한 30% 활용 시 ${fmt(marketCost.after, 0)}억 원`]] : []),
+        ...(marketCost ? [['기본 전망의 추가 의무와 연간 기회비용', `신규 ${fmt(marketCost.delta)}조 × 20% + 기존 ${fmt(marketCost.base)}조 × 10%p = ${fmt(marketCost.obligation, 3)}조. ${baseGapBp}bp 적용 ${fmt(marketCost.cost, 0)}억 원, 상한 30% 활용 시 ${fmt(marketCost.after, 0)}억 원`]] : []),
         ['규제 적용 구조', '기업금융(50/70%)·부동산(≤10%)·기타 합계 100% 안에서의 별도 교차 요건']
       ],
       source: '금융위원회 『종투사 기업금융 경쟁력 제고방안』(2025.04.09) 및 금융투자업규정 제4-102조의5 개정안',

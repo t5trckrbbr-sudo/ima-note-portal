@@ -1,7 +1,7 @@
 import test, {afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {calcCost, explorerState, renderVentureDeepDive, renderRegulatoryCompliancePanel} from '../public/curiosity.js';
+import {calcCost, getOpportunityCostDefaults, explorerState, renderVentureDeepDive, renderRegulatoryCompliancePanel} from '../public/curiosity.js';
 import {renderBearFlatStrategy} from '../public/funding-strategy.js';
 import {resolveXraySpec} from '../public/xray.js';
 
@@ -124,22 +124,25 @@ test('all nine compliance rules keep matching inspector evidence and category fi
   assert(liquidity.includes('100%'));
 });
 
-test('market costs always include the existing-balance step-up for each selectable baseline', () => {
+test('market costs always include the existing-balance step-up at the AAA bank default and other spreads', () => {
   const total = D.opportunityCost2027.find(row => row.key === 'all');
+  const defaults = getOpportunityCostDefaults(D);
+  assert.deepEqual(defaults, {basis: 'dart26q3', spread: 150, pcbo: 96.3, cap: 30});
+  assert.equal(defaults.spread - defaults.pcbo, D.opportunityCostAssumptions.nominalGapAssumptionBp);
   const scenarios = [
-    ['dart26q3', 61.33, 27.67, 11.667, 1750.05, 1225.035],
-    ['actual', 58.54, 30.46, 11.946, 1791.9, 1254.33],
-    ['model', 57.26, 31.74, 12.074, 1811.1, 1267.77]
+    ['dart26q3', 61.33, 27.67, 11.667, 626.5179, 438.56253],
+    ['actual', 58.54, 30.46, 11.946, 641.5002, 449.05014],
+    ['model', 57.26, 31.74, 12.074, 648.3738, 453.86166]
   ];
   for (const [basis, base, delta, obligation, cost, after] of scenarios) {
-    const result = calcCost(total, {basis});
+    const result = calcCost(total, {...defaults, basis});
     for (const [key, expected] of Object.entries({base, delta, obligation, cost, after})) {
       assert(Math.abs(result[key] - expected) < 1e-8, basis + ' ' + key);
     }
-    assert.deepEqual(calcCost(total, {basis, existing: false}), result);
+    assert.deepEqual(calcCost(total, {...defaults, basis, existing: false}), result);
   }
   for (const row of D.opportunityCost2027) {
-    const result = calcCost(row);
+    const result = calcCost(row, {...defaults, pcbo: 0});
     assert(Math.abs(result.obligation - row.vcTotalAddTril) < 1e-8, row.key);
     assert(Math.abs(result.cost - row.oppCostTotalAdd150bpEok) < 1e-8, row.key);
   }
