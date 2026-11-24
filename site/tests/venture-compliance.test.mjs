@@ -45,7 +45,7 @@ test('venture supply combines labeled observations and scenario demand without p
   assert(resolveXraySpec('kpi:pcbo-clean-bench', D).actions.some(action => action.scrollTo === 'vc-market-sizes'));
   assert.equal(resolveXraySpec('vc-asset:2', D), null);
   const html = compact(renderVentureDeepDive(D));
-  for (const part of ['의무가 늘수록', '17.0조 원', '나머지 11.90조', '24.5조 원', '나머지 17.15조',
+  for (const part of ['의무가 늘수록', '17.8조 원', '나머지 12.46조', '24.5조 원', '나머지 17.15조',
     '11.6조 원', '신기사·VC 2.3조', '12.62조 원', '분기말 잔액', '누적액', '인정 대상도 넓혀야',
     'https://www.fsc.go.kr/no010101/87831', 'bcIdx=1072576']) {
     assert(html.includes(part), part);
@@ -127,9 +127,9 @@ test('all nine compliance rules keep matching inspector evidence and category fi
 test('market costs always include the existing-balance step-up for each selectable baseline', () => {
   const total = D.opportunityCost2027.find(row => row.key === 'all');
   const scenarios = [
-    ['dart26q3', 61.33, 23.67, 10.867, 1630.05, 1141.035],
-    ['actual', 58.54, 26.46, 11.146, 1671.9, 1170.33],
-    ['model', 57.26, 27.74, 11.274, 1691.1, 1183.77]
+    ['dart26q3', 61.33, 27.67, 11.667, 1750.05, 1225.035],
+    ['actual', 58.54, 30.46, 11.946, 1791.9, 1254.33],
+    ['model', 57.26, 31.74, 12.074, 1811.1, 1267.77]
   ];
   for (const [basis, base, delta, obligation, cost, after] of scenarios) {
     const result = calcCost(total, {basis});

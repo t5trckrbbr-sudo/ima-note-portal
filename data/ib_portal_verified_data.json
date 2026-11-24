@@ -12,8 +12,8 @@
     "promNote26Q2ExactTril": 55.94,
     "ima26Q2ExactTril": 2.6,
     "promNoteIma26Q2SimBaseTril": 57.26,
-    "promNoteIma27EstTril": 85,
-    "promNote27EstTril": 80,
+    "promNoteIma27EstTril": 89.0,
+    "promNote27EstTril": 84.0,
     "ima27EstTril": 5.0,
     "ib9BorrowingsTotal26Q2Tril": 472.75,
     "ib9InvestorDeposits26Q2Tril": 158.5,
@@ -99,10 +99,10 @@
     {
       "period": "2027E(전망)",
       "firms": 9,
-      "promNote": 80,
+      "promNote": 84.0,
       "ima": 5,
-      "total": 85,
-      "note": "메리츠 연말 4조 IR 목표 반영 · IMA 5조 유지(한투 최근 1.5개월당 2,000억 페이스 및 내년도 상환분 감안 순증 제약) · 삼성 별도 목표 미반영"
+      "total": 89.0,
+      "note": "메리츠 IR 목표와 삼성 동일 가정 각 연말 4조 반영 · 한투 초기에 설정한 상품의 상환 일정을 감안해 IMA 5조 유지"
     }
   ],
   "promNoteFisis202606": [
@@ -323,20 +323,21 @@
     },
     {
       "key": "samsung",
-      "name": "삼성증권(별도 목표 미반영)",
+      "name": "삼성증권",
       "q26Base": 0.24,
-      "q27Est": 0.0,
-      "delta": 0.0,
-      "vcNew20Tril": 0.0,
-      "vcTotalAddTril": 0.024,
-      "oppCostNew150bpEok": 0.0,
-      "oppCostNewAfter30CapEok": 0.0,
+      "q27Est": 4.0,
+      "delta": 3.76,
+      "vcNew20Tril": 0.752,
+      "vcTotalAddTril": 0.776,
+      "oppCostNew150bpEok": 112.8,
+      "oppCostNewAfter30CapEok": 78.96,
       "fisis2606Exact": 0.0,
-      "assumptionNote": "26.3Q 첫 발행 0.24조 원 확정. 단, 2027년 말 별도 목표 미공개로 기본선 추가 순증(delta)은 0.00조로 두며 상단 시나리오 버튼으로 +2~4조 가산 가능.",
+      "assumptionNote": "2026.3Q 첫 발행 0.24조 원. 2027년 말 4조 원과 연평잔 2조 원은 메리츠와 동일하게 적용한 대시보드 가정.",
       "model26Q2Legacy": 0.0,
       "dart26Q3Exact": 0.24,
-      "oppCostTotalAdd150bpEok": 3.6,
-      "oppCostTotalAddAfter30CapEok": 2.52
+      "oppCostTotalAdd150bpEok": 116.4,
+      "oppCostTotalAddAfter30CapEok": 81.48,
+      "q27AveragePromNoteTril": 2.0
     },
     {
       "key": "kb",
@@ -358,17 +359,17 @@
       "key": "all",
       "name": "전 증권사 합계",
       "q26Base": 61.33,
-      "q27Est": 85.0,
-      "delta": 23.67,
-      "vcNew20Tril": 4.734,
-      "vcTotalAddTril": 10.867,
-      "oppCostNew150bpEok": 710.1,
-      "oppCostNewAfter30CapEok": 497.07,
+      "q27Est": 89.0,
+      "delta": 27.67,
+      "vcNew20Tril": 5.534,
+      "vcTotalAddTril": 11.667,
+      "oppCostNew150bpEok": 830.1,
+      "oppCostNewAfter30CapEok": 581.07,
       "fisis2606Exact": 58.54,
       "model26Q2Legacy": 57.26,
       "dart26Q3Exact": 61.33,
-      "oppCostTotalAdd150bpEok": 1630.05,
-      "oppCostTotalAddAfter30CapEok": 1141.035
+      "oppCostTotalAdd150bpEok": 1750.05,
+      "oppCostTotalAddAfter30CapEok": 1225.035
     }
   ],
   "imaTranchesKis": [
@@ -1138,7 +1139,7 @@
       3.25,
       3.5
     ],
-    "volumeVerdict": "확장 우위 (발행어음 80조 · IMA 포함 85조, 메리츠 목표 반영; 원문 합산 83조)",
+    "volumeVerdict": "확장 우위 (발행어음 84조 · IMA 포함 89조, 삼성·메리츠 반영)",
     "marginVerdict": "상반기 원가 압박 시나리오 · 단기 조달금리 안정 시 하반기 완화 가능",
     "headwinds": [
       {
@@ -1228,7 +1229,7 @@
       "totalTril": 83,
       "potentialCombinedTril": 2
     },
-    "assumptionNote": "기존 삼성·메리츠 합산 2조 원 가정을 메리츠 연말 4조 원 목표로 대체합니다. 삼성은 별도 목표 자료가 없어 추가 물량을 반영하지 않습니다. 기존 다른 회사 가정은 유지해 연말 합계는 발행어음 80조 원 + IMA 5조 원 = 85조 원입니다.",
+    "assumptionNote": "메리츠는 전달받은 IR 목표, 삼성은 메리츠와 같은 연말 4조 원·평잔 2조 원을 대시보드 가정으로 적용합니다. 두 회사의 연말 잔액은 시장 규모에, 평잔은 수익 계산에 사용합니다.",
     "source": {
       "kind": "user-provided-ir-target",
       "receivedAt": "2026-11-17",
@@ -1311,12 +1312,12 @@
       },
       {
         "key": "samsung",
-        "name": "삼성증권(별도 목표 미반영)",
-        "promNoteYearEndTril": 0,
+        "name": "삼성증권",
+        "promNoteYearEndTril": 4,
         "imaYearEndTril": 0,
-        "promNoteAverageTril": null,
-        "noteIncomeBasis": "year-end-proxy",
-        "assumptionNote": "별도 목표 미확인으로 추가 물량 미반영(0은 회사 목표가 아님)."
+        "promNoteAverageTril": 2,
+        "noteIncomeBasis": "average-assumption",
+        "assumptionNote": "메리츠와 동일하게 2027년 말 4조 원·연평잔 2조 원을 적용한 대시보드 가정."
       }
     ],
     "samsungMediaCheck2026": {
@@ -1327,36 +1328,6 @@
         "2026.09.21 첫 출시 및 1차 특판 1,100억 원: 1년물 연 4.3%(1,000억 한도, 출시 2.5일 만에 완판) + 신규·소액 2~90일물 연 5.5%(100억 한도)",
         "2026.10.12 2차 1년물 특판 1,000억 원(연 4.3%) 추가 출시 및 발행어음형 CMA(수시 연 2.55%, 상시 1년물 3.95%, 적립형 4.60%) 라인업 가동",
         "공식 발표 중장기 목표: 『2028년까지 중소·벤처·신기사 등 모험자본 누적 5조 원 공급 계획』 천명 (단, 메리츠와 달리 2026~2027년 말 발행어음 총잔액 목표 액수는 보수적 운용 기조 하 대외 미공개)"
-      ],
-      "scenarioPresets": [
-        {
-          "id": "base0",
-          "label": "기본 미반영 (+0.0조)",
-          "yearEndTril": 0.0,
-          "avgTril": 0.0,
-          "desc": "공식 잔액 목표 미발표에 따른 기본선 유지 (업권 합계 85.00조 원)"
-        },
-        {
-          "id": "cons2",
-          "label": "보수 안착 (+2.0조 · 평잔 1.2조)",
-          "yearEndTril": 2.0,
-          "avgTril": 1.2,
-          "desc": "초기 보수적 딜 소싱 속도 반영 (업권 합계 87.00조 원)"
-        },
-        {
-          "id": "wm3",
-          "label": "WM 컨센서스 (+3.0조 · 평잔 1.8조)",
-          "yearEndTril": 3.0,
-          "avgTril": 1.8,
-          "desc": "업계 최대 고액자산가(HNWI)·예탁금 전환 감안 증권가 중위 추정 (업권 합계 88.00조 원)"
-        },
-        {
-          "id": "peer4",
-          "label": "메리츠 동등·5조 경로 (+4.0조 · 평잔 2.2조)",
-          "yearEndTril": 4.0,
-          "avgTril": 2.2,
-          "desc": "동기 인가 메리츠(연말 4조) 동등 및 '28년 모험자본 5조 공급 목표 경로 (업권 합계 89.00조 원)"
-        }
       ]
     },
     "ima27RationaleNote": "2026.3Q 말 3사 IMA 부채가 4.09조 원(한투 3.08조·NH 0.64조·미래에셋 0.38조)에 도달했으나, 가장 적극적으로 익스포저를 늘려온 한국투자증권조차 최근 1.5개월당 약 2,000억 원(연환산 약 1.6조 원) 페이스에 머물러 있고 내년도(2027.12 1호 1.10조 등) 상환·차환 도래 물량을 감안할 때 순증 확대가 쉽지 않아 2027E IMA 전망은 5.0조 원을 유지합니다."
@@ -1740,10 +1711,10 @@
       "statusTone": "blue",
       "base26Q2NoteTril": 0.0,
       "base26Q2ImaTril": 0.0,
-      "est27ModelNoteTril": 0.0,
+      "est27ModelNoteTril": 4,
       "est27ModelImaTril": 0.0,
-      "est27UpdatedRangeTril": "연말 잔고 목표 미공개 (9~10월 1·2차 특판 2,100억 · '28년까지 모험자본 5조 공급 발표 · WM 잠재 2.0~4.0조)",
-      "growthPremise": "2026.09.09 제8호 인가 후 26.3Q 발행어음 0.24조 원(2,403억 원, 금리밴드 1.33~5.50%) 첫 발행 개시. 별도자본 8.47조(200% 한도 16.94조) · 3Q 별도 영업이익 4,141억 · 9M 연결 지배순이익 1.29조. 연말 단일 목표 미공개로 기본선 추가 순증 미반영.",
+      "est27UpdatedRangeTril": "연말 4.00조 · 수익평잔 2.00조 (메리츠와 같은 대시보드 가정)",
+      "growthPremise": "2026.09.09 제8호 인가 후 26.3Q 발행어음 0.24조 원(2,403억 원, 금리밴드 1.33~5.50%) 첫 발행 개시. 별도자본 8.47조(200% 한도 16.94조) · 3Q 별도 영업이익 4,141억 · 9M 연결 지배순이익 1.29조. 2027년 말 4조 원과 연평잔 2조 원을 메리츠와 동일한 대시보드 가정으로 적용합니다.",
       "capRatioWhy": "2026년 9월 이전까지 단기금융업 미인가 상태였기 때문에 자본 8.16조에도 어음 잔액이 0원이었으며, 대고객·기관 RP매도(49.2%, 실효 2.26%) 중심의 저위험 담보조달 유지",
       "altFundingNote": "차입부채(35.24조)가 자본 규모 대비 가장 적고 RP 비중(49.2%)이 절대적 · 발행어음 가세로 기존 저마진 RP 외 기업금융 스프레드 자산 편입 여력 신설",
       "profitability": {
@@ -1765,7 +1736,7 @@
         "h126AnnRoePct": 22.4,
         "takeaway": "발행어음 없이도 초고액 WM·운용 경쟁력으로 '25년 순익 9,713억·'26.1H 연환산 ROE 22.4%를 달성했으며, 어음 장착으로 IB 이자수익원 추가"
       },
-      "est27AverageNoteTril": null,
+      "est27AverageNoteTril": 2,
       "base26Q3NoteTril": 0.24,
       "base26Q3ImaTril": 0.0,
       "equity26Q3Tril": 8.47,
@@ -1848,13 +1819,13 @@
           "note": "종투사 총자산 대비 2.23%"
         },
         {
-          "period": "2027E 의무 (수정전망 85조 기준)",
-          "totalFundingTril": 85.0,
+          "period": "2027E 의무 (수정전망 89조 기준)",
+          "totalFundingTril": 89.0,
           "mandatePct": 20,
-          "totalMandateTril": 17.0,
-          "aCapTril": 5.1,
-          "nonACapNetTril": 11.9,
-          "note": "비A급 70% 순의무 11.90조 (원문 83조 기준 시 16.60/11.62조)"
+          "totalMandateTril": 17.8,
+          "aCapTril": 5.34,
+          "nonACapNetTril": 12.46,
+          "note": "의무액의 30%를 중견·A급으로 채우면 다른 인정자산이 12.46조 원 필요"
         },
         {
           "period": "2028E 의무 (수신 98조 가정)",
@@ -2045,8 +2016,8 @@
       "krDeposits26Q2Tril": 2688.07,
       "corpDeposits26Q2Tril": 1135.92,
       "combinedDepositsPool26Q2Tril": 3823.99,
-      "promNoteIma27ShareOfFinPct": 1.23,
-      "promNoteIma27ShareOfHhDepPct": 3.16
+      "promNoteIma27ShareOfFinPct": 1.28,
+      "promNoteIma27ShareOfHhDepPct": 3.31
     },
     "surveyComparison": [
       {

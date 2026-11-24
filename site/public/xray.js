@@ -1,12 +1,12 @@
-import { calcCost, getSamsungScenario } from './curiosity.js';
-import { getNimScenario } from './nim.js';
+import { calcCost } from './curiosity.js';
+import { computeNim, getNimScenario } from './nim.js';
 import { getImaNcrScenario } from './ima-ncr.js';
 const fmt = (n, d = 2) => Number(n).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const QA_DIGEST = {
   'guide-2027-funding-outlook-bear-flattening': {
     title: '2027년 수신환경(3대 악화 vs 3대 강화)과 ‘베어 플랫’ 종합 전망·대응 전략은?',
-    summary: '85조 원은 2027년 기본 전망입니다. 한국투자증권은 조달 비용과 자산 만기를 맞추고, 단기 조달비용·고객 잔액·적격 투자처가 확인될 때 수신 확대를 검토합니다.'
+    summary: '89조 원은 2027년 기본 전망입니다. 한국투자증권은 조달 비용과 자산 만기를 맞추고, 단기 조달비용·고객 잔액·적격 투자처가 확인될 때 수신 확대를 검토합니다.'
   },
   'guide-yield-curve-short-funding': {
     title: '발행어음 수익률곡선은 왜 가파르며, 3개월 이하(63.4%)·수시물 비중은 어느 정도인가요?',
@@ -46,11 +46,11 @@ const QA_DIGEST = {
   },
   'guide-nim-income': {
     title: 'NIM과 순이자수익, 전사 순영업수익은 어떻게 구분해 읽어야 하나요?',
-    summary: 'NIM 시뮬레이션(기본 합산 12,300억)은 판관비·충당금 차감 전 상품 단위 시나리오입니다. 메리츠는 IR 평잔 2조(연말 4조와 구분), 타사는 연말 잔액 대용치를 사용하며 전사 순영업수익과 다릅니다.'
+    summary: '기본 합산 12,600억 원은 판관비·충당금 차감 전 상품 단위 수익 시나리오입니다. 삼성과 메리츠에는 각각 평잔 2조 원, 다른 회사에는 연말 잔액 대용치를 적용합니다.'
   },
   'guide-growth-baseline': {
-    title: '2027년 수신 전망은 왜 83조에서 85조로 바뀌었고, 기준선(58.54 vs 57.26조) 차이는 무엇인가요?',
-    summary: '원문 삼성·메리츠 합산 2조를 메리츠 IR 연말 목표 4조로 대체해 85조(어음 80+IMA 5)가 되었습니다. 58.54조(공시 NH 8.78조)와 57.26조(모형 NH 7.50조)는 NH 기준선 1.28조 차이입니다.'
+    title: '2027년 수신 전망은 왜 89조로 바뀌었고, 기준선에 따라 증가율이 다른가요?',
+    summary: '삼성·메리츠 각사에 연말 4조 원을 적용해 합산 89조 원으로 전망합니다. 기본 기준선은 2026.3Q OpenDART 61.33조 원입니다.'
   },
   'guide-pcbo-assumption': {
     title: '계산기의 P-CBO 0bp는 실제로 표면금리가 0%라는 뜻인가요?',
@@ -78,7 +78,7 @@ const QA_DIGEST = {
   },
   'guide-sizing-growth': {
     title: '모험자본 조달 병목과 자본효율: 2027년 수신을 어디까지 늘려야 하나요(Q*)?',
-    summary: '2027년 수신 85조 가정의 모험자본 의무는 17조 원입니다. 중견·A급을 상한까지 채워도 다른 인정자산이 11.9조 원 필요합니다. VC·신기사 소싱과 함께 성장기업에 신규 자금을 공급하는 인정자산의 확대를 건의할 필요가 있습니다.'
+    summary: '2027년 수신 89조 가정의 모험자본 의무는 17.8조 원입니다. 중견·A급을 상한까지 채워도 다른 인정자산이 12.46조 원 필요합니다. VC·신기사 소싱과 함께 성장기업에 신규 자금을 공급하는 인정자산의 확대를 건의할 필요가 있습니다.'
   }
 };
 
@@ -129,16 +129,16 @@ export function resolveXraySpec(specKey, D, context = {}) {
     const opp = (D.opportunityCost2027 || []).find(x => x.key === (chain.costKey || chain.key));
     const p = chain.profitability || {};
     const er = fRow?.effRates26H1 || {};
-    const ss = chain.key === 'samsung' ? getSamsungScenario(D) : null;
     const base26 = (chain.base26Q3NoteTril ?? chain.base26Q2NoteTril) + (chain.base26Q3ImaTril ?? chain.base26Q2ImaTril);
-    const estNote = ss?.isOverridden ? ss.yearEndTril : chain.est27ModelNoteTril;
+    const estNote = chain.est27ModelNoteTril;
     const est27 = estNote + chain.est27ModelImaTril;
+    const increase = est27 - base26;
     const scenario = context.nimScenario || getNimScenario(D);
     const nimRow = scenario.rows.find(row => row.key === chain.key);
     if (!nimRow) return null;
     const periodLabel = scenario.period === '2026' ? '2026.3Q 확정 잔액' : '2027E';
-    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'scenario-avg' ? '삼성 사용자 시나리오 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.3Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
-    const cost = opp ? calcCost(ss?.isOverridden ? {...opp, q27Est: ss.yearEndTril} : opp) : null;
+    const incomeBasisLabel = nimRow.noteIncomeBasis === 'average-target' ? '메리츠 IR 평잔 목표 적용' : nimRow.noteIncomeBasis === 'average-assumption' ? '삼성 대시보드 가정 평잔' : nimRow.noteIncomeBasis === 'snapshot-proxy' ? '2026.3Q 잔액의 평잔 대용치' : '연말 잔액 대용치';
+    const cost = opp ? calcCost(opp) : null;
     const oppAfterCapEok = cost?.after ?? 0;
     const eqDisplay = chain.equity26Q3Tril ?? fRow.equity;
 
@@ -150,7 +150,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       rows: [
         ['인가 비히클 현황', `어음(${chain.noteLicense}) / IMA(${chain.imaLicense})`],
         ['별도 자기자본(\'26.3Q) · 법정한도(200%)', `${fmt(eqDisplay)}조 원 / 어음한도 ${fmt(eqDisplay * 2)}조 원`],
-        ['2026.3Q 확정 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 ${chain.key === 'samsung' && !ss?.isOverridden ? '+0.00' : '+' + fmt(est27 - base26)}조${ss?.isOverridden ? ' · 삼성 시나리오 반영' : ''})`],
+        ['2026.3Q 확정 → 2027E 연말 전망', `${fmt(base26)}조 → ${fmt(est27)}조 (순증 ${increase >= 0 ? '+' : ''}${fmt(increase)}조)`],
         ['선택한 NIM 시나리오 기준', `${periodLabel} · 어음 잔액 ${fmt(nimRow.note)}조 / IMA ${fmt(nimRow.ima)}조`],
         ['NIM 수익 계산용 어음 잔액', `${fmt(nimRow.noteIncomeBase)}조 원 (${incomeBasisLabel})`],
         ['회사별 NIM · IMA 기여율 가정', `어음 ${fmt(nimRow.noteBp, 0)}bp / IMA ${fmt(nimRow.imaBp, 0)}bp`],
@@ -189,9 +189,9 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['직전 시점 대비 증감', prev ? `+${fmt(diff)}조 원 (+${fmt(pct, 1)}%)` : '시계열 기점 (선발 4사 체제 완성)'],
         ['핵심 시장 이벤트', pt.note]
       ],
-      source: 'OpenDART 2026.3Q 분기보고서(9대 종투사) · 금감원 FISIS SF325 · 2027E는 원문 전망 + 메리츠 IR 목표 반영',
+      source: 'OpenDART 2026.3Q 분기보고서(9대 종투사) · 금감원 FISIS SF325 · 2027E는 메리츠 IR 목표와 삼성 동일 가정을 반영',
       caveat: idx === D.promNoteImaTrend.length - 1
-        ? '2027E 85.00조 원은 메리츠 연말 목표 4.00조(수익 계산 평잔 2.00조) 반영 및 IMA 5.00조 유지(한투 최근 1.5개월당 2,000억 페이스와 내년도 상환 부담 감안) 기준이며, 삼성 별도 목표는 미반영 상태입니다.'
+        ? D.fundingForecast2027.assumptionNote
         : '2021~2025년은 연말 잔액이며, 2026.2Q(59.44조)·2026.3Q(61.33조)는 분기보고서 확정 기준입니다.',
       qas: makeQaItems(idx >= 5 ? ['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening'] : ['guide-product-difference', 'guide-account-separation']),
       actions: [
@@ -303,6 +303,16 @@ export function resolveXraySpec(specKey, D, context = {}) {
     };
   }
 
+  const forecast = g.promNoteIma27EstTril;
+  const bases = [
+    ['OpenDART 2026.3Q 확정', g.promNoteIma26Q3ExactTril],
+    ['FISIS 2026.2Q 제공', g.promNoteIma26Q2ExactTril],
+    ['기존 2026.2Q 모형', g.promNoteIma26Q2SimBaseTril]
+  ];
+  const growth = base => (forecast / base - 1) * 100;
+  const companies = D.fundingForecast2027?.companies ?? [];
+  const sumForecast = keys => companies.filter(firm => keys.includes(firm.key))
+    .reduce((sum, firm) => sum + firm.promNoteYearEndTril + firm.imaYearEndTril, 0);
   const staticSpecs = {
     'kpi:pcbo-clean-bench': (() => {
       const pb = vc?.pcboCleanBenchmark;
@@ -339,7 +349,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
         ['9대 종투사 별도 자기자본 합계 (26.3Q)', '80.70조 원 (어음 200% 법정한도 161.39조 · 발행잔액 보유 8사 자본 72.23조)']
       ],
       source: 'OpenDART 2026.3Q 분기보고서(9대 종투사 별도) 및 금감원 FISIS 202606 비교 병기',
-      caveat: '기본 기준선은 OpenDART 2026.3Q 확정치(61.33조 → 85조, +38.6%)이며, 모험자본 기회비용 계산기(#invest)에서 기존 26.2Q 기준선(58.54조/57.26조)도 선택 대조할 수 있습니다.',
+      caveat: `기본 기준선은 OpenDART 2026.3Q 확정치(${fmt(bases[0][1])}조 → ${fmt(forecast, 0)}조, +${fmt(growth(bases[0][1]), 1)}%)입니다. 기회비용 계산기에서 2026.2Q 기준선도 함께 볼 수 있습니다.`,
       qas: makeQaItems(['guide-growth-baseline', 'guide-account-separation']),
       actions: [
         { label: '9사별 26.3Q·27E 분해표 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
@@ -348,17 +358,17 @@ export function resolveXraySpec(specKey, D, context = {}) {
     },
     'kpi:forecast-85': {
       eyebrow: '2027E REVISED OUTLOOK · 수정 전망 산식',
-      title: '2027년 말 수신 시장 전망 85.00조 원',
-      badge: '메리츠 IR 반영',
-      formula: '발행어음 80.00조(기존 78 + 메리츠 4 − 잠재합산 2) + IMA 5.00조 = 85.00조 원',
+      title: `2027년 말 수신 시장 전망 ${fmt(forecast)}조 원`,
+      badge: '메리츠 IR · 삼성 동일 가정',
+      formula: `발행어음 ${fmt(g.promNote27EstTril)}조 + IMA ${fmt(g.ima27EstTril)}조 = ${fmt(forecast)}조 원`,
       rows: [
-        ['선발 4사 \'27E 합계 (한투·미래·NH·KB)', '61.50조 원 (어음 56.50조 + 한투·미래·NH IMA 5.00조)'],
-        ['2년차 3사 \'27E 합계 (키움·하나·신한)', '19.50조 원 (키움 7.50 · 하나 6.50 · 신한 5.50)'],
-        ['신규 인가 메리츠 · 삼성 반영 기준', '메리츠 연말 4.00조(수익평잔 2.00조) 반영 · 삼성 별도목표 미반영(0.00조)'],
-        ['원문 모형(83.00조) 대비 변화', '+2.00조 원 상향 (공시 기준선 대비 +26.46조 · +45.2% / 18개월 구간)']
+        ['선발 4사 · 한투·미래·NH·KB', `${fmt(sumForecast(['kis','mirae','nh','kb']))}조 원`],
+        ['키움·하나·신한', `${fmt(sumForecast(['kiwoom','hana','shinhan']))}조 원`],
+        ['삼성·메리츠', '각 연말 4조·평잔 2조 원 · 메리츠 IR 목표와 삼성 동일 가정'],
+        ['OpenDART 2026.3Q 대비 증가', `+${fmt(forecast - bases[0][1])}조 원 · +${fmt(growth(bases[0][1]), 1)}%`]
       ],
-      source: '원문 전망 모형(Module B) + 2026-11-17 사용자 전달 메리츠증권 IR 목표(원문 URL 별도 확인 전)',
-      caveat: '연말 시장 규모(85조)에는 메리츠 연말 4조가 들어가지만, 연간 NIM 수익 계산기에는 메리츠 평잔 목표 2조가 적용되어 수익 계산용 어음 분모는 78조 원이 됩니다.',
+      source: 'OpenDART 2026.3Q · 기존 전망 모형 · 사용자 전달 메리츠 IR 목표 및 삼성 동일 가정',
+      caveat: `삼성·메리츠에는 수익 계산용 평잔을 각각 2조 원으로 적용합니다. 기본 2027년 발행어음 수익 계산 잔액은 ${fmt(D.fundingForecast2027 ? computeNim(D).totals.noteIncomeBase : 0, 0)}조 원입니다.`,
       qas: makeQaItems(['guide-growth-baseline', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: '회사별 성장 전제 드릴다운 보기 →', tab: 'funding', scrollTo: 'firm-growth-chain', primary: true },
@@ -367,14 +377,12 @@ export function resolveXraySpec(specKey, D, context = {}) {
     },
     'kpi:growth-452': {
       eyebrow: 'GROWTH RATE BASIS · 순증 및 증가율 기준',
-      title: '\'26.3Q 확정 대비 +23.67조 원 (+38.6%) 순증',
+      title: `2026.3Q 대비 +${fmt(forecast - bases[0][1])}조 원 (+${fmt(growth(bases[0][1]), 1)}%)`,
       badge: '약 15개월 누적',
-      formula: '(85.00조 ÷ 61.33조 − 1) × 100 = +38.60% (연율화 CAGR 아님)',
+      formula: `(${fmt(forecast)}조 ÷ ${fmt(bases[0][1])}조 − 1) × 100 = +${fmt(growth(bases[0][1]))}%`,
       rows: [
-        ['★ OpenDART \'26.3Q 확정 (61.33조 출발)', '순증 +23.67조 원 / 누적 증가율 +38.6% (신규 모험의무 4.73조)'],
-        ['FISIS \'26.2Q 제공 (58.54조 출발)', '순증 +26.46조 원 / 누적 증가율 +45.2% (신규 모험의무 5.29조)'],
-        ['기존 \'26.2Q 모형 (57.26조 출발)', '순증 +27.74조 원 / 누적 증가율 +48.4% (신규 모험의무 5.55조)'],
-        ['비교 기간 정의', '2026년 9월 말 ~ 2027년 12월 말 (5개 분기 = 15개월 누적 구간)']
+        ...bases.map(([label, base]) => [label, `${fmt(base)}조 → ${fmt(forecast, 0)}조 원 · 순증 +${fmt(forecast - base)}조 · +${fmt(growth(base), 1)}%`]),
+        ['기본 비교 기간', '2026년 9월 말 ~ 2027년 12월 말 (15개월)']
       ],
       source: 'OpenDART 2026.3Q 확정 공시 · FISIS 202606 및 대시보드 수정 전망 산식',
       caveat: '1년 연간 성장률이 아닌 5개 분기(15개월) 누적 성장률이며, 모험자본 기회비용 계산기(#invest)에서 세 기준선을 직접 전환해 비교할 수 있습니다.',
@@ -392,7 +400,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       rows: [
         ['연도별 의무비율 로드맵', '2026년 10% → 2027년 20% → 2028년 이후 25%'],
         ['중견기업 · A급 채권 인정 상한', '모험자본 의무액의 최대 30% (2027년 총자산의 6%, 2028년 7.5%)'],
-        ['2027E 85조 기준 업권 총의무액', '총 17.00조 원 (A급 캡 5.10조 제외 비A급 순의무 11.90조 원)'],
+        ['2027년 업권 총의무액', `${fmt(forecast * .2)}조 원 · 중견·A급 최대 ${fmt(forecast * .06)}조 원 · 기타 인정자산 최소 ${fmt(forecast * .14)}조 원`],
         ...(marketCost ? [['기본 전망의 추가 의무와 연간 기회비용', `신규 ${fmt(marketCost.delta)}조 × 20% + 기존 ${fmt(marketCost.base)}조 × 10%p = ${fmt(marketCost.obligation, 3)}조. 150bp 적용 ${fmt(marketCost.cost, 0)}억 원, 상한 30% 활용 시 ${fmt(marketCost.after, 0)}억 원`]] : []),
         ['규제 적용 구조', '기업금융(50/70%)·부동산(≤10%)·기타 합계 100% 안에서의 별도 교차 요건']
       ],
@@ -445,7 +453,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
     },
     'kpi:bear-volume': {
       eyebrow: '2027 VOLUME VERDICT · 수신 외형 판정',
-      title: '2027년 수신 외형(잔액): 확장 우위 (58.54조 → 85조E)',
+      title: `2027년 수신 외형 · ${fmt(bases[0][1])}조 원 → ${fmt(forecast, 0)}조 원 전망`,
       badge: '3대 강화 > 3대 악화',
       formula: '강화(9사 체제 완성 + 단기 파킹 머니무브 + 연금·ISA 기대) > 악화(특판 경합 + 금리인상)',
       rows: [
@@ -562,7 +570,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       formula: '현금통화 + 요구불예금 + 수시입출식 저축성예금(M1) + 2년 미만 정기예적금·MMF·CMA·수익증권 등',
       rows: [
         ['광의통화 M2 규모 (2026.09)', '4,278.8조 원 — 국내 단기·준결제성 유동성 총량 지표'],
-        ['발행어음+IMA 시장(58.54조 → 85조E) 비중', 'M2 대비 현재 1.37% → 2027E 1.99% (2% 미만의 초기 침투율)'],
+        ['발행어음+IMA의 M2 대비 규모', `2026.3Q ${fmt(bases[0][1] / 4278.8 * 100)}% · 2027년 전망 ${fmt(forecast / 4278.8 * 100)}% (2026.09 M2 기준)`],
         ['상반기 베어 플랫기 머니무브 경로', '은행 저원가 요구불예금(0.1~0.5%) → 증권 발행어음형 CMA(2.8~3.2%) 스윕 유입']
       ],
       source: '한국은행 경제통계시스템(ECOS) 통화 및 유동성 통계(2026.09 평잔 기준)',

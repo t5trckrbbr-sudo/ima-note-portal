@@ -4,8 +4,6 @@ import fs from 'node:fs';
 import {renderDetail} from '../public/details.js';
 import {
   explorerState,
-  getSamsungScenario,
-  setSamsungScenario,
   setExplorerFirmByName,
   renderFundingBreakdownPanel,
   renderMoneyMoveSafetyPanel,
@@ -26,7 +24,7 @@ const publicDataUrl = new URL('../public/data.json', import.meta.url);
 const verifiedDataUrl = new URL('../../data/ib_portal_verified_data.json', import.meta.url);
 const D = JSON.parse(fs.readFileSync(publicDataUrl, 'utf8'));
 
-test('public/data.json reconciles 85T revised outlook (Meritz IR 4T year-end / 2T avg) and matches root verified dataset when present', () => {
+test('public/data.json reconciles 89T outlook (Samsung and Meritz 4T year-end / 2T avg) and matches root verified dataset when present', () => {
   if (fs.existsSync(verifiedDataUrl)) {
     assert.deepEqual(D, JSON.parse(fs.readFileSync(verifiedDataUrl, 'utf8')));
   }
@@ -37,9 +35,9 @@ test('public/data.json reconciles 85T revised outlook (Meritz IR 4T year-end / 2
   const estImaSum = D.ib9FirmsCuriosityChain.reduce((acc, x) => acc + x.est27ModelImaTril, 0);
   const estSum = estNoteSum + estImaSum;
   assert.equal(baseSum.toFixed(2), '58.54');
-  assert.equal(estNoteSum.toFixed(2), '80.00');
+  assert.equal(estNoteSum.toFixed(2), '84.00');
   assert.equal(estImaSum.toFixed(2), '5.00');
-  assert.equal(estSum.toFixed(2), '85.00');
+  assert.equal(estSum.toFixed(2), '89.00');
 
   const samsung = D.ib9FirmsCuriosityChain.find(x => x.key === 'samsung');
   const meritz = D.ib9FirmsCuriosityChain.find(x => x.key === 'meritz');
@@ -47,7 +45,8 @@ test('public/data.json reconciles 85T revised outlook (Meritz IR 4T year-end / 2
   assert(meritz.noteLicense.includes('2026.09'));
   assert.equal(samsung.costKey, 'samsung');
   assert.equal(meritz.costKey, 'meritz');
-  assert.equal(samsung.est27ModelNoteTril, 0);
+  assert.equal(samsung.est27ModelNoteTril, 4);
+  assert.equal(samsung.est27AverageNoteTril, 2);
   assert.equal(meritz.est27ModelNoteTril, 4);
   assert.equal(meritz.est27AverageNoteTril, 2);
   assert.equal(samsung.profitability.h126NoteIntEok, 0);
@@ -61,7 +60,7 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
 
     const fundingHtml = renderFundingBreakdownPanel(D);
     assert(fundingHtml.includes(item.firm));
-    assert(fundingHtml.includes('85조'));
+    assert(fundingHtml.includes('89조'));
     assert(!fundingHtml.includes('NaN'));
     assert(!fundingHtml.includes('undefined'));
 
@@ -89,16 +88,6 @@ test('curiosity-driven hybrid UX renders all 4 perspectives cleanly without NaN 
   assert(vcHtml.includes('id="vc-addressable-market"'));
   assert(vcHtml.includes('data-qa-jump="guide-sizing-growth"'));
   assert(!/vc-waterfall|data-pcbo-mode|vc-asset:|NaN|undefined/.test(vcHtml));
-
-  // Samsung scenario presets & reset check
-  setSamsungScenario('wm3');
-  assert.equal(getSamsungScenario(D).yearEndTril, 3);
-  assert.equal(getSamsungScenario(D).avgTril, 1.8);
-  const ssHtml = renderFundingBreakdownPanel(D);
-  assert(ssHtml.includes('88.00조 원'));
-  setSamsungScenario('base0');
-  assert.equal(getSamsungScenario(D).yearEndTril, 0);
-  assert.equal(getSamsungScenario(D).isOverridden, false);
 
   // Refined 9 core statutory regulatory matrix check
   assert.equal(D.regulatoryComplianceMatrix2027.rules.length, 9);

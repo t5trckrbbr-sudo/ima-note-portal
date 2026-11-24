@@ -12,7 +12,7 @@ Keep the `리스크점검` tab focused on selected risks. Pension subjects belon
 
 Run `npm run check`, `npm test`, and `npm run build` in the app directory before publishing. For a research review, also verify the reviewed snapshot against live inputs immediately before deployment. Preserve public access and anonymous community posting.
 
-The November 23 batch uses the 2026.3Q OpenDART funding snapshot (61.33 trillion KRW) and an 85 trillion KRW 2027 base forecast. See AI_HANDOFF.md for the Meritz assumption and the separate Samsung scenario controls.
+Use the 2026.3Q OpenDART funding snapshot (61.33 trillion KRW) and the 89 trillion KRW 2027 forecast. Samsung uses the same 4 trillion year-end and 2 trillion average balance as Meritz. Keep Samsung fixed across the forecast, NIM and opportunity-cost views. See AI_HANDOFF.md.
 
 The opportunity-cost calculator always includes the existing balance mandate increase: new funding × 20% + existing balance × 10 percentage points. Do not restore the existing-balance checkbox or make this inclusion optional.
 

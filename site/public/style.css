@@ -121,11 +121,9 @@ tr[data-xray]{cursor:pointer}
 .vc-diagram-box{border:1px solid #d2e2f7;border-radius:10px;padding:16px 18px;background:linear-gradient(180deg,#fafcff 0%,#f5f8fe 100%);margin:14px 0 18px}
 .vc-svg-frame{width:100%;overflow-x:auto;margin-top:10px;border:1px solid #e5edf0;border-radius:8px;background:#fff;padding:10px 8px}
 .vc-svg-frame svg{display:block;width:100%;min-width:740px;height:auto}
-.samsung-sim-box{border:1px solid #cddff7;background:#f4f8fe;border-radius:9px;padding:14px 16px;margin:14px 0 16px}
+.samsung-facts{margin-top:8px;padding:8px 0;border-bottom:0}
+.samsung-facts summary{color:var(--blue)}
 .samsung-fact-list{margin:8px 0 10px;padding-left:18px;display:grid;gap:4px;font-size:11.5px;line-height:1.62;color:#2b3f4c}
-.samsung-sim-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px;border-top:1px dashed #bdd5f7}
-.samsung-custom-wrap{display:inline-flex;align-items:center;gap:5px;font-size:11px;background:#fff;border:1px solid #c5dbf8;border-radius:6px;padding:3px 8px}
-.samsung-custom-wrap input{width:58px;border:1px solid #d5e2df;border-radius:4px;padding:3px 5px;text-align:right;font-weight:700;color:var(--teal)}
 .reg-matrix-table td{vertical-align:top;text-align:left!important;font-size:11.5px;line-height:1.62;padding:12px 11px}
 .reg-matrix-table th{text-align:left!important;white-space:nowrap}
 .reg-statute-tag{display:inline-block;margin-top:5px;padding:2px 7px;border-radius:4px;background:#eef3f8;color:#23496d;font-size:10.5px;font-weight:600}

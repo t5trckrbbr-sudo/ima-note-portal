@@ -5,3 +5,44 @@
 .qa-review-workflow{background:#f3f7fd;border:1px solid #cddff7;border-radius:9px;padding:21px 24px;margin-bottom:18px}.qa-review-workflow-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.qa-review-workflow h2{font-size:16px;line-height:1.6;letter-spacing:-.4px}.qa-review-workflow-head p{font-size:11px;color:#5e6e85;line-height:1.9;margin-top:4px}.qa-review-workflow-head .btn{font-size:10px;white-space:nowrap;background:white}.qa-review-steps{display:grid;grid-template-columns:1fr 1.35fr 1.25fr;list-style:none;gap:14px;padding:0;margin:17px 0;color:#364f73;font-size:10px;line-height:1.8}.qa-review-steps li{display:flex;gap:8px;align-items:center}.qa-review-steps li>span{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:22px;height:22px;border-radius:50%;background:white;border:1px solid #cddff7;color:var(--teal);font-size:10px;font-weight:600}.qa-review-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #cddff7;padding-top:13px;margin-bottom:8px}.qa-review-summary>p{font-size:10px;color:#5e6e85}.qa-review-summary>div{display:flex;gap:18px;flex-wrap:wrap}.qa-review-summary b{margin-left:4px;font-weight:600}.qa-review-tag{display:block;font-size:9px;color:#004ea2;margin-top:10px;line-height:1.8}.qa-review-pending{color:#68778d}.qa-review-needs{color:#9b6e31}.qa-detail-review{border-left:2px solid #cddff7;padding:2px 0 2px 12px;margin:0 0 20px}.qa-detail-review .qa-review-tag{margin-top:0}.qa-detail-review p{font-size:10px;color:#5e6e85;line-height:1.8;margin-top:3px}.qa-review-note{background:#f3f7fd;border-radius:5px;padding:11px 13px;margin-bottom:14px;font-size:10px;color:#2d4c78;line-height:1.8}.qa-review-note>b{font-weight:600}.qa-review-note>span{margin-left:12px;font-size:9px;color:#5e6e85}.qa-review-note>p{margin-top:5px;white-space:pre-wrap;overflow-wrap:anywhere}.qa-review-note.qa-review-needs{background:#fbf6eb;color:#927044}.qa-research-sources{list-style:none;margin:14px 0 0;padding:11px 14px;background:#f5f8fe;border-radius:5px;display:grid;gap:10px}.qa-research-sources li{display:grid;gap:3px;min-width:0}.qa-research-sources .qa-source-link{margin:0}.qa-research-sources span{font-size:9px;color:#5e6e85}.qa-history-item .qa-review-note{margin:8px 0;font-size:9px;padding:9px}.qa-history-item .qa-review-note p{font-size:9px}.qa-history-item .qa-research-sources{padding:8px;margin-top:8px}
 @media(max-width:1000px){.qa-review-workflow{padding:20px}.qa-review-steps{grid-template-columns:1fr;gap:9px}.qa-review-workflow-head{gap:14px}.qa-review-summary{align-items:flex-start;flex-direction:column;gap:6px}}
 @media(max-width:700px){.qa-review-workflow{padding:17px;margin-bottom:15px}.qa-review-workflow-head{flex-direction:column;gap:12px}.qa-review-workflow h2{font-size:14px}.qa-review-workflow-head p{font-size:10px}.qa-review-workflow-head .btn{font-size:10px}.qa-review-steps{font-size:10px;margin:15px 0}.qa-review-summary>div{gap:12px}.qa-review-summary .qa-text-button{font-size:9px}.qa-detail-review{margin-bottom:17px}.qa-answers-heading{align-items:flex-start}.qa-answers-heading>span{max-width:45%;text-align:right;line-height:1.8}.qa-review-note>span{display:block;margin:3px 0 0}}
+
+#qa-board .qa-workbench{grid-template-columns:minmax(245px,.76fr) minmax(0,1.6fr)}
+#qa-board .qa-question h3{font-size:.9375rem;line-height:1.55}
+#qa-board .qa-question p{font-size:.8125rem;color:#5e6e85}
+#qa-board .qa-question-title{font-size:clamp(1.3rem,2.1vw,1.6rem)}
+#qa-board .qa-answers-heading h3{font-size:1rem}
+#qa-board .qa-answer-top .badge,#qa-board .qa-answer-top b,#qa-board .qa-answer time{font-size:.8125rem}
+#qa-board .qa-answer time{color:#5e6e85}
+#qa-board .qa-prose{font-size:1rem;line-height:1.8;color:#24374f}
+#qa-board .qa-answer-body{white-space:normal}
+.qa-answer-body p{max-width:72ch;white-space:pre-wrap;overflow-wrap:anywhere}
+.qa-answer-body p+p{margin-top:.9em}
+.qa-answer-body p strong{font-weight:750;color:var(--ink)}
+#qa-board .qa-history-item .qa-prose{font-size:.875rem;color:#5e6e85}
+#qa-board .qa-source-link{font-size:.8125rem}
+.qa-visual{margin:0 0 18px;padding:15px;border:1px solid #d5e3f3;border-radius:9px;background:#f7faff;min-width:0}
+.qa-visual figcaption{display:grid;gap:3px;margin-bottom:10px}
+.qa-visual figcaption strong{font-size:1rem;line-height:1.45;color:var(--ink)}
+.qa-visual figcaption span{font-size:.8125rem;color:#52657d;line-height:1.55}
+.qa-visual-bars{list-style:none;margin:0;padding:0}
+.qa-visual-bars li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:4px 10px;padding:6px 0;font-size:.875rem}
+.qa-visual-bars li b{font-size:.9375rem;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.qa-visual-track{position:relative;grid-column:1/-1;display:flex;height:8px;border-radius:4px;background:#e3ebf6;overflow:hidden}
+.qa-visual-fill{height:100%;min-width:0}
+.qa-visual-fill.is-note{background:#004ea2}
+.qa-visual-fill.is-ima{background:#b65f00}
+.qa-visual-fill.is-muted{background:#6082a6}
+.qa-visual-stacked{height:12px}
+.qa-visual-bars.is-signed .qa-visual-track::after{content:'';position:absolute;left:50%;top:0;bottom:0;border-left:1px solid #7c91aa;pointer-events:none}
+.qa-visual-bars.is-signed .qa-visual-fill{position:absolute;left:50%}
+.qa-visual-bars.is-signed .qa-visual-fill.is-negative{left:auto;right:50%}
+.qa-visual-breakdown{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:3px 12px;font-size:.75rem;color:#52657d}
+.qa-visual-breakdown span+span{color:#87501a}
+.qa-visual-products{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr));gap:8px}
+.qa-visual-products>div{display:grid;gap:4px;align-content:start;padding:10px 11px;border:1px solid #d9e5f3;border-top:3px solid #004ea2;border-radius:6px;background:#fff;font-size:.875rem}
+.qa-visual-products>div+div{border-top-color:#b65f00}
+.qa-visual-products strong{font-size:.9375rem}
+.qa-visual-products span{font-size:.8125rem;color:#52657d}
+.qa-visual-link{display:inline-block;margin-top:8px;color:var(--blue);font-size:.8125rem;font-weight:650;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:1000px){#qa-board .qa-workbench{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.qa-visual{padding:12px}.qa-visual-bars li{gap:4px 7px}}
