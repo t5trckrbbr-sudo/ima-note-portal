@@ -6725,7 +6725,7 @@
         "firmName": "미래에셋증권",
         "tranche": "미래에셋 IMA 1호",
         "category": "안정/일반",
-        "launchPeriod": "2025.12월 말",
+        "launchPeriod": "2025.12.22~24",
         "amountLabel": "1,000억 (고객 950+시딩 50)",
         "dartLiab26Q3Eok": null,
         "maturityLabel": "3년 (2028.12.22)",
@@ -6733,7 +6733,11 @@
         "baseFeeLabel": "연 0.22% (판매 0.1%)",
         "perfFeeLabel": "초과분 30% (고객 70%)",
         "status": "26.3Q 반영",
-        "assetsAndNotes": "초기 채권 90% 시동 후 LG엔솔 회사채·야놀자 사모사채·에듀테크 유동화대출·AI반도체 RCPS·팹리스 메자닌 편입 보도"
+        "assetsAndNotes": "초기 채권 90% 시동 후 LG엔솔 회사채·야놀자 사모사채·에듀테크 유동화대출·AI반도체 RCPS·팹리스 메자닌 편입 보도",
+        "source": {
+          "label": "미래에셋증권 1호 모집 공시",
+          "url": "https://securities.miraeasset.com/newir/view/pc/kr/about/newsView.jsp?seq=753"
+        }
       },
       {
         "firmKey": "mirae",
@@ -6785,7 +6789,7 @@
         "firmName": "NH투자증권",
         "tranche": "N2 IMA1 중기형 1호",
         "category": "안정/일반",
-        "launchPeriod": "2026.04월",
+        "launchPeriod": "2026.03.31~04.06",
         "amountLabel": "4,000억 모집 한도",
         "dartLiab26Q3Eok": 4065.2,
         "maturityLabel": "약 2년 6개월",
@@ -6793,7 +6797,11 @@
         "baseFeeLabel": "연 0.6%",
         "perfFeeLabel": "초과분 40%",
         "status": "26.3Q 반영",
-        "assetsAndNotes": "최소 가입 10만 원. 기업대출·회사채·인수금융을 중심으로 운용."
+        "assetsAndNotes": "최소 가입 10만 원. 기업대출·회사채·인수금융을 중심으로 운용.",
+        "source": {
+          "label": "NH농협금융 1호 모집 공시",
+          "url": "https://www.nhfngroup.com/user/indexSub.do?boardId=4998475&boardSeq=5841706&categoryDepth=&categoryId=&command=view&dum=dum&framePath=unknownboard&page=1&siteId=nhfngroup"
+        }
       },
       {
         "firmKey": "nh",
@@ -6830,7 +6838,7 @@
         "firmName": "NH투자증권",
         "tranche": "N2 IMA1 단기형 1호",
         "category": "단기형",
-        "launchPeriod": "2026.09월 말",
+        "launchPeriod": "2026.09.29~10.01",
         "amountLabel": "약 1,000억 내외",
         "dartLiab26Q3Eok": null,
         "maturityLabel": "1년 6개월 (업계 최단)",
@@ -6838,14 +6846,18 @@
         "baseFeeLabel": "연 0.5% (−0.1%p)",
         "perfFeeLabel": "초과분 40%",
         "status": "4Q 모집",
-        "assetsAndNotes": "10월 1일 1,000억 원 모집 완료. 9월 말 중기형 자산 구성과 별개."
+        "assetsAndNotes": "10월 1일 1,000억 원 모집 완료. 9월 말 중기형 자산 구성과 별개.",
+        "source": {
+          "label": "NH 단기형 1호 모집 결과",
+          "url": "https://www.yna.co.kr/view/AKR20261001115800008"
+        }
       },
       {
         "firmKey": "nh",
         "firmName": "NH투자증권",
         "tranche": "N2 IMA1 중기형 4호",
         "category": "안정/일반",
-        "launchPeriod": "2026.10월 말",
+        "launchPeriod": "2026.10.26~29",
         "amountLabel": "1,200억",
         "dartLiab26Q3Eok": null,
         "maturityLabel": "2년 3개월",
@@ -6853,7 +6865,11 @@
         "baseFeeLabel": "연 0.6% 수준",
         "perfFeeLabel": "초과분 40%",
         "status": "4Q 모집",
-        "assetsAndNotes": "중기형 3호와 동일 기준수익률(4.5%) 유지, 완판"
+        "assetsAndNotes": "중기형 3호와 동일 기준수익률(4.5%) 유지, 완판",
+        "source": {
+          "label": "NH 중기형 4호 모집 공지",
+          "url": "https://www.yna.co.kr/view/AKR20261023051000008"
+        }
       }
     ],
     "specialFindings": [

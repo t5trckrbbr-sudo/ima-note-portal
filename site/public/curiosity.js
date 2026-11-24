@@ -1939,6 +1939,77 @@ function renderImaLensBody(ds) {
   return renderImaTrancheTable(ds);
 }
 
+function imaFundingPeriod(label) {
+  const match = /^(\d{4})\.(\d{2})(?:\.(\d{2})(?:~(?:(\d{2})\.)?(\d{2}))?)?/.exec(label);
+  if (!match) return null;
+  const [, yearText, monthText, day, endMonthText, endDay] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const start = Date.UTC(year, month - 1, Number(day || 1));
+  if (!day) return { start, end: Date.UTC(year, month, 0), monthOnly: true };
+
+  const endMonth = Number(endMonthText || month);
+  const endYear = endMonth < month ? year + 1 : year;
+  const end = endDay ? Date.UTC(endYear, endMonth - 1, Number(endDay)) : start;
+  return { start, end, monthOnly: false };
+}
+
+function renderImaFundingTimeline(ds) {
+  const entries = ds.tranches.flatMap((tranche, index) => {
+    const period = imaFundingPeriod(tranche.launchPeriod);
+    return period ? [{ tranche, index, ...period }] : [];
+  }).sort((a, b) => a.start - b.start);
+  if (!entries.length) return '';
+
+  const first = new Date(entries[0].start);
+  const last = new Date(Math.max(...entries.map(entry => entry.end)));
+  const firstMonth = first.getUTCFullYear() * 12 + first.getUTCMonth();
+  const lastMonth = last.getUTCFullYear() * 12 + last.getUTCMonth();
+  const monthStart = index => Date.UTC(Math.floor(index / 12), index % 12, 1);
+  const axisStart = monthStart(firstMonth);
+  const axisEnd = monthStart(lastMonth + 1);
+  const position = date => (date - axisStart) / (axisEnd - axisStart) * 100;
+  const ticks = Array.from({ length: lastMonth - firstMonth + 1 }, (_, offset) => {
+    const date = monthStart(firstMonth + offset);
+    return {
+      position: position(date),
+      text: new Date(date).toISOString().slice(2, 7).replace('-', '.')
+    };
+  });
+  const gridlines = ticks.map(tick =>
+    `<span class="ima-funding-gridline" style="left:${tick.position}%" aria-hidden="true"></span>`
+  ).join('');
+
+  return `<section class="ima-funding-timeline" id="ima-funding-timeline" aria-labelledby="ima-funding-title">
+    <h3 id="ima-funding-title">회차별 IMA 모집 시점</h3>
+    <div class="ima-funding-scroll" role="region" tabindex="0" aria-label="세 회사의 회차별 IMA 모집 시점">
+      <div class="ima-funding-plot">
+        ${ds.firms.map(firm => `<div class="ima-funding-firm">${firm.name}</div>
+          <div class="ima-funding-lane" data-ima-funding-lane="${firm.key}" style="--ima-accent:${firm.accentColor}">
+            ${gridlines}
+            ${entries.filter(entry => entry.tranche.firmKey === firm.key).map(({ tranche, index, start, end, monthOnly }) => {
+              const announced = tranche.status?.includes('설정 예정');
+              const css = monthOnly ? ' is-month' : announced ? ' is-announced' : '';
+              const label = tranche.tranche.replace(/^IMA ([SG]\d+) .*$/, '$1')
+                .replace(/^N2 IMA1 |^미래에셋 IMA /, '').replace('기형 ', '기 ');
+              const text = `${firm.name} ${tranche.tranche} · ${tranche.launchPeriod}${announced ? ' · 설정 예정' : ''}`;
+              return `${end > start ? `<span class="ima-funding-window${css}" style="left:${position(start)}%;width:${position(end) - position(start)}%" aria-hidden="true"></span>` : ''}
+                <button type="button" class="ima-funding-event${css}" style="left:${position(monthOnly ? (start + end) / 2 : start)}%" data-ima-funding-event="${index}" title="${text}" aria-label="${text}" aria-pressed="false">
+                  <span class="ima-funding-event-label">${label}</span><span class="ima-funding-point" aria-hidden="true"></span>
+                </button>`;
+            }).join('')}
+          </div>`).join('')}
+        <div class="ima-funding-firm ima-funding-axis-label">모집 시점</div>
+        <div class="ima-funding-axis" aria-hidden="true">
+          ${ticks.map(tick => `<span style="left:${tick.position}%">${tick.text}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+    <p class="ima-table-note">점은 모집 시작일, 선은 모집 기간입니다. 흐린 막대는 월 단위 자료이며, 빈 점은 설정 예정 회차입니다.</p>
+    <p id="ima-funding-selection" class="ima-funding-selection" role="status">회차를 선택하면 모집 시기와 공개 규모를 볼 수 있습니다.</p>
+  </section>`;
+}
+
 export function renderIma3FirmsComparisonPanel(D) {
   const ds = D.ima3FirmsComparison2026Q3;
   if (!ds) return '';
@@ -1946,11 +2017,12 @@ export function renderIma3FirmsComparisonPanel(D) {
   return `<section class="panel" id="ima-3firms-panel" aria-labelledby="ima-comparison-title">
     <div class="panel-head">
       <div>
-        <h2 id="ima-comparison-title">세 회사는 왜 IMA 만기를 다르게 잡았을까?</h2>
+        <h2 id="ima-comparison-title">세 회사는 왜 IMA에 다르게 접근할까?</h2>
         <p>2026.09.30 운용 공시 · 출시 확인 ${ds.totalTranchesConfirmed}개 회차 · 추가 모집 공지 ${scheduled}건 (${ds.asOfDate})</p>
       </div>
     </div>
     ${renderImaFirmCards(ds)}
+    ${renderImaFundingTimeline(ds)}
     <details class="ima-compare-details" id="ima-compare-details">
       <summary>회차별 상품 조건 · 편입자산 · 공시 보기</summary>
       <div class="lens-switch ima-compare-lenses" role="group" aria-label="3사 IMA 자료 선택">
@@ -1981,9 +2053,17 @@ export function bindIma3FirmsComparisonPanel(D) {
   };
 
   root.addEventListener('click', event => {
-    const button = event.target.closest('button[data-ima-lens], button[data-ima-firm], button[data-ima-card-filter]');
+    const button = event.target.closest('button[data-ima-lens], button[data-ima-firm], button[data-ima-card-filter], button[data-ima-funding-event]');
     if (!button) return;
-    const { imaLens, imaFirm, imaCardFilter } = button.dataset;
+    const { imaLens, imaFirm, imaCardFilter, imaFundingEvent } = button.dataset;
+    if (imaFundingEvent !== undefined) {
+      const tranche = ds.tranches[Number(imaFundingEvent)];
+      root.querySelector('[data-ima-funding-event][aria-pressed="true"]')?.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-pressed', 'true');
+      root.querySelector('#ima-funding-selection').textContent =
+        `${tranche.firmName} · ${tranche.tranche} · 모집 ${tranche.launchPeriod} · 공개 규모 ${tranche.amountLabel} · ${tranche.status}`;
+      return;
+    }
     if (imaLens) {
       imaComparisonState.lens = imaLens;
       renderSelection();

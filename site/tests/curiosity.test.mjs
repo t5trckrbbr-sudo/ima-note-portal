@@ -241,6 +241,15 @@ test('IMA comparison identifies strategy estimates and distinguishes launched tr
   }
   const html = renderIma3FirmsComparisonPanel(D);
   assert.match(html, /id="ima-3firms-panel"/);
+  assert.match(html, /세 회사는 왜 IMA에 다르게 접근할까\?/);
+  const timeline = html.slice(html.indexOf('id="ima-funding-timeline"'), html.indexOf('<details'));
+  assert.equal((timeline.match(/data-ima-funding-lane=/g) || []).length, 3);
+  assert.equal((timeline.match(/data-ima-funding-event=/g) || []).length, 18);
+  assert.match(timeline, /25\.12/);
+  assert.match(timeline, /26\.11/);
+  assert.match(timeline, /2026\.09\.29~10\.01/);
+  assert.match(timeline, /class="ima-funding-event is-month"/);
+  assert.match(timeline, /class="ima-funding-event is-announced"[^>]*G2/);
   assert.match(html, /<details class="ima-compare-details"/);
   assert.equal((html.match(/전략 해석 · 추정/g) || []).length, 3);
   assert.match(html, /선점으로 수익 총액 확대/);
