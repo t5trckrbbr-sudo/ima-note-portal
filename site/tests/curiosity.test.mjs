@@ -11,7 +11,8 @@ import {
   renderIbSynchronizedExplorer,
   renderVentureDeepDive,
   renderHouseholdWealthPage,
-  renderRegulatoryCompliancePanel
+  renderRegulatoryCompliancePanel,
+  renderIma3FirmsComparisonPanel
 } from '../public/curiosity.js';
 import {
   resolveXraySpec,
@@ -222,4 +223,29 @@ test('living numbers X-Ray specs & thought-trail breadcrumb resolve cleanly with
   assert(multiTrail.includes('id="crumb"'));
   assert(multiTrail.includes('data-trail-back='));
   assert(multiTrail.includes('메리츠증권'));
+});
+
+test('IMA comparison identifies strategy estimates and distinguishes launched tranches from announcements', () => {
+  const ds = D.ima3FirmsComparison2026Q3;
+  assert.deepEqual(ds.firms.map(firm => firm.key), ['kis', 'nh', 'mirae']);
+  assert.equal(ds.totalTranchesConfirmed, 17);
+  assert.equal(ds.tranches.length, 18);
+  const g2 = ds.tranches.find(tranche => tranche.tranche.includes('IMA G2'));
+  assert.equal(g2.status, '모집 공지 · 설정 예정');
+  assert.equal(g2.hurdlePct, null);
+  assert.equal(g2.dartLiab26Q3Eok, null);
+  assert.equal(ds.firms.reduce((sum, firm) => sum + firm.dartLiabEok, 0).toFixed(1), '40936.6');
+  for (const firm of ds.firms) {
+    const marketValue = firm.assetMix.reduce((sum, asset) => sum + asset.amountEok, 0);
+    assert(Math.abs(marketValue - firm.dartAssetsEok) < 0.11, firm.key);
+  }
+  const html = renderIma3FirmsComparisonPanel(D);
+  assert.match(html, /id="ima-3firms-panel"/);
+  assert.match(html, /<details class="ima-compare-details"/);
+  assert.equal((html.match(/전략 해석 · 추정/g) || []).length, 3);
+  assert.match(html, /선점으로 수익 총액 확대/);
+  assert.match(html, /출시 확인 17개 회차 · 추가 모집 공지 1건/);
+  assert.match(html, /IMA G2/);
+  assert.doesNotMatch(html, /\b(?:undefined|NaN)\b/);
+  assert.equal(renderIma3FirmsComparisonPanel({}), '');
 });

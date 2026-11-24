@@ -1809,3 +1809,192 @@ export function bindRegulatoryCompliancePanel(D) {
     });
   });
 }
+
+const imaComparisonState = { lens: 'tranches', firm: 'all' };
+const imaComparisonLenses = [
+  ['tranches', '회차별 상품'],
+  ['dart_assets', '편입자산 · 공시'],
+  ['findings', '읽을 때 확인할 점']
+];
+
+function imaComparisonLinks(sources) {
+  return sources.map(({ label, url }) =>
+    `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+  ).join('');
+}
+
+function renderImaFirmCards(ds) {
+  return `<div class="ima-firms-grid">
+    ${ds.firms.map(firm => {
+      const segments = firm.assetMix.map(asset =>
+        `<span style="width:${asset.sharePct}%;background:${asset.color}" title="${asset.label} ${fmt(asset.sharePct, 1)}%"></span>`
+      ).join('');
+      const mainAssets = firm.assetMix.slice(0, 2);
+      return `<article class="ima-firm-card" style="--ima-accent:${firm.accentColor}">
+        <div>
+          <h3>${firm.name}</h3>
+          <p class="ima-firm-maturity">${firm.maturityRange}</p>
+        </div>
+        <dl class="ima-firm-balances">
+          <div><dt>운용자산</dt><dd>${fmt(firm.dartAssetsEok / 10000, 2)}조</dd></div>
+          <div><dt>수탁부채</dt><dd>${fmt(firm.dartLiabEok / 10000, 2)}조</dd></div>
+        </dl>
+        <div>
+          <div class="ima-stack-bar" aria-hidden="true">${segments}</div>
+          <p class="ima-firm-mix">${mainAssets.map(asset => `<span>${asset.label} <b>${fmt(asset.sharePct, 1)}%</b></span>`).join('')}</p>
+        </div>
+        <div class="ima-firm-strategy">
+          <p class="ima-strategy-title" data-ima-strategy="${firm.key}"><span class="badge amber">전략 해석 · 추정</span><strong>${firm.strategyTag}</strong></p>
+          <p>${firm.strategySummary}</p>
+          <p class="ima-strategy-watch"><b>점검할 신호</b> ${firm.strategyWatch}</p>
+        </div>
+        <div class="ima-firm-actions">
+          <div class="ima-source-links" aria-label="${firm.name} 전략 근거">${imaComparisonLinks(firm.strategySources)}</div>
+          <button class="chip" type="button" data-ima-card-filter="${firm.key}" aria-controls="ima-compare-details" aria-label="${firm.name} 회차 보기">회차 보기</button>
+        </div>
+      </article>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderImaTrancheTable(ds) {
+  const selected = imaComparisonState.firm;
+  const rows = ds.tranches.filter(tranche => selected === 'all' || tranche.firmKey === selected);
+  const filters = [['all', '전체'], ...ds.firms.map(firm => [firm.key, firm.name])];
+  return `<div class="chips" role="group" aria-label="증권사별 회차 필터">
+    ${filters.map(([key, name]) => `<button type="button" class="chip${selected === key ? ' active' : ''}" data-ima-firm="${key}" aria-pressed="${selected === key}">${name}</button>`).join('')}
+  </div>
+  <div class="table-wrap ima-table">
+    <table class="data-table ima-tranche-table" aria-label="IMA 회차별 모집 조건">
+      <thead><tr>
+        <th scope="col">증권사 · 회차</th><th scope="col">유형 · 상태</th><th scope="col">모집 시기</th>
+        <th scope="col">모집 규모</th><th scope="col">상품 만기</th><th scope="col">기준수익률</th>
+        <th scope="col">총보수</th><th scope="col">성과보수</th><th scope="col">주요 조건</th>
+      </tr></thead>
+      <tbody>${rows.map(tranche => `<tr data-ima-tranche="${tranche.firmKey}">
+        <th scope="row"><b>${tranche.tranche}</b><br><small class="muted">${tranche.firmName}</small></th>
+        <td>${tranche.category}<br><small class="muted">${tranche.status}</small></td>
+        <td class="tabular">${tranche.launchPeriod}</td>
+        <td><b>${tranche.amountLabel}</b>${tranche.dartLiab26Q3Eok == null ? '' : `<br><small>9월 말 수탁부채 ${fmt(tranche.dartLiab26Q3Eok, 1)}억</small>`}</td>
+        <td>${tranche.maturityLabel}</td>
+        <td class="tabular">${tranche.hurdlePct == null ? '미확인' : `연 ${fmt(tranche.hurdlePct, 1)}%`}</td>
+        <td>${tranche.baseFeeLabel}</td>
+        <td>${tranche.perfFeeLabel}</td>
+        <td>${tranche.assetsAndNotes}${tranche.source ? `<div class="ima-source-links">${imaComparisonLinks([tranche.source])}</div>` : ''}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderImaDartAssetView(ds) {
+  const names = ds.firms.map(firm => `<th scope="col">${firm.name}</th>`).join('');
+  const balance = n => `${fmt(n, 1)}억`;
+  const fairValueTier = firm => firm.level3SharePct == null
+    ? 'IMA 단독 미분리'
+    : `Level 2 ${fmt(firm.level2SharePct, 1)}% · Level 3 ${fmt(firm.level3SharePct, 1)}%`;
+  const reportRows = [
+    ['공정가치 서열', fairValueTier],
+    ['평가 투입변수', firm => firm.level3InputNote],
+    ['누적 장부 손익', firm => `자산·수익 ${balance(firm.q3CumAssetPnlEok)} / 부채·비용 ${balance(firm.q3CumLiabPnlEok)}`],
+    ['분기 공시 손익 참고', firm => firm.q3NetCaptureLabel],
+    ['시딩 / 손실준비금', firm => `${balance(firm.dartSeedingEok)} / ${balance(firm.dartLossReserveEok)}<br><small>${firm.dartLossReserveDetail}</small>`],
+    ['회사별 공시 범위', firm => firm.dartDisclosureHighlight]
+  ];
+  const miraeMix = ds.firms.find(firm => firm.key === 'mirae').rebalancingComparison;
+  return `<div class="table-wrap ima-table"><table class="data-table" aria-label="3분기 실제 편입자산">
+    <thead><tr><th scope="col">편입자산 공정가치 · 2026.09.30</th>${names}</tr></thead>
+    <tbody>${ds.assetComparisonMatrix.map(row => `<tr>
+      <th scope="row">${row.category}</th>
+      ${ds.firms.map(({ key }) => {
+        const amount = row[key + 'Eok'];
+        return `<td class="tabular">${amount > 0 ? `${balance(amount)} (${fmt(row[key + 'Pct'], 1)}%)` : '—'}</td>`;
+      }).join('')}
+    </tr>`).join('')}
+    <tr><th scope="row">IMA 투자자산 합계</th>${ds.firms.map(firm => `<td><b>${balance(firm.dartAssetsEok)}</b></td>`).join('')}</tr></tbody>
+  </table></div>
+  <p class="ima-table-note">— 는 해당 공시에서 금액이 별도 확인되지 않은 항목을 포함합니다.</p>
+  <div class="table-wrap ima-table"><table class="data-table" aria-label="공정가치·손익·손실준비금">
+    <thead><tr><th scope="col">공정가치 · 손익 · 준비금</th>${names}</tr></thead>
+    <tbody>${reportRows.map(([label, value]) => `<tr><th scope="row">${label}</th>${ds.firms.map(firm => `<td>${value(firm)}</td>`).join('')}</tr>`).join('')}</tbody>
+  </table></div>
+  <p class="ima-table-note">분기 공시의 자산·부채 손익 차이는 별도 집계한 상품 순이익과 범위가 다릅니다.</p>
+  <div class="table-wrap ima-table"><table class="data-table" aria-label="미래에셋 합산 편입자산 변화">
+    <thead><tr><th scope="col">미래에셋 합산 자산 구성</th><th scope="col">${miraeMix.fromLabel}</th><th scope="col">${miraeMix.toLabel}</th><th scope="col">금액 변화</th></tr></thead>
+    <tbody>${miraeMix.rows.map(row => `<tr><th scope="row">${row.item}</th><td>${fmt(row.fromPct, 1)}%</td><td>${fmt(row.toPct, 1)}%</td><td>${row.note}</td></tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+function renderImaSpecialFindings(ds) {
+  return `<div class="ima-findings-grid">
+    ${ds.specialFindings.map(({ title, summary, detail }) => `<article class="ima-finding-card">
+      <h3>${title}</h3>
+      <p>${summary} ${detail}</p>
+    </article>`).join('')}
+  </div>`;
+}
+
+function renderImaLensBody(ds) {
+  if (imaComparisonState.lens === 'dart_assets') return renderImaDartAssetView(ds);
+  if (imaComparisonState.lens === 'findings') return renderImaSpecialFindings(ds);
+  return renderImaTrancheTable(ds);
+}
+
+export function renderIma3FirmsComparisonPanel(D) {
+  const ds = D.ima3FirmsComparison2026Q3;
+  if (!ds) return '';
+  const scheduled = ds.tranches.length - ds.totalTranchesConfirmed;
+  return `<section class="panel" id="ima-3firms-panel" aria-labelledby="ima-comparison-title">
+    <div class="panel-head">
+      <div>
+        <h2 id="ima-comparison-title">세 회사는 왜 IMA 만기를 다르게 잡았을까?</h2>
+        <p>2026.09.30 운용 공시 · 출시 확인 ${ds.totalTranchesConfirmed}개 회차 · 추가 모집 공지 ${scheduled}건 (${ds.asOfDate})</p>
+      </div>
+    </div>
+    ${renderImaFirmCards(ds)}
+    <details class="ima-compare-details" id="ima-compare-details">
+      <summary>회차별 상품 조건 · 편입자산 · 공시 보기</summary>
+      <div class="lens-switch ima-compare-lenses" role="group" aria-label="3사 IMA 자료 선택">
+        ${imaComparisonLenses.map(([key, label]) => `<button type="button" class="lens-btn${imaComparisonState.lens === key ? ' active' : ''}" data-ima-lens="${key}" aria-pressed="${imaComparisonState.lens === key}">${label}</button>`).join('')}
+      </div>
+      <div id="ima-compare-body">${renderImaLensBody(ds)}</div>
+      <p class="ima-table-note">${ds.disclosureBoundaryNote}</p>
+      <div class="ima-source-links" aria-label="IMA 비교 공시 출처">${imaComparisonLinks(ds.sources)}</div>
+    </details>
+  </section>`;
+}
+
+export function bindIma3FirmsComparisonPanel(D) {
+  const ds = D.ima3FirmsComparison2026Q3;
+  const root = document.getElementById('ima-3firms-panel');
+  if (!root || !ds) return;
+  const details = root.querySelector('#ima-compare-details');
+  const body = root.querySelector('#ima-compare-body');
+  const lensButtons = root.querySelectorAll('[data-ima-lens]');
+
+  const renderSelection = () => {
+    body.innerHTML = renderImaLensBody(ds);
+    lensButtons.forEach(button => {
+      const selected = button.dataset.imaLens === imaComparisonState.lens;
+      button.classList.toggle('active', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
+  };
+
+  root.addEventListener('click', event => {
+    const button = event.target.closest('button[data-ima-lens], button[data-ima-firm], button[data-ima-card-filter]');
+    if (!button) return;
+    const { imaLens, imaFirm, imaCardFilter } = button.dataset;
+    if (imaLens) {
+      imaComparisonState.lens = imaLens;
+      renderSelection();
+      return;
+    }
+    imaComparisonState.firm = imaCardFilter || imaFirm;
+    if (imaCardFilter) {
+      imaComparisonState.lens = 'tranches';
+      details.open = true;
+    }
+    renderSelection();
+    body.querySelector('[data-ima-firm][aria-pressed="true"]')?.focus();
+  });
+}

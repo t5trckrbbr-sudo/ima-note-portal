@@ -591,3 +591,33 @@ tr[data-xray]{cursor:pointer}
     font-size: 11px;
   }
 }
+
+#ima-3firms-panel{scroll-margin-top:95px}
+.ima-firms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,255px),1fr));gap:14px}
+.ima-firm-card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:16px;border:1px solid #d9e2ef;border-top:3px solid var(--ima-accent);border-radius:10px;background:#fff}
+.ima-firm-card h3,.ima-finding-card h3{margin:0;color:var(--ink);font-size:1.06rem}
+.ima-firm-maturity{margin:3px 0 0;color:var(--muted);font-size:.875rem}
+.ima-firm-balances{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:10px 12px;border-radius:8px;background:#f2f6fc}
+.ima-firm-balances dt{font-size:.875rem;color:var(--muted)}
+.ima-firm-balances dd{margin:0;font-size:1.25rem;font-weight:750;font-variant-numeric:tabular-nums}
+.ima-stack-bar{display:flex;overflow:hidden;height:8px;border-radius:5px;background:#e6edf5}
+.ima-firm-mix{display:flex;flex-wrap:wrap;gap:4px 11px;margin:6px 0 0;color:var(--muted);font-size:.875rem}
+.ima-firm-strategy p{margin:0 0 8px;line-height:1.55}
+.ima-firm-strategy .ima-strategy-title{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-bottom:7px}
+.ima-strategy-title .badge{font-size:.875rem;line-height:1.4;margin:0}
+#ima-3firms-panel .chip,#ima-3firms-panel .lens-btn{min-height:36px;font-size:.875rem}
+.ima-strategy-watch{color:var(--muted);font-size:.875rem}
+.ima-firm-actions{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid #e3ebf6}
+.ima-source-links{display:flex;gap:5px 10px;flex-wrap:wrap;font-size:.875rem}
+.ima-source-links a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+.ima-compare-details{margin-top:16px;padding-top:12px;border-top:1px solid #d9e2ef}
+.ima-compare-details summary{width:fit-content;cursor:pointer;color:var(--blue);font-weight:750}
+.ima-compare-lenses{margin:14px 0}
+.ima-table{margin-top:12px}
+.ima-table .data-table th[scope="row"]{background:#fff;text-align:left}
+.ima-tranche-table :is(th,td){min-width:112px;vertical-align:top;font-size:.875rem}
+.ima-tranche-table :is(th,td):last-child{min-width:205px}
+.ima-table-note{margin:10px 0;color:var(--muted);font-size:.875rem}
+.ima-findings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:12px}
+.ima-finding-card{padding:13px 15px;border:1px solid #d9e2ef;border-radius:8px}
+.ima-finding-card p{margin:6px 0 0;line-height:1.55}

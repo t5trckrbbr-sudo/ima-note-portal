@@ -1,5 +1,5 @@
 import {renderImaOldNcr,bindImaOldNcr} from './ima-ncr.js';
-import {setExplorerFirmByName,renderIbSynchronizedExplorer,bindIbSynchronizedExplorer,renderRegulatoryCompliancePanel,bindRegulatoryCompliancePanel} from './curiosity.js';
+import {setExplorerFirmByName,renderIbSynchronizedExplorer,bindIbSynchronizedExplorer,renderRegulatoryCompliancePanel,bindRegulatoryCompliancePanel,renderIma3FirmsComparisonPanel,bindIma3FirmsComparisonPanel} from './curiosity.js';
 const REPO='https://github.com/t5trckrbbr-sudo/ima-note-portal';
 const f=(n,d=2)=>Number(n).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const src=(text,xrayKey='')=>`<div class="source"><b>출처 및 산정방식</b> · ${text} ${xrayKey?`<button type="button" class="source-xray-btn" data-xray="${xrayKey}">산식·근거 열기</button> · `:''}<a href="#sources">원문 확인 ↗</a></div>`;
@@ -42,6 +42,7 @@ function pnl(D){
 function maturity(D){
  const a=D.imaTranchesKis,imaNote=D?.fundingForecast2027?.ima27RationaleNote||'';
  return answer('2027년 말에는 성장률과 함께 “언제 돈을 돌려줘야 하나”를 봅니다.','OpenDART 2026.3Q 기준 3사 IMA 수탁부채는 4.09조 원(한투 3.08조·NH 0.64조·미래에셋 0.38조, 5% 손실준비금 2,104.8억 원)에 도달했으며, 한국투자 초기 1~4호 2.60조 원의 만기가 2027.12~2028.04 5개월 안에 집중 도래합니다.')+
+ renderIma3FirmsComparisonPanel(D)+
  panel('초기 IMA 4개 회차 · 만기 타임라인 (2027.12 ~ 2028.04)',`<div class="grid3">${metric('3사 IMA 부채 (26.3Q)','4.09조 원','한투 3.08 · NH 0.64 · 미래 0.38','kpi:ima-kis-260')}${metric('초기 1~4호 차환벽','2.60조 원','2027.12 — 2028.04 (5개월)','kpi:ima-kis-260')}${metric('1호 연말 집중도','42.3%','27.12 단일 회차 1.10조 도래','kpi:ima-kis-260')}</div><div style="display:grid;grid-template-columns:repeat(5,minmax(90px,1fr));gap:16px;overflow:auto;padding:25px 0">${['2027-12','2028-01','2028-02','2028-03','2028-04'].map(m=>{let t=a.find(t=>t.maturity===m);const barColor=m==='2027-12'?'#c4362e':m==='2028-04'?'#004ea2':'#e88300';return `<button class="chip" data-maturity="${m}" style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:185px;background:#f5f8fe;border:1px solid #d9e2ef;padding:12px"><span style="color:${t?barColor:'#8b9ab0'};font-size:20px;font-weight:700">${t?f(t.amountTril):'—'}</span><span style="display:block;background:${t?barColor:'#d9e2ef'};width:38px;height:${t?t.amountTril/1.1*100:2}px;border-radius:5px 5px 0 0;margin:8px 0"></span><b>${m.replace('-','.')}</b><small>${t?t.tranche:'해당 회차 없음'}</small></button>`}).join('')}</div><div id="maturity-detail" class="callout" aria-live="polite">월을 선택하면 회차와 관리 포인트를 볼 수 있습니다.</div>${imaNote?`<div class="callout amber" style="margin-bottom:0"><b>2027E IMA 5.0조 원 전망 유지 배경</b> · ${imaNote}</div>`:''}`,'OpenDART 2026.3Q 별도 재무상태표(IMA 금융부채·손실준비금) 및 저장소 imaTranchesKis. 상품 원문 약정·중도환매·재투자 여부 재확인 필요.','kpi:ima-kis-260')+
  renderImaOldNcr()+
  panel('발행어음과 IMA, 어떤 점이 다를까?',table(['비교 항목','발행어음','IMA'],[
@@ -79,7 +80,7 @@ function sources(D){return answer('숫자의 출처, 기준일, 해석 범위를
 export function bindDetail(id,D,onNavigate=tab=>{location.hash=tab;}){
  if(id==='pnl'){document.querySelectorAll('[data-pnl-firm]').forEach(el=>el.addEventListener('click',()=>{setExplorerFirmByName(D,el.dataset.pnlFirm);onNavigate('ib-funding');}));bindRegulatoryCompliancePanel(D);}
  if(id==='ima-maturity')document.querySelectorAll('[data-maturity]').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('[data-maturity]').forEach(x=>x.classList.toggle('active',x===el));const t=D.imaTranchesKis.find(t=>t.maturity===el.dataset.maturity);document.getElementById('maturity-detail').innerHTML=t?`<b>${t.maturity.replace('-','.')} · ${t.tranche} · ${f(t.amountTril)}조 원 (${t.sharePct}%)</b><p>${t.note}. 회수 예정 현금흐름과 지급 약정을 대조하세요.</p>`:'<b>2028.01 · 제공된 초기 4개 회차 중 만기 해당 없음</b><p>해당 월의 전체 시장 상환액이 0이라는 의미는 아닙니다.</p>';}));
- if(id==='ima-maturity')bindImaOldNcr();
+ if(id==='ima-maturity'){bindIma3FirmsComparisonPanel(D);bindImaOldNcr();}
  if(id==='ib-funding')bindIbSynchronizedExplorer(D,onNavigate);
  if(id==='kis-mirae')document.querySelectorAll('[data-ledger]').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('[data-ledger]').forEach(x=>x.classList.toggle('active',x===el));document.getElementById('ledger-detail').innerHTML=ledger(D,el.dataset.ledger);}));
  if(id==='pension-risk'){
