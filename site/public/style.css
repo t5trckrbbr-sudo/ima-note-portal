@@ -646,3 +646,42 @@ tr[data-xray]{cursor:pointer}
 .ima-findings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:12px}
 .ima-finding-card{padding:13px 15px;border:1px solid #d9e2ef;border-radius:8px}
 .ima-finding-card p{margin:6px 0 0;line-height:1.55}
+
+.note-expansion-panel{scroll-margin-top:95px}
+.note-limit-chart,.note-evidence-figure{margin:0}
+.note-limit-chart{padding:15px 16px;border:1px solid #d9e2ef;border-radius:10px;background:#f7faff}
+.note-limit-chart figcaption,.note-evidence-figure figcaption{font-weight:700}
+.note-limit-chart figcaption span,.note-evidence-figure figcaption span{margin-left:.35rem;color:var(--muted);font-size:.875rem;font-weight:500}
+.note-limit-row{margin-top:10px}
+.note-limit-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.note-limit-head strong{color:var(--note-firm-color);font-size:1.38rem;font-variant-numeric:tabular-nums}
+.note-limit-head small{font-size:.875rem;font-weight:600}
+.note-limit-meter{position:relative;height:14px;overflow:hidden;border-radius:4px;background:#edf2f8}
+.note-limit-ceiling,.note-limit-balance{position:absolute;inset:0 auto 0 0;border-radius:4px}
+.note-limit-ceiling{background:#ccd8e9}
+.note-limit-balance{background:var(--note-firm-color)}
+.note-limit-row p{margin:5px 0 0;color:var(--muted);font-size:.875rem}
+.note-limit-axis{display:flex;justify-content:space-between;margin-top:5px;color:var(--muted);font-size:.875rem}
+.note-chart-source{margin:9px 0 0;color:var(--muted);font-size:.875rem;line-height:1.55}
+.note-chart-source a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+.note-limit-key{display:inline-block;width:10px;height:10px;margin-right:4px;border-radius:2px;background:#ccd8e9}
+.note-expansion-evidence{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;margin-top:14px}
+.note-evidence-card{min-width:0;padding:15px 16px;border:1px solid #d9e2ef;border-radius:10px}
+.note-evidence-card h3{margin:0 0 9px;font-size:1.05rem}
+.note-evidence-card p{margin-bottom:0}
+.note-kis-allocation{display:flex;height:13px;margin:9px 0;border-radius:4px;overflow:hidden}
+.note-allocation-0{background:#004ea2}.note-allocation-1{background:#69a0df}.note-allocation-2{background:#bccce0}
+.note-allocation-labels{display:flex;flex-wrap:wrap;gap:5px 14px;margin:0;font-size:.875rem}
+.note-allocation-labels dt,.note-allocation-labels dd{display:inline-block;margin:0 0 0 5px}
+.note-allocation-labels dt{margin-left:0}
+.note-allocation-labels dd{font-weight:700}
+.note-allocation-labels i{display:inline-block;width:9px;height:9px;margin-right:4px;border-radius:2px}
+.note-debt-row{display:grid;grid-template-columns:4.3rem minmax(0,1fr) 4.4rem;align-items:center;gap:6px;margin-top:7px;font-size:.875rem}
+.note-debt-row strong{text-align:right;font-variant-numeric:tabular-nums}
+.note-debt-track{position:relative;height:10px;background:linear-gradient(90deg,transparent calc(50% - 1px),#8da5c5 calc(50% - 1px),#8da5c5 50%,transparent 50%)}
+.note-debt-track i{position:absolute;top:1px;height:8px;border-radius:2px}
+.note-debt-up{left:50%;background:#b65f00}
+.note-debt-down{right:50%;background:#6680a0}
+.note-expansion-takeaway{margin-top:14px;padding:12px 14px;border-left:3px solid #e07c00;background:#fff8ec}
+.note-expansion-takeaway .badge{font-size:.875rem}
+.note-expansion-takeaway p{margin:7px 0 0}

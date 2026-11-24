@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {renderDetail} from '../public/details.js';
 import {
   explorerState,
   getSamsungScenario,
@@ -260,4 +261,20 @@ test('IMA comparison identifies strategy estimates and distinguishes launched tr
   assert.match(html, /IMA G2/);
   assert.doesNotMatch(html, /\b(?:undefined|NaN)\b/);
   assert.equal(renderIma3FirmsComparisonPanel({}), '');
+});
+
+test('the KIS–Mirae detail page compares the same-date note capacity and dated funding evidence', () => {
+  const html = renderDetail('kis-mirae', D);
+  const start = html.indexOf('id="note-expansion-comparison"');
+  const legacy = html.indexOf('같은 눈금으로 보는 자본과 레버리지');
+  assert(start >= 0 && start < legacy);
+  const comparison = html.slice(start, legacy);
+  for (const label of ['24.47조', '27.10조', '90.3%', '10.36조', '21.17조', '48.9%', '21.6조', '12조', '1.5~2%', '+5.71조', '−4.93조', '−0.34조']) {
+    assert(comparison.includes(label), label);
+  }
+  assert(comparison.includes('2026년 3분기 말 별도 공시'));
+  assert(comparison.includes('2022년 차입 증감'));
+  assert(comparison.includes('전략 해석 · 추정'));
+  assert(comparison.includes('?q=guide-mirae-note-growth#questions'));
+  assert.doesNotMatch(comparison, /\b(?:undefined|NaN)\b/);
 });
