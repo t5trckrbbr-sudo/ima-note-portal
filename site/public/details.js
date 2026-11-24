@@ -54,31 +54,35 @@ function funding(D){
  panel('조달 수단의 순운용마진은 같은 기준인가?',table(['수단','원문 추정 마진','해석 시 확인'],[['RP','10~30bp','담보·헤지·유동성 비용과 만기'],['발행어음','<span class="xray-token" data-xray="kpi:margin-150-200" tabindex="0" role="button">150~200bp</span>','기업신용위험·손실·자본 비용'],['IMA','<span class="xray-token" data-xray="kpi:margin-150-200" tabindex="0" role="button">120~180bp</span>','보수·초과수익 배분 구조 · 동일 의미의 NIM 아님'],['CP·전단채·콜','30~80bp','운용자산과 차환 비용'],['ELS·DLS','30~70bp','발행마진 · 헤지 손익 변동']]),'저장소 Module E-3의 추정 범위. 감사된 상품별 순익 또는 동일 위험 기준 비교가 아니며 수익 보장·우열의 증거로 사용하지 않음.','kpi:margin-150-200')+next('kis-mirae','한국투자와 미래에셋의 차이는?');
 }
 function noteExpansionComparison(D) {
-  const evidence = D.promNoteExpansionComparison;
+  const comparison = D.promNoteExpansionComparison;
   const firms = ['kis', 'mirae'].map(key => D.promNoteDart202609?.find(firm => firm.key === key));
-  if (!evidence || firms.some(firm => !firm)) return '';
+  if (!comparison?.balancesKrwThousands || firms.some(firm => !firm)) return '';
 
-  const { kisBook, miraeChange, miraePolicy } = evidence;
+  const firmColors = { kis: '#004ea2', mirae: '#b65f00' };
   const capScale = Math.ceil(Math.max(...firms.map(firm => firm.legalCap200Tril)) / 10) * 10;
   const capTicks = Array.from({ length: capScale / 10 + 1 }, (_, i) => i * 10);
-  const allocations = kisBook.allocationTril;
-  const totalBook = allocations.reduce((total, asset) => total + asset.amount, 0);
-  const changes = miraeChange.balancesEok.map(row => ({ ...row, change: (row.end - row.start) / 10000 }));
-  const changeScale = Math.ceil(Math.max(...changes.map(row => Math.abs(row.change))));
-  const totalDebt = changes.find(row => row.key === 'total');
-  const signed = value => `${value < 0 ? '−' : '+'}${f(Math.abs(value))}조`;
+  const toTril = amount => amount / 1e9;
+  const groups = [['promNote', '발행어음'], ['rp', 'RP 매도']].map(([key, label]) => ({
+    key, label,
+    rows: firms.map(({ key: firmKey, firm }) => {
+      const { start, end } = comparison.balancesKrwThousands[firmKey][key];
+      return { firmKey, firm, start, end, change: toTril(end - start), growth: (end - start) / start * 100 };
+    })
+  }));
+  const changeScale = Math.ceil(Math.max(1, ...groups.flatMap(group => group.rows.map(row => Math.abs(row.change)))));
+  const signed = (value, decimals) => `${value < 0 ? '−' : value > 0 ? '+' : ''}${f(Math.abs(value), decimals)}`;
   const link = (url, label) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
 
   return `<section class="panel note-expansion-panel" id="note-expansion-comparison" aria-labelledby="note-expansion-title">
     <div class="panel-head">
       <div>
-        <h2 id="note-expansion-title">발행어음, 얼마나 늘렸고 어디에 썼을까?</h2>
-        <p>한투와 미래에셋의 발행어음 잔액과 법정 한도를 같은 눈금에서 비교합니다.</p>
+        <h2 id="note-expansion-title">한투와 미래에셋은 발행어음을 얼마나 늘렸을까?</h2>
+        <p>현재 한도 사용률과 같은 기간의 발행어음·RP 잔액 변화를 비교합니다.</p>
       </div>
     </div>
     <figure class="note-limit-chart">
       <figcaption>발행어음 잔액 · 법정 한도 <span>2026년 3분기 말 별도 공시</span></figcaption>
-      ${firms.map(firm => `<div class="note-limit-row" data-note-limit-firm="${firm.key}" style="--note-firm-color:${firm.key === 'kis' ? '#004ea2' : '#b65f00'}">
+      ${firms.map(firm => `<div class="note-limit-row" data-note-limit-firm="${firm.key}" style="--note-firm-color:${firmColors[firm.key]}">
         <div class="note-limit-head">
           <b>${firm.firm}</b>
           <strong>${f(firm.limitUsagePct, 1)}% <small>한도 사용</small></strong>
@@ -94,37 +98,30 @@ function noteExpansionComparison(D) {
         ${firms.map(firm => link('https://dart.fss.or.kr/dsaf001/main.do?rcpNo=' + firm.rceptNo, firm.firm + ' 분기보고서')).join(' · ')}
       </p>
     </figure>
-    <div class="note-expansion-evidence">
-      <article class="note-evidence-card">
-        <h3>한투 · 어음 자금을 기업금융에 운용</h3>
-        <figure class="note-evidence-figure">
-          <figcaption>${kisBook.asOf} 발행어음 ${f(totalBook, 1)}조 원의 운용처</figcaption>
-          <div class="note-kis-allocation" aria-hidden="true">
-            ${allocations.map((asset, i) => `<span class="note-allocation-${i}" style="width:${asset.amount / totalBook * 100}%"></span>`).join('')}
-          </div>
-          <dl class="note-allocation-labels">${allocations.map((asset, i) => `<div><dt><i class="note-allocation-${i}" aria-hidden="true"></i>${asset.label}</dt><dd>${f(asset.amount, Number.isInteger(asset.amount) ? 0 : 1)}조</dd></div>`).join('')}</dl>
-        </figure>
-        <p>기업금융이 가장 큰 운용처였습니다. 한신평은 당시 발행어음 운용마진을 <b>${f(kisBook.marginPct[0], 1)}~${f(kisBook.marginPct[1], 0)}%</b>로 평가했습니다.</p>
-        <p class="note-chart-source">${link(kisBook.source, '한신평 · 한국투자증권')}</p>
-      </article>
-      <article class="note-evidence-card">
-        <h3>미래에셋 · 어음 확대와 RP 축소</h3>
-        <figure class="note-evidence-figure">
-          <figcaption>${miraeChange.period} 차입 증감 <span>전년 말 대비</span></figcaption>
-          ${changes.map(row => `<div class="note-debt-row" data-note-debt="${row.key}">
-            <b>${row.label}</b>
-            <span class="note-debt-track" aria-hidden="true"><i class="${row.change < 0 ? 'note-debt-down' : 'note-debt-up'}" style="width:${Math.abs(row.change) / changeScale * 50}%"></i></span>
-            <strong>${signed(row.change)}</strong>
+    <figure class="note-change-chart" id="note-funding-changes">
+      <figcaption>조달 잔액 증감 <span>${comparison.periodLabel} · 양사 별도</span></figcaption>
+      <div class="note-change-groups">
+        ${groups.map(({ key, label, rows }) => `<section class="note-change-group" aria-labelledby="note-change-${key}">
+          <h3 id="note-change-${key}">${label}</h3>
+          ${rows.map(row => `<div class="note-change-row" data-note-change="${key}:${row.firmKey}" style="--note-firm-color:${firmColors[row.firmKey]}">
+            <div class="note-change-head">
+              <b>${row.firm}</b>
+              <strong>${signed(row.change, 2)}조 <small>${signed(row.growth, 1)}%</small></strong>
+            </div>
+            <div class="note-debt-track" aria-hidden="true"><i class="${row.change < 0 ? 'note-debt-down' : 'note-debt-up'}" style="width:${Math.abs(row.change) / changeScale * 50}%"></i></div>
+            <p class="note-change-balances">${f(toTril(row.start))}조 → ${f(toTril(row.end))}조</p>
           </div>`).join('')}
-        </figure>
-        <p>전체 차입은 <b>${f(totalDebt.start / 10000, 1)}조 → ${f(totalDebt.end / 10000, 1)}조</b>였습니다. 2025년 11월 실적 콜에서는 안정적 자산 위주의 점진적 확대를 설명했습니다.</p>
-        <p class="note-chart-source">${link(miraeChange.source, '한신평 · 2022년 조달구조')} · ${link(miraePolicy.callSource, '미래에셋 실적 콜')}</p>
-      </article>
-    </div>
+          <div class="note-change-axis" aria-hidden="true"><span>−${changeScale}조</span><span>0</span><span>+${changeScale}조</span></div>
+        </section>`).join('')}
+      </div>
+      <p class="note-chart-source">증감액과 증가율은 반올림 전 공시 잔액으로 계산했습니다.
+        ${link(comparison.sources.kis, '한국투자증권 별도 주석 18')} · ${link(comparison.sources.mirae, '미래에셋증권 별도 주석 20')}
+      </p>
+    </figure>
     <div class="note-expansion-takeaway">
-      ${badge('전략 해석 · 추정', 'amber')}
-      <p>한투처럼 어음으로 조달한 자금을 신규 기업금융에 투입하면 운용이익을 키울 여지가 생깁니다. 미래에셋의 2022년 사례처럼 기존 조달을 대체할 때는 조달비용과 만기가 중요합니다. 한신평은 ${miraePolicy.asOf} 미래에셋의 발행어음 운용도 안전자산 중심으로 평가했습니다.</p>
-      <p class="note-chart-source">${link(miraePolicy.ratingSource, '한신평 · 미래에셋증권')} · <a data-qa-jump href="?q=guide-mirae-note-growth#questions">미래에셋 발행어음 확대 Q&amp;A</a></p>
+      <b>발행어음 증가율은 비슷했고, RP의 방향은 달랐습니다.</b>
+      <p>한투는 RP 잔액이 줄어드는 동안 발행어음을 늘렸습니다. 미래에셋은 발행어음과 RP 잔액이 모두 늘었고, 이 중 RP 증가액이 더 컸습니다.</p>
+      <p class="note-chart-source"><a data-qa-jump href="?q=guide-mirae-note-growth#questions">미래에셋 발행어음 확대 Q&amp;A</a></p>
     </div>
   </section>`;
 }

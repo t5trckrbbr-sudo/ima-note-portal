@@ -263,18 +263,28 @@ test('IMA comparison identifies strategy estimates and distinguishes launched tr
   assert.equal(renderIma3FirmsComparisonPanel({}), '');
 });
 
-test('the KIS–Mirae detail page compares the same-date note capacity and dated funding evidence', () => {
+test('the KIS–Mirae detail page compares note capacity and funding changes on common dates', () => {
   const html = renderDetail('kis-mirae', D);
   const start = html.indexOf('id="note-expansion-comparison"');
   const legacy = html.indexOf('같은 눈금으로 보는 자본과 레버리지');
   assert(start >= 0 && start < legacy);
   const comparison = html.slice(start, legacy);
-  for (const label of ['24.47조', '27.10조', '90.3%', '10.36조', '21.17조', '48.9%', '21.6조', '12조', '1.5~2%', '+5.71조', '−4.93조', '−0.34조']) {
+  for (const label of ['24.47조', '27.10조', '90.3%', '10.36조', '21.17조', '48.9%']) {
     assert(comparison.includes(label), label);
   }
   assert(comparison.includes('2026년 3분기 말 별도 공시'));
-  assert(comparison.includes('2022년 차입 증감'));
-  assert(comparison.includes('전략 해석 · 추정'));
+  assert(comparison.includes('2025년 12월 말 → 2026년 9월 말 · 양사 별도'));
+  const fundingChanges = [
+    ['promNote:kis', '+2.99조', '+13.9%', '21.48조 → 24.47조'],
+    ['promNote:mirae', '+1.27조', '+14.0%', '9.09조 → 10.36조'],
+    ['rp:kis', '−0.44조', '−2.1%', '21.05조 → 20.61조'],
+    ['rp:mirae', '+2.14조', '+8.6%', '24.86조 → 26.99조'],
+  ];
+  for (const [series, amount, rate, balances] of fundingChanges) {
+    const row = comparison.split(`data-note-change="${series}"`)[1]?.split('</p>')[0];
+    assert(row?.includes(amount) && row.includes(rate) && row.includes(balances), series);
+  }
+  assert(!comparison.includes('2022년'));
   assert(comparison.includes('?q=guide-mirae-note-growth#questions'));
   assert.doesNotMatch(comparison, /\b(?:undefined|NaN)\b/);
 });

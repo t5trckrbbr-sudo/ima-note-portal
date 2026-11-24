@@ -6966,56 +6966,32 @@
     ]
   },
   "promNoteExpansionComparison": {
-    "kisBook": {
-      "asOf": "2026년 3월 말",
-      "allocationTril": [
-        {
-          "label": "기업금융",
-          "amount": 12
+    "periodLabel": "2025년 12월 말 → 2026년 9월 말",
+    "balancesKrwThousands": {
+      "kis": {
+        "promNote": {
+          "start": 21477926599,
+          "end": 24471425652
         },
-        {
-          "label": "부동산",
-          "amount": 2
-        },
-        {
-          "label": "기타",
-          "amount": 7.6
+        "rp": {
+          "start": 21047204510,
+          "end": 20608462604
         }
-      ],
-      "marginPct": [
-        1.5,
-        2
-      ],
-      "source": "https://kisrating.com/fileDown.do?fileName=rs20260518-34.pdf&gubun=2&menuCd=R8"
-    },
-    "miraeChange": {
-      "period": "2022년",
-      "balancesEok": [
-        {
-          "key": "note",
-          "label": "발행어음",
-          "start": 4365,
-          "end": 61503
+      },
+      "mirae": {
+        "promNote": {
+          "start": 9088157000,
+          "end": 10359373000
         },
-        {
-          "key": "rp",
-          "label": "RP",
-          "start": 212167,
-          "end": 162891
-        },
-        {
-          "key": "total",
-          "label": "총차입",
-          "start": 489049,
-          "end": 485689
+        "rp": {
+          "start": 24856154000,
+          "end": 26991318000
         }
-      ],
-      "source": "https://kisrating.com/fileDown.do?fileName=rs20250415-11.pdf&gubun=2&menuCd=R8#page=8"
+      }
     },
-    "miraePolicy": {
-      "asOf": "2026년 3월 말",
-      "callSource": "https://www.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2025/11/06/mirae_3Q25_CC_final.pdf#page=5",
-      "ratingSource": "https://kisrating.com/fileDown.do?fileName=rs20260601-31.pdf&gubun=2&menuCd=R8#page=5"
+    "sources": {
+      "kis": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20261113001340&dcmNo=11655733&eleId=28&offset=2642659&length=1081410&dtd=dart4.xsd",
+      "mirae": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20261116002051&dcmNo=11662216&eleId=94&offset=6951388&length=314199&dtd=dart4.xsd"
     }
   }
 }
