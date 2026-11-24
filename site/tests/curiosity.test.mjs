@@ -245,6 +245,9 @@ test('IMA comparison identifies strategy estimates and distinguishes launched tr
   const timeline = html.slice(html.indexOf('id="ima-funding-timeline"'), html.indexOf('<details'));
   assert.equal((timeline.match(/data-ima-funding-lane=/g) || []).length, 3);
   assert.equal((timeline.match(/data-ima-funding-event=/g) || []).length, 18);
+  const amountBubbles = [...timeline.matchAll(/class="ima-funding-amount[^"]*" aria-hidden="true">([^<]+)<\/span>/g)].map(match => match[1]);
+  assert.equal(amountBubbles.length, 18);
+  assert.deepEqual(amountBubbles.slice(0, 9), ['1.1조', '0.7~0.8조', '0.4조', '0.3조', '0.3조', '0.1조', '0.2조', '0.2조', '미확인']);
   assert.match(timeline, /25\.12/);
   assert.match(timeline, /26\.11/);
   assert.match(timeline, /2026\.09\.29~10\.01/);

@@ -615,7 +615,7 @@ tr[data-xray]{cursor:pointer}
 .ima-funding-scroll{overflow-x:auto;border:1px solid #d9e2ef;border-radius:8px}
 .ima-funding-plot{display:grid;grid-template-columns:7.5rem minmax(0,1fr);min-width:52rem;padding:4px 18px 0 0;background:#fff}
 .ima-funding-firm{position:sticky;left:0;z-index:2;display:flex;align-items:center;padding-left:10px;background:#fff;color:var(--ink);font-size:.875rem;font-weight:700}
-.ima-funding-lane{--ima-line:2.05rem;position:relative;height:3.2rem;color:var(--ima-accent)}
+.ima-funding-lane{--ima-line:2.05rem;position:relative;height:4.3rem;color:var(--ima-accent)}
 .ima-funding-lane::before{content:"";position:absolute;inset-inline:0;top:var(--ima-line);border-top:1px solid #aabbd0}
 .ima-funding-gridline{position:absolute;top:12px;bottom:0;border-left:1px solid #e5edf6}
 .ima-funding-window{position:absolute;top:var(--ima-line);height:4px;transform:translateY(-50%);border-radius:3px;background:currentColor}
@@ -627,6 +627,9 @@ tr[data-xray]{cursor:pointer}
 .ima-funding-event.is-month .ima-funding-point{width:7px;height:7px;border-radius:2px}
 .ima-funding-event.is-announced .ima-funding-point{background:#fff}
 .ima-funding-event[aria-pressed="true"] .ima-funding-event-label{outline:1px solid currentColor;border-radius:3px;outline-offset:2px}
+.ima-funding-amount{position:absolute;top:calc(var(--ima-line) + 8px);left:50%;transform:translateX(-50%);padding:1px 4px;border:1px solid #d5e2f1;border-radius:5px;background:#eff5fc;color:#173a60;white-space:nowrap;font-size:.875rem;line-height:1.2;font-weight:700;font-variant-numeric:tabular-nums}
+.ima-funding-amount::before{content:"";position:absolute;top:-3px;left:calc(50% - 3px);width:5px;height:5px;transform:rotate(45deg);border-top:1px solid #d5e2f1;border-left:1px solid #d5e2f1;background:inherit}
+.ima-funding-amount.is-unknown{background:#f7f9fc;color:var(--muted);font-weight:600}
 .ima-funding-axis-label{color:var(--muted);font-weight:600}
 .ima-funding-axis{position:relative;height:2rem;color:var(--muted);font-size:.875rem;font-variant-numeric:tabular-nums}
 .ima-funding-axis span{position:absolute;top:4px;transform:translateX(-50%)}

@@ -1954,6 +1954,21 @@ function imaFundingPeriod(label) {
   return { start, end, monthOnly: false };
 }
 
+function imaFundingAmountLabel(label) {
+  const text = String(label ?? '').trim().replace(/^약\s*/, '').replaceAll(',', '');
+  const trillions = /^(\d+(?:\.\d+)?)\s*조(?:\s*(\d+)\s*억)?/.exec(text);
+  if (trillions) {
+    return `${fmt(Number(trillions[1]) + Number(trillions[2] || 0) / 10000, 1)}조`;
+  }
+  const amount = /^(\d+)(?:\s*~\s*(\d+))?\s*억/.exec(text);
+  if (!amount) return '미확인';
+  const [, low, high = low] = amount;
+  const digits = Number(low) < 1000 ? 2 : 1;
+  const start = fmt(Number(low) / 10000, digits);
+  const end = fmt(Number(high) / 10000, digits);
+  return `${start === end ? start : `${start}~${end}`}조`;
+}
+
 function renderImaFundingTimeline(ds) {
   const entries = ds.tranches.flatMap((tranche, index) => {
     const period = imaFundingPeriod(tranche.launchPeriod);
@@ -1992,10 +2007,12 @@ function renderImaFundingTimeline(ds) {
               const css = monthOnly ? ' is-month' : announced ? ' is-announced' : '';
               const label = tranche.tranche.replace(/^IMA ([SG]\d+) .*$/, '$1')
                 .replace(/^N2 IMA1 |^미래에셋 IMA /, '').replace('기형 ', '기 ');
-              const text = `${firm.name} ${tranche.tranche} · ${tranche.launchPeriod}${announced ? ' · 설정 예정' : ''}`;
+              const amount = imaFundingAmountLabel(tranche.amountLabel);
+              const text = `${firm.name} ${tranche.tranche} · ${tranche.launchPeriod} · 공개 규모 ${tranche.amountLabel}${announced ? ' · 설정 예정' : ''}`;
               return `${end > start ? `<span class="ima-funding-window${css}" style="left:${position(start)}%;width:${position(end) - position(start)}%" aria-hidden="true"></span>` : ''}
                 <button type="button" class="ima-funding-event${css}" style="left:${position(monthOnly ? (start + end) / 2 : start)}%" data-ima-funding-event="${index}" title="${text}" aria-label="${text}" aria-pressed="false">
                   <span class="ima-funding-event-label">${label}</span><span class="ima-funding-point" aria-hidden="true"></span>
+                  <span class="ima-funding-amount${amount === '미확인' ? ' is-unknown' : ''}" aria-hidden="true">${amount}</span>
                 </button>`;
             }).join('')}
           </div>`).join('')}
@@ -2005,7 +2022,7 @@ function renderImaFundingTimeline(ds) {
         </div>
       </div>
     </div>
-    <p class="ima-table-note">점은 모집 시작일, 선은 모집 기간입니다. 흐린 막대는 월 단위 자료이며, 빈 점은 설정 예정 회차입니다.</p>
+    <p class="ima-table-note">점은 모집 시작일, 선은 모집 기간입니다. 흐린 막대는 월 단위 자료이며, 빈 점은 설정 예정 회차입니다. 금액은 공개 모집 규모를 조 원으로 환산해 반올림했습니다.</p>
     <p id="ima-funding-selection" class="ima-funding-selection" role="status">회차를 선택하면 모집 시기와 공개 규모를 볼 수 있습니다.</p>
   </section>`;
 }
