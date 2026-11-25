@@ -20,10 +20,6 @@ const QA_DIGEST = {
     title: '2027년 부동산 운용 한도 10% 축소와 소규모 IMA 회차의 단일 딜 집중위험은?',
     summary: '부동산 상한 축소(30%→15%→10%)로 기업금융·모험자본 전환 부담이 커지며, 3,000~4,000억 규모 IMA 회차는 단일 딜 부실만으로 5% 고유충당금이 소진될 수 있어 회차당 단일 딜 캡(5~10%)이 필요합니다.'
   },
-  'guide-funding-rate-spread-risk': {
-    title: '조달금리 경쟁에서 ‘기준금리 +50bp’ 경보 기준과 만기 분산은 왜 중요한가요?',
-    summary: '평시 어음 마진 150~200bp는 기준금리 대비 조달비용 +30bp 내외를 전제한 모형입니다. 조달금리 상승과 모험자본 의무가 겹치면 신규 수신의 이익이 줄어듭니다.'
-  },
   'guide-pension-self-product-ban': {
     title: '퇴직연금 ‘자사 상품 편입 제한’이란 무엇이며, 왜 501.4조 연금이 핵심 변수인가요?',
     summary: '퇴직연금감독규정 제9조제3항에 따라 사업자는 자사 원리금보장상품을 편입할 수 없습니다. 원리금보장 378.1조 시장에 어음·IMA 편입이 허용되면 전 업권 교차판매로 대규모 머니무브가 가능합니다.'
@@ -66,7 +62,7 @@ const QA_DIGEST = {
   },
   'guide-mirae-note-growth': {
     title: '미래에셋증권은 왜 발행어음 확대에 상대적으로 신중한가요?',
-    summary: '의무 도입 전에도 2022년 어음은 빠르게 늘고 2023~24년 증가폭은 작아졌습니다. 당시 RP·사채 조달과 자산 만기 관리로 확대 속도를 설명하고, 모험자본 의무와 IMA의 영향은 2025년 말 이후에 적용합니다.'
+    summary: '미래에셋은 단기자금을 RP로, 장기자금을 회사채로 조달해 온 기반이 있습니다. 기존 거래망과 차환 구조를 활용할 수 있어 발행어음 한도를 한투만큼 채울 유인이 작았던 것으로 보입니다.'
   },
   'guide-kis-mirae-comparison': {
     title: '한국투자와 미래에셋의 순이자 차이(+5,299억 vs −1,405억)가 어음 수익성을 입증하나요?',
@@ -164,7 +160,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: 'OpenDART 2026.3Q 분기보고서(자본·발행어음·IMA·3Q/9M 손익·연결 NCR) 및 FISIS 202606(SF321 실효금리·SF325 전사 조달)',
       caveat: `${chain.growthPremise} 선택한 ${periodLabel} NIM 시나리오(${fmt(nimRow.total, 0)}억)는 계산기의 현재 회사별 마진 가정을 적용한 판관비·충당금 차감 전 추정치입니다. 기회비용(${fmt(oppAfterCapEok, 0)}억)은 신규 증가분과 기존 잔액 의무비율 상승분을 포함한 ${baseGapBp}bp 연환산 시나리오입니다. 이미 NIM에 반영했다면 중복 차감하지 않습니다.`,
-      qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
+      qas: makeQaItems(['guide-nim-income', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: `${chain.firm} 9사 조달·ROE 상세 비교 →`, tab: 'ib-funding', firmKey: chain.key, primary: true },
         { label: `${chain.firm} 모험자본 기회비용 계산기 →`, tab: 'invest', firmKey: chain.key },
@@ -448,7 +444,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '원문 리서치 모형(Module E-3) 추정 범위 및 대시보드 NIM 시뮬레이터 기본값(150bp / 120bp)',
       caveat: '감사된 회계상 상품별 확정 마진이 아니며, 신용손실(EL)·판관비·신NCR 자기자본비용 차감 전 기준이므로 무위험 차익처럼 단순 비교하지 않습니다.',
-      qas: makeQaItems(['guide-nim-income', 'guide-funding-rate-spread-risk']),
+      qas: makeQaItems(['guide-nim-income', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: '회사별 NIM 시뮬레이터(#nim-lab) 직접 조정 →', tab: 'funding', scrollTo: 'nim-lab', primary: true },
         { label: '모험자본 기회비용 비교(#invest) →', tab: 'invest', scrollTo: 'vc-raroc-lab' }
@@ -484,7 +480,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '금감원 발행어음 만기분포(2026.1Q) · FISIS SF321 실효금리 · KOFIA 채권 커브 실증',
       caveat: '1년물 조달의 필요액을 먼저 정하고, 긴 자산에는 만기를 맞춘 조달비용·회수 일정·유동성 여력을 대조합니다. 하반기 완화는 단기금리 하락을 전제로 합니다.',
-      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-funding-rate-spread-risk']),
+      qas: makeQaItems(['guide-2027-funding-outlook-bear-flattening', 'guide-yield-curve-short-funding']),
       actions: [
         { label: '한국투자증권의 조달·운용·만기 전략 →', tab: 'funding', scrollTo: 'funding-bear-strategy', primary: true },
         { label: '단기 수익률곡선 패널 바로 보기 ↓', tab: 'funding', scrollTo: 'short-curve-panel' }
@@ -522,7 +518,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '7개 인가 증권사 고시약정금리 및 KOFIA 민평수익률(2026-11-13)',
       caveat: '1년물 발행어음을 과도하게 늘리면 자체 공모 금융채 AA0 발행(1년 4.14%) 대비 조달원가 우위가 사라집니다.',
-      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-funding-rate-spread-risk']),
+      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: 'Q&A · 왜 발행어음 커브만 가파를까? →', qa: 'guide-yield-curve-short-funding', primary: true },
         { label: '9사별 실제 상반기 실효금리 비교 →', tab: 'ib-funding' }
@@ -683,10 +679,10 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '한국은행 자금순환(ECOS 281Y002, S11 비금융법인기업 부문)',
       caveat: '가계가 발행어음·IMA의 안정적 리테일 코어 부채라면, 비금융법인 유동성은 규모를 빠르게 키우는 도매 자금원입니다.',
-      qas: makeQaItems(['guide-funding-rate-spread-risk', 'guide-demand-note-cash-buffer']),
+      qas: makeQaItems(['guide-yield-curve-short-funding', 'guide-demand-note-cash-buffer']),
       actions: [
         { label: '법인 유동성 & 가계 5분위 비교 섹션 ↓', tab: 'household-wealth', scrollTo: 'hw-aux-pools', primary: true },
-        { label: 'Q&A · 법인 수시형·기간형 분산 전략 →', qa: 'guide-funding-rate-spread-risk' }
+        { label: 'Q&A · 발행어음 초단기 수신 구조 →', qa: 'guide-yield-curve-short-funding' }
       ]
     },
     'kpi:hw-shf-top20': {
@@ -774,7 +770,7 @@ export function resolveXraySpec(specKey, D, context = {}) {
       ],
       source: '원문 Module C 한계수익과 한계비용 개념 모형',
       caveat: '그래프 좌표는 설명용입니다. 회사별 딜 조건과 조달원가를 확인한 뒤 실제 수신 규모를 판단합니다.',
-      qas: makeQaItems(['guide-sizing-growth', 'guide-funding-rate-spread-risk']),
+      qas: makeQaItems(['guide-sizing-growth', 'guide-2027-funding-outlook-bear-flattening']),
       actions: [
         { label: '수신 1조 패키지 한계이익 렌즈 열기 ↑', tab: 'invest', scrollTo: 'vc-raroc-lab', primary: true },
         { label: 'Q&A · 모험자본 병목과 적정 성장 규모 →', qa: 'guide-sizing-growth' }

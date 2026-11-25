@@ -9,7 +9,7 @@ const key='a'.repeat(64),other='b'.repeat(64);
 const request=async(db,path,method='GET',body,authorKey=key,origin='https://example.org')=>{const headers={'X-Author-Key':authorKey,'Origin':origin};if(body!==undefined)headers['Content-Type']='application/json';const r=await handleApi(new Request('https://example.org'+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body)}),{DB:db});return {status:r.status,body:r.status===204?null:await r.json()}};
 const question={title:'모험자본 의무와 수신 확대를 어떻게 비교할까요?',body:'자산 배분과 교차 규제를 구분해 보고 싶습니다.',category:'regulation',timeframe:'2027',author:'검증자'};
 const answer={body:'모험자본 의무는 자산 유형 안에서 별도 요건으로 집계합니다.',author:'참여자',kind:'opinion',sourceUrl:'',sourceTitle:'',observedAt:''};
-test('seed questions have meaningful filters and verified guide answers',async()=>{const {db}=setup();let r=await request(db,'/api/questions');assert.equal(r.status,200);assert.equal(r.body.total,19);assert.equal(r.body.pages,2);assert.equal(r.body.questions.length,12);assert.equal(r.body.counts.unanswered,0);assert(r.body.questions.every(q=>!q.own));assert.equal(r.body.questions[0].id,'guide-mirae-note-growth');for(const qid of ['guide-ima-old-ncr-capital','guide-2027-funding-outlook-bear-flattening','guide-yield-curve-short-funding','guide-demand-note-cash-buffer','guide-real-estate-concentration','guide-funding-rate-spread-risk','guide-pension-self-product-ban']){const d=await request(db,'/api/questions/'+qid);assert.equal(d.status,200);assert.equal(d.body.answers[0].kind,'guide');}r=await request(db,'/api/questions?status=unanswered');assert.equal(r.body.questions.length,0);r=await request(db,'/api/questions?timeframe=timeless');assert(r.body.questions.every(q=>q.timeframe==='timeless'));r=await request(db,'/api/questions?q=NIM');assert(r.body.total>0);r=await request(db,'/api/questions?q='+encodeURIComponent('현금성자산'));assert.equal(r.body.total,1);r=await request(db,'/api/questions?q='+encodeURIComponent('베어 플랫'));assert.equal(r.body.total,1);r=await request(db,'/api/questions/'+seedQuestions[0].id);assert.equal(r.body.answers[0].kind,'guide');});
+test('seed questions have meaningful filters and verified guide answers',async()=>{const {db}=setup();let r=await request(db,'/api/questions');assert.equal(r.status,200);assert.equal(r.body.total,18);assert.equal(r.body.pages,2);assert.equal(r.body.questions.length,12);assert.equal(r.body.counts.unanswered,0);assert(r.body.questions.every(q=>!q.own));assert.equal(r.body.questions[0].id,'guide-mirae-note-growth');for(const qid of ['guide-ima-old-ncr-capital','guide-2027-funding-outlook-bear-flattening','guide-yield-curve-short-funding','guide-demand-note-cash-buffer','guide-real-estate-concentration','guide-pension-self-product-ban']){const d=await request(db,'/api/questions/'+qid);assert.equal(d.status,200);assert.equal(d.body.answers[0].kind,'guide');}r=await request(db,'/api/questions?status=unanswered');assert.equal(r.body.questions.length,0);r=await request(db,'/api/questions?timeframe=timeless');assert(r.body.questions.every(q=>q.timeframe==='timeless'));r=await request(db,'/api/questions?q=NIM');assert(r.body.total>0);r=await request(db,'/api/questions?q='+encodeURIComponent('현금성자산'));assert.equal(r.body.total,1);r=await request(db,'/api/questions?q='+encodeURIComponent('베어 플랫'));assert.equal(r.body.total,1);r=await request(db,'/api/questions/'+seedQuestions[0].id);assert.equal(r.body.answers[0].kind,'guide');});
 test('all guides have a concise key answer without changing the review input',async()=>{
  const {db}=setup();
  for(const seed of seedQuestions){
@@ -23,7 +23,7 @@ test('all guides have a concise key answer without changing the review input',as
  }
 });
 
-test('Mirae Asset funding strategy has a searchable guide with the evidence link',async()=>{
+test('Mirae guide connects comparable balances to its use of RP and bonds',async()=>{
  const {db}=setup();
  const id='guide-mirae-note-growth';
  const found=await request(db,'/api/questions?q='+encodeURIComponent('미래에셋 발행어음'));
@@ -31,27 +31,30 @@ test('Mirae Asset funding strategy has a searchable guide with the evidence link
  const detail=await request(db,'/api/questions/'+id);
  assert.equal(detail.status,200);
  const guide=detail.body.answers.find(a=>a.kind==='guide');
+ assert.match(guide.summary,/RP로, 장기자금을 회사채로.*기존 거래망/);
  assert.match(guide.body,/10\.36조.+48\.9%/);
- assert(guide.body.includes('26.99조')&&guide.body.includes('4.37%'));
- assert(guide.body.includes('0.44조 → 2022년 6.15조 → 2023년 6.45조 → 2024년 7.47조'));
- assert(guide.body.includes('2024년 말 RP 26.48조 원'));
- assert.match(guide.body,/\[4\] 2025년 말 이후 확대 판단에 추가된 요인\n• 모험자본 의무는 2025년 11월 신설됐습니다/);
+ assert.match(guide.body,/9\.09조 → 10\.36조.*24\.86조 → 26\.99조/);
+ assert.match(guide.body,/RP 2\.42%, 발행어음 2\.75%/);
+ assert.match(guide.body,/경로의존성/);
+ assert.doesNotMatch(guide.body+guide.summary,/안전\s*자산|안정적\s*자산/);
  assert(guide.sourceUrl.includes('QA_VERIFIED_ANSWERS.md#q20-'));
  assert.equal(guide.observedAt,'2026-11-23');
 });
 
-test('risk labels find their substantive answers and the removed allocation question stays absent',async()=>{
+test('risk labels find active answers and both removed questions stay absent',async()=>{
  const {db}=setup();
  const first=await request(db,'/api/questions');
  const second=await request(db,'/api/questions?page=2');
  const all=[...first.body.questions,...second.body.questions];
- assert.equal(all.length,19);
- assert(!all.some(q=>q.id==='guide-venture-cross-rule'));
- assert.equal((await request(db,'/api/questions/guide-venture-cross-rule')).status,404);
+ assert.equal(all.length,18);
+ for(const id of ['guide-venture-cross-rule','guide-funding-rate-spread-risk']){
+  assert(!all.some(q=>q.id===id));
+  assert.equal((await request(db,'/api/questions/'+id)).status,404);
+ }
+ assert.equal((await request(db,'/api/questions?q='+encodeURIComponent('기준금리 +50bp'))).body.total,0);
  assert(second.body.questions.some(q=>q.id==='guide-sizing-growth'),'sourcing answer remains searchable beyond the first page');
  for(const [label,id] of [
   ['모험자본 조달 병목','guide-sizing-growth'],
-  ['조달금리 경쟁','guide-funding-rate-spread-risk'],
   ['베어 플랫 · 기간스프레드 압축','guide-2027-funding-outlook-bear-flattening'],
   ['IMA 만기 집중','guide-ima-maturity'],
   ['자본효율과 수신 한도','guide-sizing-growth'],

@@ -5,7 +5,7 @@
 - 운영 사이트: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 - 질문·답변: https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site#questions
 - GitHub 실행 코드: `site/`. Sites 소스 저장소에서는 앱 파일이 루트에 있습니다.
-- 기본 가이드 Q&A 19건: `site/worker/seeds.js`, 마스터 문서 `QA_VERIFIED_ANSWERS.md`.
+- 기본 가이드 Q&A 18건: `site/worker/seeds.js`, 마스터 문서 `QA_VERIFIED_ANSWERS.md`.
 - 금융 데이터 배포 사본: `site/public/data.json`. GitHub의 `data/ib_portal_verified_data.json`과 일치시킵니다.
 - GitHub와 Sites는 자동 동기화되지 않습니다. 검사·테스트·빌드 후 같은 프로젝트의 새 버전을 배포해야 합니다.
 
@@ -76,14 +76,14 @@
 
 ## 기본 질문과 리스크 연결
 
-기본 질문은 **19건**, 페이지네이션 기본 2페이지, 미답변 기본 0건입니다. 사용자 글이 있으면 운영 합계는 달라집니다. 삭제된 **`guide-venture-cross-rule`을 복원하지 마세요.** 모험자본 병목·자본효율은 `guide-sizing-growth`에 통합되어 있습니다.
+기본 질문은 **18건**, 페이지네이션 기본 2페이지, 미답변 기본 0건입니다. 사용자 글이 있으면 운영 합계는 달라집니다. 삭제된 **`guide-venture-cross-rule`을 복원하지 마세요.** 모험자본 병목·자본효율은 `guide-sizing-growth`에 통합되어 있습니다.
 
-미래에셋의 발행어음 확대 속도는 `guide-mirae-note-growth`(Q20)에서 다룹니다. 2021~24년 잔액·RP·사채를 사용해 제도 이전의 확대 속도를 설명합니다. 2025년 말 도입한 모험자본 의무와 IMA는 이후의 분석에 적용합니다. 운용 방침을 직접 확인한 2025·2026년 자료는 확인 시점을 표시합니다.
+미래에셋의 발행어음 확대 속도는 `guide-mirae-note-growth`(Q20)에서 다룹니다. 양사 별도 공시의 같은 기간 어음·RP 변동을 비교하고, 기존 RP 거래망과 장기 회사채의 만기 구조가 조달 선택에 미치는 영향을 설명합니다.
 
 | 리스크 | Q&A ID |
 | --- | --- |
 | 모험자본 조달 병목 | `guide-sizing-growth` |
-| 조달금리 경쟁 | `guide-funding-rate-spread-risk` |
+| 조달금리 경쟁 | `guide-2027-funding-outlook-bear-flattening` |
 | 베어 플랫 · 기간스프레드 압축 | `guide-2027-funding-outlook-bear-flattening` |
 | IMA 만기 집중 | `guide-ima-maturity` |
 | 자본효율과 수신 한도 | `guide-sizing-growth` |

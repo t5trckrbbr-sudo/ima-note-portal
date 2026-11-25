@@ -32,7 +32,7 @@
 
 - **다른 AI에게 이어서 맡길 때:** [AI_HANDOFF.md](./AI_HANDOFF.md), [QA_VERIFIED_ANSWERS.md](./QA_VERIFIED_ANSWERS.md), [PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md](./PROMISSORY_NOTE_CURVE_AND_SHORT_FUNDING.md), [OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md](./OUTLOOK_2027_FUNDING_AND_BEAR_FLATTENING.md)부터 읽으세요.
 - **실행·빌드·배포:** [site/README.md](./site/README.md)
-- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산 및 **발행어음 vs 국채·회사채 단기 수익률곡선 스티프닝 · 만기 3개월 이하(`63.4%`) 초단기 수신 구조 · 2027 수신환경(악화·강화) & 베어 플랫 전망 · 9사 성장/실효금리/ROE 인라인 드릴다운 & 머니무브 안전성 렌즈(`#funding`)**, 모험자본 기회비용 계산기 & **AAA 은행채 금리 비교 · 모험자본 인정자산 수요와 공급(`#invest`)**, **9사 조달·실효금리·ROE 동기화 탐색(`#ib-funding`)**, 만기·리스크 점검(`#pension-risk` → `#questions` 관련 해설 딥링크 연동, 6대 리스크), 익명 질문·답변(가이드 Q&A 19건)과 수정 이력
+- **핵심 기능:** 질문형 주제 지도, 회사별 수신·NIM 계산 및 **발행어음 vs 국채·회사채 단기 수익률곡선 스티프닝 · 만기 3개월 이하(`63.4%`) 초단기 수신 구조 · 2027 수신환경(악화·강화) & 베어 플랫 전망 · 9사 성장/실효금리/ROE 인라인 드릴다운 & 머니무브 안전성 렌즈(`#funding`)**, 모험자본 기회비용 계산기 & **AAA 은행채 금리 비교 · 모험자본 인정자산 수요와 공급(`#invest`)**, **9사 조달·실효금리·ROE 동기화 탐색(`#ib-funding`)**, 만기·리스크 점검(`#pension-risk` → `#questions` 관련 해설 딥링크 연동, 6대 리스크), 익명 질문·답변(가이드 Q&A 18건)과 수정 이력
 - **공개 주소:** https://ima-outlook-2027.mcr8jq7mcg.chatgpt.site
 
 ```bash

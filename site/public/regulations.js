@@ -244,10 +244,8 @@ function mountLibrary(root, library) {
 
   refreshArticles();
   showComparison();
-  if (paramMode === 'comparison') {
-    setMode(true);
-  } else if (paramQ) {
-    setMode(false);
+  setMode(paramMode === 'comparison');
+  if (paramQ) {
     const firstCard = results.querySelector('details.reg-library-article');
     if (firstCard) firstCard.open = true;
   }

@@ -13,7 +13,7 @@ const answer=(title,body)=>`<div class="callout"><b>${title}</b><p>${body}</p></
 const next=(id,text)=>`<a class="btn" href="#${id}" style="margin-top:20px">다음 질문 · ${text} →</a>`;
 const riskData=[
 ['상','모험자본 조달 병목','의무비율 20%와 중견·A급 인정 상한 30%가 동시에 적용되는 시나리오입니다.','인정 가능한 투자처와 실제 순운용스프레드','모험자본 소싱 가용량에 맞춰 수신 규모 검토','invest','guide-sizing-growth','venture-sourcing'],
-['상','조달금리 경쟁','신규 진입사의 특판 경쟁이 조달비용을 높일 수 있습니다.','기준금리 대비 조달 스프레드 +50bp 초과 여부','법인 수시형·기간형 조달의 만기와 비용 분산','funding','guide-funding-rate-spread-risk','funding-competition'],
+['상','조달금리 경쟁','신규 진입사의 특판 경쟁이 조달비용을 높일 수 있습니다.','회사·만기별 특판금리와 실효조달금리','법인 수시형·기간형 조달의 만기와 비용 분산','funding','guide-2027-funding-outlook-bear-flattening','funding-competition'],
 ['상','베어 플랫 · 기간스프레드 압축','기준금리 인상기 단기 조달금리가 중기 운용금리보다 빠르게 오르며 기간 캐리가 증발하고 1년물 특판 역마진 위험이 커지는 시나리오입니다.','국고·회사채 3Y−1Y 스프레드(+11bp→0bp) 및 1년물 고금리 약정 비중','상반기 고점 1년물 특판 자제 · 단기(≤3M) 조달 유지 및 피크 금리 우량 중기 자산 선제 확보','funding','guide-2027-funding-outlook-bear-flattening','bear-flattening'],
 ['상','IMA 만기 집중','원문 초기 1~4호 2.60조 원이 2027.12~2028.04에 만기 도래합니다.','회차·월별 상환 예정액과 기초자산 회수 일정','만기별 현금흐름 대조와 차환 계획 점검','ima-maturity','guide-ima-maturity','ima-maturity'],
 ['중','자본효율과 수신 한도','발행어음 한도 소진과 IMA의 위험액 산정 특례를 함께 비교합니다.','자본 대비 어음 잔액·NCR·유동성 여력','투자자산 만기에 맞는 조달 수단 검토','pnl','guide-sizing-growth','capital-efficiency'],
