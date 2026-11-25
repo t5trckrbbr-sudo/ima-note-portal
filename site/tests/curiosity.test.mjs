@@ -281,3 +281,31 @@ test('the KIS–Mirae detail page compares note capacity and funding changes on 
   assert(comparison.includes('?q=guide-mirae-note-growth#questions'));
   assert.doesNotMatch(comparison, /\b(?:undefined|NaN)\b/);
 });
+
+test('10-year funding visual chart, IMA payoff mount, and internal #regulations deep links render cleanly', () => {
+  for (const lens of ['ib5_1y', 'bond_3y', 'rp_note']) {
+    explorerState.funding10YrLens = lens;
+    const ibHtml = renderIbSynchronizedExplorer(D);
+    assert(ibHtml.includes('id="ib-10yr-funding-visual"'));
+    assert(ibHtml.includes('class="tenyr-div-row'));
+    assert(ibHtml.includes('조달금리 10bp 차이 = 연 이자비용 민감도'));
+    assert.doesNotMatch(ibHtml, /\b(?:undefined|NaN)\b/);
+  }
+  explorerState.funding10YrLens = 'ib5_1y';
+
+  const pnlHtml = renderDetail('pnl', D);
+  assert(pnlHtml.includes('?mode=comparison&topic=0#regulations'));
+  assert(pnlHtml.includes('?q=제3-20조의6#regulations'));
+  assert(pnlHtml.includes('data-reg-jump'));
+
+  const imaHtml = renderDetail('ima-maturity', D);
+  assert(imaHtml.includes('id="ima-payoff-panel"'));
+  assert(imaHtml.indexOf('id="ima-3firms-panel"') < imaHtml.indexOf('id="ima-payoff-panel"'));
+  assert(imaHtml.indexOf('id="ima-payoff-panel"') < imaHtml.indexOf('초기 IMA 4개 회차 · 만기 타임라인'));
+  assert(imaHtml.indexOf('초기 IMA 4개 회차 · 만기 타임라인') < imaHtml.indexOf('id="ima-old-ncr-panel"'));
+  assert(imaHtml.includes('?q=제3-20조의6#regulations'));
+  assert(imaHtml.includes('?q=제4-102조의9#regulations'));
+  assert(imaHtml.includes('?mode=comparison&topic=0#regulations'));
+  assert(!imaHtml.includes('type="checkbox"'));
+  assert.doesNotMatch(imaHtml, /\b(?:undefined|NaN)\b/);
+});

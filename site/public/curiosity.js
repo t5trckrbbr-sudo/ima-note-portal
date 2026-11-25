@@ -602,6 +602,83 @@ function renderIb10YrFundingTable(D, activeKey) {
   </table>`;
 }
 
+function getIb5DebtTril(D, firmName) {
+  const row = (D.ib9FirmsFunding202606 || []).find(x => x.firm === firmName);
+  if (!row?.mixTril) return null;
+  const m = row.mixTril;
+  return (m.rp || 0) + (m.promNote || 0) + (m.shortBorr || 0) + (m.seniorBond || 0) + (m.subDebt || 0);
+}
+
+function renderIb10YrFundingVisual(D, activeKey) {
+  const ds = D.fundingRate10YrDataset2016_2026;
+  if (!ds || !Array.isArray(ds.firmSummary10Yr)) return '';
+  const lens = explorerState.funding10YrLens || 'ib5_1y';
+  const metricFor = r => {
+    if (lens === 'bond_3y') return { val: r.bondVsMatched3YBp?.mean ?? null, sub: `등급보정 ${fmtBp(r.bondVsMatched3YBp?.ratingAdjAlphaBp)}` };
+    if (lens === 'rp_note') return { val: r.rpVsPeerBp?.mean ?? null, sub: r.promNoteVsMatched1YBp?.mean != null ? `어음 ${fmtBp(r.promNoteVsMatched1YBp.mean)}` : '어음 미관측' };
+    return { val: r.ib5VsMatched1YBp?.mean ?? null, sub: `급등기 ${fmtBp(r.ib5VsMatched1YBp?.reg22_23)}` };
+  };
+  const titleMap = {
+    ib5_1y: '종합 5대 차입금리 − 동일등급 회사채 1Y (10년 평균, bp)',
+    bond_3y: '무담보 사채 − 동일등급 회사채 3Y (10년 평균, bp)',
+    rp_note: 'RP 매도 − 9사 평균 (10년 평균, bp)'
+  };
+
+  const rows = [...ds.firmSummary10Yr]
+    .map(r => ({ ...r, metric: metricFor(r), ib5DebtTril: getIb5DebtTril(D, r.firm) }))
+    .filter(r => r.metric.val !== null)
+    .sort((a, b) => a.metric.val - b.metric.val);
+  const maxAbs = Math.max(20, ...rows.map(r => Math.abs(r.metric.val)));
+  const selected = rows.find(r => r.key === activeKey) || rows[0];
+  const sens10bpEok = selected?.ib5DebtTril != null ? selected.ib5DebtTril * 10 : null;
+  const impliedRefEok = (selected?.ib5DebtTril != null && selected.ib5VsMatched1YBp?.mean != null)
+    ? selected.ib5DebtTril * selected.ib5VsMatched1YBp.mean
+    : null;
+
+  return `<div class="tenyr-vis-wrap">
+    <div class="tenyr-vis-chart">
+      <div class="tenyr-vis-head">
+        <b>${titleMap[lens]}</b>
+        <span class="muted">← 왼쪽(파랑): 벤치마크 대비 저렴 · 오른쪽(빨강): 높음 →</span>
+      </div>
+      <div class="tenyr-div-list">
+        ${rows.map(r => {
+          const v = r.metric.val;
+          const pct = Math.min(50, Math.abs(v) / maxAbs * 48);
+          const isNeg = v < 0;
+          const sel = r.key === activeKey;
+          return `<button type="button" class="tenyr-div-row ${sel ? 'selected' : ''}" data-10yr-firm="${r.key}">
+            <span class="tenyr-div-firm"><b>${r.firm}</b> <small class="muted">${r.ratingCurrent}</small></span>
+            <span class="tenyr-div-track" aria-hidden="true">
+              <i class="tenyr-div-zero"></i>
+              <i class="tenyr-div-bar ${isNeg ? 'is-neg' : 'is-pos'}" style="${isNeg ? `right:50%;width:${pct.toFixed(1)}%` : `left:50%;width:${pct.toFixed(1)}%`}"></i>
+            </span>
+            <span class="tenyr-div-val tabular" style="color:${isNeg ? '#004ea2' : '#c4362e'}">${fmtBp(v)}</span>
+            <span class="tenyr-div-sub muted tabular">${r.metric.sub}</span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>
+    ${selected ? `<div class="tenyr-sens-strip">
+      <div class="tenyr-sens-card">
+        <small>${selected.firm} · 5대 이자부 차입부채 ('26.2Q)</small>
+        <strong class="tabular">${selected.ib5DebtTril != null ? fmt(selected.ib5DebtTril, 2) + '조 원' : '—'}</strong>
+        <span class="muted">RP·어음·단기차입·선/후순위채 합계</span>
+      </div>
+      <div class="tenyr-sens-card">
+        <small>조달금리 10bp 차이 = 연 이자비용 민감도</small>
+        <strong class="tabular" style="color:#004ea2">${sens10bpEok != null ? fmt(sens10bpEok, 0) + '억 원/년' : '—'}</strong>
+        <span class="muted">단순 규모 환산 (잔액 × 0.10%)</span>
+      </div>
+      <div class="tenyr-sens-card">
+        <small>금리 사이클 3국면 (종합 − 동일등급 1Y)</small>
+        <strong class="tabular" style="font-size:13.5px">'16~'21 ${fmtBp(selected.ib5VsMatched1YBp?.reg16_21)} · '22~'23 ${fmtBp(selected.ib5VsMatched1YBp?.reg22_23)} · '24~'26 ${fmtBp(selected.ib5VsMatched1YBp?.reg24_26)}</strong>
+        <span class="muted">${impliedRefEok != null ? `참고: 10년 평균 스프레드 단순 적용 시 연 ${impliedRefEok > 0 ? '+' : ''}${fmt(impliedRefEok, 0)}억 규모` : '국면별 원천 관측치'}</span>
+      </div>
+    </div>` : ''}
+  </div>`;
+}
+
 function renderIb10YrFundingDataPanel(D, activeKey) {
   const ds = D.fundingRate10YrDataset2016_2026;
   if (!ds) return '';
@@ -622,6 +699,9 @@ function renderIb10YrFundingDataPanel(D, activeKey) {
         <button type="button" class="lens-btn ${lens === 'rp_note' ? 'active' : ''}" data-10yr-lens="rp_note">③ RP vs 9사 평균 · 발행어음 vs 1Y</button>
       </div>
       <span class="muted" style="font-size:11px">음수(−) = 벤치마크 대비 저렴 · *** p&lt;0.01, ** p&lt;0.05</span>
+    </div>
+    <div id="ib-10yr-funding-visual" aria-live="polite">
+      ${renderIb10YrFundingVisual(D, activeKey)}
     </div>
     <div class="table-wrap" id="ib-10yr-funding-table">
       ${renderIb10YrFundingTable(D, activeKey)}
@@ -741,6 +821,7 @@ function renderIbProfitabilityTable(D, activeKey) {
 export function bindIbSynchronizedExplorer(D, onNavigate) {
   const focusEl = document.getElementById('ib-sync-focus-panel');
   const profitWrap = document.getElementById('ib-sync-profit-table');
+  const tenYrVis = document.getElementById('ib-10yr-funding-visual');
   const tenYrWrap = document.getElementById('ib-10yr-funding-table');
   if (!focusEl || !profitWrap) return;
 
@@ -758,6 +839,7 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
 
     focusEl.innerHTML = renderIbFirmFocusCard(D, activeChain);
     profitWrap.innerHTML = renderIbProfitabilityTable(D, key);
+    if (tenYrVis) tenYrVis.innerHTML = renderIb10YrFundingVisual(D, key);
     if (tenYrWrap) tenYrWrap.innerHTML = renderIb10YrFundingTable(D, key);
     bindDynamic();
     if (scrollFocus) focusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -778,6 +860,10 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
     });
   };
 
+  tenYrVis?.addEventListener('click', event => {
+    const bar = event.target.closest('[data-10yr-firm]');
+    if (bar) updateFirm(bar.dataset['10yrFirm'], false);
+  });
   tenYrWrap?.addEventListener('click', event => {
     const row = event.target.closest('[data-10yr-firm]');
     if (row) updateFirm(row.dataset['10yrFirm'], true);
@@ -786,6 +872,9 @@ export function bindIbSynchronizedExplorer(D, onNavigate) {
     btn.addEventListener('click', () => {
       explorerState.funding10YrLens = btn.dataset['10yrLens'];
       document.querySelectorAll('#ib-10yr-lens-switch [data-10yr-lens]').forEach(el => el.classList.toggle('active', el === btn));
+      if (tenYrVis) {
+        tenYrVis.innerHTML = renderIb10YrFundingVisual(D, explorerState.firmKey);
+      }
       if (tenYrWrap) {
         tenYrWrap.innerHTML = renderIb10YrFundingTable(D, explorerState.firmKey);
       }
@@ -1623,13 +1712,27 @@ export function bindHouseholdWealthPage(D, onNavigate = tab => { location.hash =
 /* ==========================================================================
    6. #pnl — 발행어음 & IMA 금융당국 전수 규제 · 금감원 보고 주기 · 복구기간 · 법적 페널티 총람
    ========================================================================== */
+const regLibraryDeepLinks = [
+  { href: '?mode=comparison&topic=0#regulations', label: '규정모음집 · 조달 한도 비교 →' },
+  { href: '?mode=comparison&topic=1#regulations', label: '규정모음집 · 기업금융 의무 비교 →' },
+  { href: '?mode=comparison&topic=5#regulations', label: '규정모음집 · 부동산 한도 비교 →' },
+  { href: '?mode=comparison&topic=2#regulations', label: '규정모음집 · 모험자본 비교 →' },
+  { href: '?mode=comparison&topic=11#regulations', label: '규정모음집 · 단기 유동성 비교 →' },
+  { href: '?q=제77조의3#regulations', label: '규정모음집 · 제77조의3 특례 →' },
+  { href: '?q=제3-20조의6#regulations', label: '규정모음집 · 세칙 제3-20조의6(IMA 감경) →' },
+  { href: '?mode=comparison&topic=6#regulations', label: '규정모음집 · 구분관리 비교 →' },
+  { href: '?q=제4-102조의8#regulations', label: '규정모음집 · 제4-102조의8·9 →' }
+];
+
 function renderRegulatoryRows(D) {
   const reg = D.regulatoryComplianceMatrix2027;
   if (!reg) return '';
   const filtered = reg.rules.filter(r =>
     explorerState.regCategory === 'all' || r.category === explorerState.regCategory
   );
-  return filtered.map(r => `<tr data-xray="reg-rule:${r.idx}" tabindex="0" role="button">
+  return filtered.map(r => {
+    const deep = regLibraryDeepLinks[r.idx] || { href: '#regulations', label: '규정모음집 →' };
+    return `<tr data-xray="reg-rule:${r.idx}" tabindex="0" role="button">
     <td style="min-width:170px">
       <span class="badge ${r.severity}">${r.categoryBadge}</span>
       <div style="margin-top:5px"><b class="xray-token">${r.title}</b></div>
@@ -1642,8 +1745,10 @@ function renderRegulatoryRows(D) {
     <td style="min-width:210px">
       <div style="color:#9e2a2b;font-weight:600">${r.penalty}</div>
       <small class="muted" style="display:block;margin-top:4px">근거: ${r.statute}</small>
+      <a class="reg-internal-link" href="${deep.href}" data-reg-jump>${deep.label}</a>
     </td>
-  </tr>`).join('');
+  </tr>`;
+  }).join('');
 }
 
 export function renderRegulatoryCompliancePanel(D) {
@@ -1951,7 +2056,7 @@ export function renderIma3FirmsComparisonPanel(D) {
       </div>
       <div id="ima-compare-body">${renderImaLensBody(ds)}</div>
       <p class="ima-table-note">${ds.disclosureBoundaryNote}</p>
-      <div class="ima-source-links" aria-label="IMA 비교 공시 출처">${imaComparisonLinks(ds.sources)}</div>
+      <div class="ima-source-links" aria-label="IMA 비교 공시 출처">${imaComparisonLinks(ds.sources)} · <a class="reg-internal-link" href="?q=제4-102조의9#regulations" data-reg-jump>규정모음집 · 제4-102조의9(IMA 업무·5% 준비금) →</a></div>
     </details>
   </section>`;
 }

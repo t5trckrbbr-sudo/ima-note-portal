@@ -216,18 +216,42 @@ function mountLibrary(root, library) {
   more.addEventListener('click', () => showNextPage(true));
   topic.addEventListener('change', showComparison);
   const modes = root.querySelectorAll('[data-reg-mode]');
-  modes.forEach(button => button.addEventListener('click', () => {
-    const isComparison = button.dataset.regMode === 'comparison';
+  const setMode = isComparison => {
     get('articles').hidden = isComparison;
     get('comparison').hidden = !isComparison;
     modes.forEach(mode => {
-      const active = mode === button;
+      const active = (mode.dataset.regMode === 'comparison') === isComparison;
       mode.classList.toggle('active', active);
       mode.setAttribute('aria-pressed', String(active));
     });
+  };
+  modes.forEach(button => button.addEventListener('click', () => {
+    setMode(button.dataset.regMode === 'comparison');
   }));
+
+  // Apply URL deep-link parameters (?q=..., ?area=..., ?source=..., ?mode=comparison&topic=0..11)
+  const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
+  const paramQ = params.get('q') || '';
+  const paramArea = params.get('area') || '';
+  const paramSource = params.get('source') || '';
+  const paramMode = params.get('mode') || '';
+  const paramTopic = params.get('topic');
+
+  if (paramQ) query.value = paramQ;
+  if (paramArea && [...area.options].some(o => o.value === paramArea)) area.value = paramArea;
+  if (paramSource && [...source.options].some(o => o.value === paramSource)) source.value = paramSource;
+  if (paramTopic !== null && [...topic.options].some(o => o.value === String(paramTopic))) topic.value = String(paramTopic);
+
   refreshArticles();
   showComparison();
+  if (paramMode === 'comparison') {
+    setMode(true);
+  } else if (paramQ) {
+    setMode(false);
+    const firstCard = results.querySelector('details.reg-library-article');
+    if (firstCard) firstCard.open = true;
+  }
+
   get('content').hidden = false;
   get('sources').hidden = false;
 }

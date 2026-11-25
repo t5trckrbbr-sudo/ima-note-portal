@@ -103,7 +103,11 @@ export function renderImaOldNcr(input={}) {
     </div><p class="ima-ncr-subnote">평가손실 0·그 밖의 자산 및 위험액 고정·세금과 손익 미반영. E·R은 같은 연결 범위로 비교합니다. 취득액에 단일 위험률을 적용하는 단순 비교이며 분산·상계·집중 효과는 별도 반영하지 않습니다. E는 IMA 5% 감소 전 값입니다. 이미 감소한 영업용순자본을 넣으면 중복 차감됩니다.</p></details>
     <div data-ncr-output>${output(computeImaOldNcr(state))}</div>
     <details class="ima-ncr-assumptions"><summary>산식과 감경 조건 확인</summary><p>발행어음: E ÷ (R + A×r). IMA: (E − 0.05×A) ÷ (R + 0.5×A×r). 비율 표시는 각각 ×100입니다.</p><p>구NCR 분기점 r* = 0.05×R ÷ (0.5×E − 0.05×A). A&gt;0, 분모&gt;0일 때의 비교이며 법정 공통 위험률이 아닙니다. 보조적으로 신NCR 순자본 여력 차이는 0.5×A×r − 0.05×A이지만, 구NCR의 비율 분기점과 구분합니다.</p><p><b>감경 요건을 충족하는 운용액을 전제로 합니다.</b> 현행 세칙은 매 결산 시 손실충당금·손실준비금 합계가 원본 결손액 + 원본 5% 이상이고, 연결 구NCR이 150%를 초과하는 요건을 함께 둡니다. 만기 전 해지가 불가능한 IMA는 두 요건을 충족한 상태에서 납입·운용한 자산에 대해 이후 150% 요건의 유지 예외가 있습니다.</p><p>손실충당금의 비용 처리와 손실준비금의 이익잉여금 내 적립은 다릅니다. 본 그래프의 분자 5% 전액 감소는 보수적 가정이며 실제 영업용순자본 감소액은 회계·세금·규제 조정을 대조해야 합니다. 시딩·충당금·준비금의 같은 부담을 중복 차감하지 않습니다.</p><p>자기자본의 100%를 초과하는 IMA 수탁금 원본에는 50% 감경을 적용하지 않는 한도를 고려합니다. 본 모형의 A는 전액 감경 요건과 한도 내에 있는 신규 운용액으로 가정합니다. 영업용순자본 E는 자기자본과 다르므로 E로 한도 충족을 판정하지 않습니다.</p></details>
-    <a class="btn" href="?q=guide-ima-old-ncr-capital#questions" data-qa-jump="guide-ima-old-ncr-capital">질문 · IMA의 자본효율은 언제 유의미한가요? →</a>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <a class="btn" href="?q=guide-ima-old-ncr-capital#questions" data-qa-jump="guide-ima-old-ncr-capital">질문 · IMA의 자본효율은 언제 유의미한가요? →</a>
+      <a class="btn" href="?q=제3-20조의6#regulations" data-reg-jump>규정모음집 · 세칙 제3-20조의6 원문 →</a>
+      <a class="btn" href="?q=제4-102조의9#regulations" data-reg-jump>제4-102조의9 (IMA 업무) →</a>
+    </div>
     <div class="source"><b>출처 및 산정방식</b> · <a href="https://www.fsc.go.kr/no010101/84322" target="_blank" rel="noopener noreferrer">금융위 2025.04.09 · 영업용순자본비율 산출 시 IMA 50% 반영</a> · <a href="https://www.law.go.kr/LSW/flDownload.do?flSeq=166876081" target="_blank" rel="noopener noreferrer">금융투자업규정 시행세칙 제3-20조의6 · 2026.07.08 시행, 9쪽</a> · <a href="https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000285020" target="_blank" rel="noopener noreferrer">금융투자업규정 제3-6조·제3-24조의4·제4-99조</a> · <a href="https://www.fsc.go.kr/no010101/84928" target="_blank" rel="noopener noreferrer">금융위 제도 설명</a> · 위 비교 산식의 가정과 실제 적용 기준을 구분합니다. <button type="button" class="source-xray-btn" data-xray="ima-old-ncr">산식·근거 열기</button></div>
   </section>`;
 }

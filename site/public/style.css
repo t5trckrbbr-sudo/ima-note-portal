@@ -725,3 +725,60 @@ tr[data-xray]{cursor:pointer}
   .reg-library-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
   .reg-library-filters label:first-child{grid-column:1/-1}
 }
+
+/* ==========================================================================
+   Feature #2 (#ima-payoff-panel), #3 (#ib-10yr-funding-visual), #4 (reg links)
+   ========================================================================== */
+.ima-payoff-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ima-payoff-principal{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#1b3556;background:#f4f8fe;border:1px solid #cddff7;border-radius:8px;padding:6px 10px}
+.ima-payoff-principal input{width:62px;border:1px solid #bdd4f0;border-radius:5px;padding:3px 6px;text-align:right;font-weight:700;color:#004ea2;background:#fff}
+.ima-payoff-slider-box{background:#f7fafe;border:1px solid #d9e5f5;border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.ima-payoff-slider-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.ima-payoff-slider-head label{font-size:13px;font-weight:700;color:#0a1e3c}
+.ima-payoff-slider-head output{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:6px;background:#004ea2;color:#fff;font-variant-numeric:tabular-nums}
+.ima-payoff-slider-box input[type="range"]{width:100%;accent-color:#004ea2;cursor:pointer}
+.ima-payoff-banner{display:flex;flex-direction:column;gap:4px;padding:11px 14px;border-radius:8px;background:#eef5fe;border:1px solid #c9ddf7;margin-bottom:14px;font-size:12.5px;color:#0f223d}
+.ima-payoff-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:15px}
+.ima-payoff-card{background:#fff;border:1px solid #d9e2ef;border-top:3.5px solid #004ea2;border-radius:10px;padding:13px 14px;display:flex;flex-direction:column;gap:10px}
+.ima-payoff-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ima-payoff-card-head b{display:block;font-size:14.5px;color:#0a1e3c}
+.ima-payoff-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px 10px;border-radius:8px;background:#f7f9fc;border:1px solid #e6edf5}
+.ima-payoff-metrics small{display:block;font-size:10px;color:#5e6e85}
+.ima-payoff-metrics strong{display:block;font-size:18px;line-height:1.35}
+.ima-payoff-metrics span{display:block;font-size:10px;color:#5e6e85;margin-top:2px}
+.ima-payoff-tax{padding:8px 10px;border-radius:7px;background:#f5f8fc;border:1px solid #dfe8f3;font-size:11px;display:flex;flex-direction:column;gap:2px}
+.ima-payoff-tax.is-warn{background:#fdf3f2;border-color:#f2c9c6;color:#9e2a2b}
+.ima-payoff-svg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ima-payoff-chart{margin:0;padding:12px 14px;border:1px solid #dce5f0;border-radius:10px;background:#fff}
+.ima-payoff-chart figcaption{font-size:12px;font-weight:700;color:#0f223d;margin-bottom:6px}
+.ima-payoff-chart svg{display:block;width:100%;height:auto}
+
+.tenyr-vis-wrap{display:grid;gap:12px;margin-bottom:16px}
+.tenyr-vis-chart{background:#f8fafd;border:1px solid #dce5f0;border-radius:10px;padding:13px 15px}
+.tenyr-vis-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:#0f223d;margin-bottom:10px}
+.tenyr-div-list{display:grid;gap:6px}
+.tenyr-div-row{display:grid;grid-template-columns:138px 1fr 78px 128px;align-items:center;gap:10px;width:100%;padding:6px 9px;border:1px solid transparent;border-radius:7px;background:#fff;text-align:left;cursor:pointer;transition:border-color .14s,background .14s;font:inherit;color:inherit}
+.tenyr-div-row:hover{border-color:#a9c5eb;background:#f5f9ff}
+.tenyr-div-row.selected{border-color:#004ea2;background:#edf4fe}
+.tenyr-div-firm{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tenyr-div-track{position:relative;display:block;height:14px;background:#edf2f7;border-radius:4px;overflow:hidden}
+.tenyr-div-zero{position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:#64748b;z-index:2}
+.tenyr-div-bar{position:absolute;top:2px;bottom:2px;border-radius:3px}
+.tenyr-div-bar.is-neg{background:#004ea2}
+.tenyr-div-bar.is-pos{background:#c4362e}
+.tenyr-div-val{font-size:12px;font-weight:800;text-align:right}
+.tenyr-div-sub{font-size:11px;text-align:right;white-space:nowrap}
+.tenyr-sens-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tenyr-sens-card{background:#fff;border:1px solid #d9e2ef;border-radius:9px;padding:10px 13px}
+.tenyr-sens-card small{display:block;font-size:10.5px;color:#5e6e85}
+.tenyr-sens-card strong{display:block;font-size:16px;color:#0a1e3c;margin:3px 0 2px}
+.tenyr-sens-card span{display:block;font-size:10.5px}
+
+.reg-internal-link{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:2px 8px;border-radius:5px;background:#edf4fe;border:1px solid #c7dcf7;color:#004ea2!important;font-size:11px;font-weight:700;text-decoration:none!important;transition:background .14s,border-color .14s}
+.reg-internal-link:hover{background:#dceafb;border-color:#004ea2}
+
+@media(max-width:980px){
+  .ima-payoff-cards,.ima-payoff-svg-grid,.tenyr-sens-strip{grid-template-columns:1fr}
+  .tenyr-div-row{grid-template-columns:115px 1fr 68px}
+  .tenyr-div-sub{display:none}
+}
